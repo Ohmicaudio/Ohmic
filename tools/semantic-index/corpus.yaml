@@ -1,0 +1,73 @@
+collection: ohmic_context
+
+repos:
+  - name: Ohmic
+    kind: umbrella
+    root: /mnt/b/ohmic
+    include:
+      - README.md
+      - docs/**/*.md
+      - manifests/**/*.yaml
+      - templates/**/*.md
+    exclude:
+      - repos/**
+
+  - name: ohmic-audio-labs
+    kind: app-runtime
+    root: /mnt/a/ohmic-audio-labs
+    include:
+      - README.md
+      - docs/**/*.md
+      - schemas/**/*.json
+      - services/**/*.md
+      - products/**/*.md
+      - index/**/*.md
+      - index/**/*.json
+    exclude:
+      - archive/**
+      - dist/**
+      - node_modules/**
+      - .pio/**
+      - playwright-report/**
+      - test-results/**
+
+  - name: amplab-firmware
+    kind: firmware
+    root: /mnt/b/ohmic/repos/amplab-firmware
+    include:
+      - README.md
+      - docs/**/*.md
+      - schemas/**/*.json
+      - src/**/*.md
+      - src/**/*.hpp
+      - src/**/*.cpp
+      - include/**/*.h
+      - include/**/*.hpp
+    exclude:
+      - .pio/**
+
+  - name: cyd-remote
+    kind: handheld
+    root: /mnt/b/ohmic/repos/cyd-remote
+    include:
+      - README.md
+      - docs/**/*.md
+      - schemas/**/*.json
+      - src/**/*.hpp
+      - src/**/*.cpp
+      - include/**/*.h
+      - include/**/*.hpp
+    exclude:
+      - .pio/**
+
+  - name: ohmic-static-content
+    kind: static-content
+    root: /mnt/b/ohmic/repos/ohmic-static-content
+    include:
+      - README.md
+      - content-work/**/*.md
+      - site/**/*.md
+      - public/llms.txt
+      - public/suite-index.json
+      - public/ai-index.json
+    exclude: []

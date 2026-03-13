@@ -2,11 +2,17 @@
 
 This is the local Chroma-based context acceleration layer staged into the umbrella repo.
 
+It now indexes the multi-repo Ohmic layout through a manifest:
+
+- [`corpus.yaml`](/mnt/b/ohmic/tools/semantic-index/corpus.yaml)
+
 Use:
 
 ```bash
 cd /mnt/b/ohmic/tools/semantic-index
 docker compose up -d
+python3 indexer.py --dry-run
+python3 indexer.py
 ```
 
 Then read:

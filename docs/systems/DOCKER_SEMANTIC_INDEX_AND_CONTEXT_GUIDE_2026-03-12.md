@@ -30,10 +30,15 @@ Files staged into this umbrella repo:
 
 - [`tools/semantic-index/docker-compose.yml`](/mnt/b/ohmic/tools/semantic-index/docker-compose.yml)
 - [`tools/semantic-index/indexer.py`](/mnt/b/ohmic/tools/semantic-index/indexer.py)
+- [`tools/semantic-index/corpus.yaml`](/mnt/b/ohmic/tools/semantic-index/corpus.yaml)
 
-Original source:
+Current repo corpus:
 
-- `/mnt/a/ohmic-audio-labs/tools/semantic-index/`
+- `Ohmic`
+- `ohmic-audio-labs`
+- `amplab-firmware`
+- `cyd-remote`
+- `ohmic-static-content`
 
 ## Why this exists
 
@@ -105,6 +110,21 @@ Recommended ingestion priority:
 2. contract and schema docs from `ohmic-audio-labs`
 3. DSP and transport docs from `amplab-firmware`
 4. handheld bring-up and UX docs from `cyd-remote`
+5. static content/editorial guidance from `ohmic-static-content`
+
+## Current workflow
+
+From the umbrella root:
+
+```bash
+cd /mnt/b/ohmic/tools/semantic-index
+docker compose up -d
+python3 indexer.py --dry-run
+python3 indexer.py
+```
+
+The manifest in `corpus.yaml` is the current index scope definition.
+Edit that file when repos are added, removed, or narrowed.
 
 ## Ground Rules
 
@@ -113,11 +133,8 @@ Recommended ingestion priority:
 3. If a fact in the index disagrees with git, git wins.
 4. Do not let this become an uncurated junk sink.
 
-## Recommended Next Step
+## Current rule
 
-After repo migration settles:
-
-- add a small indexed corpus manifest
-- define what directories are indexed
-- define what content is excluded
-- record update/rebuild commands in `tools/sync`
+- keep the corpus manifest small and intentional
+- index docs, contracts, manifests, and selected code
+- do not dump build artifacts, caches, archives, or random scratch into Chroma
