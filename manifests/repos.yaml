@@ -1,0 +1,54 @@
+version: 1
+owner: Ohmicaudio
+umbrella_repo: Ohmic
+
+repos:
+  - name: Ohmic
+    kind: umbrella
+    visibility: private
+    source_of_truth: true
+    purpose:
+      - architecture
+      - contracts-index
+      - migration
+      - repo-registry
+      - generated-context
+    local_path: /mnt/b/ohmic
+
+  - name: ohmic-audio-labs
+    kind: app-runtime
+    visibility: private
+    preserve_history: true
+    source_local_path: /mnt/a/ohmic-audio-labs
+    mirror_local_path: /mnt/b/ohmic/repos/ohmic-audio-labs
+    purpose:
+      - web
+      - android-shell
+      - backend
+      - sync-hub
+      - measurement-pipeline
+      - shared-app-core
+
+  - name: amplab-firmware
+    kind: firmware
+    visibility: private
+    preserve_history: false
+    source_local_path: /mnt/a/masterfirmware
+    mirror_local_path: /mnt/b/ohmic/repos/amplab-firmware
+    purpose:
+      - amplab-device-firmware
+      - dsp-transport
+      - device-web-api
+      - measurement-jobs
+
+  - name: cyd-remote
+    kind: handheld
+    visibility: private
+    preserve_history: false
+    source_local_path: /mnt/a/cyd_remote
+    mirror_local_path: /mnt/b/ohmic/repos/cyd-remote
+    purpose:
+      - handheld-firmware
+      - display-stack
+      - handheld-ui
+      - cyd-bringup

@@ -1,0 +1,18 @@
+version: 1
+
+primary_runtime:
+  repo: ohmic-audio-labs
+  surfaces:
+    - web
+    - android
+    - backend
+
+later_packaging:
+  shared_core_required: true
+  mini_apps:
+    - wiring-ohm-load
+    - box-volume-port
+    - gain-voltage-power
+    - impedance-ts-helper
+    - rta-lite-signal-generator
+    - commissioning-utility

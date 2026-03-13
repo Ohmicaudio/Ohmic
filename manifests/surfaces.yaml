@@ -1,0 +1,34 @@
+version: 1
+
+surfaces:
+  - id: control
+    owner_repo: cyd-remote
+    class: handheld-primary
+
+  - id: info
+    owner_repo: cyd-remote
+    class: handheld-primary
+
+  - id: rta
+    owner_repo: cyd-remote
+    class: handheld-primary
+
+  - id: dsp
+    owner_repo: cyd-remote
+    class: handheld-primary
+
+  - id: settings
+    owner_repo: cyd-remote
+    class: handheld-utility
+
+  - id: map
+    owner_repo: cyd-remote
+    class: handheld-utility
+
+  - id: web-runtime
+    owner_repo: ohmic-audio-labs
+    class: app-runtime
+
+  - id: android-shell
+    owner_repo: ohmic-audio-labs
+    class: app-runtime

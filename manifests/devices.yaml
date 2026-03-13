@@ -1,0 +1,19 @@
+version: 1
+
+device_families:
+  - id: amplab
+    role: pilot-contract-device
+    repos:
+      - amplab-firmware
+      - ohmic-audio-labs
+
+  - id: cyd24r
+    role: handheld-controller
+    repos:
+      - cyd-remote
+      - ohmic-audio-labs
+
+transport_notes:
+  - native-ohmic path does not need a local translator on the handheld
+  - third-party DSP support may need translator layers later
+  - SD-backed artifacts should support longer capture windows

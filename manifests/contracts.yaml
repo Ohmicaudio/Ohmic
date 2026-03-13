@@ -1,0 +1,28 @@
+version: 1
+
+canonical_contract_seed:
+  file: docs/contracts/OHMIC_CANONICAL_DEVICE_CONTRACT_DRAFT_2026-03-12.md
+  status: draft
+  pilot_device_family: amplab
+
+contract_domains:
+  - discovery
+  - capabilities
+  - live-state
+  - streams
+  - commands
+  - artifacts
+
+current_public_topics:
+  - sys.info
+  - sys.capabilities
+  - dsp.state.live
+  - dsp.state.staged
+  - dsp.param.stage
+  - dsp.apply
+  - measure.fft.frame
+
+rules:
+  - consumers ask, firmware answers
+  - consumers bind to intent, not implementation
+  - long captures become artifacts, not only live streams

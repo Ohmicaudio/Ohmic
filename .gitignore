@@ -1,0 +1,12 @@
+# Local repo mirrors / working clones do not belong in the umbrella repo.
+/repos/
+
+# Generated context can be rebuilt.
+/generated/ai-index/*
+/generated/context-index/*
+!.gitkeep
+
+# OS/editor noise
+.DS_Store
+Thumbs.db
+desktop.ini
