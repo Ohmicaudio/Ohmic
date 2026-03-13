@@ -1,0 +1,46 @@
+version: 1
+repo: cyd-remote
+source_repo_path: /mnt/a/cyd_remote
+
+include:
+  top_level:
+    - platformio.ini
+    - partitions.csv
+    - partitions_16mb.csv
+  include:
+    - include/lv_conf.h
+    - include/tft_setup_cyd24.h
+  dirs:
+    - docs/ohmic-firmware-handoff
+    - lib/esp32round
+    - schemas
+    - snapshots
+    - src
+    - tools
+  files:
+    - docs/CYD24R_BRINGUP_AND_WORKING_GUIDE_2026-03-12.md
+    - docs/CYD_HANDHELD_PRODUCT_BRIEF.md
+    - docs/PINOUT_CANONICAL_V1.md
+    - docs/OHMIC_CANONICAL_DEVICE_CONTRACT_DRAFT_2026-03-12.md
+    - docs/OHMIC_SYSTEM_FIRMWARE_ROAD_FORWARD_2026-03-12.md
+    - docs/OHMIC_WEB_ANDROID_AND_FIRMWARE_CONSOLIDATION_2026-03-12.md
+    - snapshots/CYD24R_WORKING_BASELINE_2026-03-12.md
+
+exclude:
+  dirs:
+    - .pio
+    - .claude
+    - .vscode
+    - skills
+  files:
+    - snapshots/firmware-cyd24r-working-2026-03-12.bin
+    - docs/2.4inch_ESP32-2432S024.zip
+
+archive_or_reference:
+  dirs:
+    - docs/2.4inch_ESP32-2432S024
+    - docs/adi docs
+    - docs/archive
+  files:
+    - docs/DSP_AGENT2_RESEARCH_ANSWERS.md
+    - docs/OHMIC_GITHUB_MIGRATION_PLAN_2026-03-12.md

@@ -49,6 +49,7 @@ repos:
     preserve_history: false
     source_local_path: /mnt/a/cyd_remote
     mirror_local_path: /mnt/b/ohmic/repos/cyd-remote
+    import_surface_manifest: /mnt/b/ohmic/manifests/import-surfaces/cyd-remote.yaml
     purpose:
       - handheld-firmware
       - display-stack
