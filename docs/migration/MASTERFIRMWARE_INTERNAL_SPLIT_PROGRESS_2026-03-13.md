@@ -21,10 +21,24 @@ The internal split has started inside `/mnt/a/masterfirmware`.
 - `/mnt/a/masterfirmware/src/ui/remote/ui_remote.hpp`
 - `/mnt/a/masterfirmware/src/ui/remote/ui_remote.cpp`
 
+#### Platform display
+
+- `/mnt/a/masterfirmware/src/platform/display/lgfx_display.hpp`
+- `/mnt/a/masterfirmware/src/platform/display/lgfx_display.cpp`
+
+#### Local AmpLab UI
+
+- `/mnt/a/masterfirmware/src/ui/local/ui_home.hpp`
+- `/mnt/a/masterfirmware/src/ui/local/ui_home.cpp`
+- `/mnt/a/masterfirmware/src/ui/local/ui_dashboard.hpp`
+- `/mnt/a/masterfirmware/src/ui/local/ui_dashboard.cpp`
+- `/mnt/a/masterfirmware/src/ui/local/ohmic_logo.cpp`
+
 ### Integration repairs already completed
 
 - `main.cpp` now uses the real DSP callback/update path
 - `measure.fft.frame` parsing now prefers canonical `bins_db` with legacy `bins` fallback
+- local display/runtime includes now point at explicit platform/UI module paths
 
 ## Verification
 
@@ -46,6 +60,8 @@ The repo now has a real internal separation between:
 
 - AmpLab/platform/runtime glue
 - DSP contract/transport/state
+- platform display plumbing
+- local AmpLab LVGL UI
 - remote DSP UI consumer
 
 ## Next likely cleanup targets
