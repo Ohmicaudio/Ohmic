@@ -98,6 +98,16 @@ Only break this rule if:
 - the next step has hidden architectural consequences
 - the queue or docs are too ambiguous to identify a safe next action
 
+## Post-Checkpoint Check Rule
+
+After any meaningful completed task:
+
+- check `requests/ready/` for newly available work
+- check `requests/open-questions.md` for unresolved questions that could redirect or unblock the next step
+- prefer answering or routing fresh blocking questions before drifting into unrelated cleanup
+
+Use this rule after stable checkpoints, not after every tiny command.
+
 ## Compaction Rule
 
 Treat compaction as agent responsibility, not default user work.

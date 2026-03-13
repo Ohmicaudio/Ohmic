@@ -128,6 +128,7 @@ At session start:
 5. read mid-term memory for active initiatives and learned lessons
 6. read the most recent handoff if resuming work
 7. check `requests/` if you are looking for queued work rather than continuing an active thread
+8. read `requests/open-questions.md` before picking up fresh queued work
 
 ## Compaction Rule
 
@@ -167,6 +168,7 @@ During work:
 - keep handoffs factual and concise
 - keep claims accurate; broaden or narrow them only when the work scope truly changes
 - when closing one step, identify the next step using the shared priority ladder so `continue` stays deterministic
+- after any meaningful completed task, check `requests/ready/` and `requests/open-questions.md` before choosing unrelated follow-on work
 
 Mistake handling:
 
