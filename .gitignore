@@ -4,6 +4,7 @@
 # Generated context can be rebuilt.
 /generated/ai-index/*
 /generated/context-index/*
+/generated/agent-work/*
 !.gitkeep
 
 # Local harvest payloads are retained for reference, not committed as source.

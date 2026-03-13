@@ -22,9 +22,16 @@ param(
 
 $requestsRoot = 'B:\ohmic\agent-system\requests'
 $validStates = @('inbox', 'blocked', 'ready', 'done')
+$refreshScript = 'B:\ohmic\tools\sync\refresh-agent-work-snapshot.ps1'
 
 foreach ($state in $validStates) {
     New-Item -ItemType Directory -Force (Join-Path $requestsRoot $state) | Out-Null
+}
+
+function Refresh-WorkSnapshot {
+    if (Test-Path $refreshScript) {
+        & $refreshScript -Project $Project | Out-Null
+    }
 }
 
 function Slugify {
@@ -151,6 +158,7 @@ switch ($Command) {
         )
 
         Set-Content -Path $filePath -Value $lines -Encoding UTF8
+        Refresh-WorkSnapshot
         Write-Output $filePath
         exit 0
     }
@@ -170,6 +178,7 @@ switch ($Command) {
         $raw = $raw -replace '(?m)^status:\s*.+$', "status: $Status"
         Set-Content -Path $dest -Value $raw -Encoding UTF8
         Remove-Item $source.FullName -Force
+        Refresh-WorkSnapshot
         Write-Output $dest
         exit 0
     }

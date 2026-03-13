@@ -35,8 +35,6 @@ keep:
 
 move_later:
   - content-work.zip
-  - knowledge/
-  - research/
   - archive/
 
 exclude:

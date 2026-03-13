@@ -1,7 +1,7 @@
 ﻿scope: project
 authority: working
 project: ohmic-audio-labs
-status: inbox
+status: done
 requested: 2026-03-13
 requester: codex-local
 origin: agent
@@ -48,3 +48,4 @@ topic: requested-task
 - `A:\ohmic-audio-labs\knowledge`
 - `A:\ohmic-audio-labs\research`
 - `B:\ohmic\docs\migration`
+

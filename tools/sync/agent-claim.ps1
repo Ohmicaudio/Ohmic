@@ -14,9 +14,16 @@ param(
 $jobsRoot = 'B:\ohmic\agent-system\jobs'
 $activeDir = Join-Path $jobsRoot 'active'
 $completedDir = Join-Path $jobsRoot 'completed'
+$refreshScript = 'B:\ohmic\tools\sync\refresh-agent-work-snapshot.ps1'
 
 New-Item -ItemType Directory -Force $activeDir | Out-Null
 New-Item -ItemType Directory -Force $completedDir | Out-Null
+
+function Refresh-WorkSnapshot {
+    if (Test-Path $refreshScript) {
+        & $refreshScript -Project $Project | Out-Null
+    }
+}
 
 function Normalize-Path {
     param([string]$PathText)
@@ -210,6 +217,7 @@ switch ($Command) {
         )
 
         Set-Content -Path $filePath -Value $lines -Encoding UTF8
+        Refresh-WorkSnapshot
         Write-Output "Created claim $claimId"
         Write-Output $filePath
         exit 0
@@ -232,6 +240,7 @@ switch ($Command) {
         $dest = Join-Path $completedDir ($Id + '.md')
         Set-Content -Path $dest -Value $raw -Encoding UTF8
         Remove-Item $source -Force
+        Refresh-WorkSnapshot
 
         Write-Output "Completed claim $Id"
         Write-Output $dest

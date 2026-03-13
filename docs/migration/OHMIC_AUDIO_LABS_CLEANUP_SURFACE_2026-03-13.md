@@ -129,6 +129,7 @@ Status note:
 - as of 2026-03-13, the in-repo `firmware/` tree has been removed from `ohmic-audio-labs`
 - live firmware implementation is now represented by the dedicated staged repos such as `amplab-firmware` and `cyd-remote`
 - as of 2026-03-13, `captures/` and `labs/` have been harvested out of the main repo
+- as of 2026-03-13, `knowledge/` and `research/` are resolved as non-runtime placeholders and should not regrow in the main repo
 
 ## Exclude from migration / keep local-only
 
