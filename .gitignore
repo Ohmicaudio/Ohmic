@@ -15,6 +15,9 @@
 
 # Local harvest payloads are retained for reference, not committed as source.
 /harvest/
+/ohmic-audio-universe-db-reference/
+/ohmic-audio-universe/
+/tools/semantic-index/__pycache__/
 
 # OS/editor noise
 .DS_Store
