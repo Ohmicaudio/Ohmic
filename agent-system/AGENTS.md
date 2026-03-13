@@ -46,8 +46,8 @@ Situational awareness comes first because bad environment assumptions create noi
 Learning rule:
 
 - the first shell, path, or runtime-context mistake is a miss
-- the second identical mistake means the agent failed to learn from the first one
-- do not repeat the same environment-class error once it has already been observed in the current session or documented in shared rules
+- diagnosis may require a second attempt if the invocation model has actually changed
+- once the correct environment model or working invocation is known, do not repeat the old failing pattern
 
 ## Shared Identity
 
@@ -135,6 +135,7 @@ At session start:
 6. read the most recent handoff if resuming work
 7. check `requests/` if you are looking for queued work rather than continuing an active thread
 8. read `requests/open-questions.md` before picking up fresh queued work
+9. use `requests/resolved-questions.md` only for deep trace or logic reconstruction, not as default live context
 
 ## Situational Awareness Mini-Audit Rule
 

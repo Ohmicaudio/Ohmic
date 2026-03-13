@@ -32,8 +32,8 @@ Treat environment confusion as a real source of bugs, not just an annoyance.
 Learning standard:
 
 - one environment-class mistake is recoverable
-- repeating the same shell/path/runtime mistake after it has already been observed is not acceptable
-- after an environment failure, adjust the invocation model before trying again
+- diagnosis may include a second attempt if the shell, path, or invocation model has actually changed
+- once the correct environment model or working invocation is known, repeating the old failing pattern is not acceptable
 
 ## Act vs Ask
 
@@ -174,6 +174,8 @@ Do not promote:
 - speculative plans
 - one-off command outputs
 - temporary scratch conclusions
+
+Use `requests/resolved-questions.md` for meaningful answered-question traceability when the chain of logic matters, but do not treat it as the primary truth surface.
 
 ## Naming Rules
 

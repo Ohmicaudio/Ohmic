@@ -16,6 +16,18 @@ Flow:
 4. when an agent starts it, the agent creates a claim in `jobs/active/`
 5. when the work is complete, the request can move to `requests/done/`
 
+Shared open questions live in:
+
+- `requests/open-questions.md`
+
+Use that file for unresolved questions that may redirect, unblock, or reprioritize work across agents.
+
+Meaningful answered questions live in:
+
+- `requests/resolved-questions.md`
+
+Use that file as a local deep-trace layer when the chain of logic matters and the answer should stay retrievable later.
+
 ## Folder Roles
 
 - `inbox/`
@@ -26,6 +38,10 @@ Flow:
   - clarified tasks that are ready to be claimed
 - `done/`
   - completed task records kept for traceability
+- `open-questions.md`
+  - active unresolved cross-agent or cross-task questions
+- `resolved-questions.md`
+  - meaningful answered-question trace kept for local logic history
 
 ## Rules
 
@@ -57,8 +73,19 @@ Helpful optional metadata:
 Agents looking for queued work should:
 
 1. scan `ready/` first
-2. scan `inbox/` second if triage work is needed
-3. scan `blocked/` only when trying to unblock dependencies
+2. scan `open-questions.md` second for unresolved blockers or routing questions
+3. scan `inbox/` third if triage work is needed
+4. scan `blocked/` only when trying to unblock dependencies
+
+After any meaningful completed task, agents should re-check:
+
+- `ready/`
+- `open-questions.md`
+
+If a question is answered and the chain of logic matters:
+
+- promote the durable truth into memory, a project overlay, or canonical docs
+- add a short entry to `resolved-questions.md`
 
 ## Tooling
 
@@ -67,6 +94,7 @@ Helpers:
 - `B:\ohmic\tools\sync\agent-request.ps1`
 - `B:\ohmic\tools\sync\agent-claim.ps1`
 - `B:\ohmic\tools\sync\agent-work-poll.ps1`
+- `B:\ohmic\tools\sync\refresh-agent-work-snapshot.ps1`
 - `B:\ohmic\tools\sync\register-idle-agent-poll-task.ps1`
 
 Examples:
@@ -75,9 +103,16 @@ Examples:
 powershell -ExecutionPolicy Bypass -File B:\ohmic\tools\sync\agent-request.ps1 list
 powershell -ExecutionPolicy Bypass -File B:\ohmic\tools\sync\agent-request.ps1 create -Status inbox -Project ohmic-audio-labs -Title "normalize backend request queue docs" -Origin agent -Priority soon
 powershell -ExecutionPolicy Bypass -File B:\ohmic\tools\sync\agent-request.ps1 move -Id 2026-03-13-normalize-backend-request-queue-docs -Status ready
+powershell -ExecutionPolicy Bypass -File B:\ohmic\tools\sync\refresh-agent-work-snapshot.ps1
 powershell -ExecutionPolicy Bypass -File B:\ohmic\tools\sync\agent-work-poll.ps1 once
 powershell -ExecutionPolicy Bypass -File B:\ohmic\tools\sync\register-idle-agent-poll-task.ps1
 ```
+
+## Sync Model
+
+- queue mutations should refresh the idle-work snapshot immediately
+- the scheduled poll keeps the snapshot honest if a write path misses a refresh
+- because of that, the timer interval matters less than clean request states and clean claim scopes
 
 ## Naming
 
