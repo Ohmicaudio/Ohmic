@@ -14,6 +14,12 @@ The coordination model is file-backed:
 - completed or released claims live in `jobs/completed/`
 - claim files are Markdown so they remain readable without tooling
 
+Git policy:
+
+- live claim files are local coordination state
+- completed claim files are local trace, not canonical repo history
+- durable outcomes should be promoted into requests, transactions, memory, or project overlays instead of relying on claim files as the record of truth
+
 ## Rules
 
 Before editing:

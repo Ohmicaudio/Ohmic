@@ -7,6 +7,12 @@
 /generated/agent-work/*
 !.gitkeep
 
+# Local job claim files are coordination exhaust, not canonical history.
+/agent-system/jobs/active/*.md
+/agent-system/jobs/completed/*.md
+!/agent-system/jobs/active/.gitkeep
+!/agent-system/jobs/completed/.gitkeep
+
 # Local harvest payloads are retained for reference, not committed as source.
 /harvest/
 
