@@ -71,6 +71,20 @@ Unless the user gives a different priority, choose the next action in this order
 7. triage `requests/inbox` into `ready` or `blocked`
 8. do documentation, indexing, cleanup, or polish work
 
+## Situational Awareness Pre-Task Audit Rule
+
+Before starting a new meaningful task, perform a mini-audit.
+
+Minimum audit:
+
+1. inspect `requests/ready/`
+2. inspect `requests/blocked/` for nearby dependency state
+3. inspect `requests/open-questions.md`
+4. inspect active claims for overlap
+5. inspect the relevant repo worktree for outstanding issues, half-finished work, or obvious follow-on tasks that belong in the queue
+
+Use the audit to sharpen the next task, not to avoid work.
+
 ## Importance Order
 
 Use this importance order when ranking candidate tasks:
@@ -104,6 +118,7 @@ After any meaningful completed task:
 
 - check `requests/ready/` for newly available work
 - check `requests/open-questions.md` for unresolved questions that could redirect or unblock the next step
+- check whether the completed work surfaced a new request, blocker, or question that should be recorded before moving on
 - prefer answering or routing fresh blocking questions before drifting into unrelated cleanup
 
 Use this rule after stable checkpoints, not after every tiny command.

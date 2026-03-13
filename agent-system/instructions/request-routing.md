@@ -14,13 +14,37 @@ This file defines how requested work should move through the shared queue.
 - `done`
   - completed and kept for traceability
 
+Canonical open-question surface:
+
+- `requests/open-questions.md`
+  - shared list of unresolved cross-task or cross-agent questions
+  - use it for questions that do not yet merit a claim but should be rechecked after meaningful completed work
+
 ## Pickup Order
 
 When an agent is looking for queued work:
 
 1. scan `requests/ready/` for high-priority unblocked tasks
-2. if no ready task fits, scan `requests/inbox/` for triage work
-3. only scan `requests/blocked/` when trying to unblock dependencies
+2. scan `requests/open-questions.md` for unresolved blockers or routing questions
+3. if no ready task fits, scan `requests/inbox/` for triage work
+4. only scan `requests/blocked/` when trying to unblock dependencies
+
+## Situational Awareness Intake Rule
+
+Before starting a new meaningful task, agents should do a quick intake pass:
+
+1. check `ready/`
+2. check `blocked/` for dependency collisions
+3. check `open-questions.md`
+4. check active claims
+5. check the target repo worktree for outstanding issues or follow-on tasks that should become requests instead of being forgotten
+
+If the mini-audit reveals new work:
+
+- add it to `inbox/` if it is still rough
+- move or create it in `blocked/` if a dependency is known
+- move or create it in `ready/` if another agent could begin now
+- append it to `open-questions.md` if it is still an unresolved routing or decision question
 
 Idle agents should prefer the poller:
 
@@ -90,6 +114,13 @@ When an agent starts a ready request:
 3. keep the request file as the task record
 4. move the request to `done/` when the task is finished
 
+After any meaningful completed task, agents should re-check:
+
+- `requests/ready/`
+- `requests/open-questions.md`
+
+This keeps newly surfaced work and unanswered questions from being stranded between turns.
+
 ## Timer / Polling
 
 For idle-agent pickup or periodic queue checks:
@@ -106,6 +137,12 @@ The poller:
 - prefers higher-priority work
 - skips items blocked by unfinished request dependencies
 - skips items whose suggested claim scope overlaps an active claim
+
+Near-sync rule:
+
+- request creation and request-state changes should refresh the snapshot immediately
+- claim creation and claim completion should refresh the snapshot immediately
+- the scheduled timer is a safety net and stale-state repair path, not the primary sync mechanism
 
 Optional Windows scheduled task registration:
 

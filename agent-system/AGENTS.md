@@ -130,6 +130,20 @@ At session start:
 7. check `requests/` if you are looking for queued work rather than continuing an active thread
 8. read `requests/open-questions.md` before picking up fresh queued work
 
+## Situational Awareness Mini-Audit Rule
+
+Before starting any new meaningful task, agents must do a mini-audit.
+
+Minimum mini-audit scope:
+
+1. check `requests/ready/` for outstanding work
+2. check `requests/blocked/` for blockers that may affect the task
+3. check `requests/open-questions.md` for unresolved questions that could redirect or unblock work
+4. check `jobs/active/` for overlapping claims before editing
+5. check the current repo worktree state so new findings can be added to the task list instead of silently piling up
+
+The point is not to stop momentum. The point is to establish situational awareness: notice adjacent breakage, active conflicts, environment boundaries, and follow-on work before starting blind.
+
 ## Compaction Rule
 
 Agents own compaction responsibility.
@@ -169,6 +183,7 @@ During work:
 - keep claims accurate; broaden or narrow them only when the work scope truly changes
 - when closing one step, identify the next step using the shared priority ladder so `continue` stays deterministic
 - after any meaningful completed task, check `requests/ready/` and `requests/open-questions.md` before choosing unrelated follow-on work
+- if the task exposed new issues, blockers, or follow-on work, add them to the appropriate request or question surface before drifting away
 
 Mistake handling:
 
