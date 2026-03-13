@@ -123,6 +123,11 @@ Before removing or archiving `firmware/`, see:
 
 That harvest already preserves the small set of firmware artifacts still worth keeping as reference.
 
+Status note:
+
+- as of 2026-03-13, the in-repo `firmware/` tree has been removed from `ohmic-audio-labs`
+- live firmware implementation is now represented by the dedicated staged repos such as `amplab-firmware` and `cyd-remote`
+
 ## Exclude from migration / keep local-only
 
 These do not belong in the cleaned long-lived repo surface.
