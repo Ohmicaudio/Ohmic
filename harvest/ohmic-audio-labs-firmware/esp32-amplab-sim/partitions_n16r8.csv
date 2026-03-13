@@ -1,0 +1,9 @@
+# Ohmic AmpLab — ESP32-S3 16MB flash partition table (N16R8)
+# App: 6.3MB x2 (OTA), LittleFS: 3.25MB, coredump: 64KB
+# Name,   Type, SubType, Offset,   Size,     Flags
+nvs,      data, nvs,     0x9000,   0x5000,
+otadata,  data, ota,     0xe000,   0x2000,
+app0,     app,  ota_0,   0x10000,  0x650000,
+app1,     app,  ota_1,   0x660000, 0x650000,
+spiffs,   data, spiffs,  0xcb0000, 0x340000,
+coredump, data, coredump,0xff0000, 0x10000,

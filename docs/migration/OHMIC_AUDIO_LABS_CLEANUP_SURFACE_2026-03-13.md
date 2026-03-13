@@ -108,6 +108,12 @@ Reason:
 - static/SEO work should not continue to crowd the app/runtime repo
 - research/archive content is useful, but not as co-equal runtime code
 
+Before removing or archiving `firmware/`, see:
+
+- `/mnt/b/ohmic/docs/migration/OHMIC_AUDIO_LABS_FIRMWARE_HARVEST_2026-03-13.md`
+
+That harvest already preserves the small set of firmware artifacts still worth keeping as reference.
+
 ## Exclude from migration / keep local-only
 
 These do not belong in the cleaned long-lived repo surface.
