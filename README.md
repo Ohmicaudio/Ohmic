@@ -83,6 +83,7 @@ Current reference:
 These are not canonical law yet, but they should be read during related coordination work until they are either adopted into the agent rules or explicitly rejected:
 
 - [`docs/systems/DYNAMIC_MEMORY_AND_COORDINATION_PROPOSAL_2026-03-13.md`](docs/systems/DYNAMIC_MEMORY_AND_COORDINATION_PROPOSAL_2026-03-13.md)
+- [`docs/systems/STARTUP_FUNNEL_AND_REMOTE_SYNC_PROPOSAL_2026-03-13.md`](docs/systems/STARTUP_FUNNEL_AND_REMOTE_SYNC_PROPOSAL_2026-03-13.md)
 
 ## Local Context Tooling
 
