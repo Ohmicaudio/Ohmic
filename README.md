@@ -7,6 +7,7 @@ It exists to hold:
 
 - architecture and migration docs
 - contract indexes
+- shared cross-project agent context and memory
 - repo and surface manifests
 - generated context indexes
 - local mirror/clone landing zones
@@ -15,6 +16,7 @@ It exists to hold:
 
 ```text
 ohmic/
+  agent-system/
   docs/
     architecture/
     contracts/
@@ -39,7 +41,8 @@ ohmic/
 2. Product code lives in separate private repos.
 3. `repos/` is the local mirror/work area and is ignored by the umbrella repo.
 4. Contracts, architecture notes, and repo ownership maps belong here.
-5. Generated context can live here, but generated files are not source of truth.
+5. Shared agent context can live here, but source Markdown remains the authority.
+6. Generated context can live here, but generated files are not source of truth.
 
 ## Target GitHub Shape
 
@@ -63,6 +66,7 @@ Later only if needed:
 - [`docs/systems/OHMIC_SYSTEM_FIRMWARE_ROAD_FORWARD_2026-03-12.md`](docs/systems/OHMIC_SYSTEM_FIRMWARE_ROAD_FORWARD_2026-03-12.md)
 - [`docs/systems/OHMIC_WEB_ANDROID_AND_FIRMWARE_CONSOLIDATION_2026-03-12.md`](docs/systems/OHMIC_WEB_ANDROID_AND_FIRMWARE_CONSOLIDATION_2026-03-12.md)
 - [`docs/systems/DOCKER_SEMANTIC_INDEX_AND_CONTEXT_GUIDE_2026-03-12.md`](docs/systems/DOCKER_SEMANTIC_INDEX_AND_CONTEXT_GUIDE_2026-03-12.md)
+- [`docs/systems/DYNAMIC_MEMORY_AND_COORDINATION_PROPOSAL_2026-03-13.md`](docs/systems/DYNAMIC_MEMORY_AND_COORDINATION_PROPOSAL_2026-03-13.md)
 
 ## Local Context Tooling
 
