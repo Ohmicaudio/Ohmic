@@ -11,6 +11,24 @@ Use this order when deciding what to trust:
 5. recent session handoffs
 6. chat memory
 
+## Environment Awareness Rule
+
+Before executing commands, verify:
+
+- which shell or runtime is active
+- which path model the target tool expects
+- whether the tool is Windows-native, WSL-native, or language-runtime specific
+
+Prefer commands that are native to the current environment.
+
+If you must cross boundaries:
+
+- state the boundary clearly
+- use the correct path form for that tool
+- avoid stacking shell wrappers unless necessary
+
+Treat environment confusion as a real source of bugs, not just an annoyance.
+
 ## Act vs Ask
 
 Default to action when:
@@ -39,6 +57,64 @@ Check request state before planning queued work:
 - use `ready` for work another agent can begin now
 - use `blocked` for dependency-gated work
 - use `inbox` for rough work that still needs shaping
+
+## Default Next-Step Priority Ladder
+
+Unless the user gives a different priority, choose the next action in this order:
+
+1. fix any breakage or blocker introduced by the current work
+2. finish the current claimed task to a stable verified checkpoint
+3. do work that directly unblocks the current task or current work cycle
+4. pick `requests/ready` items with `blocking: yes`
+5. pick `requests/ready` items in the same project as the current task
+6. pick other `requests/ready` items by priority and age
+7. triage `requests/inbox` into `ready` or `blocked`
+8. do documentation, indexing, cleanup, or polish work
+
+## Importance Order
+
+Use this importance order when ranking candidate tasks:
+
+1. `blocking: yes` beats `blocking: no`
+2. `priority: now` beats `priority: soon`, which beats `priority: later`
+3. current project beats unrelated project
+4. runtime or canonical truth beats archive or polish
+5. narrower, safer scope beats broad speculative scope
+6. older request beats newer request when all else is equal
+
+## Continue Rule
+
+When the user says `continue` with no new direction:
+
+- do not ask an open-ended question
+- pick the highest-ranked safe task from the ladder above
+- state the chosen next step briefly
+- proceed
+
+Only break this rule if:
+
+- another active claim conflicts with the work
+- the next step would be destructive
+- the next step has hidden architectural consequences
+- the queue or docs are too ambiguous to identify a safe next action
+
+## Compaction Rule
+
+Treat compaction as agent responsibility, not default user work.
+
+Preferred behavior:
+
+- compact when context is bloated enough to threaten continuity or quality
+- compact at stable boundaries instead of in the middle of an active step
+- preserve the active thread through handoff and memory promotion
+- avoid asking the user to compact unless the agent cannot safely carry the thread forward
+
+When deciding whether to compact, prefer:
+
+1. finish the current small unit of work first
+2. record what is now true
+3. record the immediate next step
+4. then compact if needed
 
 ## Memory Promotion Rules
 

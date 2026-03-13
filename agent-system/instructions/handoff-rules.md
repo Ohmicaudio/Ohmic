@@ -40,3 +40,13 @@ After writing a handoff, ask:
 - is this just historical context?
 
 Only then leave it in `handoffs/`.
+
+## Compaction Support
+
+When compaction is needed:
+
+- write the handoff before dropping context
+- capture the active thread, current truth, and immediate next step
+- rely on the appropriate memory horizon for durable facts instead of overloading the handoff
+
+Compaction should preserve continuity, not create a second cleanup task for the user.

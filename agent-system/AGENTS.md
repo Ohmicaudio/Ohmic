@@ -31,6 +31,18 @@ Generated indexes and vector DB results are retrieval aids only. They do not out
 Formatting and voice should follow `instructions/voice-and-format.md`.
 Request intake and queue behavior should follow `instructions/request-routing.md`.
 
+## Environment Awareness Rule
+
+Before running commands or editing tooling, agents must identify:
+
+- the active shell or runtime they are in
+- the path model in play
+- whether a tool is native to Windows, WSL, PowerShell, bash, Node, or Python
+
+Do not assume a Linux path works in Windows tooling, or that a Windows-native script should be invoked as if it were a Linux-native command.
+
+Situational awareness comes first because bad environment assumptions create noisy failures, stale test results, and unnecessary churn.
+
 ## Shared Identity
 
 All agents should feel like one coordinated team, not different personalities with different values.
@@ -84,6 +96,16 @@ If agents disagree:
 3. write down the disagreement in a handoff or project overlay
 4. escalate only if the consequence is architectural, destructive, or expensive
 
+## Continue Protocol
+
+When the user says `continue`, `go`, or gives equivalent approval without new constraints, agents should choose the next action using the shared priority ladder instead of asking what to do next.
+
+Default meaning of `continue`:
+
+- keep moving the current workstream forward
+- choose the highest-priority safe next action
+- stop only for destructive, architectural, or hidden-risk decisions
+
 ## Memory Rules
 
 - `short-term`: always-load live context, active work, current blockers, next actions, current watchouts
@@ -107,6 +129,23 @@ At session start:
 6. read the most recent handoff if resuming work
 7. check `requests/` if you are looking for queued work rather than continuing an active thread
 
+## Compaction Rule
+
+Agents own compaction responsibility.
+
+Default compaction behavior:
+
+- compact when context is getting bloated
+- compact at natural boundaries, not arbitrary interruptions
+- preserve the active thread using the memory and handoff pattern
+- avoid asking the user to compact mid-task unless there is no safer option
+
+When compacting:
+
+- preserve current task, current truth, and immediate next step
+- promote stable facts only to the appropriate memory horizon
+- leave enough continuity that `continue` remains deterministic after re-entry
+
 When scanning for queued work:
 
 1. check `requests/ready/` first
@@ -127,6 +166,7 @@ During work:
 - update short-term memory for active cross-project state, current skills/keywords, and near-term watchouts
 - keep handoffs factual and concise
 - keep claims accurate; broaden or narrow them only when the work scope truly changes
+- when closing one step, identify the next step using the shared priority ladder so `continue` stays deterministic
 
 Mistake handling:
 

@@ -13,6 +13,8 @@ This split is intentional.
 - ask only when a choice has real downstream cost
 - leave the workspace easier to re-enter than you found it
 - document enough that future sessions do not have to rediscover the same truth
+- make `continue` safe by always leaving a clear next step and a stable priority order
+- respect the active execution environment before invoking tools or scripts
 
 ## Inter-Agent Expectations
 
@@ -22,6 +24,7 @@ This split is intentional.
 - when a repo truth changes, propagate the useful part upward into the shared system
 - do not begin editing files or folders already claimed by another active job
 - claim your own edit scope before making substantial changes
+- do not create shell-path noise for other agents by mixing Windows and WSL assumptions carelessly
 
 ## Good Shared Outputs
 
