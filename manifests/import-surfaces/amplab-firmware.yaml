@@ -1,0 +1,41 @@
+version: 1
+repo: amplab-firmware
+source_repo_path: /mnt/a/masterfirmware
+
+include:
+  top_level:
+    - README.md
+    - platformio.ini
+    - partitions.csv
+    - partitions_16mb.csv
+    - partitions_4mb.csv
+  include:
+    - include/lv_conf.h
+    - include/ohmic_logo.h
+  dirs:
+    - docs/ohmic-firmware-handoff
+    - schemas
+    - sigmastudio
+    - src
+    - tools
+  files:
+    - docs/PINOUT_CANONICAL_V1.md
+
+exclude:
+  dirs:
+    - .pio
+    - .claude
+  files:
+    - serial_log.txt
+    - include/lgfx_display.hpp
+    - include/generated_display_doc.h
+    - include/ohmiclogov12.h
+    - include/ohmictest.c
+
+archive_or_reference:
+  dirs:
+    - docs/archive
+    - docs/adi docs
+    - lib/esp32round
+  files:
+    - docs/DSP_AGENT2_RESEARCH_ANSWERS.md

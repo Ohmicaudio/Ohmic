@@ -36,6 +36,7 @@ repos:
     preserve_history: false
     source_local_path: /mnt/a/masterfirmware
     mirror_local_path: /mnt/b/ohmic/repos/amplab-firmware
+    import_surface_manifest: /mnt/b/ohmic/manifests/import-surfaces/amplab-firmware.yaml
     purpose:
       - amplab-device-firmware
       - dsp-transport
