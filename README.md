@@ -67,6 +67,16 @@ Later only if needed:
 - [`docs/systems/OHMIC_WEB_ANDROID_AND_FIRMWARE_CONSOLIDATION_2026-03-12.md`](docs/systems/OHMIC_WEB_ANDROID_AND_FIRMWARE_CONSOLIDATION_2026-03-12.md)
 - [`docs/systems/DOCKER_SEMANTIC_INDEX_AND_CONTEXT_GUIDE_2026-03-12.md`](docs/systems/DOCKER_SEMANTIC_INDEX_AND_CONTEXT_GUIDE_2026-03-12.md)
 - [`docs/systems/DYNAMIC_MEMORY_AND_COORDINATION_PROPOSAL_2026-03-13.md`](docs/systems/DYNAMIC_MEMORY_AND_COORDINATION_PROPOSAL_2026-03-13.md)
+- [`docs/systems/STARTUP_FUNNEL_AND_REMOTE_SYNC_PROPOSAL_2026-03-13.md`](docs/systems/STARTUP_FUNNEL_AND_REMOTE_SYNC_PROPOSAL_2026-03-13.md)
+
+## Local Sandbox Boundary
+
+Ignored nested repos under `B:/ohmic` are local-only sandboxes unless they are
+explicitly harvested into tracked docs, manifests, or target repos.
+
+Current reference:
+
+- [`docs/systems/IGNORED_NESTED_REPOS_AND_LOCAL_SANDBOXES_2026-03-13.md`](docs/systems/IGNORED_NESTED_REPOS_AND_LOCAL_SANDBOXES_2026-03-13.md)
 
 ## Active Shared Proposals
 

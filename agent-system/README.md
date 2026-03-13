@@ -20,8 +20,15 @@ When starting cold, read in this order:
 3. `memory/short-term.md`
 4. `memory/long-term.md`
 5. `memory/mid-term.md`
-6. latest relevant file in `handoffs/`
-7. repo-local `AGENTS.md` if the target repo has one
+6. `requests/open-questions.md`
+7. latest relevant file in `handoffs/`
+8. repo-local `AGENTS.md` if the target repo has one
+
+When available, also read:
+
+- `B:\ohmic\generated\agent-work\recent-changes.md`
+- the relevant per-project `session-brief.md` under `B:\ohmic\generated\agent-work\projects\`
+- any shared operational proposal explicitly surfaced from `B:\ohmic\README.md`
 
 ## Folder Map
 
@@ -78,3 +85,13 @@ Derived re-entry surfaces are written under:
 
 These are not truth surfaces. They are generated summaries for faster session
 bootstrap and queue inspection.
+
+## Sandbox Boundary
+
+Ignored nested repos or sandboxes living under `B:/ohmic` are not part of the
+shared startup path unless they are explicitly harvested into tracked docs or
+target repos.
+
+Reference:
+
+- `B:\ohmic\docs\systems\IGNORED_NESTED_REPOS_AND_LOCAL_SANDBOXES_2026-03-13.md`
