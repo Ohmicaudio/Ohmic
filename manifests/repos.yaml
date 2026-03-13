@@ -22,6 +22,7 @@ repos:
     preserve_history: true
     source_local_path: /mnt/a/ohmic-audio-labs
     mirror_local_path: /mnt/b/ohmic/repos/ohmic-audio-labs
+    import_surface_manifest: /mnt/b/ohmic/manifests/import-surfaces/ohmic-audio-labs.yaml
     purpose:
       - web
       - android-shell

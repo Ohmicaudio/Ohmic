@@ -1,0 +1,64 @@
+name: ohmic-audio-labs
+source_repo: /mnt/a/ohmic-audio-labs
+target_repo: Ohmicaudio/ohmic-audio-labs
+mode: preserve-history-cleanup
+
+keep:
+  - App.tsx
+  - index.tsx
+  - index.html
+  - index.css
+  - constants.ts
+  - types.ts
+  - vite.config.ts
+  - vitest.config.ts
+  - tsconfig.json
+  - capacitor.config.ts
+  - package.json
+  - package-lock.json
+  - src/
+  - components/
+  - hooks/
+  - store/
+  - utils/
+  - lib/
+  - platform/
+  - services/
+  - android/
+  - schemas/
+  - scripts/
+  - test/
+  - e2e/
+  - products/ohmic-osm/
+  - public/
+  - docs/
+
+move_later:
+  - content-work/
+  - content-work.zip
+  - site/
+  - knowledge/
+  - research/
+  - archive/
+  - firmware/
+
+exclude:
+  - .pio/
+  - .claude/
+  - .vscode/
+  - node_modules/
+  - dist/
+  - playwright-report/
+  - test-results/
+  - output/
+  - .env
+  - .env.local
+  - backend_err.txt
+  - backend_final_log.txt
+  - backend_log.txt
+  - backend_new_log.txt
+  - dev-mobile.log
+  - dev.log
+  - .stash-backup/
+  - AGENT_MEMORY/
+  - memory/
