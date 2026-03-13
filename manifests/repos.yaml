@@ -23,6 +23,7 @@ repos:
     source_local_path: /mnt/a/ohmic-audio-labs
     mirror_local_path: /mnt/b/ohmic/repos/ohmic-audio-labs
     import_surface_manifest: /mnt/b/ohmic/manifests/import-surfaces/ohmic-audio-labs.yaml
+    readme_template: /mnt/b/ohmic/templates/repo-bootstrap/README.ohmic-audio-labs.md
     purpose:
       - web
       - android-shell
