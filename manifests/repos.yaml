@@ -37,6 +37,7 @@ repos:
     source_local_path: /mnt/a/masterfirmware
     mirror_local_path: /mnt/b/ohmic/repos/amplab-firmware
     import_surface_manifest: /mnt/b/ohmic/manifests/import-surfaces/amplab-firmware.yaml
+    readme_template: /mnt/b/ohmic/templates/repo-bootstrap/README.ohmic-amplab-firmware.md
     purpose:
       - amplab-device-firmware
       - dsp-transport
@@ -50,6 +51,7 @@ repos:
     source_local_path: /mnt/a/cyd_remote
     mirror_local_path: /mnt/b/ohmic/repos/cyd-remote
     import_surface_manifest: /mnt/b/ohmic/manifests/import-surfaces/cyd-remote.yaml
+    readme_template: /mnt/b/ohmic/templates/repo-bootstrap/README.ohmic-cyd-remote.md
     purpose:
       - handheld-firmware
       - display-stack

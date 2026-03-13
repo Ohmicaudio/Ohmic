@@ -12,7 +12,6 @@ Define the clean import surface for `cyd-remote` before any GitHub migration.
 This repo is cleaner than `masterfirmware`, but it still contains:
 
 - local build state
-- a stale root README
 - vendor reference bundles
 - local skills/notes
 - saved flash snapshots
@@ -93,11 +92,23 @@ These are useful reference material but do not need to live in the main handheld
 
 ## Required cleanup before migration
 
-### Replace the stale root README
+### Keep the new handheld README
 
-Current root README is still the old AmpLab simulator text and should not be migrated as the handheld repo README.
+The root README should stay aligned with the actual handheld product/runtime role.
 
-That should be replaced with a real handheld README before or during import.
+Do not let old AmpLab simulator framing back into this repo during migration.
+
+### Keep the runtime stack honest
+
+The working handheld stack is now:
+
+- Arduino
+- LVGL v9
+- `TFT_eSPI`
+- ArduinoJson
+- WebSockets
+
+`LovyanGFX` is no longer part of the live handheld runtime surface and should not be reintroduced into the clean repo unless the display stack changes again on purpose.
 
 ### Keep the source tree as the source of truth
 
@@ -150,5 +161,5 @@ Instead:
 
 1. create `Ohmicaudio/cyd-remote`
 2. import only the clean handheld firmware surface defined here
-3. rewrite the root README so it matches the handheld product
+3. start from the clean handheld README/bootstrap content, not stale simulator text
 4. keep vendor reference bundles and local skills outside the clean repo unless later needed
