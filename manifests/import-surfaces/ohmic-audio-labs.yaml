@@ -51,6 +51,7 @@ exclude:
   - playwright-report/
   - test-results/
   - output/
+  - .playwright-cli/
   - .env
   - .env.local
   - backend_err.txt
@@ -59,6 +60,8 @@ exclude:
   - backend_new_log.txt
   - dev-mobile.log
   - dev.log
+  - content-work.zip
+  - sigma-flow-xml-skill-v3.zip
   - .stash-backup/
   - AGENT_MEMORY/
   - memory/

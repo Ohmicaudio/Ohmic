@@ -5,6 +5,10 @@ Source repo: `/mnt/a/ohmic-audio-labs`
 Target repo: `Ohmicaudio/ohmic-audio-labs`
 Status: preserve-history cleanup definition
 
+Companion note:
+
+- `/mnt/b/ohmic/docs/migration/OHMIC_AUDIO_LABS_MOVE_READINESS_CHECKLIST_2026-03-13.md`
+
 ## Purpose
 
 Define what belongs in the main `ohmic-audio-labs` repo as the long-lived app/runtime source of truth, and what should be moved out later instead of continuing to accumulate in the same tree.
@@ -128,6 +132,7 @@ These do not belong in the cleaned long-lived repo surface.
 - `playwright-report/`
 - `test-results/`
 - `output/`
+- `.playwright-cli/`
 
 ### Secrets and machine-local config
 
@@ -142,6 +147,8 @@ These do not belong in the cleaned long-lived repo surface.
 - `backend_new_log.txt`
 - `dev-mobile.log`
 - `dev.log`
+- `content-work.zip`
+- `sigma-flow-xml-skill-v3.zip`
 - `.stash-backup/`
 
 ### Local memory/process artifacts
