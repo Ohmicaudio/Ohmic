@@ -29,6 +29,7 @@ When available, also read:
 - `B:\ohmic\generated\agent-work\recent-changes.md`
 - the relevant per-project `session-brief.md` under `B:\ohmic\generated\agent-work\projects\`
 - any shared operational proposal explicitly surfaced from `B:\ohmic\README.md`
+- `B:\ohmic\docs\systems\GIT_AND_GITHUB_BOOTSTRAP_IN_MIXED_ENV_2026-03-13.md` when the task touches Git, GitHub, or mixed Windows/WSL tooling
 
 ## Folder Map
 
