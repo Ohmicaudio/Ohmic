@@ -6,6 +6,7 @@ repos:
     root: /mnt/b/ohmic
     include:
       - README.md
+      - agent-system/**/*.md
       - docs/**/*.md
       - manifests/**/*.yaml
       - templates/**/*.md
@@ -16,6 +17,7 @@ repos:
     kind: app-runtime
     root: /mnt/a/ohmic-audio-labs
     include:
+      - AGENTS.md
       - README.md
       - docs/**/*.md
       - schemas/**/*.json
@@ -25,11 +27,17 @@ repos:
       - index/**/*.json
     exclude:
       - archive/**
+      - "**/archive/**"
       - dist/**
+      - "**/dist/**"
       - node_modules/**
+      - "**/node_modules/**"
       - .pio/**
+      - "**/.pio/**"
       - playwright-report/**
+      - "**/playwright-report/**"
       - test-results/**
+      - "**/test-results/**"
 
   - name: amplab-firmware
     kind: firmware
@@ -45,13 +53,21 @@ repos:
       - include/**/*.hpp
     exclude:
       - .pio/**
+      - "**/.pio/**"
 
   - name: cyd-remote
     kind: handheld
-    root: /mnt/b/ohmic/repos/cyd-remote
+    root: /mnt/a/cyd_remote
     include:
+      - AGENTS.md
       - README.md
-      - docs/**/*.md
+      - docs/CYD24R_BRINGUP_AND_WORKING_GUIDE_2026-03-12.md
+      - docs/CYD_HANDHELD_PRODUCT_BRIEF.md
+      - docs/PINOUT_CANONICAL_V1.md
+      - docs/OHMIC_CANONICAL_DEVICE_CONTRACT_DRAFT_2026-03-12.md
+      - docs/OHMIC_SYSTEM_FIRMWARE_ROAD_FORWARD_2026-03-12.md
+      - docs/OHMIC_WEB_ANDROID_AND_FIRMWARE_CONSOLIDATION_2026-03-12.md
+      - docs/ohmic-firmware-handoff/**/*.md
       - schemas/**/*.json
       - src/**/*.hpp
       - src/**/*.cpp
@@ -59,6 +75,17 @@ repos:
       - include/**/*.hpp
     exclude:
       - .pio/**
+      - "**/.pio/**"
+      - docs/archive/**
+      - "**/docs/archive/**"
+      - docs/2.4inch_ESP32-2432S024/**
+      - "**/docs/2.4inch_ESP32-2432S024/**"
+      - docs/adi docs/**
+      - "**/docs/adi docs/**"
+      - snapshots/**
+      - "**/snapshots/**"
+      - skills/**
+      - "**/skills/**"
 
   - name: ohmic-static-content
     kind: static-content
