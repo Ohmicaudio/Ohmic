@@ -32,6 +32,20 @@ repos:
       - measurement-pipeline
       - shared-app-core
 
+  - name: ohmic-static-content
+    kind: static-content
+    visibility: private
+    preserve_history: false
+    source_local_path: /mnt/a/ohmic-audio-labs
+    mirror_local_path: /mnt/b/ohmic/repos/ohmic-static-content
+    import_surface_manifest: /mnt/b/ohmic/manifests/import-surfaces/ohmic-static-content.yaml
+    readme_template: /mnt/b/ohmic/templates/repo-bootstrap/README.ohmic-static-content.md
+    purpose:
+      - static-site-content
+      - generated-public-pages
+      - seo-landing-content
+      - content-operations
+
   - name: amplab-firmware
     kind: firmware
     visibility: private

@@ -34,9 +34,7 @@ keep:
   - docs/
 
 move_later:
-  - content-work/
   - content-work.zip
-  - site/
   - knowledge/
   - research/
   - archive/

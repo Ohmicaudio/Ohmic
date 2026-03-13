@@ -8,6 +8,7 @@ Status: preserve-history cleanup definition
 Companion note:
 
 - `/mnt/b/ohmic/docs/migration/OHMIC_AUDIO_LABS_MOVE_READINESS_CHECKLIST_2026-03-13.md`
+- `/mnt/b/ohmic/docs/migration/OHMIC_STATIC_CONTENT_IMPORT_SURFACE_2026-03-13.md`
 
 ## Purpose
 
@@ -69,6 +70,11 @@ These are the core product/runtime surfaces and should remain in `ohmic-audio-la
 
 - `public/`
 
+Transitional note:
+
+- as of 2026-03-13, `site/` and `content-work/` have been split toward `ohmic-static-content`
+- `public/` remains temporarily in `ohmic-audio-labs` to avoid breaking runtime/deployment assumptions before static-host cutover
+
 ### Current architectural/product docs
 
 - `docs/`
@@ -89,9 +95,8 @@ They are better candidates for a later docs/site/context/content repo split.
 
 ### Static content operations and SEO work
 
-- `content-work/`
 - `content-work.zip`
-- `site/`
+- remaining static `public/` payload once static-host cutover is complete
 
 ### Long-lived research/reference pools
 
