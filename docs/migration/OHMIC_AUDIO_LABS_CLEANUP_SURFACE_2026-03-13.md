@@ -9,6 +9,7 @@ Companion note:
 
 - `/mnt/b/ohmic/docs/migration/OHMIC_AUDIO_LABS_MOVE_READINESS_CHECKLIST_2026-03-13.md`
 - `/mnt/b/ohmic/docs/migration/OHMIC_STATIC_CONTENT_IMPORT_SURFACE_2026-03-13.md`
+- `/mnt/b/ohmic/docs/migration/OHMIC_AUDIO_LABS_CAPTURE_AND_LAB_HARVEST_2026-03-13.md`
 
 ## Purpose
 
@@ -127,6 +128,7 @@ Status note:
 
 - as of 2026-03-13, the in-repo `firmware/` tree has been removed from `ohmic-audio-labs`
 - live firmware implementation is now represented by the dedicated staged repos such as `amplab-firmware` and `cyd-remote`
+- as of 2026-03-13, `captures/` and `labs/` have been harvested out of the main repo
 
 ## Exclude from migration / keep local-only
 
@@ -160,6 +162,8 @@ These do not belong in the cleaned long-lived repo surface.
 - `content-work.zip`
 - `sigma-flow-xml-skill-v3.zip`
 - `.stash-backup/`
+- `captures/`
+- `labs/`
 
 ### Local memory/process artifacts
 

@@ -6,6 +6,9 @@
 /generated/context-index/*
 !.gitkeep
 
+# Local harvest payloads are retained for reference, not committed as source.
+/harvest/
+
 # OS/editor noise
 .DS_Store
 Thumbs.db

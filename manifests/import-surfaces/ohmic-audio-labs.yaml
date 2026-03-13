@@ -60,5 +60,7 @@ exclude:
   - content-work.zip
   - sigma-flow-xml-skill-v3.zip
   - .stash-backup/
+  - captures/
+  - labs/
   - AGENT_MEMORY/
   - memory/
