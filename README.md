@@ -56,9 +56,19 @@ Later only if needed:
 ## Current Seed Docs
 
 - [`docs/migration/OHMIC_GITHUB_MIGRATION_PLAN_2026-03-12.md`](docs/migration/OHMIC_GITHUB_MIGRATION_PLAN_2026-03-12.md)
+- [`docs/migration/LOCAL_HARVEST_AND_ARCHIVE_PLAN_2026-03-12.md`](docs/migration/LOCAL_HARVEST_AND_ARCHIVE_PLAN_2026-03-12.md)
 - [`docs/contracts/OHMIC_CANONICAL_DEVICE_CONTRACT_DRAFT_2026-03-12.md`](docs/contracts/OHMIC_CANONICAL_DEVICE_CONTRACT_DRAFT_2026-03-12.md)
 - [`docs/systems/OHMIC_SYSTEM_FIRMWARE_ROAD_FORWARD_2026-03-12.md`](docs/systems/OHMIC_SYSTEM_FIRMWARE_ROAD_FORWARD_2026-03-12.md)
 - [`docs/systems/OHMIC_WEB_ANDROID_AND_FIRMWARE_CONSOLIDATION_2026-03-12.md`](docs/systems/OHMIC_WEB_ANDROID_AND_FIRMWARE_CONSOLIDATION_2026-03-12.md)
+- [`docs/systems/DOCKER_SEMANTIC_INDEX_AND_CONTEXT_GUIDE_2026-03-12.md`](docs/systems/DOCKER_SEMANTIC_INDEX_AND_CONTEXT_GUIDE_2026-03-12.md)
+
+## Local Context Tooling
+
+The umbrella repo now carries the current Chroma/docker semantic-index setup under:
+
+- [`tools/semantic-index`](tools/semantic-index)
+
+This is for retrieval and cross-project awareness only. It is not source of truth.
 
 ## Next Migration Steps
 

@@ -13,6 +13,7 @@ repos:
       - migration
       - repo-registry
       - generated-context
+      - docker-context-tooling
     local_path: /mnt/b/ohmic
 
   - name: ohmic-audio-labs
