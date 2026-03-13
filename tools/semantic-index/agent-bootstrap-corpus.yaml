@@ -1,0 +1,31 @@
+collection: ohmic_context
+
+repos:
+  - name: Ohmic-agent-system
+    kind: umbrella-agent-system
+    root: /mnt/b/ohmic
+    include:
+      - README.md
+      - agent-system/**/*.md
+      - docs/systems/DOCKER_SEMANTIC_INDEX_AND_CONTEXT_GUIDE_2026-03-12.md
+    exclude: []
+
+  - name: ohmic-audio-labs-agent-bridge
+    kind: app-runtime-agent-bridge
+    root: /mnt/a/ohmic-audio-labs
+    include:
+      - AGENTS.md
+      - README.md
+      - docs/AGENT_CONTEXT.md
+      - services/backend/README.md
+    exclude: []
+
+  - name: cyd-remote-agent-bridge
+    kind: handheld-agent-bridge
+    root: /mnt/a/cyd_remote
+    include:
+      - AGENTS.md
+      - README.md
+      - docs/CYD24R_BRINGUP_AND_WORKING_GUIDE_2026-03-12.md
+      - docs/ohmic-firmware-handoff/README.md
+    exclude: []
