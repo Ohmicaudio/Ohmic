@@ -136,6 +136,9 @@ At session start:
 7. check `requests/` if you are looking for queued work rather than continuing an active thread
 8. read `requests/open-questions.md` before picking up fresh queued work
 9. use `requests/resolved-questions.md` only for deep trace or logic reconstruction, not as default live context
+10. if the current project or work cycle depends on a shared operational proposal, read the linked proposal before changing coordination behavior
+
+Shared operational proposals should be surfaced from normal session-entry paths until adopted, rejected, or promoted into canonical rules.
 
 ## Situational Awareness Mini-Audit Rule
 

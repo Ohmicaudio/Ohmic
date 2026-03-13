@@ -68,6 +68,12 @@ Later only if needed:
 - [`docs/systems/DOCKER_SEMANTIC_INDEX_AND_CONTEXT_GUIDE_2026-03-12.md`](docs/systems/DOCKER_SEMANTIC_INDEX_AND_CONTEXT_GUIDE_2026-03-12.md)
 - [`docs/systems/DYNAMIC_MEMORY_AND_COORDINATION_PROPOSAL_2026-03-13.md`](docs/systems/DYNAMIC_MEMORY_AND_COORDINATION_PROPOSAL_2026-03-13.md)
 
+## Active Shared Proposals
+
+These are not canonical law yet, but they should be read during related coordination work until they are either adopted into the agent rules or explicitly rejected:
+
+- [`docs/systems/DYNAMIC_MEMORY_AND_COORDINATION_PROPOSAL_2026-03-13.md`](docs/systems/DYNAMIC_MEMORY_AND_COORDINATION_PROPOSAL_2026-03-13.md)
+
 ## Local Context Tooling
 
 The umbrella repo now carries the current Chroma/docker semantic-index setup under:

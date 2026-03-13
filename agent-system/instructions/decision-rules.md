@@ -11,6 +11,14 @@ Use this order when deciding what to trust:
 5. recent session handoffs
 6. chat memory
 
+Shared operational proposals are design inputs, not law, until they are either:
+
+- promoted into canonical rules
+- recorded as the active working approach in a project overlay
+- or explicitly rejected
+
+If a proposal materially affects the current work cycle, surface it from the normal session loop instead of assuming agents will discover it by browsing docs.
+
 ## Environment Awareness Rule
 
 Before executing commands, verify:
