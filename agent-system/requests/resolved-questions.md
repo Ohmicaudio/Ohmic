@@ -56,3 +56,9 @@ Use this file as a local trace layer for important answered questions.
   question: What should “situational awareness” mean operationally?
   answer: It includes both task awareness and environment awareness: queue state, claims, open questions, worktree condition, shell/runtime, path model, and correct tool invocation.
   promoted_to: `agent-system/AGENTS.md`, `agent-system/instructions/decision-rules.md`, `agent-system/instructions/request-routing.md`
+
+- asked: 2026-03-13
+  resolved: 2026-03-13
+  question: Should anything in the shared umbrella system point to `ohmic-audio-universe`?
+  answer: No. `ohmic-audio-universe` is an ignored nested local repo/sandbox under `B:/ohmic`, not a shared dependency or source of truth. Its uncommitted state is local to that nested repo and does not imply damage to the tracked umbrella repo.
+  promoted_to: `docs/systems/IGNORED_NESTED_REPOS_AND_LOCAL_SANDBOXES_2026-03-13.md`
