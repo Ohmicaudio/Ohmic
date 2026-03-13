@@ -37,16 +37,26 @@ topic: requested-task
 ## Notes
 
 - `site/` and `content-work/` are already split to `ohmic-static-content`
+- `ohmic-static-content` now has its own README and owns the content-maintenance scripts under `scripts/`
 - `public/` was intentionally left in `ohmic-audio-labs` as the last transitional static payload
 - `VITE_STATIC_CONTENT_BASE_URL` already exists in the app and is used by the landing dashboard gateway links
-- current app code still directly references `/favicon.svg` and `/ohmic-logo.svg`
-- current e2e static tests still assume static pages resolve from the app origin
+- app/runtime asset references now support external-host fallback through `utils/staticContent.ts` and an external-aware favicon path in `index.html`
+- `e2e/static-tier.spec.ts` now supports `PLAYWRIGHT_STATIC_CONTENT_BASE_URL` so the same spec can verify either app-origin or external static-host routing
+- `.github/workflows/ci-quality-gates.yml` now makes the `web-e2e` job the explicit CI injection point for external-host verification by reading the optional GitHub Actions variable `PLAYWRIGHT_STATIC_CONTENT_BASE_URL` and mirroring it into `VITE_STATIC_CONTENT_BASE_URL`
+- user confirmed the canonical public domains should be `https://ohmicaudio.com` and `https://ohmicaudiolabs.com`
+- working implementation assumption: use `https://ohmicaudiolabs.com` as the primary static-content base URL and treat `https://ohmicaudio.com` as an alias or redirect unless deployment says otherwise
+- `B:\ohmic\repos\ohmic-static-content\public` already contains `favicon.svg`, `ohmic-logo.svg`, `robots.txt`, `sitemap.xml`, `ai-index.json`, and `suite-index.json`
+- `B:\ohmic\repos\ohmic-static-content` currently has no configured Git remote, so deployment ownership cannot be inferred from repo metadata alone
+- legacy `https://ohmicaudio.netlify.app` host references were normalized on 2026-03-13 across `ohmic-static-content/public` and `content-work/reference-style`
+- the static payload now points at `https://ohmicaudiolabs.com` as the working primary canonical host, while `https://ohmicaudio.com` still needs explicit alias or redirect handling in deployment
+- on 2026-03-13 from this workstation, `nslookup -type=A` and `nslookup -type=AAAA` returned no public address records for either `ohmicaudiolabs.com` or `ohmicaudio.com`, so live external-host verification is not available yet from this environment
 
 ## Ready When
 
-- the static host/base URL is decided
 - the deployment owner for `ohmic-static-content` is known
+- `ohmicaudiolabs.com` and `ohmicaudio.com` resolve to a reachable external host, or another reachable static endpoint is explicitly chosen for cutover verification
 - the favicon/logo serving plan is explicit
+- the primary-vs-alias behavior between `ohmicaudiolabs.com` and `ohmicaudio.com` is explicit in deployment/config
 
 ## Suggested Claim Scope
 

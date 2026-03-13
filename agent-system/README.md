@@ -55,6 +55,8 @@ agent-system/
     README.md
   requests/
     README.md
+  transactions/
+    README.md
   templates/
     README.md
 ```
@@ -65,4 +67,14 @@ agent-system/
 - Repo-specific truth belongs in `projects/` or the repo itself.
 - Only stable facts should live in long-term memory.
 - Session notes are not canonical until promoted.
+- Transactions hold the deeper reasoning/event layer beneath requests and memory.
 - The system should stay readable by humans first and retrievable by agents second.
+
+## Generated Surfaces
+
+Derived re-entry surfaces are written under:
+
+- `B:\ohmic\generated\agent-work\`
+
+These are not truth surfaces. They are generated summaries for faster session
+bootstrap and queue inspection.

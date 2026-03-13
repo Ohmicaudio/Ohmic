@@ -30,4 +30,4 @@ Use this file for unresolved questions that should stay visible across agents an
 
 ## Current Questions
 
-- None recorded.
+- 2026-03-13: For the transitional `public/` cutover, who owns deployment of `ohmic-static-content`, when will `ohmicaudiolabs.com` and `ohmicaudio.com` publish reachable public host records, and do `favicon.svg` and `ohmic-logo.svg` stay app-served or move to the static host once those domains are live?

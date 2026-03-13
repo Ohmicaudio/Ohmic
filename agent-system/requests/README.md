@@ -8,6 +8,10 @@ Use `requests/` for tasks that have been asked for but are not yet actively clai
 
 Use `jobs/` for work that is actively being executed.
 
+Use `transactions/` for the deeper thread record when the work is really a
+proposal, question, answer, plan, response, or decision chain rather than just
+an actionable queue item.
+
 Flow:
 
 1. a requested task is written into `requests/inbox/`
@@ -42,6 +46,18 @@ Use that file as a local deep-trace layer when the chain of logic matters and th
   - active unresolved cross-agent or cross-task questions
 - `resolved-questions.md`
   - meaningful answered-question trace kept for local logic history
+
+## Relationship To Transactions
+
+`requests/` is the actionable queue layer.
+
+`transactions/` is the deeper event layer.
+
+That means:
+
+- a request may originate from a transaction
+- a transaction may resolve a question without being labeled as an answer
+- durable outcomes still promote upward into memory or project overlays
 
 ## Rules
 

@@ -20,9 +20,11 @@ ESP32 Cheap Yellow Display handheld remote project for the broader Ohmic system.
 - the bring-up and working-baseline docs are the practical hardware truth
 - the device path is centered on `TFT_eSPI` plus LVGL
 - this repo sits inside a larger firmware-contract transition rather than standing alone
+- root bridge file exists at `A:\cyd_remote\AGENTS.md`
 
 ## First Read
 
+- `A:\cyd_remote\AGENTS.md`
 - `A:\cyd_remote\docs\CYD24R_BRINGUP_AND_WORKING_GUIDE_2026-03-12.md`
 - `A:\cyd_remote\snapshots\CYD24R_WORKING_BASELINE_2026-03-12.md`
 - `A:\cyd_remote\docs\ohmic-firmware-handoff\README.md`

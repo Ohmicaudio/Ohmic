@@ -16,6 +16,16 @@ $readyDir = Join-Path $requestsRoot 'ready'
 $doneDir = Join-Path $requestsRoot 'done'
 $activeClaimsDir = Join-Path $jobsRoot 'active'
 
+function Write-Utf8NoBom {
+    param(
+        [string]$PathText,
+        [string]$Content
+    )
+
+    $utf8NoBom = New-Object System.Text.UTF8Encoding($false)
+    [System.IO.File]::WriteAllText($PathText, $Content, $utf8NoBom)
+}
+
 function Normalize-Path {
     param([string]$PathText)
 
@@ -261,7 +271,7 @@ function Emit-Work {
             if ($parent) {
                 New-Item -ItemType Directory -Force $parent | Out-Null
             }
-            Set-Content -Path $OutFile -Value $outputText -Encoding UTF8
+            Write-Utf8NoBom -PathText $OutFile -Content $outputText
         }
         Write-Output $outputText
         return
@@ -278,7 +288,7 @@ function Emit-Work {
             if ($parent) {
                 New-Item -ItemType Directory -Force $parent | Out-Null
             }
-            Set-Content -Path $OutFile -Value $outputText -Encoding UTF8
+            Write-Utf8NoBom -PathText $OutFile -Content $outputText
         }
         Write-Output $outputText
         return
@@ -306,7 +316,7 @@ function Emit-Work {
         if ($parent) {
             New-Item -ItemType Directory -Force $parent | Out-Null
         }
-        Set-Content -Path $OutFile -Value $outputText -Encoding UTF8
+        Write-Utf8NoBom -PathText $OutFile -Content $outputText
     }
     Write-Output $outputText
 }

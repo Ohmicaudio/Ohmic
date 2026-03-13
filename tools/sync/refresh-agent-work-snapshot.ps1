@@ -3,19 +3,17 @@ param(
     [string]$OutFile = 'B:\ohmic\generated\agent-work\idle-ready-work.json'
 )
 
-$pollScript = 'B:\ohmic\tools\sync\agent-work-poll.ps1'
-if (-not (Test-Path $pollScript)) {
-    throw "Poll script not found: $pollScript"
+$syncScript = 'B:\ohmic\tools\sync\sync-agent-state.ps1'
+if (-not (Test-Path $syncScript)) {
+    throw "Sync script not found: $syncScript"
 }
 
-$pollArgs = @{
-    Command = 'once'
-    Json = $true
+$syncArgs = @{
     OutFile = $OutFile
 }
 
 if ($Project) {
-    $pollArgs.Project = $Project
+    $syncArgs.Project = $Project
 }
 
-& $pollScript @pollArgs | Out-Null
+& $syncScript @syncArgs | Out-Null

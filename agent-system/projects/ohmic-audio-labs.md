@@ -21,9 +21,11 @@ Primary product repo spanning the main web/app/backend platform plus related sch
 - local backend uses SQLite and file-backed stores for current development workflows
 - Chroma semantic indexing is available via `tools/semantic-index`
 - the repo is still dirty and should be treated carefully during moves or cleanup
+- root bridge file exists at `A:\ohmic-audio-labs\AGENTS.md`
 
 ## First Read
 
+- `A:\ohmic-audio-labs\AGENTS.md`
 - `A:\ohmic-audio-labs\docs\AGENT_CONTEXT.md`
 - `A:\ohmic-audio-labs\docs\specs\SHIP_EXECUTION_QUEUE.md`
 - `A:\ohmic-audio-labs\docs\specs\BACKEND_SERVING_STACK.md`
