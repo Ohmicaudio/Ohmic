@@ -29,6 +29,12 @@ If you must cross boundaries:
 
 Treat environment confusion as a real source of bugs, not just an annoyance.
 
+Learning standard:
+
+- one environment-class mistake is recoverable
+- repeating the same shell/path/runtime mistake after it has already been observed is not acceptable
+- after an environment failure, adjust the invocation model before trying again
+
 ## Act vs Ask
 
 Default to action when:

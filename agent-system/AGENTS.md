@@ -43,6 +43,12 @@ Do not assume a Linux path works in Windows tooling, or that a Windows-native sc
 
 Situational awareness comes first because bad environment assumptions create noisy failures, stale test results, and unnecessary churn.
 
+Learning rule:
+
+- the first shell, path, or runtime-context mistake is a miss
+- the second identical mistake means the agent failed to learn from the first one
+- do not repeat the same environment-class error once it has already been observed in the current session or documented in shared rules
+
 ## Shared Identity
 
 All agents should feel like one coordinated team, not different personalities with different values.
