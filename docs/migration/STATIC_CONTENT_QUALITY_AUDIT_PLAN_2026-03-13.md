@@ -125,7 +125,7 @@ Start with a section-level audit request for the highest-visibility buckets inst
   - `advanced-topics/sections/table-of-contents/index.html`
 - outcome:
   - landing-page cleanup completed in the first follow-up bucket
-  - remaining page-local style debt is isolated to a dedicated advanced-topics style-normalization bucket
+  - page-local style normalization completed in the final first-wave quality bucket
 
 ### `dsp`
 
@@ -162,4 +162,4 @@ Start with a section-level audit request for the highest-visibility buckets inst
 
 ## Follow-up Buckets
 
-- `advanced-topics`: page-local style normalization
+- no remaining first-wave follow-up buckets are open from this audit

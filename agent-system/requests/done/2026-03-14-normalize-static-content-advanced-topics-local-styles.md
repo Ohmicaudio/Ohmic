@@ -1,7 +1,7 @@
 scope: project
 authority: working
 project: ohmic-audio-static-content
-status: ready
+status: done
 requested: 2026-03-14
 requester: codex-local
 origin: dependency
@@ -9,7 +9,7 @@ priority: soon
 blocking: no
 depends_on:
 handoff_from: 2026-03-14-polish-static-content-advanced-topics-quality-bucket
-claim_id:
+claim_id: 20260314T040425Z-a8317517
 topic: requested-task
 
 # Normalize static-content `advanced-topics` local styles
@@ -18,6 +18,13 @@ topic: requested-task
 
 - remove or consolidate the remaining page-local `<style>` blocks across `advanced-topics`
 - keep the advanced-topics articles readable and intentional without shipping nine one-off embedded style systems
+
+## Completion
+
+- removed page-local `<style>` blocks from all remaining advanced-topics pages that still carried them
+- changed `9` advanced-topics pages in total
+- reduced local-style pages from `9` to `0`
+- `advanced-topics` now has no remaining generic landing page and no remaining article-local embedded style systems from the first-wave audit
 
 ## Scope
 
