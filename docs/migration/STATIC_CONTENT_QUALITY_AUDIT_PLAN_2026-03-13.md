@@ -140,7 +140,7 @@ Start with a section-level audit request for the highest-visibility buckets inst
   - `dsp/installer-level-eq-workflow-and-filter-strategy/index.html`
   - `dsp/sections/12-1-dsp-platform-selection/index.html`
 - outcome:
-  - needs a graphics and landing-page cleanup bucket
+  - landing-page and graphics-placeholder cleanup completed in the follow-up bucket
 
 ### `installation`
 
@@ -163,4 +163,3 @@ Start with a section-level audit request for the highest-visibility buckets inst
 ## Follow-up Buckets
 
 - `advanced-topics`: page-local style normalization
-- `dsp`: graphics placeholder cleanup and landing-page rewrite

@@ -1,7 +1,7 @@
 scope: project
 authority: working
 project: ohmic-audio-static-content
-status: ready
+status: done
 requested: 2026-03-14
 requester: codex-local
 origin: dependency
@@ -9,7 +9,7 @@ priority: soon
 blocking: no
 depends_on:
 handoff_from: 2026-03-14-audit-static-content-quality-buckets
-claim_id:
+claim_id: 20260314T040055Z-220bda74
 topic: requested-task
 
 # Polish static-content `dsp` quality bucket
@@ -19,6 +19,14 @@ topic: requested-task
 - replace the generic `dsp/index.html` landing page with a real section hub
 - clean up or explicitly triage publication-time visual placeholders in the bucket
 - preserve the current static-host content while making the section presentation more production-ready
+
+## Completion
+
+- rewrote `dsp/index.html` into a real section hub with routing by task, experience level, workflow, and chapter map
+- converted raw `[VISUAL PLACEHOLDER: ...]` blocks into publish-safe `Illustration note:` callouts across all remaining DSP pages that needed them
+- reduced generic DSP landing pages from `1` to `0`
+- reduced raw DSP placeholder pages from `11` to `0`
+- the DSP bucket now has no remaining generic landing-page metadata or publication-time placeholder markers
 
 ## Scope
 
