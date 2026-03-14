@@ -10,7 +10,7 @@ It exists to hold:
 - shared cross-project agent context and memory
 - repo and surface manifests
 - generated context indexes
-- local mirror/clone landing zones
+- active local repo homes
 
 ## Local Layout
 
@@ -40,7 +40,7 @@ ohmic/
 
 1. `Ohmic` is the private umbrella/context repo.
 2. Product code lives in separate private repos.
-3. `repos/` is the local mirror/work area and is ignored by the umbrella repo.
+3. `repos/` is the active local work area and is ignored by the umbrella repo.
 4. Contracts, architecture notes, and repo ownership maps belong here.
 5. Shared agent context can live here, but source Markdown remains the authority.
 6. Generated context can live here, but generated files are not source of truth.
@@ -80,7 +80,8 @@ Use `B:\ohmic` as the startup funnel:
 2. read the relevant project overlay under [`agent-system/projects/`](agent-system/projects/)
 3. then enter the active repo under [`repos/`](repos/)
 4. read that repo's local `AGENTS.md` and startup docs
-5. do repo-specific work there
+5. account for `agent-system/requests/ready/` before claiming there is no queued work
+6. do repo-specific work there
 
 Do not stop at the umbrella layer once the target repo is known.
 
@@ -111,7 +112,7 @@ This is for retrieval and cross-project awareness only. It is not source of trut
 ## Next Migration Steps
 
 1. Push this umbrella repo to `Ohmicaudio/Ohmic`.
-2. Mirror or transfer `ohmic-audio-labs` with history preserved.
-3. Push `amplab-firmware` and `cyd-remote` to their GitHub remotes.
+2. Keep `B:\ohmic\repos\ohmic-audio-labs` as the active local app repo home.
+3. Firmware remotes are live: `Ohmicaudio/amplab-firmware` and `Ohmicaudio/cyd-remote`.
 4. Verify Cloudflare deploy and domain wiring for `ohmic-audio-static-content`.
-5. Finish the transitional `public/` cutover once the static host is live.
+5. Retire duplicate app-side static payload only after the cutover cleanup is isolated from unrelated repo changes.

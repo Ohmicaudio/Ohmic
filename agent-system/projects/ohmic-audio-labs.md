@@ -3,7 +3,7 @@ horizon: mid
 authority: working
 project: ohmic-audio-labs
 topic: overlay
-updated: 2026-03-13
+updated: 2026-03-14
 
 # ohmic-audio-labs
 
@@ -13,7 +13,7 @@ Primary product repo spanning the main web/app/backend platform plus related sch
 
 ## Working Location
 
-- migration target repo: `B:\ohmic\repos\ohmic-audio-labs`
+- active local repo home: `B:\ohmic\repos\ohmic-audio-labs`
 - active work should happen from: `B:\ohmic\repos\ohmic-audio-labs`
 
 ## Current Truth
@@ -23,7 +23,7 @@ Primary product repo spanning the main web/app/backend platform plus related sch
 - this repo is in active preserve-history migration rather than ordinary isolated maintenance
 - `public/` remains transitional while ownership shifts to `ohmic-audio-static-content`
 - the repo is still dirty and should be treated carefully during moves or cleanup
-- the legacy/source copy should not be used as the active work root
+- no other local path should be used as the active work root
 
 ## First Read
 

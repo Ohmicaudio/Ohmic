@@ -1,6 +1,8 @@
 version: 1
 owner: Ohmicaudio
 umbrella_repo: Ohmic
+# Active local repo homes live under /mnt/b/ohmic/repos.
+# Legacy pre-migration copies must not be used as active work roots.
 
 repos:
   - name: Ohmic
@@ -20,7 +22,7 @@ repos:
     kind: app-runtime
     visibility: private
     preserve_history: true
-    source_local_path: /mnt/a/ohmic-audio-labs
+    source_local_path: /mnt/b/ohmic/repos/ohmic-audio-labs
     mirror_local_path: /mnt/b/ohmic/repos/ohmic-audio-labs
     import_surface_manifest: /mnt/b/ohmic/manifests/import-surfaces/ohmic-audio-labs.yaml
     readme_template: /mnt/b/ohmic/templates/repo-bootstrap/README.ohmic-audio-labs.md
@@ -36,7 +38,7 @@ repos:
     kind: static-content
     visibility: private
     preserve_history: false
-    source_local_path: /mnt/a/ohmic-audio-labs
+    source_local_path: /mnt/b/ohmic/repos/ohmic-audio-static-content
     mirror_local_path: /mnt/b/ohmic/repos/ohmic-audio-static-content
     import_surface_manifest: /mnt/b/ohmic/manifests/import-surfaces/ohmic-audio-static-content.yaml
     readme_template: /mnt/b/ohmic/templates/repo-bootstrap/README.ohmic-audio-static-content.md
@@ -50,7 +52,7 @@ repos:
     kind: firmware
     visibility: private
     preserve_history: false
-    source_local_path: /mnt/a/masterfirmware
+    source_local_path: /mnt/b/ohmic/repos/amplab-firmware
     mirror_local_path: /mnt/b/ohmic/repos/amplab-firmware
     import_surface_manifest: /mnt/b/ohmic/manifests/import-surfaces/amplab-firmware.yaml
     readme_template: /mnt/b/ohmic/templates/repo-bootstrap/README.ohmic-amplab-firmware.md
@@ -64,7 +66,7 @@ repos:
     kind: handheld
     visibility: private
     preserve_history: false
-    source_local_path: /mnt/a/cyd_remote
+    source_local_path: /mnt/b/ohmic/repos/cyd-remote
     mirror_local_path: /mnt/b/ohmic/repos/cyd-remote
     import_surface_manifest: /mnt/b/ohmic/manifests/import-surfaces/cyd-remote.yaml
     readme_template: /mnt/b/ohmic/templates/repo-bootstrap/README.ohmic-cyd-remote.md

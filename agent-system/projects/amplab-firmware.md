@@ -3,7 +3,7 @@ horizon: mid
 authority: working
 project: amplab-firmware
 topic: overlay
-updated: 2026-03-13
+updated: 2026-03-14
 
 # amplab-firmware
 
@@ -13,14 +13,15 @@ Firmware lane for the broader Ohmic hardware/device platform.
 
 ## Naming Note
 
-This overlay uses `amplab-firmware` as the preferred umbrella label for the firmware lane. Final repo naming may still be normalized during migration.
+The canonical repo name is now `amplab-firmware`, published at `Ohmicaudio/amplab-firmware`.
 
 ## Current Truth
 
 - firmware is part of the larger system split and active migration planning already tracked in `B:\ohmic\docs`
 - transport, device contracts, and local-first control remain central themes
-- `B:\ohmic\repos\amplab-firmware` is the migration target repo
-- `A:\masterfirmware` is the legacy/source working copy, not the long-term destination
+- `B:\ohmic\repos\amplab-firmware` is the active local repo home
+- `Ohmicaudio/amplab-firmware` is the live private GitHub remote
+- no older local copy should be used as the active work root
 
 ## First Read
 

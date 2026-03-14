@@ -13,7 +13,7 @@ updated: 2026-03-13
 - reduce repo drift by promoting stable truths into shared docs instead of re-deriving them in chat
 - use Docker + Chroma for fast retrieval across offline reference material
 - continue separating umbrella context from product repos
-- complete the multi-repo migration from the legacy `A:\*` working copies into the `B:\ohmic\repos\*` repo set and then into the `Ohmicaudio` GitHub org
+- keep the `B:\ohmic\repos\*` repo set as the only active local work surface while GitHub org cleanup continues
 
 ## Learned Lessons
 
