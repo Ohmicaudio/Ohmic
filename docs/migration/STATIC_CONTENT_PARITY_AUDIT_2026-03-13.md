@@ -54,6 +54,40 @@ Treat the migration state as:
 
 That means the next safe step is reconciliation, not prune.
 
+## Comparison Rubric
+
+When two files share the same path but differ in content, `stronger` means the version that wins this comparison order:
+
+1. correctness
+2. completeness
+3. clarity and useful density
+4. structure and formatting integrity
+5. alignment with current product/site direction
+6. visual and illustrative support
+
+Practical interpretation:
+
+- correctness
+  - fewer factual mistakes
+  - preserves valid technical details, units, formulas, and links
+- completeness
+  - covers the topic more fully without leaving obvious holes
+- clarity and useful density
+  - less filler
+  - more technically useful content per line
+- structure and formatting integrity
+  - cleaner headings, lists, metadata, and encoding
+  - fewer broken characters, malformed sections, or layout regressions
+- alignment with current product/site direction
+  - matches current canonical paths, host assumptions, terminology, and tone
+- visual and illustrative support
+  - better diagrams, graphics, tables, or page organization when all higher criteria are otherwise close
+
+Tie-break rule:
+
+- if one version is more correct but less polished, keep the more correct version and queue style/graphics cleanup separately
+- never choose polish over correctness
+
 ## Next Move
 
 1. decide which side is canonical for the shared static pages

@@ -33,6 +33,7 @@ topic: requested-task
 - do not delete the app-side `public` tree until parity is resolved
 - do not assume the static-host repo already contains the desired final content just because the paths exist
 - keep app/runtime routing behavior intact while reconciliation is underway
+- use the explicit stronger-file rubric from `B:\ohmic\docs\migration\STATIC_CONTENT_PARITY_AUDIT_2026-03-13.md`
 
 ## Notes
 
@@ -69,6 +70,7 @@ topic: requested-task
 - a claim is active for the reconciliation surfaces
 - the canonical direction for differing page content is explicit
 - the surviving content set in `ohmic-audio-static-content` is verified enough that prune becomes a cleanup step instead of a risky decision
+- keep/merge decisions are explained using the stronger-file rubric rather than taste alone
 
 ## Suggested Claim Scope
 

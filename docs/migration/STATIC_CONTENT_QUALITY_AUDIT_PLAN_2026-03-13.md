@@ -55,6 +55,23 @@ Rationale:
 - graphics: does the page need diagrams, illustrations, or richer visual treatment?
 - routing: does the page still match current canonical paths and host assumptions?
 
+## Stronger File Rule
+
+Use this order when deciding which version is stronger:
+
+1. correctness
+2. completeness
+3. clarity and useful density
+4. structure and formatting integrity
+5. alignment with current site direction
+6. graphics and illustration support
+
+That means:
+
+- do not keep a prettier file if it is less accurate
+- do not keep a denser file if it is mostly filler
+- if one side wins on correctness and the other wins on polish, keep the correct one and queue polish as follow-up
+
 ## Deliverable Shape
 
 Each section audit should produce:
