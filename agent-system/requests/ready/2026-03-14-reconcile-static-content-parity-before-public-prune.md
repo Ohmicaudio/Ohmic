@@ -65,6 +65,8 @@ topic: requested-task
   - `dsp`
   - `installation`
 - completed split buckets already recorded in `requests/done/`:
+  - `appendix`
+  - `reference`
   - `meta`
   - `advanced-topics`
   - `electrical`
@@ -72,6 +74,8 @@ topic: requested-task
   - `installation`
   - `fundamentals`
   - `mobile-electronics`
+  - `subwoofer-enclosures`
+  - `tuning`
 
 ## Ready When
 
@@ -89,16 +93,7 @@ topic: requested-task
 
 ## Suggested Split
 
-- one agent can claim a single top-level bucket such as `meta` or `advanced-topics`
-- another can work `electrical` or `dsp`
-- larger buckets like `appendix` and `reference` should be split further once the higher-visibility sections are under control
-- concrete split requests now exist for:
-  - `appendix/glossary`
-  - `appendix/manufacturers`
-  - `appendix/reference-tables`
-  - `reference/math-measurement`
-  - `reference/troubleshooting`
-  - `reference/visual`
-  - `subwoofer-enclosures`
-  - `tuning`
+- first-wave and second-wave bucket closures are already recorded in `requests/done/`
+- the remaining unresolved top-level parity bucket is:
   - `competition`
+- quality/style work should continue through the separate audit track rather than by re-opening already-resolved host-only parity buckets
