@@ -174,6 +174,29 @@ Minimum mini-audit scope:
 
 The point is not to stop momentum. The point is to establish situational awareness: notice adjacent breakage, active conflicts, environment boundaries, and follow-on work before starting blind.
 
+## Ready Queue Accounting Rule
+
+Agents may not say there is `nothing to do` until they have accounted for `requests/ready/`.
+
+Minimum accounting requirement:
+
+1. identify the ready requests that were checked
+2. choose one if any unblocked ready request fits the current thread or project
+3. if none are chosen, state why each relevant ready request was not picked up
+
+Valid reasons include:
+
+- blocked by a real dependency
+- outside the active project or user-directed workstream
+- overlapping with an active claim
+- requires credentials, permissions, or hardware not currently available
+
+Invalid behavior:
+
+- skipping the ready queue and declaring no work
+- treating onboarding/doc cleanup as complete task selection
+- claiming there is no work while an applicable ready request remains unaccounted for
+
 ## Compaction Rule
 
 Agents own compaction responsibility.
@@ -213,6 +236,7 @@ During work:
 - keep claims accurate; broaden or narrow them only when the work scope truly changes
 - when closing one step, identify the next step using the shared priority ladder so `continue` stays deterministic
 - after any meaningful completed task, check `requests/ready/` and `requests/open-questions.md` before choosing unrelated follow-on work
+- before saying `nothing to do`, report the ready-queue result explicitly
 - if the task exposed new issues, blockers, or follow-on work, add them to the appropriate request or question surface before drifting away
 
 Mistake handling:

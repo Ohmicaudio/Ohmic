@@ -29,6 +29,9 @@ When an agent is looking for queued work:
 3. if no ready task fits, scan `requests/inbox/` for triage work
 4. only scan `requests/blocked/` when trying to unblock dependencies
 
+Agents must not collapse this into a silent scan.
+If they decide not to pick up a ready request, they should say which ready item was skipped and why.
+
 ## Situational Awareness Intake Rule
 
 Before starting a new meaningful task, agents should do a quick intake pass:
@@ -120,6 +123,16 @@ After any meaningful completed task, agents should re-check:
 - `requests/open-questions.md`
 
 This keeps newly surfaced work and unanswered questions from being stranded between turns.
+
+## Nothing-To-Do Rule
+
+`Nothing to do` is only valid when all of the following are true:
+
+- `requests/ready/` was checked in the current session
+- no applicable ready request remains unclaimed
+- the agent can name the blocking reason or routing reason for any skipped ready item
+
+If an applicable ready request exists, the correct next step is to claim it, explain why it is blocked, or explain why it is outside the current workstream.
 
 ## Timer / Polling
 
