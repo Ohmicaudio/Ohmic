@@ -49,6 +49,22 @@ Reference:
 
 - `B:\ohmic\docs\systems\AGENT_CONDUCT_GATE_2026-03-14.md`
 
+## Horizon Context Rule
+
+Before narrowing into task detail, load the horizon layer:
+
+- active work roots
+- authority order
+- queue discipline
+- claim discipline
+- environment-boundary rules
+
+Reference:
+
+- `B:\ohmic\docs\systems\ALWAYS_IN_CONTEXT_SURVIVAL_MODEL_2026-03-14.md`
+
+Task detail should be loaded after this layer, not instead of it.
+
 ## Environment Awareness Rule
 
 Before executing commands, verify:

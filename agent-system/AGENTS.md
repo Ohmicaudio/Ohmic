@@ -31,6 +31,7 @@ Generated indexes and vector DB results are retrieval aids only. They do not out
 Formatting and voice should follow `instructions/voice-and-format.md`.
 Request intake and queue behavior should follow `instructions/request-routing.md`.
 Minimum behavior at task entry should follow `../docs/systems/AGENT_CONDUCT_GATE_2026-03-14.md`.
+Default horizon context should follow `../docs/systems/ALWAYS_IN_CONTEXT_SURVIVAL_MODEL_2026-03-14.md`.
 
 ## Environment Awareness Rule
 
@@ -129,18 +130,19 @@ Promotion rule:
 At session start:
 
 1. read this file
-2. read the relevant project overlay
-3. enter the active repo and read its repo-local `AGENTS.md`
-4. read the repo-local startup docs named by that repo
-5. read short-term memory as the live working snapshot
-6. read long-term memory for stable rules and truths
-7. read mid-term memory for active initiatives and learned lessons
-8. read the most recent handoff if resuming work
-9. check `requests/` if you are looking for queued work rather than continuing an active thread
-10. read `requests/open-questions.md` before picking up fresh queued work
-11. use `requests/resolved-questions.md` only for deep trace or logic reconstruction, not as default live context
-12. if the current project or work cycle depends on a shared operational proposal, read the linked proposal before changing coordination behavior
-13. apply the conduct gate in `B:\ohmic\docs\systems\AGENT_CONDUCT_GATE_2026-03-14.md` before entering active work
+2. read `B:\ohmic\docs\systems\ALWAYS_IN_CONTEXT_SURVIVAL_MODEL_2026-03-14.md`
+3. apply the conduct gate in `B:\ohmic\docs\systems\AGENT_CONDUCT_GATE_2026-03-14.md`
+4. read the relevant project overlay
+5. enter the active repo and read its repo-local `AGENTS.md`
+6. read the repo-local startup docs named by that repo
+7. read short-term memory as the live working snapshot
+8. read long-term memory for stable rules and truths
+9. read mid-term memory for active initiatives and learned lessons
+10. read the most recent handoff if resuming work
+11. check `requests/` if you are looking for queued work rather than continuing an active thread
+12. read `requests/open-questions.md` before picking up fresh queued work
+13. use `requests/resolved-questions.md` only for deep trace or logic reconstruction, not as default live context
+14. if the current project or work cycle depends on a shared operational proposal, read the linked proposal before changing coordination behavior
 
 Do not stop at the umbrella repo once the target project is known.
 The shared layer is the startup funnel, not the working destination.

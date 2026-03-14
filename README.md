@@ -77,17 +77,22 @@ Later only if needed:
 Use `B:\ohmic` as the startup funnel:
 
 1. read [`agent-system/AGENTS.md`](agent-system/AGENTS.md)
-2. read the relevant project overlay under [`agent-system/projects/`](agent-system/projects/)
-3. then enter the active repo under [`repos/`](repos/)
-4. read that repo's local `AGENTS.md` and startup docs
-5. account for `agent-system/requests/ready/` before claiming there is no queued work
-6. do repo-specific work there
+2. read the horizon layer in [`docs/systems/ALWAYS_IN_CONTEXT_SURVIVAL_MODEL_2026-03-14.md`](docs/systems/ALWAYS_IN_CONTEXT_SURVIVAL_MODEL_2026-03-14.md)
+3. read the relevant project overlay under [`agent-system/projects/`](agent-system/projects/)
+4. then enter the active repo under [`repos/`](repos/)
+5. read that repo's local `AGENTS.md` and startup docs
+6. account for `agent-system/requests/ready/` before claiming there is no queued work
+7. do repo-specific work there
 
 Do not stop at the umbrella layer once the target repo is known.
 
 Before entering active work, apply the conduct gate:
 
 - [`docs/systems/AGENT_CONDUCT_GATE_2026-03-14.md`](docs/systems/AGENT_CONDUCT_GATE_2026-03-14.md)
+
+Before narrowing into task detail, keep the horizon layer loaded:
+
+- [`docs/systems/ALWAYS_IN_CONTEXT_SURVIVAL_MODEL_2026-03-14.md`](docs/systems/ALWAYS_IN_CONTEXT_SURVIVAL_MODEL_2026-03-14.md)
 
 ## Local Sandbox Boundary
 
