@@ -1,7 +1,7 @@
 scope: project
 authority: working
 project: ohmic-audio-labs
-status: blocked
+status: done
 requested: 2026-03-14
 requester: codex-local
 origin: dependency
@@ -19,6 +19,13 @@ topic: requested-task
 - remove the duplicated legacy `public/` payload from `B:\ohmic\repos\ohmic-audio-labs`
 - keep static docs/tools/reference content served from `ohmic-audio-static-content`
 - avoid deleting the wrong side of the current content fork
+
+## Completion
+
+- this request is now historical only
+- the app-side `public/` tree was already removed under the earlier static cutover work
+- parity reconciliation is now complete, so there is no remaining prune-decision gate to hold open here
+- remaining follow-up belongs on the separate static-content quality-audit track, not on a legacy `public/` prune board item
 
 ## Scope
 

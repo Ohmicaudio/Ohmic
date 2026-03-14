@@ -202,3 +202,28 @@ Operational result:
 - keep the current `ohmic-audio-static-content` `advanced-topics/*` pages as canonical
 - no page promotion from app history was needed for this bucket
 - quality follow-up still remains outside parity: `9` `advanced-topics/*` pages include page-local `<style>` blocks and should stay on the quality-audit track
+
+### `competition` bucket (2026-03-14)
+
+- canonical source: `B:\ohmic\repos\ohmic-audio-static-content\public\competition`
+- historical app-side comparison source: `ohmic-audio-labs` Git `HEAD` under `public/competition/*`
+- current `ohmic-audio-labs` worktree no longer contains `public/competition`, so reconciliation for this bucket was also a canonical-decision pass rather than a file-copy pass
+- compared files in bucket: `19`
+- historical app-side files still using `https://ohmicaudio.netlify.app`: `19`
+- static-host files still using `https://ohmicaudio.netlify.app`: `0`
+- static-host files longer than the historical app-side versions: `19`
+- static-host files with more explicit `<section>` structure than the historical app-side versions: `0`
+- files that match exactly after host normalization and line-ending trim: `19`
+
+Representative files that favored keeping the static-host copy:
+
+- `competition/index.html`
+- `competition/competition-day-procedures/index.html`
+- `competition/sections/13-1-spl-competition-engineering/index.html`
+- `competition/sections/13-2-sound-quality-competition-strategy/index.html`
+
+Operational result:
+
+- keep the current `ohmic-audio-static-content` `competition/*` pages as canonical
+- no page promotion from app history was needed for this bucket
+- quality follow-up still remains outside parity: `5` `competition/*` pages include visual placeholders and should stay on the quality-audit track
