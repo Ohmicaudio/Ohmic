@@ -1,11 +1,12 @@
-status: ready
+status: done
 priority: medium
 project: ohmic
-owner: unclaimed
+owner: d
 created: 2026-03-14
 depends_on:
   - /mnt/b/ohmic/docs/roadmap/OHMIC_SCHEMA_CENTRALIZATION_PROPOSAL_2026-03-14.md
   - /mnt/b/ohmic/docs/roadmap/OHMIC_PLAN_STATUS_DEFINITIONS_2026-03-14.md
+claim_id: 20260314T231028Z-9f165b4c
 
 # Review Schema Centralization Governance
 
@@ -28,3 +29,11 @@ governance rule is good enough to adopt.
 - current software completion still outranks schema-repo migration work
 - the goal is to prevent future contract drift, not to start a new migration
   casually
+
+## Completion
+
+- created `docs/roadmap/OHMIC_SCHEMA_CENTRALIZATION_GOVERNANCE_REVIEW_2026-03-14.md`
+- recorded an explicit review note that `ohmic-audio-labs/schemas` is good enough as the temporary canonical source
+- recorded that firmware and handheld should remain mirrors for now
+- recorded that `ohmic-schemas` should be created later, when the governance burden of the current arrangement outweighs the migration cost
+- recorded that no blocking change is required before adopting the current governance direction
