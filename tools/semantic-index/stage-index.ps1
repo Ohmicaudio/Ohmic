@@ -19,7 +19,7 @@ $stageRepos = @{
     'core-docs' = @('Ohmic')
     'runtime' = @('ohmic-audio-labs', 'cyd-remote')
     'firmware' = @('amplab-firmware')
-    'static' = @('ohmic-static-content')
+    'static' = @('ohmic-audio-static-content')
 }
 
 function Run-Indexer {

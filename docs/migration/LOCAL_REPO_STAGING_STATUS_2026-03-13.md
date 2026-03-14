@@ -9,7 +9,7 @@ Three clean-import repos are now staged locally as independent git repos:
 
 - `/mnt/b/ohmic/repos/cyd-remote`
 - `/mnt/b/ohmic/repos/amplab-firmware`
-- `/mnt/b/ohmic/repos/ohmic-static-content`
+- `/mnt/b/ohmic/repos/ohmic-audio-static-content`
 
 These were created by manifest-driven copy from the source repos.
 
@@ -45,10 +45,12 @@ Verified build:
 - RAM: `31.2%`
 - Flash: `39.6%`
 
-### `ohmic-static-content`
+### `ohmic-audio-static-content`
 
 - local root commit: `8473e9d`
 - commit message: `Stage static content repo surface`
+- current published branch tip: `5f1e749`
+- current published branch tracks: `origin/main`
 
 Contains:
 
@@ -61,6 +63,7 @@ Notes:
 - staged from the current `ohmic-audio-labs` working tree
 - intended to become the dedicated static-content repo
 - `ohmic-audio-labs` retains a transitional `public/` payload until static-host cutover is finalized
+- GitHub remote is configured as `https://github.com/Ohmicaudio/ohmic-audio-static-content.git`
 
 ## Bootstrap content applied
 
@@ -90,10 +93,10 @@ See:
 
 ## Next migration step
 
-Once GitHub auth is available:
+Remaining external work:
 
 1. connect `/mnt/b/ohmic` to `Ohmicaudio/Ohmic`
 2. add remotes for the staged firmware repos
 3. push `cyd-remote` and `amplab-firmware`
-4. push `ohmic-static-content`
+4. verify Cloudflare deploy and domain wiring for `ohmic-audio-static-content`
 5. then handle `ohmic-audio-labs` as a preserve-history migration

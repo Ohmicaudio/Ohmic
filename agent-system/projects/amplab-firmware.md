@@ -17,8 +17,10 @@ This overlay uses `amplab-firmware` as the preferred umbrella label for the firm
 
 ## Current Truth
 
-- firmware is part of the larger system split and migration planning already tracked in `B:\ohmic\docs`
+- firmware is part of the larger system split and active migration planning already tracked in `B:\ohmic\docs`
 - transport, device contracts, and local-first control remain central themes
+- `B:\ohmic\repos\amplab-firmware` is the migration target repo
+- `A:\masterfirmware` is the legacy/source working copy, not the long-term destination
 
 ## First Read
 
@@ -28,4 +30,4 @@ This overlay uses `amplab-firmware` as the preferred umbrella label for the firm
 
 ## Current Next Move
 
-- keep shared agent memory focused on contract and migration truth until the firmware repo boundaries are finalized
+- finish the migration and contract cleanup without letting old `masterfirmware` framing stay implicit

@@ -13,15 +13,17 @@ Primary product repo spanning the main web/app/backend platform plus related sch
 
 ## Working Location
 
-- active repo: `A:\ohmic-audio-labs`
+- migration target repo: `B:\ohmic\repos\ohmic-audio-labs`
+- legacy/source working copy still exists at: `A:\ohmic-audio-labs`
 
 ## Current Truth
 
 - static content and content-work archives were recently cleaned and documented
 - local backend uses SQLite and file-backed stores for current development workflows
-- Chroma semantic indexing is available via `tools/semantic-index`
+- this repo is in active preserve-history migration rather than ordinary isolated maintenance
+- `public/` remains transitional while ownership shifts to `ohmic-audio-static-content`
 - the repo is still dirty and should be treated carefully during moves or cleanup
-- root bridge file exists at `A:\ohmic-audio-labs\AGENTS.md`
+- repo-local bridge file exists in both the legacy copy and the migrated mirror
 
 ## First Read
 
@@ -33,4 +35,4 @@ Primary product repo spanning the main web/app/backend platform plus related sch
 
 ## Current Next Move
 
-- use this repo as the primary working surface while the shared agent system is being stabilized
+- keep the migration boundary explicit: runtime/backend/contracts stay here, while static content moves out and firmware stays in its own repos

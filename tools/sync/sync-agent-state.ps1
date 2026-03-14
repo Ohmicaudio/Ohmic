@@ -228,9 +228,10 @@ function Matches-ProjectText {
 
 function Get-RepoSummaries {
     $repoCandidates = @(
-        'A:\ohmic-audio-labs',
-        'A:\cyd_remote',
-        'B:\ohmic\repos\ohmic-static-content'
+        'B:\ohmic\repos\ohmic-audio-labs',
+        'B:\ohmic\repos\ohmic-audio-static-content',
+        'B:\ohmic\repos\amplab-firmware',
+        'B:\ohmic\repos\cyd-remote'
     )
 
     $gitCommand = Resolve-GitCommand

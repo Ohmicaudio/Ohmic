@@ -38,7 +38,7 @@ Current repo corpus:
 - `ohmic-audio-labs`
 - `amplab-firmware`
 - `cyd-remote`
-- `ohmic-static-content`
+- `ohmic-audio-static-content`
 
 ## Why this exists
 
@@ -110,7 +110,7 @@ Recommended ingestion priority:
 2. contract and schema docs from `ohmic-audio-labs`
 3. DSP and transport docs from `amplab-firmware`
 4. handheld bring-up and UX docs from `cyd-remote`
-5. static content/editorial guidance from `ohmic-static-content`
+5. static content/editorial guidance from `ohmic-audio-static-content`
 
 ## Current workflow
 

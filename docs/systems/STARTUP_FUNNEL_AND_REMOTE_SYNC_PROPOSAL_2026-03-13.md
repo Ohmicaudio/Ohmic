@@ -104,9 +104,19 @@ When a remote agent starts cold from the umbrella repo:
 3. run the state sync helper if generated files are missing or stale
 4. read `generated/agent-work/recent-changes.md`
 5. read the target project brief
-6. enter the target repo and continue normally
+6. enter the target repo
+7. read the repo-local `AGENTS.md` and first-read docs
+8. inspect the repo worktree
+9. continue normally
 
 This keeps local and remote startup nearly identical.
+
+## Important Correction
+
+The startup funnel should not trap agents at `B:\ohmic`.
+
+The umbrella repo should get agents aligned fast, then hand them off into the active repo.
+If startup guidance is followed but repo-local truth is still loaded late, the funnel has failed.
 
 ## Recommended Implementation
 

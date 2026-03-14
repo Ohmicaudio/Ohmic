@@ -87,9 +87,9 @@ repos:
       - skills/**
       - "**/skills/**"
 
-  - name: ohmic-static-content
+  - name: ohmic-audio-static-content
     kind: static-content
-    root: /mnt/b/ohmic/repos/ohmic-static-content
+    root: /mnt/b/ohmic/repos/ohmic-audio-static-content
     include:
       - README.md
       - content-work/**/*.md

@@ -1,5 +1,5 @@
 version: 1
-name: ohmic-static-content
+name: ohmic-audio-static-content
 source_repo_path: /mnt/a/ohmic-audio-labs
 
 include:

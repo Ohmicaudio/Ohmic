@@ -16,15 +16,20 @@ updated: 2026-03-13
 ## Active Priorities
 
 - stand up the shared agent-system so cross-session behavior and memory stop drifting
+- complete the active migration from the older `A:\*` working copies into the `B:\ohmic\repos\*` repo set
+- keep the migration of `ohmic-audio-labs`, `amplab-firmware`, `cyd-remote`, and `ohmic-audio-static-content` visible as a first-class workstream
 - use the semantic index as a retrieval layer for long-lived reference docs
-- prepare the workspace for cleaner repo moves under `B:\ohmic`
 
 ## Current Workspace Truth
 
 - `B:\ohmic` is the umbrella context root for shared docs, manifests, tools, archives, and reference material
-- `A:\ohmic-audio-labs` is still an active working repo
+- `B:\ohmic\repos\ohmic-audio-labs` is the migration target mirror for the main app/runtime repo
+- `B:\ohmic\repos\amplab-firmware` is the migration target repo for the firmware lane
+- `B:\ohmic\repos\cyd-remote` is the migration target repo for the handheld lane
+- `B:\ohmic\repos\ohmic-audio-static-content` is the migration target repo for the static-content lane
+- older `A:\ohmic-audio-labs`, `A:\masterfirmware`, and `A:\cyd_remote` copies should be treated as legacy source/harvest surfaces, not the long-term destination
 - database/reference material kept from `ohmic-audio-universe` should live under `B:\ohmic` and below
-- the local Chroma semantic index is verified running from `A:\ohmic-audio-labs\tools\semantic-index`
+- the local Chroma semantic index is verified running from `B:\ohmic\tools\semantic-index`
 
 ## Active Skills And Keywords
 
@@ -49,10 +54,11 @@ updated: 2026-03-13
 - do not treat the vector DB as the authority
 - do not promote raw chat impressions straight into long-term memory
 - when a useful fact is still fresh or unstable, keep it here before promoting it upward
+- do not let the startup funnel or shared memory keep agents orbiting the umbrella repo after the active repo is known
+- do not let the migration of the three active code repos drop out of the live task picture
 
 ## Immediate Next Uses For This System
 
-- refine the shared personality and decision rules
-- decide the exact project overlay format
-- decide which shared docs should be indexed first
-- define how repo-local `AGENTS.md` files should defer to this shared system
+- keep the migration workstream visible across sessions until the `B:\ohmic\repos\*` targets are the normal working roots
+- finish normalizing shared docs, manifests, and tooling around `B:\ohmic` and the migrated repo names
+- use the shared system to hand agents into the active repo quickly instead of parking them at the umbrella layer

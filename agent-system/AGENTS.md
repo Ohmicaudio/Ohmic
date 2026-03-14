@@ -20,11 +20,11 @@ When documents disagree, use this order:
 1. this file
 2. `instructions/`
 3. `projects/<project>.md`
-4. `memory/long-term.md`
-5. `memory/mid-term.md`
-6. `memory/short-term.md`
-7. latest relevant `handoffs/*.md`
-8. repo-local docs and repo-local `AGENTS.md`
+4. active repo-local `AGENTS.md` and active repo-local startup docs
+5. `memory/long-term.md`
+6. `memory/mid-term.md`
+7. `memory/short-term.md`
+8. latest relevant `handoffs/*.md`
 
 Generated indexes and vector DB results are retrieval aids only. They do not outrank source files.
 
@@ -129,14 +129,34 @@ At session start:
 
 1. read this file
 2. read the relevant project overlay
-3. read short-term memory as the live working snapshot
-4. read long-term memory for stable rules and truths
-5. read mid-term memory for active initiatives and learned lessons
-6. read the most recent handoff if resuming work
-7. check `requests/` if you are looking for queued work rather than continuing an active thread
-8. read `requests/open-questions.md` before picking up fresh queued work
-9. use `requests/resolved-questions.md` only for deep trace or logic reconstruction, not as default live context
-10. if the current project or work cycle depends on a shared operational proposal, read the linked proposal before changing coordination behavior
+3. enter the active repo and read its repo-local `AGENTS.md`
+4. read the repo-local startup docs named by that repo
+5. read short-term memory as the live working snapshot
+6. read long-term memory for stable rules and truths
+7. read mid-term memory for active initiatives and learned lessons
+8. read the most recent handoff if resuming work
+9. check `requests/` if you are looking for queued work rather than continuing an active thread
+10. read `requests/open-questions.md` before picking up fresh queued work
+11. use `requests/resolved-questions.md` only for deep trace or logic reconstruction, not as default live context
+12. if the current project or work cycle depends on a shared operational proposal, read the linked proposal before changing coordination behavior
+
+Do not stop at the umbrella repo once the target project is known.
+The shared layer is the startup funnel, not the working destination.
+For implementation work, repo-local truth must be loaded early enough that the agent does not keep orbiting `B:\ohmic`.
+
+## Repository Descent Rule
+
+Once the active project is identified, agents must descend into the target repo before doing substantial reasoning or work.
+
+Minimum descent:
+
+1. open the repo-local `AGENTS.md`
+2. open the repo's named startup docs or first-read docs
+3. inspect the repo worktree state
+4. then continue with repo-specific analysis or implementation
+
+If the active work is cross-project, still descend into each directly affected repo before making repo-specific claims.
+Do not let shared memory substitute for repo inspection.
 
 Shared operational proposals should be surfaced from normal session-entry paths until adopted, rejected, or promoted into canonical rules.
 

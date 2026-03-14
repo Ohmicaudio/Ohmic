@@ -7,9 +7,10 @@ Use this order when deciding what to trust:
 1. inspected repo state
 2. canonical shared docs
 3. project overlays
-4. durable memory docs
-5. recent session handoffs
-6. chat memory
+4. active repo-local docs
+5. durable memory docs
+6. recent session handoffs
+7. chat memory
 
 Shared operational proposals are design inputs, not law, until they are either:
 
@@ -18,6 +19,21 @@ Shared operational proposals are design inputs, not law, until they are either:
 - or explicitly rejected
 
 If a proposal materially affects the current work cycle, surface it from the normal session loop instead of assuming agents will discover it by browsing docs.
+
+## Repository Descent Rule
+
+The umbrella repo is the front door, not the room where implementation work should stall.
+
+Once the target project is known:
+
+1. enter the active repo
+2. read its repo-local `AGENTS.md`
+3. read its startup docs
+4. inspect its worktree
+5. then make repo-specific claims or plans
+
+Shared memory is for continuity and coordination.
+Repo-local inspection is for truth.
 
 ## Environment Awareness Rule
 

@@ -13,6 +13,7 @@ updated: 2026-03-13
 - reduce repo drift by promoting stable truths into shared docs instead of re-deriving them in chat
 - use Docker + Chroma for fast retrieval across offline reference material
 - continue separating umbrella context from product repos
+- complete the multi-repo migration from the legacy `A:\*` working copies into the `B:\ohmic\repos\*` repo set and then into the `Ohmicaudio` GitHub org
 
 ## Learned Lessons
 
@@ -37,6 +38,7 @@ updated: 2026-03-13
 - `Ohmic` remains the umbrella/context repo, not a monorepo dump
 - product code should live in separate repos with explicit overlays and contracts
 - the shared agent system should span repos without replacing repo-local truth
+- `ohmic-audio-labs`, `amplab-firmware`, `cyd-remote`, and `ohmic-audio-static-content` are all part of one active migration workstream and should not be treated as unrelated repo chores
 
 ## Known Work Ahead
 
@@ -44,3 +46,4 @@ updated: 2026-03-13
 - define a reliable handoff cadence
 - index the highest-value docs first: contracts, migration docs, architecture, project overlays, durable handoffs
 - clean up repo landing zones under `B:\ohmic\repos` when migration timing is right
+- finish promoting migration truth into the always-load surfaces so it stops dropping out between sessions

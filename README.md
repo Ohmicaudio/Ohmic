@@ -29,6 +29,7 @@ ohmic/
     context-index/
   repos/
     ohmic-audio-labs/
+    ohmic-audio-static-content/
     amplab-firmware/
     cyd-remote/
   tools/
@@ -48,6 +49,7 @@ ohmic/
 
 - `Ohmicaudio/Ohmic`
 - `Ohmicaudio/ohmic-audio-labs`
+- `Ohmicaudio/ohmic-audio-static-content`
 - `Ohmicaudio/amplab-firmware`
 - `Ohmicaudio/cyd-remote`
 
@@ -69,6 +71,18 @@ Later only if needed:
 - [`docs/systems/GIT_AND_GITHUB_BOOTSTRAP_IN_MIXED_ENV_2026-03-13.md`](docs/systems/GIT_AND_GITHUB_BOOTSTRAP_IN_MIXED_ENV_2026-03-13.md)
 - [`docs/systems/DYNAMIC_MEMORY_AND_COORDINATION_PROPOSAL_2026-03-13.md`](docs/systems/DYNAMIC_MEMORY_AND_COORDINATION_PROPOSAL_2026-03-13.md)
 - [`docs/systems/STARTUP_FUNNEL_AND_REMOTE_SYNC_PROPOSAL_2026-03-13.md`](docs/systems/STARTUP_FUNNEL_AND_REMOTE_SYNC_PROPOSAL_2026-03-13.md)
+
+## Startup Rule
+
+Use `B:\ohmic` as the startup funnel:
+
+1. read [`agent-system/AGENTS.md`](agent-system/AGENTS.md)
+2. read the relevant project overlay under [`agent-system/projects/`](agent-system/projects/)
+3. then enter the active repo under [`repos/`](repos/)
+4. read that repo's local `AGENTS.md` and startup docs
+5. do repo-specific work there
+
+Do not stop at the umbrella layer once the target repo is known.
 
 ## Local Sandbox Boundary
 
@@ -96,8 +110,8 @@ This is for retrieval and cross-project awareness only. It is not source of trut
 
 ## Next Migration Steps
 
-1. Authenticate this environment to GitHub.
-2. Create the private repos under `Ohmicaudio`.
-3. Push this umbrella repo to `Ohmicaudio/Ohmic`.
-4. Mirror or transfer `ohmic-audio-labs` with history preserved.
-5. Clean-import `amplab-firmware` and `cyd-remote` into their own repos.
+1. Push this umbrella repo to `Ohmicaudio/Ohmic`.
+2. Mirror or transfer `ohmic-audio-labs` with history preserved.
+3. Push `amplab-firmware` and `cyd-remote` to their GitHub remotes.
+4. Verify Cloudflare deploy and domain wiring for `ohmic-audio-static-content`.
+5. Finish the transitional `public/` cutover once the static host is live.

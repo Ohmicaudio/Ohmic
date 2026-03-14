@@ -2,7 +2,7 @@
 
 Date: 2026-03-13
 Source repo: `/mnt/a/ohmic-audio-labs`
-Target repo: `Ohmicaudio/ohmic-static-content`
+Target repo: `Ohmicaudio/ohmic-audio-static-content`
 Status: clean-import definition
 
 ## Purpose
