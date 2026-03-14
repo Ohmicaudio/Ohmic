@@ -1,7 +1,7 @@
 scope: project
 authority: working
 project: ohmic-audio-static-content
-status: ready
+status: done
 requested: 2026-03-14
 requester: codex-local
 origin: dependency
@@ -9,7 +9,7 @@ priority: now
 blocking: no
 depends_on:
 handoff_from: 2026-03-14-audit-static-content-quality-buckets
-claim_id:
+claim_id: 20260314T034847Z-5462bd2e
 topic: requested-task
 
 # Polish static-content `installation` quality bucket
@@ -19,6 +19,18 @@ topic: requested-task
 - replace the generic `installation` landing pages with real section hubs
 - clean up expanded markers and publication-time visual placeholders in the bucket
 - leave the highest-debt first-wave section clearly improved and easier to finish
+
+## Completion
+
+- rewrote `installation/index.html` into a real section hub with routing by job, experience level, and section map
+- rewrote `installation/advanced/index.html` into a real advanced-installation hub with goal-based routing and a chapter map
+- removed the remaining `Content from original document, expanded` markers from:
+  - `installation/index.html`
+  - `installation/beginner-level-understanding-power-requirements/index.html`
+  - `installation/sections/2-5-power-and-power-wiring/index.html`
+- reduced generic installation landing pages from `2` to `0`
+- reduced expanded-marker pages from `3` to `0`
+- intentionally split the remaining `30` illustration-placeholder pages into a dedicated follow-up bucket so the rest of the cleanup can stay small and traceable
 
 ## Scope
 

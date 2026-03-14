@@ -156,10 +156,11 @@ Start with a section-level audit request for the highest-visibility buckets inst
   - `installation/beginner-level-understanding-power-requirements/index.html`
   - `installation/sections/2-5-power-and-power-wiring/index.html`
 - outcome:
-  - needs the first focused cleanup bucket after the audit closes
+  - landing-page and expanded-marker cleanup completed in the first focused follow-up bucket
+  - remaining graphics placeholder debt is now isolated to a dedicated installation illustration bucket
 
 ## Follow-up Buckets
 
 - `advanced-topics`: styling cleanup and landing-page rewrite
 - `dsp`: graphics placeholder cleanup and landing-page rewrite
-- `installation`: graphics placeholder cleanup, expanded-marker cleanup, and landing-page rewrite
+- `installation`: graphics placeholder cleanup and illustration triage
