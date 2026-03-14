@@ -45,6 +45,14 @@ Examples:
 
 This is not a small residual asset mismatch.
 
+Confirmed resolved bucket:
+
+- `dsp/*`
+  - `36` differing files
+  - all `36` differences reduce to host metadata only (`ohmicaudio.netlify.app` in the app repo vs `ohmicaudiolabs.com` in the static repo)
+  - no deeper content drift was found in the bucket sample or full-bucket normalization check
+  - operational result: keep the `ohmic-audio-static-content` versions as canonical for the `dsp` bucket
+
 ## Operational Conclusion
 
 Treat the migration state as:
@@ -94,3 +102,28 @@ Tie-break rule:
 2. reconcile the differing content into `ohmic-audio-static-content`
 3. verify app/runtime links against the reconciled static host
 4. only then remove the duplicated app-side `public` surface
+
+## Bucket Decisions
+
+### `electrical` bucket (2026-03-14)
+
+- canonical source: `B:\ohmic\repos\ohmic-audio-static-content\public\electrical`
+- historical app-side comparison source: `ohmic-audio-labs` Git `HEAD` under `public/electrical/*`
+- current `ohmic-audio-labs` worktree no longer contains `public/electrical`, so reconciliation for this bucket was a canonical-decision pass rather than a file-copy pass
+- compared files in bucket: `26`
+- historical app-side files still using `https://ohmicaudio.netlify.app`: `26`
+- static-host files still using `https://ohmicaudio.netlify.app`: `0`
+- static-host files longer than the historical app-side versions: `26`
+- static-host files with more explicit `<section>` structure than the historical app-side versions: `13`
+
+Representative files that clearly favored the static-host copy:
+
+- `electrical/index.html`
+- `electrical/beginner-level-what-batteries-do/index.html`
+- `electrical/engineer-level-ultracapacitors/index.html`
+- `electrical/sections/table-of-contents/index.html`
+
+Operational result:
+
+- keep the current `ohmic-audio-static-content` `electrical/*` pages as canonical
+- no page promotion from app history was needed for this bucket
