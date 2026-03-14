@@ -36,6 +36,11 @@ The business has:
 
 This proposal fills that gap.
 
+Supporting future-horizon documents:
+
+- `OHMIC_SCHEMA_CENTRALIZATION_PROPOSAL_2026-03-14.md`
+- `OHMIC_ECOSYSTEM_FEATURE_WISHLIST_AND_VERSION_ROADMAP_2026-03-14.md`
+
 ## Week 1 Proposal
 
 ### Goal
