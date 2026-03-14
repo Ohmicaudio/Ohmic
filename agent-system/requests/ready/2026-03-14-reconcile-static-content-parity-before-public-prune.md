@@ -44,6 +44,25 @@ topic: requested-task
 - app-only tracked `public` paths: `0`
 - static-only tracked `public` paths: `1` (`public/index.html`)
 - see `B:\ohmic\docs\migration\STATIC_CONTENT_PARITY_AUDIT_2026-03-13.md`
+- differing files by top-level bucket:
+  - `appendix`: `117`
+  - `reference`: `104`
+  - `meta`: `71`
+  - `installation`: `46`
+  - `dsp`: `36`
+  - `subwoofer-enclosures`: `35`
+  - `electrical`: `26`
+  - `fundamentals`: `26`
+  - `mobile-electronics`: `26`
+  - `tuning`: `26`
+  - `advanced-topics`: `25`
+  - `competition`: `19`
+- recommended first reconciliation buckets:
+  - `meta`
+  - `advanced-topics`
+  - `electrical`
+  - `dsp`
+  - `installation`
 
 ## Ready When
 
@@ -57,3 +76,15 @@ topic: requested-task
 - `B:\ohmic\repos\ohmic-audio-static-content\public`
 - `B:\ohmic\repos\ohmic-audio-static-content\site`
 - `B:\ohmic\repos\ohmic-audio-static-content\content-work`
+
+## Suggested Split
+
+- one agent can claim a single top-level bucket such as `meta` or `advanced-topics`
+- another can work `electrical` or `dsp`
+- larger buckets like `appendix` and `reference` should be split further once the higher-visibility sections are under control
+- concrete split requests now exist for:
+  - `meta`
+  - `advanced-topics`
+  - `electrical`
+  - `dsp`
+  - `installation`
