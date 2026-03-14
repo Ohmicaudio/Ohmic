@@ -36,11 +36,25 @@ The Ohmic ecosystem should become:
 - the content and education engine that creates category trust
 - the community and field-intelligence network that competitors usually ignore
 
+## Naming Clarification
+
+Use these names consistently:
+
+- `OSM` = the system planner and project-graph lane
+- `BassBuilder` = the enclosure and subwoofer design lane
+
+`OSM` should be treated as the build, topology, planning, and project-state
+surface.
+
+`BassBuilder` should be treated as one specialized design tool family that can
+feed into `OSM`, not as the entire planner.
+
 ## North-Star Experience
 
 The long-term experience should feel like one platform that can do all of this:
 
-- design a system
+- plan a full system in `OSM`
+- model enclosure and subwoofer details in `BassBuilder`
 - model and save projects
 - learn from guided content
 - measure and tune with real tools
@@ -114,7 +128,9 @@ Make the software worth paying for even before custom hardware exists.
 
 ### Possible additions
 
-- saved projects and richer workspace state
+- `OSM` saved projects and richer workspace state
+- `OSM` topology graph for full-system planning
+- `BassBuilder` round-trip into saved project state
 - measurement session save/export/review
 - premium design and tuning workflow bundles
 - preset libraries and compare/diff flows
@@ -136,6 +152,7 @@ Add the human network competitors usually fail to build.
 - local bass meet and event map
 - installer and shop discovery surfaces
 - builder profile pages
+- local system and build journals
 - local recommendation and trusted-vendor layer
 - build showcase feeds
 - social sharing hooks for measurements, projects, and results
@@ -199,6 +216,7 @@ Push from useful tools into serious measurement and competition utility.
 - SPL sensor integration
 - impedance and electrical measurement helpers
 - measurement-driven DSP suggestions
+- `OSM` attachment of measurement runs to real project objects
 - competition scorecards and preparation workflows
 - lane history, overlays, and comparison views
 
@@ -276,11 +294,14 @@ them seriously.
 
 ### Design and planning
 
+- `OSM` full-system planner and project graph
+- `OSM` hardware, signal, and topology modeling
 - advanced enclosure and port calculators
 - wiring and load-planning tools
 - project BOM and cost estimation
 - build planning and checklist flows
 - saved design templates
+- `BassBuilder` enclosure design, TS workflows, and box iteration
 
 ### Measurement and analysis
 
@@ -344,6 +365,7 @@ them seriously.
 
 - local bass meet and event map
 - creator and builder profiles
+- local build journals and meet recap posts
 - local shop and installer discovery
 - shared build galleries
 - preset sharing and public proof artifacts
