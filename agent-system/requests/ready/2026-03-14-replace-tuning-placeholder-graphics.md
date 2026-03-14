@@ -1,7 +1,7 @@
 scope: project
 authority: working
 project: ohmic-audio-static-content
-status: ready
+status: active
 requested: 2026-03-14
 requester: codex-local
 origin: follow-up
@@ -9,7 +9,7 @@ priority: soon
 blocking: no
 depends_on:
 handoff_from:
-claim_id:
+claim_id: 20260314T042635Z-213346c3
 topic: requested-task
 
 # Replace `tuning` placeholder graphics
@@ -27,6 +27,7 @@ topic: requested-task
 
 - placeholder pages in this bucket: `21`
 - this bucket also has `4` metadata leaks already tracked separately
+- coordination note: this is the preferred parallel bucket for another agent while `codex-local` owns `mobile-electronics`
 - main visual themes:
   - measurement microphone comparisons
   - before/after EQ response charts
@@ -43,4 +44,3 @@ topic: requested-task
 
 - the `21` placeholder markers are gone
 - replacement visuals align with the page content and the pages remain structurally intact
-

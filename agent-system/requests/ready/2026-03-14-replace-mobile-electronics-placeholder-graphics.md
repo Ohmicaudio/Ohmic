@@ -27,6 +27,7 @@ topic: requested-task
 
 - placeholder pages in this bucket: `21`
 - this bucket also has `7` metadata leaks already tracked separately
+- current split: `codex-local` is the intended owner for this bucket during the present graphics pass
 - main visual themes:
   - head-unit anatomy and OEM replacement visuals
   - Bluetooth profile and wireless connectivity diagrams
@@ -42,4 +43,3 @@ topic: requested-task
 
 - the `21` placeholder markers are gone
 - replacement visuals align with the page content and the pages remain structurally intact
-
