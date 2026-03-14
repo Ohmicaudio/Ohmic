@@ -1,6 +1,6 @@
 version: 1
 repo: amplab-firmware
-source_repo_path: /mnt/a/masterfirmware
+source_repo_path: /mnt/b/ohmic/repos/amplab-firmware
 
 include:
   top_level:

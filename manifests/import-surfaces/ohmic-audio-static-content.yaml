@@ -1,6 +1,6 @@
 version: 1
 name: ohmic-audio-static-content
-source_repo_path: /mnt/a/ohmic-audio-labs
+source_repo_path: /mnt/b/ohmic/repos/ohmic-audio-static-content
 
 include:
   top_level:

@@ -24,7 +24,7 @@ app repo.
 If future domain-reference or experiment material needs a real home, it should
 live in:
 
-- `ohmic-static-content`
+- `ohmic-audio-static-content`
 - the umbrella/context layer under `Ohmic`
 - or a dedicated research/docs surface
 

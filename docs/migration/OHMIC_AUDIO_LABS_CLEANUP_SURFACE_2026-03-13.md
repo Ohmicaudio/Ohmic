@@ -73,7 +73,7 @@ These are the core product/runtime surfaces and should remain in `ohmic-audio-la
 
 Transitional note:
 
-- as of 2026-03-13, `site/` and `content-work/` have been split toward `ohmic-static-content`
+- as of 2026-03-13, `site/` and `content-work/` have been split toward `ohmic-audio-static-content`
 - `public/` remains temporarily in `ohmic-audio-labs` to avoid breaking runtime/deployment assumptions before static-host cutover
 
 ### Current architectural/product docs

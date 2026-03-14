@@ -15,7 +15,7 @@ repos:
 
   - name: ohmic-audio-labs
     kind: app-runtime
-    root: /mnt/a/ohmic-audio-labs
+    root: /mnt/b/ohmic/repos/ohmic-audio-labs
     include:
       - AGENTS.md
       - README.md
@@ -57,7 +57,7 @@ repos:
 
   - name: cyd-remote
     kind: handheld
-    root: /mnt/a/cyd_remote
+    root: /mnt/b/ohmic/repos/cyd-remote
     include:
       - AGENTS.md
       - README.md

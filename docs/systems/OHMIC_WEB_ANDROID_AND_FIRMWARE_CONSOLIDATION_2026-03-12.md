@@ -37,50 +37,50 @@ The newer decisions from follow-up discussion are:
 
 ### App and shell entry points
 
-- [App.tsx](/mnt/a/ohmic-audio-labs/App.tsx)
-- [components/Hardware/HardwareLayout.tsx](/mnt/a/ohmic-audio-labs/components/Hardware/HardwareLayout.tsx)
-- [components/Mobile/MobileLab.tsx](/mnt/a/ohmic-audio-labs/components/Mobile/MobileLab.tsx)
-- [components/Tabs/HardwareTab.tsx](/mnt/a/ohmic-audio-labs/components/Tabs/HardwareTab.tsx)
-- [docs/THREE_TIER_WEB_ARCHITECTURE.md](/mnt/a/ohmic-audio-labs/docs/THREE_TIER_WEB_ARCHITECTURE.md)
-- [docs/SITE_SITEMAP.md](/mnt/a/ohmic-audio-labs/docs/SITE_SITEMAP.md)
+- [App.tsx](/mnt/b/ohmic/repos/ohmic-audio-labs/App.tsx)
+- [components/Hardware/HardwareLayout.tsx](/mnt/b/ohmic/repos/ohmic-audio-labs/components/Hardware/HardwareLayout.tsx)
+- [components/Mobile/MobileLab.tsx](/mnt/b/ohmic/repos/ohmic-audio-labs/components/Mobile/MobileLab.tsx)
+- [components/Tabs/HardwareTab.tsx](/mnt/b/ohmic/repos/ohmic-audio-labs/components/Tabs/HardwareTab.tsx)
+- [docs/THREE_TIER_WEB_ARCHITECTURE.md](/mnt/b/ohmic/repos/ohmic-audio-labs/docs/THREE_TIER_WEB_ARCHITECTURE.md)
+- [docs/SITE_SITEMAP.md](/mnt/b/ohmic/repos/ohmic-audio-labs/docs/SITE_SITEMAP.md)
 
 ### Hardware contract and transport layers
 
-- [services/hardware/dsp/DSPDevice.ts](/mnt/a/ohmic-audio-labs/services/hardware/dsp/DSPDevice.ts)
-- [services/hardware/dsp/DeviceRegistry.ts](/mnt/a/ohmic-audio-labs/services/hardware/dsp/DeviceRegistry.ts)
-- [services/hardware/dsp/firmwareContract.ts](/mnt/a/ohmic-audio-labs/services/hardware/dsp/firmwareContract.ts)
-- [components/Hardware/DspDeckSummary.tsx](/mnt/a/ohmic-audio-labs/components/Hardware/DspDeckSummary.tsx)
-- [services/hardware/amplab/AmpLabDevice.ts](/mnt/a/ohmic-audio-labs/services/hardware/amplab/AmpLabDevice.ts)
-- [services/hardware/amplab/transports/HttpAmpLabTransport.ts](/mnt/a/ohmic-audio-labs/services/hardware/amplab/transports/HttpAmpLabTransport.ts)
-- [components/Hardware/useAmpLabControlPlane.ts](/mnt/a/ohmic-audio-labs/components/Hardware/useAmpLabControlPlane.ts)
-- [components/Hardware/useAmpLabDiscoveryPlane.ts](/mnt/a/ohmic-audio-labs/components/Hardware/useAmpLabDiscoveryPlane.ts)
+- [services/hardware/dsp/DSPDevice.ts](/mnt/b/ohmic/repos/ohmic-audio-labs/services/hardware/dsp/DSPDevice.ts)
+- [services/hardware/dsp/DeviceRegistry.ts](/mnt/b/ohmic/repos/ohmic-audio-labs/services/hardware/dsp/DeviceRegistry.ts)
+- [services/hardware/dsp/firmwareContract.ts](/mnt/b/ohmic/repos/ohmic-audio-labs/services/hardware/dsp/firmwareContract.ts)
+- [components/Hardware/DspDeckSummary.tsx](/mnt/b/ohmic/repos/ohmic-audio-labs/components/Hardware/DspDeckSummary.tsx)
+- [services/hardware/amplab/AmpLabDevice.ts](/mnt/b/ohmic/repos/ohmic-audio-labs/services/hardware/amplab/AmpLabDevice.ts)
+- [services/hardware/amplab/transports/HttpAmpLabTransport.ts](/mnt/b/ohmic/repos/ohmic-audio-labs/services/hardware/amplab/transports/HttpAmpLabTransport.ts)
+- [components/Hardware/useAmpLabControlPlane.ts](/mnt/b/ohmic/repos/ohmic-audio-labs/components/Hardware/useAmpLabControlPlane.ts)
+- [components/Hardware/useAmpLabDiscoveryPlane.ts](/mnt/b/ohmic/repos/ohmic-audio-labs/components/Hardware/useAmpLabDiscoveryPlane.ts)
 
 ### Mobile/Android-specific parity points
 
-- [components/Mobile/AmpLabBleTestSuite.tsx](/mnt/a/ohmic-audio-labs/components/Mobile/AmpLabBleTestSuite.tsx)
-- [platform/mobile/android/AmpLabSchemaModels.kt](/mnt/a/ohmic-audio-labs/platform/mobile/android/AmpLabSchemaModels.kt)
-- [platform/mobile/apple/AmpLabSchemaModels.swift](/mnt/a/ohmic-audio-labs/platform/mobile/apple/AmpLabSchemaModels.swift)
-- [android/app/src/main/AndroidManifest.xml](/mnt/a/ohmic-audio-labs/android/app/src/main/AndroidManifest.xml)
+- [components/Mobile/AmpLabBleTestSuite.tsx](/mnt/b/ohmic/repos/ohmic-audio-labs/components/Mobile/AmpLabBleTestSuite.tsx)
+- [platform/mobile/android/AmpLabSchemaModels.kt](/mnt/b/ohmic/repos/ohmic-audio-labs/platform/mobile/android/AmpLabSchemaModels.kt)
+- [platform/mobile/apple/AmpLabSchemaModels.swift](/mnt/b/ohmic/repos/ohmic-audio-labs/platform/mobile/apple/AmpLabSchemaModels.swift)
+- [android/app/src/main/AndroidManifest.xml](/mnt/b/ohmic/repos/ohmic-audio-labs/android/app/src/main/AndroidManifest.xml)
 
 ### Sync and backend integration
 
-- [services/CloudSync.ts](/mnt/a/ohmic-audio-labs/services/CloudSync.ts)
-- [services/backend/README.md](/mnt/a/ohmic-audio-labs/services/backend/README.md)
-- [docs/specs/BACKEND_FRONTEND_TRACEABILITY.md](/mnt/a/ohmic-audio-labs/docs/specs/BACKEND_FRONTEND_TRACEABILITY.md)
+- [services/CloudSync.ts](/mnt/b/ohmic/repos/ohmic-audio-labs/services/CloudSync.ts)
+- [services/backend/README.md](/mnt/b/ohmic/repos/ohmic-audio-labs/services/backend/README.md)
+- [docs/specs/BACKEND_FRONTEND_TRACEABILITY.md](/mnt/b/ohmic/repos/ohmic-audio-labs/docs/specs/BACKEND_FRONTEND_TRACEABILITY.md)
 
 ### Existing firmware-side reality
 
-- [src/dsp_state.cpp](/mnt/a/masterfirmware/src/dsp_state.cpp)
-- [src/dsp_state.hpp](/mnt/a/masterfirmware/src/dsp_state.hpp)
-- [src/ui_remote.cpp](/mnt/a/masterfirmware/src/ui_remote.cpp)
-- [src/main.cpp](/mnt/a/masterfirmware/src/main.cpp)
-- [sigmastudio/master-2in-4out-measurement/FIRST_CONTROL_SLICE.md](/mnt/a/masterfirmware/sigmastudio/master-2in-4out-measurement/FIRST_CONTROL_SLICE.md)
+- [src/dsp_state.cpp](/mnt/b/ohmic/repos/amplab-firmware/src/dsp_state.cpp)
+- [src/dsp_state.hpp](/mnt/b/ohmic/repos/amplab-firmware/src/dsp_state.hpp)
+- [src/ui_remote.cpp](/mnt/b/ohmic/repos/amplab-firmware/src/ui_remote.cpp)
+- [src/main.cpp](/mnt/b/ohmic/repos/amplab-firmware/src/main.cpp)
+- [sigmastudio/master-2in-4out-measurement/FIRST_CONTROL_SLICE.md](/mnt/b/ohmic/repos/amplab-firmware/sigmastudio/master-2in-4out-measurement/FIRST_CONTROL_SLICE.md)
 
 ## What the Website and Android App Actually Are
 
 ### 1. One shared app, not two separate product surfaces
 
-[App.tsx](/mnt/a/ohmic-audio-labs/App.tsx) is the shared shell.
+[App.tsx](/mnt/b/ohmic/repos/ohmic-audio-labs/App.tsx) is the shared shell.
 
 - Browser defaults to `DASHBOARD`.
 - Native defaults to `MOBILE_MODE`.
@@ -96,7 +96,7 @@ That means the Android app is not a separate native product with separate firmwa
 
 The three-tier docs are explicit:
 
-- Tier 1 interactive app/runtime in [docs/THREE_TIER_WEB_ARCHITECTURE.md](/mnt/a/ohmic-audio-labs/docs/THREE_TIER_WEB_ARCHITECTURE.md)
+- Tier 1 interactive app/runtime in [docs/THREE_TIER_WEB_ARCHITECTURE.md](/mnt/b/ohmic/repos/ohmic-audio-labs/docs/THREE_TIER_WEB_ARCHITECTURE.md)
 - Tier 2 suite docs
 - Tier 3 knowledge/SEO/static pages
 
@@ -144,10 +144,10 @@ The shared hardware surfaces already assume these device-facing routes:
 
 Examples:
 
-- [components/Hardware/useAmpLabControlPlane.ts](/mnt/a/ohmic-audio-labs/components/Hardware/useAmpLabControlPlane.ts)
-- [services/hardware/amplab/transports/HttpAmpLabTransport.ts](/mnt/a/ohmic-audio-labs/services/hardware/amplab/transports/HttpAmpLabTransport.ts)
-- [components/Hardware/AmpLabCustomizerModal.tsx](/mnt/a/ohmic-audio-labs/components/Hardware/AmpLabCustomizerModal.tsx)
-- [components/Hardware/BrandingPanel.tsx](/mnt/a/ohmic-audio-labs/components/Hardware/BrandingPanel.tsx)
+- [components/Hardware/useAmpLabControlPlane.ts](/mnt/b/ohmic/repos/ohmic-audio-labs/components/Hardware/useAmpLabControlPlane.ts)
+- [services/hardware/amplab/transports/HttpAmpLabTransport.ts](/mnt/b/ohmic/repos/ohmic-audio-labs/services/hardware/amplab/transports/HttpAmpLabTransport.ts)
+- [components/Hardware/AmpLabCustomizerModal.tsx](/mnt/b/ohmic/repos/ohmic-audio-labs/components/Hardware/AmpLabCustomizerModal.tsx)
+- [components/Hardware/BrandingPanel.tsx](/mnt/b/ohmic/repos/ohmic-audio-labs/components/Hardware/BrandingPanel.tsx)
 
 This means the hardware UI does not want "nothing." It already wants a clean device-web API.
 
@@ -155,7 +155,7 @@ This means the hardware UI does not want "nothing." It already wants a clean dev
 
 The DSP surfaces are even clearer: they want a topic contract, not device-specific internals.
 
-[services/hardware/dsp/firmwareContract.ts](/mnt/a/ohmic-audio-labs/services/hardware/dsp/firmwareContract.ts) and [components/Hardware/DspDeckSummary.tsx](/mnt/a/ohmic-audio-labs/components/Hardware/DspDeckSummary.tsx) already expect:
+[services/hardware/dsp/firmwareContract.ts](/mnt/b/ohmic/repos/ohmic-audio-labs/services/hardware/dsp/firmwareContract.ts) and [components/Hardware/DspDeckSummary.tsx](/mnt/b/ohmic/repos/ohmic-audio-labs/components/Hardware/DspDeckSummary.tsx) already expect:
 
 - `sys.info`
 - `sys.capabilities`
@@ -176,8 +176,8 @@ The Android shell does not create a whole new contract. It mostly reuses the sam
 
 Examples:
 
-- [components/Mobile/AmpLabBleTestSuite.tsx](/mnt/a/ohmic-audio-labs/components/Mobile/AmpLabBleTestSuite.tsx)
-- [platform/mobile/android/AmpLabSchemaModels.kt](/mnt/a/ohmic-audio-labs/platform/mobile/android/AmpLabSchemaModels.kt)
+- [components/Mobile/AmpLabBleTestSuite.tsx](/mnt/b/ohmic/repos/ohmic-audio-labs/components/Mobile/AmpLabBleTestSuite.tsx)
+- [platform/mobile/android/AmpLabSchemaModels.kt](/mnt/b/ohmic/repos/ohmic-audio-labs/platform/mobile/android/AmpLabSchemaModels.kt)
 
 Android-specific additions are mostly:
 

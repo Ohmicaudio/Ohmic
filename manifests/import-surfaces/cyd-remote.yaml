@@ -1,6 +1,6 @@
 version: 1
 repo: cyd-remote
-source_repo_path: /mnt/a/cyd_remote
+source_repo_path: /mnt/b/ohmic/repos/cyd-remote
 
 include:
   top_level:

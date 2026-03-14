@@ -9,7 +9,7 @@ Prevent repeated environment-class mistakes when working across:
 
 - WSL/bash
 - Windows PowerShell
-- mounted Windows drives from WSL (`/mnt/a`, `/mnt/b`, `/mnt/c`)
+- mounted Windows drives from WSL (`/mnt/b`, `/mnt/c`)
 - Windows-native Git and PowerShell tooling
 
 ## Core Rule
@@ -28,7 +28,7 @@ Do not assume one invocation model works in all three contexts.
 
 Examples:
 
-- `/mnt/a/ohmic-audio-labs`
+- `/mnt/b/ohmic/repos/ohmic-audio-labs`
 - `/mnt/b/ohmic`
 
 Use these with:
@@ -77,7 +77,7 @@ sed -n '1,120p' /mnt/b/ohmic/README.md
 ### Use Windows Git executable explicitly from WSL when needed
 
 ```bash
-/mnt/c/Program\ Files/Git/cmd/git.exe -C "$(wslpath -w /mnt/a/ohmic-audio-labs)" log -1 --oneline
+/mnt/c/Program\ Files/Git/cmd/git.exe -C "$(wslpath -w /mnt/b/ohmic/repos/ohmic-audio-labs)" log -1 --oneline
 ```
 
 ## Failure Modes Already Seen

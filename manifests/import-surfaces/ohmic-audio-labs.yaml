@@ -1,5 +1,5 @@
 name: ohmic-audio-labs
-source_repo: /mnt/a/ohmic-audio-labs
+source_repo: /mnt/b/ohmic/repos/ohmic-audio-labs
 target_repo: Ohmicaudio/ohmic-audio-labs
 mode: preserve-history-cleanup
 
