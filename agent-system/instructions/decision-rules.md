@@ -35,6 +35,20 @@ Once the target project is known:
 Shared memory is for continuity and coordination.
 Repo-local inspection is for truth.
 
+## Conduct Gate Rule
+
+Before entering active work, apply the conduct gate:
+
+- account for ready work
+- check active claims
+- verify state changes immediately after they happen
+- keep scope small
+- commit/push live coordination fixes instead of leaving them as local dirt
+
+Reference:
+
+- `B:\ohmic\docs\systems\AGENT_CONDUCT_GATE_2026-03-14.md`
+
 ## Environment Awareness Rule
 
 Before executing commands, verify:

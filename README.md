@@ -85,6 +85,10 @@ Use `B:\ohmic` as the startup funnel:
 
 Do not stop at the umbrella layer once the target repo is known.
 
+Before entering active work, apply the conduct gate:
+
+- [`docs/systems/AGENT_CONDUCT_GATE_2026-03-14.md`](docs/systems/AGENT_CONDUCT_GATE_2026-03-14.md)
+
 ## Local Sandbox Boundary
 
 Ignored nested repos under `B:/ohmic` are local-only sandboxes unless they are
