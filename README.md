@@ -52,10 +52,10 @@ ohmic/
 - `Ohmicaudio/ohmic-audio-static-content`
 - `Ohmicaudio/amplab-firmware`
 - `Ohmicaudio/cyd-remote`
+- `Ohmicaudio/hardware-specs`
 
 Later only if needed:
 
-- `Ohmicaudio/hardware-specs`
 - `Ohmicaudio/ohmic-contracts`
 
 ## Current Seed Docs

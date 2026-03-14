@@ -75,3 +75,17 @@ repos:
       - display-stack
       - handheld-ui
       - cyd-bringup
+
+  - name: hardware-specs
+    kind: hardware
+    visibility: private
+    preserve_history: false
+    source_local_path: /mnt/b/ohmic/repos/hardware-specs
+    mirror_local_path: /mnt/b/ohmic/repos/hardware-specs
+    purpose:
+      - hardware-planning
+      - electrical-architecture
+      - schematic-capture
+      - pcb-layout
+      - bringup
+      - manufacturing

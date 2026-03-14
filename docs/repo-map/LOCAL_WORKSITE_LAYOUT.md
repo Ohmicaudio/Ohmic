@@ -25,5 +25,7 @@ The folders under `repos/` are for local clones or mirrors:
 - `repos/ohmic-audio-labs`
 - `repos/amplab-firmware`
 - `repos/cyd-remote`
+- `repos/ohmic-audio-static-content`
+- `repos/hardware-specs`
 
 They are intentionally ignored by the umbrella repo so this root can stay clean.
