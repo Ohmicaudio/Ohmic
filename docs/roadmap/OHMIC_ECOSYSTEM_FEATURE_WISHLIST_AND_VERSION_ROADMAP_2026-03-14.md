@@ -40,11 +40,11 @@ The Ohmic ecosystem should become:
 
 Use these names consistently:
 
-- `OSM` = the system planner and project-graph lane
+- `OSM` (`Ohmic System Management`) = the system planner and project-graph lane
 - `BassBuilder` = the enclosure and subwoofer design lane
 
-`OSM` should be treated as the build, topology, planning, and project-state
-surface.
+`OSM` (`Ohmic System Management`) should be treated as the build, topology,
+planning, and project-state surface.
 
 `BassBuilder` should be treated as one specialized design tool family that can
 feed into `OSM`, not as the entire planner.
@@ -53,7 +53,7 @@ feed into `OSM`, not as the entire planner.
 
 The long-term experience should feel like one platform that can do all of this:
 
-- plan a full system in `OSM`
+- plan a full system in `OSM` (`Ohmic System Management`)
 - model enclosure and subwoofer details in `BassBuilder`
 - model and save projects
 - learn from guided content
@@ -128,7 +128,7 @@ Make the software worth paying for even before custom hardware exists.
 
 ### Possible additions
 
-- `OSM` saved projects and richer workspace state
+- `OSM` (`Ohmic System Management`) saved projects and richer workspace state
 - `OSM` topology graph for full-system planning
 - `BassBuilder` round-trip into saved project state
 - measurement session save/export/review

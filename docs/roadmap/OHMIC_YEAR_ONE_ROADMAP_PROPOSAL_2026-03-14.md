@@ -80,7 +80,8 @@ Ship the first coherent software-commercial surface.
 ### Proposed software priorities
 
 - stabilize the three-tier web surface
-- tighten `OSM`, `BassBuilder`, and measurement tool entry points
+- tighten `OSM` (`Ohmic System Management`), `BassBuilder`, and measurement
+  tool entry points
 - expose clearer value boundaries between free and paid
 - ship at least one polished premium workflow bundle
 
@@ -124,7 +125,7 @@ Do not build six disconnected apps.
 
 Instead, start identifying shared-core mini-app candidates:
 
-- `OSM` system planner and saved project graph
+- `OSM` (`Ohmic System Management`) system planner and saved project graph
 - wiring and ohm-load calculator
 - box and port calculator
 - gain, voltage, and power helper
@@ -195,7 +196,7 @@ That should be treated as the next horizon, not assumed shipped in year one.
 
 ### 1. Product and Software
 
-- `OSM` planning workflows
+- `OSM` (`Ohmic System Management`) planning workflows
 - `BassBuilder` enclosure-design workflows
 - measurement workflows
 - control and device workflows
