@@ -1,7 +1,7 @@
 scope: project
 authority: working
 project: ohmic-audio-static-content
-status: ready
+status: done
 requested: 2026-03-14
 requester: codex-local
 origin: qa-followup
@@ -9,7 +9,7 @@ priority: soon
 blocking: no
 depends_on:
 handoff_from: 2026-03-14-run-post-graphics-page-qa-reference
-claim_id:
+claim_id: 20260314T112642Z-b3ffe728
 topic: requested-task
 
 # Produce `Big Three Upgrade Diagram` graphic
@@ -35,6 +35,17 @@ topic: requested-task
 - do not also consume the `Full Electrical System Diagram`, `Fuse Type Reference Chart`, or `Proper Ground Point Preparation` placeholders on the section page
 - add a metadata sidecar if the asset family does not already have one
 - follow the verification steps in `B:\ohmic\docs\migration\STATIC_NEXT_WAVE_EXECUTION_GUIDE_2026-03-14.md`
+
+## Completion
+
+- created one reusable SVG asset at `public/assets/engineering-diagrams/images/diagrams/big_three_upgrade_diagram.svg`
+- added the paired metadata sidecar at `public/assets/engineering-diagrams/metadata/big_three_upgrade_diagram.svg.txt`
+- replaced the `Big Three Upgrade Diagram` placeholder block in:
+  - `reference/visual/big-three-upgrade-diagram/index.html`
+  - `reference/visual/sections/9-4-electrical-reference-diagrams/index.html`
+- verification confirmed both target pages now reuse the same SVG with real `<figure><img>` markup and captions
+- verification confirmed the rendered engine-bay diagram looks correct in static preview on `reference/visual/big-three-upgrade-diagram/`
+- the other electrical figure families in the section page were already handled separately and were not reopened here
 
 ## Ready When
 
