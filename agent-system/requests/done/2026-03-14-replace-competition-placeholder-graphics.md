@@ -1,7 +1,7 @@
 scope: project
 authority: working
 project: ohmic-audio-static-content
-status: ready
+status: done
 requested: 2026-03-14
 requester: codex-local
 origin: follow-up
@@ -9,7 +9,7 @@ priority: soon
 blocking: no
 depends_on:
 handoff_from:
-claim_id:
+claim_id: 20260314T041831Z-bf26ec2b
 topic: requested-task
 
 # Replace `competition` placeholder graphics
@@ -18,6 +18,16 @@ topic: requested-task
 
 - replace the remaining visual placeholders in `competition/*` with real diagrams, photos, or polished illustration assets
 - leave the bucket free of placeholder markers without reopening parity work
+
+## Completion
+
+- replaced the remaining `5` competition placeholder blocks with real SVG illustration assets
+- added `3` reusable competition graphics:
+  - SPL wall layout
+  - SQ installation layout
+  - wall-build cross-section
+- updated all affected competition pages and section pages to use real `<figure><img>` markup with captions
+- verification confirmed that the `competition/*` bucket no longer contains raw placeholder markers
 
 ## Scope
 
@@ -41,4 +51,3 @@ topic: requested-task
 
 - the `5` placeholder markers are gone
 - the replacement visuals fit the page topic and do not degrade layout or metadata quality
-
