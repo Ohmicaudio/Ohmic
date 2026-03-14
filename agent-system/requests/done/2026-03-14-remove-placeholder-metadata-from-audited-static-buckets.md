@@ -1,7 +1,7 @@
 scope: project
 authority: working
 project: ohmic-audio-static-content
-status: ready
+status: done
 requested: 2026-03-14
 requester: codex-local
 origin: follow-up
@@ -9,7 +9,7 @@ priority: now
 blocking: no
 depends_on:
 handoff_from:
-claim_id:
+claim_id: 20260314T041349Z-16e94863
 topic: requested-task
 
 # Remove placeholder metadata from audited static buckets
@@ -18,6 +18,16 @@ topic: requested-task
 
 - remove `[VISUAL PLACEHOLDER: ...]` text from HTML metadata fields in already-audited static buckets
 - replace placeholder-driven meta descriptions with clean, human-readable summaries
+
+## Completion
+
+- cleared placeholder-driven metadata leaks across all three audited buckets:
+  - `mobile-electronics`: `7`
+  - `tuning`: `4`
+  - `reference`: `31`
+- updated `42` pages total
+- replaced placeholder filenames in `<meta name="description">`, `<meta property="og:description">`, and JSON-LD `description` fields with short page-specific summaries derived from the page content itself
+- verification pass confirmed that no audited page in these buckets still exposes placeholder text in its metadata fields
 
 ## Scope
 
@@ -44,4 +54,3 @@ topic: requested-task
 
 - no audited static page still exposes placeholder text in `<meta name="description">`
 - replacement metadata is short, readable, and aligned with the page topic
-
