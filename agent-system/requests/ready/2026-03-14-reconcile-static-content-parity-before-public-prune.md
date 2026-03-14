@@ -64,6 +64,14 @@ topic: requested-task
   - `electrical`
   - `dsp`
   - `installation`
+- completed split buckets already recorded in `requests/done/`:
+  - `meta`
+  - `advanced-topics`
+  - `electrical`
+  - `dsp`
+  - `installation`
+  - `fundamentals`
+  - `mobile-electronics`
 
 ## Ready When
 
@@ -85,8 +93,12 @@ topic: requested-task
 - another can work `electrical` or `dsp`
 - larger buckets like `appendix` and `reference` should be split further once the higher-visibility sections are under control
 - concrete split requests now exist for:
-  - `meta`
-  - `advanced-topics`
-  - `electrical`
-  - `dsp`
-  - `installation`
+  - `appendix/glossary`
+  - `appendix/manufacturers`
+  - `appendix/reference-tables`
+  - `reference/math-measurement`
+  - `reference/troubleshooting`
+  - `reference/visual`
+  - `subwoofer-enclosures`
+  - `tuning`
+  - `competition`
