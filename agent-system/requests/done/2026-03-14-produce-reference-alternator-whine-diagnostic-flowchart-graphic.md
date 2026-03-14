@@ -1,7 +1,7 @@
 scope: project
 authority: working
 project: ohmic-audio-static-content
-status: ready
+status: done
 requested: 2026-03-14
 requester: codex-local
 origin: split
@@ -9,7 +9,7 @@ priority: soon
 blocking: no
 depends_on:
 handoff_from:
-claim_id:
+claim_id: 20260314T110211Z-92353905
 topic: requested-task
 
 # Produce `Alternator Whine Diagnostic Flowchart` graphic
@@ -38,6 +38,17 @@ topic: requested-task
 - replace only the `Alternator Whine Diagnostic Flowchart` placeholder family
 - do not rewrite the rest of the troubleshooting section page during this task
 - follow the verification steps in `B:\ohmic\docs\migration\STATIC_NEXT_WAVE_EXECUTION_GUIDE_2026-03-14.md`
+
+## Completion
+
+- created one reusable SVG asset at `public/assets/engineering-diagrams/images/diagrams/alternator_whine_diagnostic_flowchart.svg`
+- added the paired metadata sidecar at `public/assets/engineering-diagrams/metadata/alternator_whine_diagnostic_flowchart.svg.txt`
+- replaced the `Alternator Whine Diagnostic Flowchart` placeholder block in:
+  - `reference/troubleshooting/alternator-whine/index.html`
+  - `reference/troubleshooting/sections/7-2-noise-and-interference-troubleshooting/index.html`
+- verification confirmed both target pages now reuse the same SVG with real `<figure><img>` markup and captions
+- verification confirmed the rendered flowchart looks correct in static preview on `reference/troubleshooting/alternator-whine/`
+- the rest of the troubleshooting section page was left untouched outside this placeholder family
 
 ## Ready When
 
