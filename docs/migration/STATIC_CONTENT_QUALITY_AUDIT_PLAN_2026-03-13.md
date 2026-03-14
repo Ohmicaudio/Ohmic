@@ -86,3 +86,80 @@ Each section audit should produce:
 ## Next Move
 
 Start with a section-level audit request for the highest-visibility buckets instead of trying to reconcile all `577` differing files at once.
+
+## Audit Results (2026-03-14)
+
+### `meta`
+
+- keep the current static-host pages as-is
+- no stale host references, mojibake defects, visual placeholders, inline `<style>` blocks, or generic `Index of pages in /...` landing metadata were found across `71` pages
+- representative checks:
+  - `meta/index.html`
+  - `meta/for-engineers/index.html`
+  - `meta/ohmic-audio-labs-car-audio-wiki/index.html`
+- outcome:
+  - no immediate cleanup bucket needed
+
+### `electrical`
+
+- keep the current static-host pages as-is
+- no stale host references, mojibake defects, visual placeholders, inline `<style>` blocks, or generic `Index of pages in /...` landing metadata were found across `26` pages
+- representative checks:
+  - `electrical/index.html`
+  - `electrical/beginner-level-what-batteries-do/index.html`
+  - `electrical/engineer-level-ultracapacitors/index.html`
+- outcome:
+  - no immediate cleanup bucket needed
+
+### `advanced-topics`
+
+- keep the current static-host pages as canonical
+- no stale host references, mojibake defects, or visual placeholders were found in the bucket
+- quality debt remains in presentation:
+  - `9` pages still contain page-local `<style>` blocks
+  - `advanced-topics/index.html` is still a generic `Index of pages in /advanced-topics.` landing page instead of a section hub
+- representative follow-up files:
+  - `advanced-topics/index.html`
+  - `advanced-topics/beginner-level-ai-assisted-tuning/index.html`
+  - `advanced-topics/engineer-level-inverter-switching-noise-analysis/index.html`
+  - `advanced-topics/sections/table-of-contents/index.html`
+- outcome:
+  - needs a styling and landing-page polish bucket
+
+### `dsp`
+
+- keep the current static-host pages as canonical
+- no stale host references, mojibake defects, or inline `<style>` blocks were found in the bucket
+- quality debt remains in graphics and section presentation:
+  - `11` pages still contain `[VISUAL PLACEHOLDER: ...]` markers
+  - `dsp/index.html` is still a generic `Index of pages in /dsp.` landing page
+- representative follow-up files:
+  - `dsp/index.html`
+  - `dsp/beginner-level-do-you-need-a-dsp/index.html`
+  - `dsp/installer-level-eq-workflow-and-filter-strategy/index.html`
+  - `dsp/sections/12-1-dsp-platform-selection/index.html`
+- outcome:
+  - needs a graphics and landing-page cleanup bucket
+
+### `installation`
+
+- keep the current static-host pages as canonical
+- no stale host references, mojibake defects, or inline `<style>` blocks were found in the bucket
+- this is the highest-debt quality section in the first-wave audit:
+  - `30` pages still contain `[VISUAL PLACEHOLDER: ...]` markers
+  - `installation/index.html` and `installation/advanced/index.html` are still generic `Index of pages in /...` landing pages
+  - `3` pages still contain `Content from original document, expanded` markers
+- representative follow-up files:
+  - `installation/index.html`
+  - `installation/advanced/index.html`
+  - `installation/advanced/beginner-level-enclosure-types-explained/index.html`
+  - `installation/beginner-level-understanding-power-requirements/index.html`
+  - `installation/sections/2-5-power-and-power-wiring/index.html`
+- outcome:
+  - needs the first focused cleanup bucket after the audit closes
+
+## Follow-up Buckets
+
+- `advanced-topics`: styling cleanup and landing-page rewrite
+- `dsp`: graphics placeholder cleanup and landing-page rewrite
+- `installation`: graphics placeholder cleanup, expanded-marker cleanup, and landing-page rewrite
