@@ -19,6 +19,18 @@ steps.
 - without an operating layer, marketing, monetization, and support will remain
   reactive and inconsistent
 
+## Execution Priority Rule
+
+Business-operations tasks are currently secondary to software completion.
+
+They should be advanced when:
+
+- they unblock software delivery
+- they sharpen monetization or positioning for already-shipping software
+- they can run in parallel without slowing current code, content, or QA work
+
+They should not displace current code fixes or active software completion work.
+
 ## Scope In
 
 - define the human operating model
@@ -212,3 +224,8 @@ If this 2-day business plan succeeds, Ohmic should end the window with:
 - a real acquisition loop
 - a real customer-response loop
 - a cleaner founder operating rhythm
+
+Execution note:
+
+- until current software completion pressure drops, business-ops follow-ons
+  should be treated as support lanes rather than the main lane

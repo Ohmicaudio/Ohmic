@@ -19,6 +19,19 @@ to start cleanly.
   justify software
 - the team now needs one execution packet, not more scattered good ideas
 
+## Execution Priority Rule
+
+Current software completion outranks planning follow-on work.
+
+Interpretation:
+
+- code fixes
+- completion of already-active software and content implementation lanes
+- route, boundary, and quality verification
+
+all stay ahead of new business-operations follow-ons unless a business item is
+explicitly blocking current software completion.
+
 ## Scope In
 
 - finalize planning language and roadmap baseline
@@ -188,6 +201,10 @@ Exit criteria:
 
 - the first channel mix is written down
 - content jobs are tied to real product surfaces
+
+Priority note:
+
+- this work should support software execution, not preempt it
 
 ## Deliverables Due Inside 48 Hours
 

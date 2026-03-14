@@ -25,3 +25,4 @@ can actually be run.
 
 - keep it lightweight enough to survive founder reality
 - prefer visible consistency over metric theater
+- secondary to current software completion and code-fix pressure

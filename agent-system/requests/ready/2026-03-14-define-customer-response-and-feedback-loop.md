@@ -1,5 +1,5 @@
 status: ready
-priority: high
+priority: medium
 project: ohmic
 owner: unclaimed
 created: 2026-03-14
@@ -25,3 +25,4 @@ pain, and requests stop getting lost between chat, docs, and product work.
 
 - optimize for trust and learning, not just speed
 - keep the loop founder-usable before imagining a larger team
+- do not preempt current software completion unless this loop is blocking it
