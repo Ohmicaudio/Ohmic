@@ -1,7 +1,7 @@
 scope: project
 authority: working
 project: ohmic-audio-static-content
-status: ready
+status: done
 requested: 2026-03-14
 requester: codex-local
 origin: dependency
@@ -9,7 +9,7 @@ priority: soon
 blocking: no
 depends_on:
 handoff_from: 2026-03-14-audit-static-content-quality-buckets
-claim_id:
+claim_id: 20260314T035746Z-91344c06
 topic: requested-task
 
 # Polish static-content `advanced-topics` quality bucket
@@ -19,6 +19,13 @@ topic: requested-task
 - replace the generic `advanced-topics/index.html` landing page with a real section hub
 - remove or consolidate page-local `<style>` blocks across the bucket
 - leave the bucket looking publication-ready without reopening parity decisions
+
+## Completion
+
+- rewrote `advanced-topics/index.html` into a real section hub with routing by question, experience level, and topic track
+- replaced the generic auto-index metadata and footer with publication-ready section-index copy
+- intentionally split the remaining `9` page-local `<style>` blocks into a dedicated follow-up bucket because they are nine unique article-level layouts rather than one reusable quick fix
+- high-visibility landing-page debt is now cleared from the `advanced-topics` bucket
 
 ## Scope
 

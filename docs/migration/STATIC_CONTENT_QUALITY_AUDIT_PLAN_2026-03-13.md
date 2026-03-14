@@ -124,7 +124,8 @@ Start with a section-level audit request for the highest-visibility buckets inst
   - `advanced-topics/engineer-level-inverter-switching-noise-analysis/index.html`
   - `advanced-topics/sections/table-of-contents/index.html`
 - outcome:
-  - needs a styling and landing-page polish bucket
+  - landing-page cleanup completed in the first follow-up bucket
+  - remaining page-local style debt is isolated to a dedicated advanced-topics style-normalization bucket
 
 ### `dsp`
 
@@ -161,5 +162,5 @@ Start with a section-level audit request for the highest-visibility buckets inst
 
 ## Follow-up Buckets
 
-- `advanced-topics`: styling cleanup and landing-page rewrite
+- `advanced-topics`: page-local style normalization
 - `dsp`: graphics placeholder cleanup and landing-page rewrite
