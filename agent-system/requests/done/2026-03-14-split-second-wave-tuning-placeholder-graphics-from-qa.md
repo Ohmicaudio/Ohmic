@@ -1,7 +1,7 @@
 scope: project
 authority: working
 project: ohmic-audio-static-content
-status: ready
+status: done
 requested: 2026-03-14
 requester: codex-local
 origin: follow-up
@@ -9,7 +9,7 @@ priority: soon
 blocking: no
 depends_on:
 handoff_from: 2026-03-14-run-post-graphics-page-qa-tuning.md
-claim_id:
+claim_id: 20260314T121759Z-88e69b04
 topic: requested-task
 
 # Split second-wave `tuning` placeholder graphics from QA
@@ -36,6 +36,18 @@ topic: requested-task
 - tuning QA confirmed the newly inserted graphics render correctly and the added figures already have real `alt` text and captions
 - the remaining defects are older placeholder blocks still embedded deeper in the checked pages
 - do not reopen the completed first-wave graphics tasks; split only the leftover placeholder families that remain after QA
+
+## Completion
+
+- scanned the requested tuning QA pages for leftover `[VISUAL PLACEHOLDER: ...]` markers
+- identified 25 remaining placeholder families still present in the checked tuning pages
+- created 25 new ready microtasks, one per remaining placeholder family, covering the following themes:
+  - crossover behavior and filter concepts
+  - REW / measurement / response-reading graphics
+  - time-alignment and target-curve follow-up graphics
+  - competition install / wall visuals
+  - calibration and advanced DSP workflow diagrams
+- left the completed first-wave tuning graphics tasks untouched as instructed
 
 ## Ready When
 
