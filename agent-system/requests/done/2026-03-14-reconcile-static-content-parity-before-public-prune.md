@@ -1,12 +1,12 @@
 scope: project
 authority: working
 project: ohmic-audio-labs
-status: ready
+status: done
 requested: 2026-03-14
 requester: codex-local
 origin: dependency
 priority: now
-blocking: yes
+blocking: no
 depends_on:
 handoff_from:
 claim_id: 20260314T024941Z-2ade8405
@@ -19,6 +19,14 @@ topic: requested-task
 - reconcile the duplicated static content between `ohmic-audio-labs` and `ohmic-audio-static-content`
 - decide which side is canonical for the differing pages
 - leave the static-host repo as the trusted destination before any app-side delete/prune step
+
+## Completion
+
+- all top-level differing parity buckets have now been explicitly resolved and recorded under `agent-system/requests/done/`
+- the final remaining unresolved bucket, `competition`, reduced to host metadata only once historical app-side URLs were normalized from `https://ohmicaudio.netlify.app` to `https://ohmicaudiolabs.com`
+- the canonical destination for the shared static-doc surface is now explicit: `B:\ohmic\repos\ohmic-audio-static-content\public`
+- the current `ohmic-audio-labs` worktree no longer contains `public/`, so parity closure now serves as historical reconciliation rather than as a gate on a future delete
+- remaining follow-up belongs on the separate static-content quality-audit track, not on the parity board
 
 ## Scope
 
@@ -76,24 +84,10 @@ topic: requested-task
   - `mobile-electronics`
   - `subwoofer-enclosures`
   - `tuning`
+  - `competition`
 
-## Ready When
-
-- a claim is active for the reconciliation surfaces
-- the canonical direction for differing page content is explicit
-- the surviving content set in `ohmic-audio-static-content` is verified enough that prune becomes a cleanup step instead of a risky decision
-- keep/merge decisions are explained using the stronger-file rubric rather than taste alone
-
-## Suggested Claim Scope
-
-- `B:\ohmic\repos\ohmic-audio-labs\public`
-- `B:\ohmic\repos\ohmic-audio-static-content\public`
-- `B:\ohmic\repos\ohmic-audio-static-content\site`
-- `B:\ohmic\repos\ohmic-audio-static-content\content-work`
-
-## Suggested Split
+## Notes
 
 - first-wave and second-wave bucket closures are already recorded in `requests/done/`
-- the remaining unresolved top-level parity bucket is:
-  - `competition`
+- no unresolved top-level parity buckets remain
 - quality/style work should continue through the separate audit track rather than by re-opening already-resolved host-only parity buckets
