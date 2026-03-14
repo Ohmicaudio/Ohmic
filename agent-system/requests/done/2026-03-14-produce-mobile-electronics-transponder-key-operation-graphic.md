@@ -32,7 +32,10 @@ topic: requested-task
 - added the paired metadata sidecar at `public/assets/engineering-diagrams/metadata/transponder_key_operation.svg.txt`
 - replaced the `Transponder Key Operation` placeholder block in:
   - `mobile-electronics/sections/5-6-remote-start-security-and-smart-vehicle-integration/index.html`
+- also cleared the mirrored standalone page:
+  - `mobile-electronics/engineer-level-immobilizer-theory-and-security-analysis/index.html`
 - verification confirmed the target page now reuses the SVG with real `<figure><img>` markup and an engineer-facing caption
+- verification confirmed the mirrored standalone engineer page also reuses the same SVG with real figure markup
 - verification confirmed the rendered immobilizer diagram reads cleanly in static preview on `mobile-electronics/sections/5-6-remote-start-security-and-smart-vehicle-integration/`
 - the graphic keeps the real teaching point intact: the common auth pattern is clear, but the note explicitly avoids pretending every transponder-key system uses one universal protocol
 
