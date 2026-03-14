@@ -26,6 +26,7 @@ topic: requested-task
 - no deeper content drift was found across the bucket
 - `ohmic-audio-static-content/public/dsp` is the canonical kept side for this bucket
 - no page-by-page content merge was required for `dsp`
+- all `36` historical app-side `dsp/*` files still pointed at `https://ohmicaudio.netlify.app`, while the static-host copies already use `https://ohmicaudiolabs.com`
 
 ## Scope
 
@@ -41,3 +42,4 @@ topic: requested-task
   - `dsp/index.html`
   - `dsp/day-1-physical-installation-and-wiring/index.html`
   - `dsp/engineer-level-fir-filter-mathematics/index.html`
+- `11` `dsp/*` pages still contain `[VISUAL PLACEHOLDER: ...]` markers, which is a quality follow-up but not a parity blocker

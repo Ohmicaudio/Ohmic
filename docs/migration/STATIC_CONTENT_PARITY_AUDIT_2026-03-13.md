@@ -127,3 +127,78 @@ Operational result:
 
 - keep the current `ohmic-audio-static-content` `electrical/*` pages as canonical
 - no page promotion from app history was needed for this bucket
+
+### `meta` bucket (2026-03-14)
+
+- canonical source: `B:\ohmic\repos\ohmic-audio-static-content\public\meta`
+- historical app-side comparison source: `ohmic-audio-labs` Git `HEAD` under `public/meta/*`
+- current `ohmic-audio-labs` worktree no longer contains `public/meta`, so reconciliation for this bucket was also a canonical-decision pass rather than a file-copy pass
+- compared files in bucket: `71`
+- historical app-side files still using `https://ohmicaudio.netlify.app`: `71`
+- static-host files still using `https://ohmicaudio.netlify.app`: `0`
+- static-host files longer than the historical app-side versions: `70`
+- static-host files with more explicit `<section>` structure than the historical app-side versions: `53`
+- one file, `meta/index.html`, is shorter than the historical app-side version but still more structured and remains the stronger canonical page
+
+Representative files that clearly favored the static-host copy:
+
+- `meta/index.html`
+- `meta/ohmic-audio-labs-car-audio-wiki/index.html`
+- `meta/for-engineers/index.html`
+- `meta/master-index-pages-257-270/index.html`
+
+Operational result:
+
+- keep the current `ohmic-audio-static-content` `meta/*` pages as canonical
+- no page promotion from app history was needed for this bucket
+- inspection note: the earlier apparent mojibake in terminal output was caused by a PowerShell decoding path during review, not by invalid UTF-8 bytes in the published files
+
+### `dsp` bucket (2026-03-14)
+
+- canonical source: `B:\ohmic\repos\ohmic-audio-static-content\public\dsp`
+- historical app-side comparison source: `ohmic-audio-labs` Git `HEAD` under `public/dsp/*`
+- current `ohmic-audio-labs` worktree no longer contains `public/dsp`, so reconciliation for this bucket was also a canonical-decision pass rather than a file-copy pass
+- compared files in bucket: `36`
+- historical app-side files still using `https://ohmicaudio.netlify.app`: `36`
+- static-host files still using `https://ohmicaudio.netlify.app`: `0`
+- static-host files longer than the historical app-side versions: `36`
+- static-host files with more explicit `<section>` structure than the historical app-side versions: `0`
+
+Representative files that favored keeping the static-host copy:
+
+- `dsp/index.html`
+- `dsp/day-1-physical-installation-and-wiring/index.html`
+- `dsp/engineer-level-fir-filter-mathematics/index.html`
+- `dsp/sections/table-of-contents/index.html`
+
+Operational result:
+
+- keep the current `ohmic-audio-static-content` `dsp/*` pages as canonical
+- no page promotion from app history was needed for this bucket
+- quality follow-up still remains outside parity: `11` `dsp/*` pages include visual placeholders and should stay on the quality-audit track
+
+### `advanced-topics` bucket (2026-03-14)
+
+- canonical source: `B:\ohmic\repos\ohmic-audio-static-content\public\advanced-topics`
+- historical app-side comparison source: `ohmic-audio-labs` Git `HEAD` under `public/advanced-topics/*`
+- current `ohmic-audio-labs` worktree no longer contains `public/advanced-topics`, so reconciliation for this bucket was also a canonical-decision pass rather than a file-copy pass
+- compared files in bucket: `25`
+- historical app-side files still using `https://ohmicaudio.netlify.app`: `25`
+- static-host files still using `https://ohmicaudio.netlify.app`: `0`
+- static-host files longer than the historical app-side versions: `25`
+- static-host files with more explicit `<section>` structure than the historical app-side versions: `24`
+- visual placeholder pages in historical app-side copy: `2`
+- visual placeholder pages in static-host copy: `0`
+
+Representative files that clearly favored the static-host copy:
+
+- `advanced-topics/index.html`
+- `advanced-topics/sections/table-of-contents/index.html`
+- `advanced-topics/engineer-level-neural-networks-for-room-correction/index.html`
+- `advanced-topics/beginner-level-what-spatial-audio-is/index.html`
+
+Operational result:
+
+- keep the current `ohmic-audio-static-content` `advanced-topics/*` pages as canonical
+- no page promotion from app history was needed for this bucket
+- quality follow-up still remains outside parity: `9` `advanced-topics/*` pages include page-local `<style>` blocks and should stay on the quality-audit track
