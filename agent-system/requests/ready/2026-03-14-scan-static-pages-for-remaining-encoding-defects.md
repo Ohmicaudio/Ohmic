@@ -24,15 +24,20 @@ topic: requested-task
 - `B:\ohmic\repos\ohmic-audio-static-content\public`
 - `B:\ohmic\repos\ohmic-audio-static-content\content-work\ENCODING_AUDIT_2026-03-13.md`
 - `B:\ohmic\docs\migration\STATIC_POST_GRAPHICS_FINISHING_PLAYBOOK_2026-03-14.md`
+- `B:\ohmic\docs\migration\STATIC_NEXT_WAVE_EXECUTION_GUIDE_2026-03-14.md`
 
 ## Instructions
 
 - scan first; do not bulk-edit on discovery alone
 - record affected files and defect classes
 - split follow-up fixes by surface if the defect list is not tiny
+- use targeted searches for mojibake, replacement characters, and metadata contamination:
+  - `rg -n '�|â€”|â€“|â€œ|â€|â€™|Ã|Â' public`
+  - `rg -n '<meta name="description".*(VISUAL PLACEHOLDER|â|Ã|�)' public`
+- call out whether each defect is in body copy, metadata, caption text, or headings
+- do not treat unresolved placeholder markers as encoding defects unless the actual text is malformed
 
 ## Ready When
 
 - the current defect list is explicit
 - follow-up fix tasks are obvious or already queued
-

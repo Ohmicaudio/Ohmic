@@ -24,6 +24,7 @@ topic: requested-task
 - `B:\ohmic\repos\ohmic-audio-static-content\public`
 - `B:\ohmic\repos\ohmic-audio-static-content\site`
 - `B:\ohmic\docs\migration\STATIC_POST_GRAPHICS_FINISHING_PLAYBOOK_2026-03-14.md`
+- `B:\ohmic\docs\migration\STATIC_NEXT_WAVE_EXECUTION_GUIDE_2026-03-14.md`
 
 ## Instructions
 
@@ -31,9 +32,16 @@ topic: requested-task
 - verify image paths load
 - verify section pages and index pages still link cleanly
 - report broken asset or route paths explicitly
+- include this minimum sample set:
+  - `/reference/`
+  - `/reference/visual/`
+  - `/reference/visual/speaker-anatomy-cross-section/`
+  - `/reference/visual/complete-electrical-system-overview/`
+  - `/reference/math-measurement/wavelength/`
+  - `/reference/troubleshooting/alternator-whine/`
+- check at least one direct asset URL for each newly added reference SVG
 
 ## Ready When
 
 - checked routes/assets are listed
 - any broken paths are fixed or queued explicitly
-

@@ -17,12 +17,27 @@ topic: requested-task
 ## Requested Outcome
 
 - create one reusable `Full Electrical System Diagram` asset
+- create it at:
+  - `assets/engineering-diagrams/images/diagrams/full_electrical_system_diagram.svg`
 - replace the placeholder in exactly these pages:
   - `reference/visual/complete-electrical-system-overview/index.html`
   - `reference/visual/sections/9-4-electrical-reference-diagrams/index.html`
+
+## Asset Brief
+
+- alternator -> battery -> main fuse -> distribution block -> individual amplifier fuses -> amplifiers
+- show ground paths from each amp to chassis to battery
+- show remote turn-on chain from head unit
+- label wire gauges and fuse ratings
+
+## Instructions
+
+- replace only the `Full Electrical System Diagram` placeholder family
+- do not also consume the `Fuse Type Reference Chart`, `Proper Ground Point Preparation`, or `Big Three Upgrade Diagram` placeholders on the section page
+- keep labels practical and serviceable, not overly decorative
+- follow the verification steps in `B:\ohmic\docs\migration\STATIC_NEXT_WAVE_EXECUTION_GUIDE_2026-03-14.md`
 
 ## Ready When
 
 - one asset exists and is reused in both target pages
 - both placeholder markers are gone
-
