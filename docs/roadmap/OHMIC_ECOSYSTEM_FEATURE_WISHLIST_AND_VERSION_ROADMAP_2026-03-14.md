@@ -141,25 +141,24 @@ Make the software worth paying for even before custom hardware exists.
 
 This is where software starts clearly paying for hardware.
 
-## `v0.4` Community And Local Network Layer
+## `v0.4` Proof, Sharing, And Early Community Layer
 
 ### Goal
 
-Add the human network competitors usually fail to build.
+Add the first lightweight trust and sharing layer around the software.
 
 ### Possible additions
 
-- local bass meet and event map
-- installer and shop discovery surfaces
 - builder profile pages
 - local system and build journals
-- local recommendation and trusted-vendor layer
 - build showcase feeds
 - social sharing hooks for measurements, projects, and results
+- preset and project proof sharing
 
 ### Why it matters
 
-This creates retention and real-world gravity, not just page views.
+This creates trust and repeat attention before heavier discovery or moderation
+surfaces exist.
 
 ## `v0.5` Device Fabric And Control Maturity
 
@@ -182,26 +181,29 @@ Turn the ecosystem into a true multi-device control platform.
 Phones, browsers, handhelds, DSPs, measurement accessories, and future nodes
 start behaving like one family.
 
-## `v0.6` Media And Listening Plane
+## `v0.6` Source Routing And Media Groundwork
 
 ### Goal
 
-Add real listening playback features without polluting the control plane.
+Prepare for listening-media features without polluting the control plane too
+early.
 
 ### Possible additions
 
-- Wi-Fi listening-only audio receiver path
-- Bluetooth audio sink support where hardware allows
-- wired USB audio and analog input routing support
-- network handoff or casting-style local playback
 - source priority management
 - source quality comparison and routing guidance
+- audio source capability inventory
+- wired USB audio and analog input routing support
+- Bluetooth audio sink groundwork where hardware allows
+- session and device UX for source selection
 
 ### Important architecture rule
 
 This must stay a media-plane feature.
 
 It should not be treated as an extension of the DSP control WebSocket API.
+
+This wave should prepare the lane, not overbuild it.
 
 ## `v0.7` Measurement And Competition Suite
 
@@ -220,7 +222,7 @@ Push from useful tools into serious measurement and competition utility.
 - competition scorecards and preparation workflows
 - lane history, overlays, and comparison views
 
-## `v0.8` Installer And Fleet Operations Layer
+## `v0.8` Installer, Discovery, And Field Operations Layer
 
 ### Goal
 
@@ -235,6 +237,12 @@ Become usable not only by enthusiasts but by installers and repeat operators.
 - diagnostics dashboards
 - install QA checklists
 - service logs and revisit notes
+- local bass meet and event map
+- installer and shop discovery surfaces
+- local recommendation and trusted-vendor layer
+- moderated local ecosystem and referral surfaces
+- full Wi-Fi listening-only audio receiver path on compatible hardware
+- network handoff or casting-style local playback where strategically useful
 
 ## `v0.9` Hardware-Linked Software Platform
 

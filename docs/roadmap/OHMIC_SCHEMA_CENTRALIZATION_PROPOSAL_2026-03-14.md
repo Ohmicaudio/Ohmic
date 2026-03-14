@@ -178,6 +178,30 @@ scatter back out by repo.
 - add publish/update workflow
 - make schema consumers pull from the dedicated source with less manual copying
 
+## Cutover Triggers For `ohmic-schemas`
+
+Do not create the dedicated repo just because it sounds cleaner.
+
+Create it when the current arrangement starts creating repeat cost.
+
+Treat cutover as justified when at least three of these are true:
+
+- schema changes are landing often enough that mirror sync is recurring weekly
+  work
+- more than one contract family is under active version churn at the same time
+- at least two consumer repos need the same schema changes in the same planning
+  window
+- parity checks or manual copy steps are consuming noticeable execution time
+- local tests, docs, or code generation begin depending on packaged schema
+  outputs instead of raw copied files
+- schema publication would unblock cleaner validator reuse in app and firmware
+- contract drift risk starts showing up in real reviews, bugs, or merge friction
+
+If fewer than three are true, the governance rule is probably enough.
+
+If three or more are true, the dedicated repo becomes an operational win rather
+than an aesthetic one.
+
 ## Not A Priority Right This Second
 
 Creating `ohmic-schemas` is important.
