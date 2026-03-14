@@ -125,10 +125,18 @@ After the current graphics wave, use these work classes:
 - app/static boundary verification
 - coordination cleanup
 
+## Closeout Rule
+
+When the child encoding, QA, route, and boundary tasks are all complete for a graphics wave:
+
+- move the blocked umbrella graphics-family parents to `requests/done`
+- move the blocked post-graphics umbrella task to `requests/done`
+- leave only new live work in `requests/ready`
+- keep coordination cleanup isolated from the historical task record
+
 ## Source Surfaces
 
 - `B:\ohmic\repos\ohmic-audio-static-content\content-work\GRAPHICS_PRODUCTION_CATALOG_2026-03-14.md`
 - `B:\ohmic\repos\ohmic-audio-static-content\content-work\ENCODING_AUDIT_2026-03-13.md`
 - `B:\ohmic\repos\ohmic-audio-static-content\content-work\STATIC_PREVIEW_QA_2026-03-13.md`
 - `B:\ohmic\agent-system\requests\ready\`
-

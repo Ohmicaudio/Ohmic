@@ -1,7 +1,7 @@
 scope: project
 authority: working
 project: ohmic-audio-static-content
-status: blocked
+status: done
 requested: 2026-03-14
 requester: codex-local
 origin: follow-up
@@ -29,3 +29,7 @@ topic: requested-task
 
 - completing the encoding, QA, route, and boundary child tasks
 
+## Completion
+
+- the encoding scan, page QA, route/asset smoke checks, and app/static-boundary verification child tasks were completed and moved to `requests/done`
+- the umbrella polish task is no longer blocking active execution and now remains only as a historical parent record

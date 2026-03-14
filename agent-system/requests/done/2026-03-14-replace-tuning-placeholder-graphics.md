@@ -1,7 +1,7 @@
 scope: project
 authority: working
 project: ohmic-audio-static-content
-status: blocked
+status: done
 requested: 2026-03-14
 requester: codex-local
 origin: follow-up
@@ -12,11 +12,11 @@ handoff_from:
 claim_id:
 topic: requested-task
 
-# Replace `reference` placeholder graphics
+# Replace `tuning` placeholder graphics
 
 ## Requested Outcome
 
-- replace the remaining visual placeholders in `reference/*`
+- replace the remaining visual placeholders in `tuning/*`
 - manage the work through microtasks instead of one bucket-wide claim
 
 ## Notes
@@ -27,5 +27,9 @@ topic: requested-task
 
 ## Unblocked By
 
-- completing the family-level graphics tasks for `reference`
+- completing the family-level graphics tasks for `tuning`
 
+## Completion
+
+- the `tuning` microtask wave was completed and the family-level graphics tasks were moved to `requests/done`
+- this umbrella parent no longer represents blocked live work and now remains only as a historical coordination record

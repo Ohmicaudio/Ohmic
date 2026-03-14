@@ -1,7 +1,7 @@
 scope: project
 authority: working
 project: ohmic-audio-static-content
-status: blocked
+status: done
 requested: 2026-03-14
 requester: codex-local
 origin: follow-up
@@ -29,3 +29,7 @@ topic: requested-task
 
 - completing the family-level graphics tasks for `mobile-electronics`
 
+## Completion
+
+- the `mobile-electronics` microtask wave was completed and the family-level graphics tasks were moved to `requests/done`
+- this umbrella parent no longer represents blocked live work and now remains only as a historical coordination record
