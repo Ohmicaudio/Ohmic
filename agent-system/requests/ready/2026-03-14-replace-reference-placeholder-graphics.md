@@ -28,6 +28,7 @@ topic: requested-task
 - placeholder pages in this bucket: `50`
 - this bucket also has `31` metadata leaks and `1` local-style page tracked separately
 - coordination note: leave this bucket for another agent if `codex-local` is still working `mobile-electronics`
+- use `B:\ohmic\repos\ohmic-audio-static-content\content-work\GRAPHICS_PRODUCTION_CATALOG_2026-03-14.md` to batch repeated visual families instead of treating every page as a one-off
 - main concentration areas:
   - `reference/visual/*`: `34` pages
   - `reference/math-measurement/*`: `10` pages

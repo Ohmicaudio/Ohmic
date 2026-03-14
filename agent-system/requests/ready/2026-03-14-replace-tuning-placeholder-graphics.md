@@ -28,6 +28,7 @@ topic: requested-task
 - placeholder pages in this bucket: `21`
 - this bucket also has `4` metadata leaks already tracked separately
 - coordination note: this is the preferred parallel bucket for another agent while `codex-local` owns `mobile-electronics`
+- use `B:\ohmic\repos\ohmic-audio-static-content\content-work\GRAPHICS_PRODUCTION_CATALOG_2026-03-14.md` to batch repeated visual families instead of treating every page as a one-off
 - main visual themes:
   - measurement microphone comparisons
   - before/after EQ response charts

@@ -28,6 +28,7 @@ topic: requested-task
 - placeholder pages in this bucket: `21`
 - this bucket also has `7` metadata leaks already tracked separately
 - current split: `codex-local` is the intended owner for this bucket during the present graphics pass
+- use `B:\ohmic\repos\ohmic-audio-static-content\content-work\GRAPHICS_PRODUCTION_CATALOG_2026-03-14.md` to batch repeated visual families instead of treating every page as a one-off
 - main visual themes:
   - head-unit anatomy and OEM replacement visuals
   - Bluetooth profile and wireless connectivity diagrams
