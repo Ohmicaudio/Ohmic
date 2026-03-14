@@ -9,8 +9,8 @@ It now indexes the multi-repo Ohmic layout through a manifest:
 Current high-value seeded sources include:
 
 - `B:\ohmic\agent-system\**\*.md`
-- `A:\ohmic-audio-labs\AGENTS.md`
-- `A:\cyd_remote\AGENTS.md`
+- `B:\ohmic\repos\ohmic-audio-labs\AGENTS.md`
+- `B:\ohmic\repos\cyd-remote\AGENTS.md`
 - umbrella docs under `B:\ohmic\docs\`
 - active repo docs and schemas defined in the corpus manifest
 
@@ -73,3 +73,5 @@ Then read:
 - [`/mnt/b/ohmic/docs/systems/DOCKER_SEMANTIC_INDEX_AND_CONTEXT_GUIDE_2026-03-12.md`](/mnt/b/ohmic/docs/systems/DOCKER_SEMANTIC_INDEX_AND_CONTEXT_GUIDE_2026-03-12.md)
 
 This tooling is for retrieval and awareness only. Git repos remain source of truth.
+
+Legacy/source-only paths should not be used as active work roots.

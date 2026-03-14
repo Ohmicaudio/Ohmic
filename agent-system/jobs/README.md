@@ -55,8 +55,8 @@ Use the helper script:
 Typical flow:
 
 ```powershell
-pwsh -File B:\ohmic\tools\sync\agent-claim.ps1 status -Paths A:\ohmic-audio-labs\services\backend\README.md
-pwsh -File B:\ohmic\tools\sync\agent-claim.ps1 claim -Owner codex-local -Project ohmic-audio-labs -Task "backend readme cleanup" -Paths A:\ohmic-audio-labs\services\backend\README.md
+pwsh -File B:\ohmic\tools\sync\agent-claim.ps1 status -Paths B:\ohmic\repos\ohmic-audio-labs\services\backend\README.md
+pwsh -File B:\ohmic\tools\sync\agent-claim.ps1 claim -Owner codex-local -Project ohmic-audio-labs -Task "backend readme cleanup" -Paths B:\ohmic\repos\ohmic-audio-labs\services\backend\README.md
 pwsh -File B:\ohmic\tools\sync\agent-claim.ps1 complete -Id <claim-id>
 ```
 

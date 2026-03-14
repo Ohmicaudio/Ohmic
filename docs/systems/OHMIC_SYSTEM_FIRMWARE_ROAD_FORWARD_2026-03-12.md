@@ -6,11 +6,13 @@ Date: 2026-03-12
 
 Capture the current reality across:
 
-- `A:\cyd_remote`
-- `A:\masterfirmware`
-- `A:\ohmic-audio-labs`
+- `B:\ohmic\repos\cyd-remote`
+- `B:\ohmic\repos\amplab-firmware`
+- `B:\ohmic\repos\ohmic-audio-labs`
 
 and define the next firmware-focused execution order.
+
+Legacy/source-only copies are not active work roots. Active work should stay in `B:\ohmic\repos\*`.
 
 This note is meant to stop the DSP/control/measurement architecture from drifting back into chat-only decisions.
 

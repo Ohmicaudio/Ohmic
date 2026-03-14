@@ -2,7 +2,12 @@
 
 Date: 2026-03-12
 Author: Codex
-Scope: `A:\ohmic-audio-labs`, `A:\masterfirmware`, `A:\cyd_remote`
+Scope: `B:\ohmic\repos\ohmic-audio-labs`, `B:\ohmic\repos\amplab-firmware`, `B:\ohmic\repos\cyd-remote`
+
+## Migration Note
+
+All active work now happens from `B:\ohmic\repos\*`.
+Any older drive-path references that still appear below are historical audit references from pre-migration captures, not active work roots.
 
 ## Executive Summary
 

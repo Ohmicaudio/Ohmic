@@ -14,7 +14,7 @@ Primary product repo spanning the main web/app/backend platform plus related sch
 ## Working Location
 
 - migration target repo: `B:\ohmic\repos\ohmic-audio-labs`
-- legacy/source working copy still exists at: `A:\ohmic-audio-labs`
+- active work should happen from: `B:\ohmic\repos\ohmic-audio-labs`
 
 ## Current Truth
 
@@ -23,15 +23,15 @@ Primary product repo spanning the main web/app/backend platform plus related sch
 - this repo is in active preserve-history migration rather than ordinary isolated maintenance
 - `public/` remains transitional while ownership shifts to `ohmic-audio-static-content`
 - the repo is still dirty and should be treated carefully during moves or cleanup
-- repo-local bridge file exists in both the legacy copy and the migrated mirror
+- the legacy/source copy should not be used as the active work root
 
 ## First Read
 
-- `A:\ohmic-audio-labs\AGENTS.md`
-- `A:\ohmic-audio-labs\docs\AGENT_CONTEXT.md`
-- `A:\ohmic-audio-labs\docs\specs\SHIP_EXECUTION_QUEUE.md`
-- `A:\ohmic-audio-labs\docs\specs\BACKEND_SERVING_STACK.md`
-- `A:\ohmic-audio-labs\services\backend\README.md`
+- `B:\ohmic\repos\ohmic-audio-labs\AGENTS.md`
+- `B:\ohmic\repos\ohmic-audio-labs\docs\AGENT_CONTEXT.md`
+- `B:\ohmic\repos\ohmic-audio-labs\docs\specs\SHIP_EXECUTION_QUEUE.md`
+- `B:\ohmic\repos\ohmic-audio-labs\docs\specs\BACKEND_SERVING_STACK.md`
+- `B:\ohmic\repos\ohmic-audio-labs\services\backend\README.md`
 
 ## Current Next Move
 

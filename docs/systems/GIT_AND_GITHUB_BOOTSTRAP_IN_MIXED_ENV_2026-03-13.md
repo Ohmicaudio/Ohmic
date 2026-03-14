@@ -43,8 +43,8 @@ Use these with:
 
 Examples:
 
-- `A:\ohmic-audio-labs`
 - `B:\ohmic`
+- `B:\ohmic\repos\ohmic-audio-labs`
 
 Use these with:
 

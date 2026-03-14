@@ -51,7 +51,7 @@ Avoid mushy verbs such as:
 
 Good:
 
-- `The semantic index is running from A:\\ohmic-audio-labs\\tools\\semantic-index.`
+- `The semantic index is running from B:\\ohmic\\tools\\semantic-index.`
 - `Reference material should live under B:\\ohmic and below.`
 
 Bad:
