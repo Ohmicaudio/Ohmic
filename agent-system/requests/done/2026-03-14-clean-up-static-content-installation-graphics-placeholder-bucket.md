@@ -1,7 +1,7 @@
 scope: project
 authority: working
 project: ohmic-audio-static-content
-status: ready
+status: done
 requested: 2026-03-14
 requester: codex-local
 origin: dependency
@@ -9,7 +9,7 @@ priority: now
 blocking: no
 depends_on:
 handoff_from: 2026-03-14-polish-static-content-installation-quality-bucket
-claim_id:
+claim_id: 20260314T035611Z-3d6dd7d6
 topic: requested-task
 
 # Clean up static-content `installation` graphics placeholder bucket
@@ -18,6 +18,17 @@ topic: requested-task
 
 - remove or replace publication-time `[VISUAL PLACEHOLDER: ...]` blocks across the remaining installation pages
 - leave illustration requests explicit and publish-safe instead of shipping raw placeholders
+
+## Completion
+
+- converted raw `[VISUAL PLACEHOLDER: ...]` blocks into publish-safe `Illustration note:` callouts across all remaining installation pages
+- changed `30` installation pages in total:
+  - `11` base installation pages
+  - `4` base section pages
+  - `10` advanced installation pages
+  - `5` advanced section pages
+- reduced raw installation placeholder pages from `30` to `0`
+- installation now has no remaining generic landing pages, expanded-marker text, or raw publication-time placeholder blocks
 
 ## Scope
 
