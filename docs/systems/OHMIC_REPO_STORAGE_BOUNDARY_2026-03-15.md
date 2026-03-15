@@ -103,6 +103,10 @@ Rule:
 
 Not every document requested in chat should live in Git forever.
 
+Short form:
+
+- `docs/systems/OHMIC_USER_REQUESTED_DOCUMENT_RETENTION_RULES_2026-03-15.md`
+
 ### Keep In Git
 
 Keep the canonical version in Git when the document:
