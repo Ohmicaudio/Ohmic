@@ -1,4 +1,4 @@
-Status: ready
+Status: done
 Priority: low
 Date: 2026-03-15
 Project: ohmic
@@ -21,3 +21,13 @@ turning the whole page into a noisy event log.
 - one bounded recent-output behavior packet exists
 - it matches the outbox/event model already defined
 - it stays lightweight and dashboard-focused
+
+## Outcome
+
+Completed on 2026-03-15.
+
+Result:
+
+- defined a small rolling recent-output pane instead of a full raw event log
+- prioritized blocked, needs-input, completion, and result visibility
+- separated the “current action” card from the “recent trail” pane
