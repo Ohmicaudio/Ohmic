@@ -1,7 +1,9 @@
-Status: ready
+Status: done
 Priority: high
 Date: 2026-03-15
 Project: ohmic-audio-labs
+Owner: d
+Claim ID: 20260315T235310Z-49490915
 
 # Define Post-Link Live Path Parity Wave
 
@@ -22,3 +24,13 @@ phone, shell, and linked-device behavior can be treated as one coherent lane.
 - one parity wave is defined
 - the remaining mismatch risks are explicit
 - the next execution packet is narrower than a generic network-debugging lane
+
+## Result
+
+- defined the parity wave in
+  `docs/roadmap/OHMIC_POST_LINK_LIVE_PATH_PARITY_WAVE_2026-03-15.md`
+- anchored the remaining mismatch to handset live-device candidate propagation
+  and linked/current-device presentation parity
+- made the next packet explicit: handset live-device candidate propagation plus
+  linked/current-device parity, with desktop and handset reruns traveling
+  together
