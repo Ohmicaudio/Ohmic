@@ -184,6 +184,12 @@ Meta-answer rule:
   then resume the highest safe queued action
 - do not treat a brief explanatory answer as permission to stop moving
 
+Statement handling rule:
+
+- if the user makes a non-blocking statement, clarification, or acknowledgement
+  that does not require an answer, absorb it as context and keep moving
+- do not treat a statement that needs no answer as a soft stop point
+
 ## Memory Rules
 
 - `short-term`: always-load live context, active work, current blockers, next actions, current watchouts

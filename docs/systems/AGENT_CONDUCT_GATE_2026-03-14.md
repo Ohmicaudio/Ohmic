@@ -88,6 +88,11 @@ If you answer a brief meta or planning question during an active work wave:
 - answer it
 - then return to the queue unless the user explicitly paused or redirected you
 
+If the user makes a statement that does not require an answer:
+
+- treat it as context
+- do not stop the work wave because of it
+
 ### 9. Respect the active work root
 
 - `B:\ohmic\repos\*` are the active local repo homes
