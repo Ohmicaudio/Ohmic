@@ -27,3 +27,16 @@ coverage instead of relying on visual optimism.
 - current coverage for the first hardware slice is documented honestly
 - at least one runnable or defined check path exists
 - next coverage step is clear if gaps remain
+
+## Completion Notes
+
+- Verified the slice with the Windows Node toolchain from
+  `B:\ohmic\repos\ohmic-audio-labs`
+- `npm run build` passed and emitted the expected hardware bundle outputs,
+  including `hardware-device-decks`, `hardware-deck-routing`,
+  `hardware-settings-deck`, and `hardware-shell-chrome`
+- No targeted automated tests currently reference the new deck/host files
+- No dedicated hardware-route interactive smoke pass was run in this shell, so
+  that remains the next honest coverage addition
+- The current minimum coverage is therefore: successful root build plus clear
+  visibility into the remaining gap for targeted route smoke or component tests
