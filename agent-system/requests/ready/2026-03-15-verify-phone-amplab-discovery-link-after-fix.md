@@ -15,11 +15,14 @@ unit.
 
 - `docs/roadmap/OHMIC_PHONE_AMPLAB_DISCOVERY_LINK_FIX_RESULT_2026-03-15.md`
 - `docs/roadmap/OHMIC_PHONE_ASSISTED_AMPLAB_LIVE_SMOKE_RESULT_2026-03-15.md`
+- `docs/roadmap/OHMIC_LIVE_LINK_DISCOVERY_SEPARATION_2026-03-15.md`
 
 ## Focus
 
 - handset browser discovery result after explicit refresh
 - handset browser link result after unit selection
+- confirmation that the linked/current unit is not rendered back into the find
+  list
 - parity with the already-proven desktop/browser refresh-plus-link path
 
 ## Acceptance
