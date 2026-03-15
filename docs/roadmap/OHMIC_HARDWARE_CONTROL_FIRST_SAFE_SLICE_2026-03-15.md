@@ -10,8 +10,8 @@ Turn the giant `components/Hardware` lane into one first executable slice.
 
 ## Recommended First Slice
 
-The first slice should focus on the new hardware shell hosts and orchestration
-hooks, not the entire hardware feature universe.
+The first slice should focus on the new hardware shell hosts and shell-level
+presentation hooks, not the entire hardware feature universe.
 
 ## Exact Candidate Files
 
@@ -23,27 +23,39 @@ hooks, not the entire hardware feature universe.
 - `components/Hardware/UniversalOverlayWorkspace.tsx`
 - `components/Hardware/README.md`
 
-### Closely related hooks only if required
+### Confirmed shell hooks for this slice
 
 - `components/Hardware/useHardwareShellChrome.ts`
 - `components/Hardware/useHardwareWorkspacePresentation.ts`
 - `components/Hardware/useHardwarePersistence.ts`
 
+### Explicitly defer to later slices
+
+- additional new host files such as `DeckContentHost.tsx`,
+  `ActiveInstrumentHost.tsx`, `PhoneLabDeckHost.tsx`, and
+  `DesktopMeasureTopologyHost.tsx`
+- all new measurement, sync, and routing hooks beyond the three shell hooks
+- all tracked `services/hardware/*` changes
+
 ## Why This Slice First
 
-- these files look like the shell/presentation boundary for the new hardware
-  workspace
+- these files are the confirmed shell/presentation boundary for the new
+  hardware workspace
 - they are easier to reason about than transport, telemetry, or measurement
   orchestration
 - they avoid mixing deep device-control logic with broad UI churn
+- the current dirty tree shows them as mostly new isolated files, while
+  `services/hardware/*` is a separate tracked churn cloud
 
 ## Explicitly Out Of Scope
 
 - Android wrapper files
 - `services/backend/*`
+- `services/hardware/*`
 - DSP transport files
 - measurement run lifecycle files
 - old placeholder deletions unless they are directly replaced by the shell host
+- `CanvasView`-style formatting churn equivalents in other hardware files
 
 ## Verification
 
@@ -63,3 +75,5 @@ or route-level checks actually used.
 - one bounded hardware shell slice lands
 - Android is not bundled into it
 - deep transport/backend work is not bundled into it
+- the slice stays inside the confirmed shell files and three shell hooks listed
+  above
