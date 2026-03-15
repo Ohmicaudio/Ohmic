@@ -129,6 +129,10 @@ The live loop should support:
 
 The loop should not assume all agents are doing the same job.
 
+Concrete lock and heartbeat contract:
+
+- `docs/systems/OHMIC_ORCHESTRATOR_LOCK_AND_WORKER_HEARTBEAT_MODEL_2026-03-15.md`
+
 ## Stop Condition
 
 Do not stop just because the queue is empty for one moment.
