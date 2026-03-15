@@ -22,28 +22,29 @@ This is the realistic “what happens after the next few task pickups” ladder.
 
 ### Primary tasks
 
-- `implement-next-backend-auth-policy-control-plane-slice`
-- `define-next-osm-canvas-disposition-and-noise-fence`
+- `fix-backend-index-type-check-spill-after-auth-policy-slice`
+- `commit-osm-canvas-theme-token-slice`
 - `enforce-public-and-archive-freeze-boundary-in-handoff-and-queue-surfaces`
-- `strip-remaining-raw-source-footers-from-public-pages`
+- `define-next-backend-post-auth-router-safe-slice`
+- `define-next-osm-post-canvas-safe-slice`
 
 ### Success condition
 
-- the backend lane has a real next implementation slice
-- the next OSM boundary is tighter
+- the backend lane closes the remaining narrow type-check spill honestly
+- the OSM lane moves through a real one-file canvas slice
 - the freeze rule is visible where agents actually look
-- the public footer-cleanup lane is either finished or clearly bounded
+- backend and OSM both have their next bounded follow-ons already staged
 
 ## Phase 2: Promote The Next Safe Subsystem Slices
 
 ### First picks
 
-1. `run-static-boundary-and-host-smoke-floor`
-2. `define-live-agent-state-json-contract`
-3. `define-agent-inbox-outbox-event-model`
-4. `define-orchestrator-lock-and-worker-heartbeat-model`
-5. `define-stable-idle-stop-and-crash-recovery-rules`
-6. `define-runner-wrapper-cycle-for-json-agent-loop`
+1. `define-live-agent-state-json-contract`
+2. `define-agent-inbox-outbox-event-model`
+3. `define-orchestrator-lock-and-worker-heartbeat-model`
+4. `define-stable-idle-stop-and-crash-recovery-rules`
+5. `define-runner-wrapper-cycle-for-json-agent-loop`
+6. `define-json-dashboard-render-surface`
 
 ### Why this order
 
@@ -55,12 +56,13 @@ This is the realistic “what happens after the next few task pickups” ladder.
 
 ### Follow-on picks
 
-7. `verify-public-cleanup-wave-after-current-claims`
+- replenish the queue from the just-finished backend or OSM subsystem if the
+  ready count drops under the floor
 
 ### Why these are later
 
 - useful and real, but not stronger than the app-slice continuity work
-- they support trust and public cleanliness without becoming the center lane
+- they support system reuse without becoming the center lane
 
 ## Parallel Split Guidance
 
@@ -71,24 +73,24 @@ Run Phase 1 first, then Phase 2.
 ### If two people are working
 
 - person 1:
-  - backend next-slice definition
-  - then OSM canvas/noise fence
+  - backend auth/policy implementation
+  - then backend post-auth follow-on definition
 - person 2:
-  - public freeze-boundary enforcement
-  - then public footer cleanup
+  - OSM canvas theme slice
+  - then OSM post-canvas follow-on definition
 
 ### If three people are working
 
-- person 1: backend next-slice definition
-- person 2: OSM boundary definition
-- person 3: public freeze-boundary enforcement, then footer cleanup
+- person 1: backend auth/policy implementation
+- person 2: OSM canvas theme slice
+- person 3: public freeze-boundary enforcement, then JSON-loop packet work
 
 ### If four people are working
 
-- person 1: backend next-slice definition
-- person 2: OSM boundary definition
+- person 1: backend auth/policy implementation
+- person 2: OSM canvas theme slice
 - person 3: public freeze-boundary enforcement
-- person 4: public cleanup / static smoke lane
+- person 4: JSON-loop packet lane
 
 Static/public durability should only outrank stronger app lanes if those app
 lanes are already absent, claimed, or concretely blocked.
@@ -111,7 +113,7 @@ lanes are already absent, claimed, or concretely blocked.
 
 The 72-hour ladder is successful if, by the end:
 
-- the next backend and OSM slices are already queued
+- the current backend and OSM slices are either implemented or honestly fenced
+- the next backend and OSM follow-on slices are already queued
 - the freeze boundary is operational, not just documented
-- the current public cleanup lane is either finished or explicitly fenced
 - the ready board stays above the floor instead of collapsing after each burst

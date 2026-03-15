@@ -87,11 +87,9 @@ execution unless a specific blocker appears
 
 Do these first unless they are already actively claimed or truly blocked.
 
-- `define-next-backend-control-plane-safe-slice`
-- `implement-next-backend-auth-policy-control-plane-slice`
-- `define-next-osm-canvas-disposition-and-noise-fence`
+- `fix-backend-index-type-check-spill-after-auth-policy-slice`
+- `commit-osm-canvas-theme-token-slice`
 - `enforce-public-and-archive-freeze-boundary-in-handoff-and-queue-surfaces`
-- `strip-remaining-raw-source-footers-from-public-pages`
 
 Rule:
 
@@ -102,27 +100,21 @@ Rule:
 
 ### Secondary completion support
 
-- `run-static-boundary-and-host-smoke-floor`
+- `define-next-backend-post-auth-router-safe-slice`
+- `define-next-osm-post-canvas-safe-slice`
 - `define-live-agent-state-json-contract`
 - `define-agent-inbox-outbox-event-model`
 - `define-orchestrator-lock-and-worker-heartbeat-model`
 - `define-stable-idle-stop-and-crash-recovery-rules`
 - `define-runner-wrapper-cycle-for-json-agent-loop`
+- `define-json-dashboard-render-surface`
 
 These support the main completion lane but should not outrank it.
 
-### Parallel support lane
-
-- `verify-public-cleanup-wave-after-current-claims`
-
-Rule:
-
-- do not let this lane outrank the main completion slices unless it is directly
-  unblocking a live product failure
-
 ### Lower-priority public cleanup
 
-- none beyond the current public cleanup wave
+- site audit cleanup bundle remains valid, but it stays below the current app
+  and system lanes unless it directly blocks trust or deployment
 
 Rule:
 
