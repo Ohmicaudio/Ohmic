@@ -1,7 +1,9 @@
-Status: ready
+Status: done
 Priority: medium
 Date: 2026-03-15
 Project: ohmic-audio-labs
+Owner: d
+Claim ID: 20260315T202033Z-148ec728
 
 # Add HardwareLayout AmpLab Shell Smoke
 
@@ -25,3 +27,20 @@ Add one focused regression check that mounts the AmpLab shell through
 
 - one `HardwareLayout`-level AmpLab shell smoke exists
 - it remains a local regression check, not a live browser/device pass
+
+## Outcome
+
+Completed on 2026-03-15.
+
+Output:
+
+- `B:\ohmic\repos\ohmic-audio-labs\test\components\HardwareLayoutAmpLabShell.test.tsx`
+- `B:\ohmic\docs\roadmap\OHMIC_HARDWARE_LAYOUT_AMPLAB_SHELL_SMOKE_2026-03-15.md`
+
+Result:
+
+- `HardwareLayout` now has a focused AmpLab shell regression check above the
+  deck route layer
+- the check keeps live device/browser work out of the local regression lane
+- linked-unit, flow, and transport copy are now visible through the mounted
+  shell path in test
