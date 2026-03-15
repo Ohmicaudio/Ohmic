@@ -1,4 +1,4 @@
-Status: ready
+Status: done
 Priority: high
 Date: 2026-03-15
 Project: ohmic-audio-labs
@@ -27,3 +27,14 @@ real code without dragging in unrelated canvas or deep data-model churn.
 - touched files stay inside the shell scope defined in
   `docs/roadmap/OHMIC_OSM_FIRST_EDITOR_SHELL_SAFE_SLICE_2026-03-15.md`
 - basic verification notes are captured honestly
+
+## Completion Notes
+
+- implemented in `ohmic-audio-labs` commit `baa6c22`
+- touched only:
+  - `TopBar.tsx`
+  - `VehicleSelector.tsx`
+  - `InspectorPanel.tsx`
+  - `EquipmentManager.tsx`
+- shell improvements focused on framing, copy, quick context chips, and stronger empty states
+- verification follow-on remains separate because local `pnpm` resolves to a Windows-side `node` path in this shell and fails with `node: Permission denied`
