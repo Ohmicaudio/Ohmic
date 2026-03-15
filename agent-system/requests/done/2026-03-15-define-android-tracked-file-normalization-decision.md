@@ -27,3 +27,14 @@ ambiguous CRLF noise.
 - one explicit decision note exists for the tracked Android churn
 - the next Android action is safer to claim
 - generated-output fence work stays separate
+
+## Completion Notes
+
+- Decision note created at
+  `docs/roadmap/OHMIC_ANDROID_TRACKED_FILE_NORMALIZATION_DECISION_2026-03-15.md`
+- Decision: do not treat the current tracked Android wrapper churn as semantic
+  product work
+- Recommended path is to normalize only during a dedicated cleanup pass or when
+  those exact files are already being intentionally edited
+- This keeps tracked CRLF churn separate from the already-verified
+  generated-output fence
