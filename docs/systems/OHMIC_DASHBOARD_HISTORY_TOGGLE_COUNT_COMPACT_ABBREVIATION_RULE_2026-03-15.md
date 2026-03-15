@@ -8,39 +8,60 @@ Status: working contract
 Define whether the hidden-count token should ever abbreviate on cramped
 surfaces, and if so how to do it without losing clarity.
 
+## Source Alignment
+
+This rule should align with:
+
+- `docs/systems/OHMIC_DASHBOARD_HISTORY_COUNT_TOKEN_WIDTH_RULE_2026-03-15.md`
+- `docs/systems/OHMIC_DASHBOARD_HISTORY_TOGGLE_COUNT_SEPARATOR_RULE_2026-03-15.md`
+
 ## Core Principle
 
-Abbreviation is a fallback, not the default.
+Abbreviation is acceptable only if the token still reads as a count of hidden
+history, not as mysterious badge chrome.
 
-Only abbreviate when compactness materially helps and the resulting token still
-remains obvious in context.
+## Recommended Abbreviation Rule
 
-## Recommended Rule
+Allow compact abbreviation only after the normal count token no longer fits
+comfortably.
 
-Use compact abbreviation only when:
+Preferred compact forms:
 
-- space is genuinely tight
-- full count presentation would crowd the action text
-- the abbreviated form stays clearly interpretable inside the history toggle
+- `(12)`
+- `· 12`
+
+Avoid inventing opaque abbreviations like:
+
+- `h12`
+- `cnt12`
+- `#12`
+
+## Threshold Rule
+
+Use abbreviation only when:
+
+- the token width is crowding the action label
+- the layout is compact enough to justify simplification
+- the count is still important enough to show
 
 ## Relationship To Truncation
 
-Prefer:
+Abbreviation comes before truncation.
 
-1. normal count
-2. compact abbreviation when still clear
-3. stronger truncation or simplification only when needed
+Meaning:
+
+- simplify the framing first
+- only truncate the count presentation if the compact form still overruns the
+  control
 
 ## Guardrails
 
-- do not abbreviate by default on roomy layouts
-- do not invent abbreviation forms that become cryptic
-- do not let abbreviation make the count easier to miss than to read
-- do not use abbreviation if count-only suppression is clearer
+- do not abbreviate so aggressively that the token stops reading like a count
+- do not add symbolic shorthand that needs explanation
+- do not use abbreviation when the normal token already fits well
 
 ## Follow-On Dependencies
 
 This rule should feed:
 
-- `define-dashboard-history-count-token-compact-priority-rule`
-- `define-dashboard-history-count-token-width-rule`
+- `define-dashboard-history-count-token-truncation-rule`
