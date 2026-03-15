@@ -9,7 +9,7 @@
                     "task_status":  "needs_input",
                     "orchestrator_active":  false,
                     "compact_count":  0,
-                    "updated_at":  "2026-03-15T18:29:49Z"
+                    "updated_at":  "2026-03-15T18:36:33Z"
                 },
     "input":  {
                   "pending":  true,
@@ -22,21 +22,21 @@
                   "handled_by":  ""
               },
     "state":  {
-                  "summary":  "Queue healthy. 8 ready tasks, 0 active claims.",
-                  "ready_count":  8,
+                  "summary":  "Queue healthy. 6 ready tasks, 0 active claims.",
+                  "ready_count":  6,
                   "active_claim_count":  0,
                   "board_health":  "healthy",
                   "top_priority":  [
                                        "2026-03-15-implement-next-hardware-amp-lab-control-bridge-slice",
                                        "2026-03-15-add-hardware-shell-deck-smoke-check-coverage",
-                                       "2026-03-15-define-android-wrapper-tracked-text-first-commit-slice"
+                                       "2026-03-15-identify-next-semantic-android-wrapper-slice-after-crlf-churn"
                                    ],
                   "queue_floor_met":  true,
                   "stale_state_detected":  false,
                   "recent_completions":  [
-                                             "2026-03-15-define-user-requested-document-retention-rules",
-                                             "2026-03-15-define-non-repo-storage-migration-packet",
-                                             "2026-03-15-inventory-non-repo-doc-and-artifact-zones-under-ohmic"
+                                             "2026-03-15-verify-high-risk-public-worked-examples",
+                                             "2026-03-15-implement-android-wrapper-tracked-text-cleanup-slice",
+                                             "2026-03-15-define-android-wrapper-tracked-text-first-commit-slice"
                                          ],
                   "risks":  [
                                 "Blocked tasks present: 2"
@@ -49,12 +49,12 @@
                      "recommended_next":  [
                                               "2026-03-15-implement-next-hardware-amp-lab-control-bridge-slice",
                                               "2026-03-15-add-hardware-shell-deck-smoke-check-coverage",
-                                              "2026-03-15-define-android-wrapper-tracked-text-first-commit-slice"
+                                              "2026-03-15-identify-next-semantic-android-wrapper-slice-after-crlf-churn"
                                           ],
                      "completed":  [
-                                       "2026-03-15-define-user-requested-document-retention-rules",
-                                       "2026-03-15-define-non-repo-storage-migration-packet",
-                                       "2026-03-15-inventory-non-repo-doc-and-artifact-zones-under-ohmic"
+                                       "2026-03-15-verify-high-risk-public-worked-examples",
+                                       "2026-03-15-implement-android-wrapper-tracked-text-cleanup-slice",
+                                       "2026-03-15-define-android-wrapper-tracked-text-first-commit-slice"
                                    ],
                      "blocked":  [
                                      "2026-03-15-promote-ops-unifier-incubator-when-ohmic-slack-exists",

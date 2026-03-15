@@ -1,5 +1,5 @@
 {
-    "generated_at":  "2026-03-15T18:29:49Z",
+    "generated_at":  "2026-03-15T18:36:33Z",
     "source":  {
                    "kind":  "repo_summary",
                    "path":  "B:\\ohmic\\agent-system\\requests\\ready"
@@ -8,7 +8,7 @@
                       "status":  "fresh",
                       "reason":  null
                   },
-    "count":  8,
+    "count":  6,
     "items":  [
                   {
                       "task_id":  "2026-03-15-add-hardware-shell-deck-smoke-check-coverage",
@@ -22,26 +22,15 @@
                       "file_path":  "B:\\ohmic\\agent-system\\requests\\ready\\2026-03-15-add-hardware-shell-deck-smoke-check-coverage.md"
                   },
                   {
-                      "task_id":  "2026-03-15-define-android-wrapper-tracked-text-first-commit-slice",
-                      "title":  "Define Android Wrapper Tracked Text First Commit Slice",
+                      "task_id":  "2026-03-15-identify-next-semantic-android-wrapper-slice-after-crlf-churn",
+                      "title":  "Identify Next Semantic Android Wrapper Slice After CRLF Churn",
                       "priority":  "medium",
                       "project":  "ohmic-audio-labs",
                       "status":  "ready",
                       "date":  "2026-03-15",
                       "owner":  "",
                       "claim_id":  "",
-                      "file_path":  "B:\\ohmic\\agent-system\\requests\\ready\\2026-03-15-define-android-wrapper-tracked-text-first-commit-slice.md"
-                  },
-                  {
-                      "task_id":  "2026-03-15-define-next-backend-measurement-session-follow-on-slice",
-                      "title":  "Define Next Backend Measurement Session Follow On Slice",
-                      "priority":  "medium",
-                      "project":  "ohmic-audio-labs",
-                      "status":  "ready",
-                      "date":  "2026-03-15",
-                      "owner":  "",
-                      "claim_id":  "",
-                      "file_path":  "B:\\ohmic\\agent-system\\requests\\ready\\2026-03-15-define-next-backend-measurement-session-follow-on-slice.md"
+                      "file_path":  "B:\\ohmic\\agent-system\\requests\\ready\\2026-03-15-identify-next-semantic-android-wrapper-slice-after-crlf-churn.md"
                   },
                   {
                       "task_id":  "2026-03-15-identify-next-semantic-backend-slice-after-crlf-churn",
@@ -55,15 +44,15 @@
                       "file_path":  "B:\\ohmic\\agent-system\\requests\\ready\\2026-03-15-identify-next-semantic-backend-slice-after-crlf-churn.md"
                   },
                   {
-                      "task_id":  "2026-03-15-implement-android-wrapper-tracked-text-cleanup-slice",
-                      "title":  "Implement Android Wrapper Tracked Text Cleanup Slice",
+                      "task_id":  "2026-03-15-implement-backend-chirp-fixture-helper-slice",
+                      "title":  "Implement Backend Chirp Fixture Helper Slice",
                       "priority":  "medium",
                       "project":  "ohmic-audio-labs",
                       "status":  "ready",
                       "date":  "2026-03-15",
                       "owner":  "",
                       "claim_id":  "",
-                      "file_path":  "B:\\ohmic\\agent-system\\requests\\ready\\2026-03-15-implement-android-wrapper-tracked-text-cleanup-slice.md"
+                      "file_path":  "B:\\ohmic\\agent-system\\requests\\ready\\2026-03-15-implement-backend-chirp-fixture-helper-slice.md"
                   },
                   {
                       "task_id":  "2026-03-15-implement-first-speaker-static-page-slice",
@@ -86,17 +75,6 @@
                       "owner":  "",
                       "claim_id":  "",
                       "file_path":  "B:\\ohmic\\agent-system\\requests\\ready\\2026-03-15-implement-next-hardware-amp-lab-control-bridge-slice.md"
-                  },
-                  {
-                      "task_id":  "2026-03-15-verify-high-risk-public-worked-examples",
-                      "title":  "Verify High Risk Public Worked Examples",
-                      "priority":  "medium",
-                      "project":  "ohmicaudio-public",
-                      "status":  "ready",
-                      "date":  "2026-03-15",
-                      "owner":  "",
-                      "claim_id":  "",
-                      "file_path":  "B:\\ohmic\\agent-system\\requests\\ready\\2026-03-15-verify-high-risk-public-worked-examples.md"
                   }
               ]
 }
