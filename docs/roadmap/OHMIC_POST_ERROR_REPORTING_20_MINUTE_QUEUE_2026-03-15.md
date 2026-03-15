@@ -106,3 +106,9 @@ Pause and refresh the board if:
 - OSM slice grows beyond `apps/osm-web`
 - hardware/control slice starts mixing Android or generic modal churn
 - backend slice starts bundling unrelated frontend runtime work
+
+## Next Horizon
+
+After this burst, use:
+
+- `docs/roadmap/OHMIC_NEXT_72_HOURS_EXECUTION_LADDER_2026-03-15.md`

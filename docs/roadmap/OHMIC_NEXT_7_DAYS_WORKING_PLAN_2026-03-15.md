@@ -7,19 +7,19 @@ horizon: 7_days
 
 ## Objective
 
-Use the next 7 days to turn the current rescued software state into a cleaner,
-more reusable product foundation while keeping the next loudspeaker/content lane
-defined but secondary.
+Use the next 7 days to turn the current rescued software state into bounded,
+claimable completion slices across the main app, while extending the new page
+error-reporting lane without letting it consume the whole board.
 
 ## Why This Week Matters
 
 - the migration and coordination layer is finally stable enough that planning
   will stick
-- the toolbox lane is now real product code instead of incubator residue
-- the shared math pattern is working and should be extended while the context is
-  fresh
-- the loudspeaker database lane is now preserved and shaped enough to progress
-  without polluting active repos
+- the next risk is no longer “what should we do,” it is letting the main app
+  stay one giant dirty subsystem
+- the queue is finally small and real again
+- the page error reporting lane now has a concrete path because the backend
+  support/triage surfaces already exist
 
 ## Execution Priority Rule
 
@@ -27,10 +27,10 @@ Current software completion stays on top.
 
 That means this week should prioritize:
 
-- shared math and calculator reuse
-- current app-surface decisions
-- code and doc durability
-- small, clear product-surface advances
+- first bounded app commit slices
+- error-reporting implementation and triage extension
+- code and queue durability
+- subsystem isolation that makes later code completion easier
 
 before:
 
@@ -41,25 +41,38 @@ before:
 
 ## Scope In
 
-- advance the `ohmic-toolbox` lane from imported app to stronger reusable tool
-  family
-- lock the distinction between generic electrical tools and
-  speaker-specific/intelligence tools
-- turn the loudspeaker database lane into one or two concrete sample artifacts
-- keep queue, claim, and planning surfaces truthful
+- close the remaining umbrella artifact ambiguity
+- move the first real `products/ohmic-osm` slice from planning to execution
+- isolate the first hardware/control and backend commit slices
+- extend the support/triage pipeline into per-page issue reporting
+- inventory the Android wrapper lane and freeze noisy archive/public surfaces
 
 ## Scope Out
 
-- OSM UI expansion
+- broad OSM feature expansion
 - full loudspeaker page generation
-- full image ingestion pipeline
-- large firmware implementation pushes
+- broad archive cleanup
 - hardware schematic capture
-- broad marketing or socials expansion unless directly supporting software
+- broad marketing or business-ops expansion
+- speculative new app surfaces unless they directly support completion
 
 ## Working Lanes
 
-### Lane A: Toolbox And Shared Math
+### Lane A: Page Error Reporting
+
+Repos:
+
+- `B:\ohmic`
+- `B:\ohmic\repos\ohmic-audio-labs`
+
+Focus:
+
+- define UI contract
+- extend support intake for page-specific capture
+- build triage view support
+- add the first reusable page report button on core surfaces
+
+### Lane B: Main App Completion Slices
 
 Repos:
 
@@ -67,156 +80,127 @@ Repos:
 
 Focus:
 
-- expose more tested shared calculator logic
-- decide where second-wave tools should live
-- keep formulas canonical across surfaces
+- `products/ohmic-osm` editor-shell slice
+- first hardware/control safe slice
+- first backend safe slice
+- Android wrapper inventory
 
-### Lane B: Smarter Speaker Tooling
+### Lane C: Boundary And Drift Control
 
 Repos:
 
+- `B:\ohmic`
 - `B:\ohmic\repos\ohmic-audio-labs`
-- planning docs in `B:\ohmic`
+- `B:\ohmic\repos\ohmic-audio-static-content`
 
 Focus:
 
-- define the smarter `Wiring Lab` / speaker-match lane
-- keep it separate from generic `Ohm's Law`
-- prepare it for later implementation without rushing the engine now
-
-### Lane C: Loudspeaker Data And Static Pages
-
-Locations:
-
-- `B:\junk`
-- planning/docs in `B:\ohmic`
-- future static surface in `B:\ohmic\repos\ohmic-audio-static-content`
-
-Focus:
-
-- prove one sample normalization path
-- define page and image policy
-- avoid raw scrape-to-page shortcuts
+- generated loudspeaker artifact disposition
+- static-content remote durability
+- public/archive freeze boundary
 
 ## Day-By-Day Breakdown
 
 ## Day 1
 
-### 1. Expose `Acoustic Gain` in the toolbox UI
+### 1. Finish the page error reporting contract lane
 
-Why:
+Tasks:
 
-- the shared math exists and is tested
-- turning one finished math slice into visible product surface is a better next
-  step than opening another planning packet
+- `define-page-issue-reporter-ui-contract`
+- `extend-support-intake-for-page-error-capture`
 
 Output:
 
-- `Acoustic Gain` visible inside `apps\ohmic-toolbox`
+- one durable UI/input contract
+- one durable backend-intake extension note
+
+### 2. Start implementation-facing error reporting work
+
+Tasks:
+
+- `build-page-report-triage-queue-view`
+- `implement-page-report-button-on-core-surfaces`
 
 Exit criteria:
 
-- UI uses shared math only
-- toolbox tests still pass
-
-### 2. Refresh queue truth after the `Acoustic Gain` UI slice
-
-Why:
-
-- follow-through must stay immediate or the board drifts again
-
-Output:
-
-- updated request status
-- updated next-pick board if needed
+- route/context capture path is explicit
+- the triage queue shape is no longer vague
 
 ## Day 2
 
-### 3. Decide second-wave toolbox surface strategy
+### 3. Close top-level drift and start the first app slice
 
-Question:
+Tasks:
 
-- should `Ohm's Law`, `Cone Area`, and `Acoustic Gain` live in the toolbox app,
-  as separate public mini-tool pages, or as a mixed model
+- `resolve-generated-loudspeaker-output-disposition`
+- `commit-first-ohmic-osm-editor-shell-safe-slice`
 
 Output:
 
-- one decision note, not more drift
-
-Exit criteria:
-
-- future second-wave tools have a chosen surface strategy
-
-### 4. If the surface decision is clear, expose one second-wave tool path
-
-Preferred candidate:
-
-- `Ohm's Law`
-
-Why:
-
-- strongest search-entry fit
-- already in shared math
+- umbrella repo loses one ambiguous artifact
+- OSM moves from inventory into one bounded slice
 
 ## Day 3
 
-### 5. Build one sample loudspeaker normalization map
+### 4. Shape the next two major app lanes
 
-Why:
+Tasks:
 
-- this turns the loudspeaker lane from abstract planning into one concrete proof
+- `split-first-hardware-control-safe-commit-slice`
+- `split-first-backend-safe-commit-slice`
 
 Output:
 
-- one worked row mapping from raw CSV to normalized fields
-
-Exit criteria:
-
-- raw column names and normalized names are both visible
-- ambiguities are documented instead of hidden
-
-### 6. Use the sample map to refine the static page template if needed
-
-Why:
-
-- one sample will expose unrealistic assumptions fast
+- exact first hardware/control slice
+- exact first backend slice
 
 ## Day 4
 
-### 7. Lock the smarter `Wiring Lab` implementation boundary
+### 5. Triage Android wrapper risk and confirm static-content durability
 
-Why:
+Tasks:
 
-- this is the highest-value speaker-specific tool lane
-- it needs a stable implementation boundary before people start improvising
+- `inventory-android-wrapper-dirty-subsystem`
+- `push-static-content-clean-slice-if-remote-not-aligned`
 
 Output:
 
-- implementation-facing follow-on packet for:
-  - target loads
-  - match categories
-  - explanation templates
-  - recommendation logic
-
-Exit criteria:
-
-- future implementation can start from a defined packet, not from chat memory
+- Android wrapper dirty-shape summary
+- static-content local/remote answer
 
 ## Day 5
 
-### 8. Decide `Time Alignment` first consumption surface
+### 6. Lock the freeze boundary for noisy zones
 
-Pick one as the first real home:
+Task:
 
-- tuning helper
-- handheld helper
-- hardware-linked setup flow
+- `define-public-and-archive-freeze-boundary`
 
 Why:
 
-- this keeps it from being repeatedly mis-slotted into the public utility lane
+- this keeps active completion work from dissolving back into giant legacy
+  cleanup
+
+## Day 6
+
+### 7. Convert the first completed slice decisions into new executable tasks
 
 Output:
+
+- if OSM slice lands, queue the second OSM slice or close it
+- if hardware/control split lands, queue the first actual implementation slice
+- if backend split lands, queue the first actual implementation slice
+
+## Day 7
+
+### 8. Review, collapse, and reseed
+
+Output:
+
+- completed tasks moved to `done`
+- stale `ready` tasks removed
+- next 7-day plan written from actual throughput, not inflated estimates
 
 - one concrete first-consumer decision
 

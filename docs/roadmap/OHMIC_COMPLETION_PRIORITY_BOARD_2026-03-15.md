@@ -103,6 +103,13 @@ execution unless a specific blocker appears
 - `build-page-report-triage-queue-view`
 - `implement-page-report-button-on-core-surfaces`
 
+## Horizon Links
+
+- immediate post-error-reporting burst:
+  - `docs/roadmap/OHMIC_POST_ERROR_REPORTING_20_MINUTE_QUEUE_2026-03-15.md`
+- next 72 hours:
+  - `docs/roadmap/OHMIC_NEXT_72_HOURS_EXECUTION_LADDER_2026-03-15.md`
+
 ## A. `ohmic-audio-labs` Completion Board
 
 ### A1. Lock the toolbox wave
