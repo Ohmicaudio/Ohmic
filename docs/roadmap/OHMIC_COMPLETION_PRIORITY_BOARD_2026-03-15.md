@@ -87,10 +87,10 @@ execution unless a specific blocker appears
 
 Do these first unless they are already actively claimed or truly blocked.
 
-- `verify-first-osm-slice-in-correct-node-shell`
-- `verify-first-hardware-shell-slice-check-coverage`
-- `implement-next-hardware-amp-lab-control-bridge-slice`
-- `define-next-android-wrapper-tracked-text-slice`
+- `define-next-backend-control-plane-safe-slice`
+- `define-next-osm-canvas-disposition-and-noise-fence`
+- `enforce-public-and-archive-freeze-boundary-in-handoff-and-queue-surfaces`
+- `strip-remaining-raw-source-footers-from-public-pages`
 
 Rule:
 
@@ -101,16 +101,17 @@ Rule:
 
 ### Secondary completion support
 
-- `define-next-backend-control-plane-safe-slice`
-- `define-next-osm-canvas-disposition-and-noise-fence`
 - `run-static-boundary-and-host-smoke-floor`
-- `enforce-public-and-archive-freeze-boundary-in-handoff-and-queue-surfaces`
+- `define-live-agent-state-json-contract`
+- `define-agent-inbox-outbox-event-model`
+- `define-orchestrator-lock-and-worker-heartbeat-model`
+- `define-stable-idle-stop-and-crash-recovery-rules`
+- `define-runner-wrapper-cycle-for-json-agent-loop`
 
 These support the main completion lane but should not outrank it.
 
 ### Parallel support lane
 
-- `strip-remaining-raw-source-footers-from-public-pages`
 - `verify-public-cleanup-wave-after-current-claims`
 
 Rule:

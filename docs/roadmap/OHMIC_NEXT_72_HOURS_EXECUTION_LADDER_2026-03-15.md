@@ -22,41 +22,40 @@ This is the realistic “what happens after the next few task pickups” ladder.
 
 ### Primary tasks
 
-- `verify-first-osm-slice-in-correct-node-shell`
-- `verify-first-hardware-shell-slice-check-coverage`
-- `implement-next-hardware-amp-lab-control-bridge-slice`
-- `define-next-android-wrapper-tracked-text-slice`
+- `define-next-backend-control-plane-safe-slice`
+- `define-next-osm-canvas-disposition-and-noise-fence`
+- `enforce-public-and-archive-freeze-boundary-in-handoff-and-queue-surfaces`
+- `strip-remaining-raw-source-footers-from-public-pages`
 
 ### Success condition
 
-- the first OSM slice has truthful verification or a recorded environment
-  blocker
-- the first hardware shell slice has truthful verification coverage recorded
-- the next hardware and Android follow-on slices are already bounded for pickup
+- the backend lane has a clean next slice
+- the next OSM boundary is tighter
+- the freeze rule is visible where agents actually look
+- the public footer-cleanup lane is either finished or clearly bounded
 
 ## Phase 2: Promote The Next Safe Subsystem Slices
 
 ### First picks
 
-1. `define-next-hardware-service-bridge-safe-slice`
-2. `define-next-backend-control-plane-safe-slice`
-3. `define-next-osm-canvas-disposition-and-noise-fence`
+1. `run-static-boundary-and-host-smoke-floor`
+2. `define-live-agent-state-json-contract`
+3. `define-agent-inbox-outbox-event-model`
+4. `define-orchestrator-lock-and-worker-heartbeat-model`
+5. `define-stable-idle-stop-and-crash-recovery-rules`
+6. `define-runner-wrapper-cycle-for-json-agent-loop`
 
 ### Why this order
 
-- keeps momentum inside the same dirty subsystems instead of drifting sideways
-- turns one finished slice into the next bounded slice fast enough that the
-  board stays ahead of execution
+- keeps the board ahead of execution without reopening broad product churn
+- turns the JSON-loop idea into a real reusable packet while the main queue
+  remains healthy
 
 ## Phase 3: Run Parallel Verification And Public Hygiene
 
 ### Follow-on picks
 
-4. `run-static-boundary-and-host-smoke-floor`
-5. `enforce-public-and-archive-freeze-boundary-in-handoff-and-queue-surfaces`
-6. `strip-public-builder-and-scaffold-language`
-7. `strip-remaining-raw-source-footers-from-public-pages`
-8. `verify-public-cleanup-wave-after-current-claims`
+7. `verify-public-cleanup-wave-after-current-claims`
 
 ### Why these are later
 
@@ -72,27 +71,27 @@ Run Phase 1 first, then Phase 2.
 ### If two people are working
 
 - person 1:
-  - Android wrapper hygiene slice
-  - then OSM verification
+  - backend next-slice definition
+  - then OSM canvas/noise fence
 - person 2:
-  - hardware verification
-  - then next hardware service-bridge definition
+  - public freeze-boundary enforcement
+  - then public footer cleanup
 
 ### If three people are working
 
-- person 1: Android wrapper hygiene slice
-- person 2: OSM verification, then next OSM boundary definition
-- person 3: hardware verification, then next backend slice definition
+- person 1: backend next-slice definition
+- person 2: OSM boundary definition
+- person 3: public freeze-boundary enforcement, then footer cleanup
 
 ### If four people are working
 
-- person 1: Android wrapper hygiene slice
-- person 2: OSM verification
-- person 3: hardware verification
+- person 1: backend next-slice definition
+- person 2: OSM boundary definition
+- person 3: public freeze-boundary enforcement
 - person 4: public cleanup / static smoke lane
 
-Static/public durability should only outrank the app lanes if those app lanes
-are already claimed or concretely blocked.
+Static/public durability should only outrank stronger app lanes if those app
+lanes are already absent, claimed, or concretely blocked.
 
 ## Branch Rules
 
@@ -112,7 +111,7 @@ are already claimed or concretely blocked.
 
 The 72-hour ladder is successful if, by the end:
 
-- the first-slice wave is actually verified or honestly blocked
-- Android is no longer a mysterious churn bucket
-- the next hardware, backend, and OSM slices are already queued
+- the next backend and OSM slices are already queued
+- the freeze boundary is operational, not just documented
+- the current public cleanup lane is either finished or explicitly fenced
 - the ready board stays above the floor instead of collapsing after each burst
