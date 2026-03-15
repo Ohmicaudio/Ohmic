@@ -90,11 +90,17 @@ Tasks:
 - `sweep-public-footer-placeholder-stat-copy`
 - `classify-static-engineering-diagram-dirty-wave`
 
-Why fifth:
+Why seventh:
 
 - static-content is still a large public-facing dirt wave
 - it is valid parallel work, but it should not outrank the grouped software
   lane while that lane is open
+
+Hard preference:
+
+- non-static software work wins by default
+- static-content work should be delegated in parallel or taken only after the
+  current non-static pickup order is claimed or blocked
 
 ## Avoidance Rule
 

@@ -90,6 +90,12 @@ Current grouped wave candidates:
 
 This is now a real secondary lane.
 
+It is explicitly subordinate to non-static software work unless:
+
+- a public trust issue is deployment-blocking
+- a software lane is actively blocked
+- or a worker is already isolated on that static lane in parallel
+
 Current grouped wave candidates:
 
 - remove remaining placeholder-style public copy leaks
@@ -119,6 +125,9 @@ Current grouped wave candidates:
 4. `package-backend-chirp-regression-and-bootstrap-wave`
 
 ### Secondary static lane
+
+Only pick these when the stronger non-static software lanes are already claimed,
+blocked, or intentionally delegated in parallel.
 
 5. `clean-ai-index-placeholder-descriptions`
 6. `sweep-public-footer-placeholder-stat-copy`

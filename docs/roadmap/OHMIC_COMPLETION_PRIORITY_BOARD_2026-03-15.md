@@ -119,6 +119,12 @@ Rule:
 These are valid and useful, but they remain below the grouped
 `ohmic-audio-labs` stabilization waves unless software work is actively blocked.
 
+Additional rule:
+
+- if there is unclaimed non-static software work in `ohmic-audio-labs`, do not
+  choose static-content cleanup as the default next task
+- static tasks are acceptable as parallel support, not as the main lane
+
 ### Queue Floor Rule
 
 - keep at least `4` executable ready tasks available
