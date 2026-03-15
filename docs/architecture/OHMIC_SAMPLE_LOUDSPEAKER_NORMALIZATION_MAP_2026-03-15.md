@@ -1,143 +1,175 @@
-Status: worked example
+Status: sample mapping
 Date: 2026-03-15
 
 # Ohmic Sample Loudspeaker Normalization Map
 
 ## Purpose
 
-Prove the loudspeaker normalization model on one real CSV row before any broader
-extraction work starts.
+Turn one real row from `B:\junk\loudspeakerdatabase.csv` into a normalized
+speaker record so the extraction lane has a concrete reference point.
 
-This is a single worked example, not a batch conversion rule.
+This is not a mass-conversion step.
 
-## Source Row
+It is a worked example.
 
-Chosen sample:
+## Sample Source Row
 
-- brand: `Beyma`
-- model: `15LEX1200Nd`
-- raw source URL: `https://loudspeakerdatabase.com/Beyma/15LEX1200Nd`
+Selected source row:
 
-Reason for choosing it:
+- `source_url`: `https://loudspeakerdatabase.com/SICA/10H2CS`
+- `source_image_url`: `https://loudspeakerdatabase.com/images/mini/SICA/10H2CS/SICA_10H2CS_(Photo_1).jpg.webp`
+- `brand_ref_imp`: `SICA`
+- `brand_ref_imp 2`: `10 H 2 CS`
+- `brand_ref_imp 3`: `Ω`
+- `brand_ref_imp 4`: `8`
+- `highlighted 2`: `10`
+- `size_type`: `Mid Bass`
+- `value 2`: `30.3`
+- `value 4`: `340`
+- `fr 2`: `30`
+- `fr 3`: `2500`
+- `value 5`: `0.37`
+- `symbol 4`: `x`
+- `sub 4`: `max`
+- `value 6`: `mm`
+- `value 7`: `6`
+- `symbol 5`: `SPL`
+- `sub 5`: `1W`
+- `value 8`: `dB`
+- `value 9`: `89.1`
+- `value 10`: `5.01`
+- `symbol 7`: `P`
+- `sub 7`: `max`
+- `value 11`: `W`
+- `value 12`: `400`
 
-- clear brand and model
-- clear size and product type
-- enough extra technical columns to show where the mapping is still ambiguous
+## Raw To Normalized Mapping
 
-## Raw CSV Slice
+### High-confidence identity fields
 
-From `B:\junk\loudspeakerdatabase.csv`:
+- `photos_and_graphs href` -> `source_url`
+- `photo src` -> `source_image_url`
+- `brand_ref_imp` -> `brand`
+- `brand_ref_imp 2` -> `model`
+- `brand_ref_imp 4` -> `nominal_impedance_ohms`
+- `highlighted 2` -> `diameter_inches`
+- `size_type` -> `product_type`
 
-| Raw column | Raw value |
-| --- | --- |
-| `photos_and_graphs href` | `https://loudspeakerdatabase.com/Beyma/15LEX1200Nd` |
-| `photo src` | `https://loudspeakerdatabase.com/images/mini/Beyma/15LEX1200Nd/Beyma_15LEX1200Nd_(Photo_1).webp.webp` |
-| `brand_ref_imp` | `Beyma` |
-| `brand_ref_imp 2` | `15LEX1200Nd` |
-| `brand_ref_imp 3` | `Ω` rendered in the file as mojibake in some rows |
-| `brand_ref_imp 4` | `8` |
-| `highlighted 2` | `15` |
-| `size_type` | `Subwoofer` |
-| `value 2` | `36` |
-| `value 4` | `880` |
-| `fr` | `- Hz` |
-| `fr 2` | `40` |
-| `fr 3` | `1500` |
-| `value 5` | `0.30` |
-| `symbol 4` | `x` |
-| `sub 4` | `max` |
-| `value 6` | `mm` |
-| `value 7` | `11` |
-| `symbol 5` | `SPL` |
-| `sub 5` | `1W` |
-| `value 8` | `dB` |
-| `value 9` | `94.8` |
-| `value 10` | `11.7` |
-| `symbol 7` | `P` |
-| `sub 7` | `max` |
-| `value 11` | `W` |
-| `value 12` | `2400` |
+### High-confidence technical fields
 
-## Safe Normalized Mapping
+- `fr 2` -> `usable_frequency_low_hz`
+- `fr 3` -> `usable_frequency_high_hz`
+- `value 7` + `value 6` + `symbol 4` + `sub 4` -> `xmax_mm`
+- `value 9` + `symbol 5` + `sub 5` + `value 8` -> `sensitivity_db_1w`
+- `value 12` + `symbol 7` + `sub 7` + `value 11` -> `power_max_w`
 
-These fields are safe to normalize now without pretending the unlabeled scrape
-columns are already governed.
+### Likely technical fields, but still need rule confirmation
 
-| Normalized field | Value | Source basis | Confidence |
-| --- | --- | --- | --- |
-| `source_url` | `https://loudspeakerdatabase.com/Beyma/15LEX1200Nd` | `photos_and_graphs href` | high |
-| `source_image_url` | `https://loudspeakerdatabase.com/images/mini/Beyma/15LEX1200Nd/Beyma_15LEX1200Nd_(Photo_1).webp.webp` | `photo src` | medium |
-| `brand` | `Beyma` | `brand_ref_imp` | high |
-| `model` | `15LEX1200Nd` | `brand_ref_imp 2` | high |
-| `nominal_impedance_ohms` | `8` | `brand_ref_imp 3` + `brand_ref_imp 4` | high |
-| `diameter_inches` | `15` | `highlighted 2` | high |
-| `product_type` | `Subwoofer` | `size_type` | high |
+- `value 2` -> likely `re_ohms`
+- `value 4` -> likely `vas_l` or another volume-related field
+- `value 10` -> unresolved technical value; do not publish yet
 
-## Safe Derived Fields
+## Normalized Sample Record
 
-These are generated from the normalized fields above, not copied manually into a
-future page.
+```json
+{
+  "source_url": "https://loudspeakerdatabase.com/SICA/10H2CS",
+  "source_image_url": "https://loudspeakerdatabase.com/images/mini/SICA/10H2CS/SICA_10H2CS_(Photo_1).jpg.webp",
+  "brand": "SICA",
+  "model": "10 H 2 CS",
+  "display_name": "SICA 10 H 2 CS",
+  "product_type": "Mid Bass",
+  "diameter_inches": 10,
+  "nominal_impedance_ohms": 8,
+  "usable_frequency_low_hz": 30,
+  "usable_frequency_high_hz": 2500,
+  "xmax_mm": 6,
+  "sensitivity_db_1w": 89.1,
+  "power_max_w": 400,
+  "unresolved_fields": {
+    "value_2": "30.3",
+    "value_4": "340",
+    "value_10": "5.01"
+  },
+  "normalization_notes": [
+    "Brand, model, impedance, size, and type are high-confidence fields.",
+    "Frequency range appears to be represented by fr 2 and fr 3.",
+    "Xmax, sensitivity, and power are encoded as grouped symbol fragments and need one parser rule.",
+    "At least three generic value columns remain ambiguous and should not be published yet."
+  ],
+  "source_confidence": "medium"
+}
+```
 
-| Derived field | Value | Rule |
-| --- | --- | --- |
-| `speaker_slug` | `beyma-15lex1200nd` | lowercase brand + model slug |
-| `display_name` | `Beyma 15LEX1200Nd` | brand + model |
-| `normalized_impedance_display` | `8 ohm` | impedance display seed |
-| `normalized_size_display` | `15 inch` | size display seed |
-| `seo_title_seed` | `Beyma 15LEX1200Nd Speaker Reference | Ohmic Audio` | template rule |
-| `candidate_page_path` | `/reference/speakers/beyma/15lex1200nd/` | page-template rule |
+## Ambiguities To Resolve Before Broader Extraction
 
-## Tentative Technical Mapping
+### 1. Grouped symbol parsing is required
 
-These values look usable, but the current scrape column names are still too weak
-to call them production-safe without another labeling pass.
+Several important fields are not encoded as one column. They are split across
+multiple visual fragments.
 
-| Tentative field | Raw evidence | Current call | Confidence |
-| --- | --- | --- | --- |
-| `usable_frequency_low_hz` | `fr 2 = 40` | likely lower bound of published frequency range | medium |
-| `usable_frequency_high_hz` | `fr 3 = 1500` | likely upper bound of published frequency range | medium |
-| `sensitivity_db` | `symbol 5 = SPL`, `sub 5 = 1W`, `value 8 = dB`, `value 9 = 94.8` | likely safe | medium-high |
-| `power_max_w` | `symbol 7 = P`, `sub 7 = max`, `value 11 = W`, `value 12 = 2400` | likely safe | medium-high |
-| `qts` or another TS field | `value 5 = 0.30` | plausible but unlabeled | low |
-| `xmax_mm` | `symbol 4 = x`, `sub 4 = max`, `value 6 = mm`, `value 7 = 11` | plausible but still scrape-shaped | medium |
+Examples:
 
-## Unresolved Ambiguities
+- `Xmax`
+- sensitivity / `SPL 1W`
+- `Pmax`
 
-These are the reasons broader extraction should not start yet:
+So the extractor needs grouped-field decoding, not simple column renaming.
 
-- `value 2`, `value 4`, and `value 10` are not self-describing enough to map
-  safely without a column-label pass
-- `photo src` is structurally useful, but the `.webp.webp` suffix suggests the
-  image lane needs normalization and attribution review before public use
-- the CSV still carries mojibake in unit columns on some rows, which means unit
-  parsing should not be treated as clean by default
-- the current row shape mixes:
-  - identity fields
-  - technical fields
-  - unit hints
-  - symbol fragments
-  without a governed schema
+### 2. Generic value columns are not safe to publish by guess
 
-## Missing Before Broader Extraction
+These columns are still ambiguous in the sample:
 
-Before broader mapping starts, the lane still needs:
+- `value 2`
+- `value 4`
+- `value 10`
 
-1. a governed column-label map for the scrape-shaped technical fields
-2. unit normalization rules
-3. image-source and attribution policy
-4. confidence rules for tentative technical fields versus safe identity fields
-5. one small extraction script or field-map packet that turns raw CSV headers
-   into normalized names
+They may be very useful later, but they need a rule or source-page check before
+they become public fields.
 
-## Practical Call
+### 3. The frequency display needs one normalization rule
 
-This worked example proves the current lane is good enough to normalize:
+The source uses:
 
-- source identity
-- brand/model identity
-- impedance
-- size
-- product type
+- `fr`
+- `fr 2`
+- `fr 3`
 
-It does not yet prove that the technical parameter block can be mass-extracted
-without another labeling pass first.
+The sample strongly suggests:
+
+- `fr 2` = low usable frequency
+- `fr 3` = high usable frequency
+
+But the extractor should formalize that once rather than assuming it forever.
+
+## Operational Rule Learned From The Sample
+
+The extractor should not normalize by column name alone.
+
+It also needs grouped parsing families such as:
+
+- identity cluster
+- frequency cluster
+- xmax cluster
+- sensitivity cluster
+- power cluster
+
+## What This Unblocks
+
+This sample is enough to support the next low-risk step:
+
+- define grouped-field parsing rules
+- test them on a handful of rows
+- then decide whether the dataset is consistent enough for broader extraction
+
+## Summary
+
+The dataset is usable.
+
+The main issue is not lack of value. It is that several technical fields are
+encoded as grouped visual fragments instead of clean named columns.
+
+So the correct next move is:
+
+- grouped-field decoding
+- not blind CSV-to-schema mapping

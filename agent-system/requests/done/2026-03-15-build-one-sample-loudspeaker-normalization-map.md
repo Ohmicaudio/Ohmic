@@ -39,6 +39,21 @@ A single worked example that shows:
 - do not mass-convert the dataset
 - use one or a few sample rows only
 
+## Outcome
+
+Completed on 2026-03-15.
+
+Output:
+
+- `B:\ohmic\docs\architecture\OHMIC_SAMPLE_LOUDSPEAKER_NORMALIZATION_MAP_2026-03-15.md`
+
+Result:
+
+- one real loudspeaker row was mapped into a normalized sample record
+- high-confidence identity fields were separated from unresolved grouped fields
+- the next extraction rule is now explicit: grouped-symbol parsing is required
+  before broader conversion
+
 ## Completion
 
 - added `B:\ohmic\docs\architecture\OHMIC_SAMPLE_LOUDSPEAKER_NORMALIZATION_MAP_2026-03-15.md`
