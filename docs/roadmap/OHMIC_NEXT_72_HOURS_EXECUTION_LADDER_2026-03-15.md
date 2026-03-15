@@ -18,36 +18,35 @@ This is the realistic “what happens after the next few task pickups” ladder.
 - `ohmic-audio-labs` remains the main completion risk
 - `B:\ohmic` should only carry intentional drift
 
-## Phase 1: Finish The Error Reporting Lane
+## Phase 1: Start Real App Slices
 
 ### Primary tasks
 
-- `define-page-issue-reporter-ui-contract`
-- `extend-support-intake-for-page-error-capture`
-- `build-page-report-triage-queue-view`
-- `implement-page-report-button-on-core-surfaces`
+- `commit-first-ohmic-osm-editor-shell-safe-slice`
+- `split-first-hardware-control-safe-commit-slice`
+- `split-first-backend-safe-commit-slice`
 
 ### Success condition
 
-- page reporting has one intake path
-- route/context capture is explicit
-- triage view expectations are defined
-- the work is tested enough that the follow-on queue can start immediately
+- OSM has one real bounded execution slice
+- hardware/control has a first executable slice
+- backend has a first executable slice
 
-## Phase 2: Close Top-Level Drift And Start Real App Slices
+## Phase 2: Run Parallel Support And Drift Lanes
 
 ### First picks
 
 1. `resolve-generated-loudspeaker-output-disposition`
-2. `commit-first-ohmic-osm-editor-shell-safe-slice`
-3. `split-first-hardware-control-safe-commit-slice`
-4. `split-first-backend-safe-commit-slice`
+2. `define-page-issue-reporter-ui-contract`
+3. `extend-support-intake-for-page-error-capture`
+4. `build-page-report-triage-queue-view`
+5. `implement-page-report-button-on-core-surfaces`
 
 ### Why this order
 
-- removes one clear umbrella ambiguity first
-- turns the already-inventoried subsystems into execution lanes
-- keeps the next work anchored in the app, not in more queue theory
+- closes top-level ambiguity
+- moves the reporting lane forward without replacing app completion as the main
+  focus
 
 ## Phase 3: Bound The Remaining Noise
 
@@ -66,29 +65,29 @@ This is the realistic “what happens after the next few task pickups” ladder.
 
 ### If one person is working
 
-Run the tasks in the exact order listed above.
+Run Phase 1 first, then Phase 2.
 
 ### If two people are working
 
 - person 1:
-  - error reporting implementation lane
-  - then OSM editor-shell slice
+  - OSM editor-shell slice
+  - then error-reporting lane
 - person 2:
-  - generated loudspeaker output disposition
-  - then hardware/control split
+  - hardware/control split
+  - then generated loudspeaker output disposition
 
 ### If three people are working
 
-- person 1: error reporting lane
-- person 2: OSM editor-shell slice
-- person 3: hardware/control split, then backend split
+- person 1: OSM editor-shell slice
+- person 2: hardware/control split
+- person 3: backend split, then error-reporting lane
 
 ### If four people are working
 
-- person 1: error reporting lane
-- person 2: OSM editor-shell slice
-- person 3: hardware/control split
-- person 4: backend split
+- person 1: OSM editor-shell slice
+- person 2: hardware/control split
+- person 3: backend split
+- person 4: error-reporting lane
 
 Android and static-content durability should only be pulled in once one of the
 first three app-oriented lanes is already underway.
@@ -98,7 +97,7 @@ first three app-oriented lanes is already underway.
 ### If the error-reporting lane finishes fast
 
 - do not invent a new reporting subproject
-- move straight into the Phase 2 sequence
+- keep it parallel to app slices, not above them
 
 ### If the OSM slice widens past `apps/osm-web`
 

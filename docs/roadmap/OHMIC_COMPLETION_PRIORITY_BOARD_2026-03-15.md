@@ -85,10 +85,10 @@ execution unless a specific blocker appears
 
 ### Highest priority active execution slices
 
-- `resolve-generated-loudspeaker-output-disposition`
 - `commit-first-ohmic-osm-editor-shell-safe-slice`
 - `split-first-hardware-control-safe-commit-slice`
-- `split-first-backend-safe-slice`
+- `split-first-backend-safe-commit-slice`
+- `resolve-generated-loudspeaker-output-disposition`
 - `inventory-android-wrapper-dirty-subsystem`
 
 ### Medium priority completion support
@@ -102,6 +102,11 @@ execution unless a specific blocker appears
 - `extend-support-intake-for-page-error-capture`
 - `build-page-report-triage-queue-view`
 - `implement-page-report-button-on-core-surfaces`
+
+Rule:
+
+- do not let this lane outrank the first app-safe slices unless it is directly
+  unblocking a live product failure
 
 ## Horizon Links
 

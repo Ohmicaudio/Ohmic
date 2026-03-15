@@ -10,51 +10,51 @@ Provide the first pickup order for agents starting the next completion wave.
 
 ## First Pickup Order
 
-### 1. Resolve generated loudspeaker output disposition
-
-Task:
-
-- `resolve-generated-loudspeaker-output-disposition`
-
-Why first:
-
-- one visible generated artifact is still carrying umbrella drift
-- cleanest remaining completion loop in `B:\ohmic`
-
-### 2. Commit first OSM editor-shell safe slice
+### 1. Commit first OSM editor-shell safe slice
 
 Task:
 
 - `commit-first-ohmic-osm-editor-shell-safe-slice`
 
-Why second:
+Why first:
 
 - OSM inventory is done
 - the next real move is to take the first bounded `osm-web` slice instead of
   re-inventorying it forever
 
-### 3. Split first hardware/control safe commit slice
+### 2. Split first hardware/control safe commit slice
 
 Task:
 
 - `split-first-hardware-control-safe-commit-slice`
 
-Why third:
+Why second:
 
 - `components/Hardware` is still one of the highest-value dirty lanes in the
   main app
 - it now needs an executable first slice, not another abstract note
 
-### 4. Split first backend safe slice
+### 3. Split first backend safe slice
 
 Task:
 
 - `split-first-backend-safe-commit-slice`
 
-Why fourth:
+Why third:
 
 - backend is still a meaningful dirty subsystem
 - the next move is a bounded first slice with verification, not generic triage
+
+### 4. Resolve generated loudspeaker output disposition
+
+Task:
+
+- `resolve-generated-loudspeaker-output-disposition`
+
+Why fourth:
+
+- one visible generated artifact is still carrying umbrella drift
+- worth closing, but weaker than the first three app completion slices
 
 ### 5. Inventory Android wrapper dirty subsystem
 
@@ -98,11 +98,13 @@ Tasks:
 - `build-page-report-triage-queue-view`
 - `implement-page-report-button-on-core-surfaces`
 
-Why now:
+Why in parallel:
 
 - user explicitly wants it remembered and staged
 - backend triage path already exists, so this is an extension lane not a green
   field system
+- it should not outrank the first app-safe slices unless it is directly
+  unblocking a live product failure
 
 ## Coordination Rules
 
