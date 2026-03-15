@@ -119,18 +119,26 @@ function Get-GroupedTechnicalFields {
 
 function Get-SampleRecord {
     param(
-        [pscustomobject]$Row
+        [pscustomobject]$Row,
+        [int]$RowIndex
     )
 
     $grouped = Get-GroupedTechnicalFields -Row $Row
     $usableLow = Convert-ToNullableNumber -Value (Get-TrimmedValue -Row $Row -Column "fr 2")
     $usableHigh = Convert-ToNullableNumber -Value (Get-TrimmedValue -Row $Row -Column "fr 3")
+    $brand = (Get-TrimmedValue -Row $Row -Column "brand_ref_imp").Trim()
+    $model = (Get-TrimmedValue -Row $Row -Column "brand_ref_imp 2").Trim()
+    $nominalImpedanceOhms = Convert-ToNullableNumber -Value (Get-TrimmedValue -Row $Row -Column "brand_ref_imp 4")
+    $sourceUrl = (Get-TrimmedValue -Row $Row -Column "photos_and_graphs href").Trim()
+    $sourceImageUrl = (Get-TrimmedValue -Row $Row -Column "photo src").Trim()
 
     return [pscustomobject]@{
-        brand = (Get-TrimmedValue -Row $Row -Column "brand_ref_imp").Trim()
-        model = (Get-TrimmedValue -Row $Row -Column "brand_ref_imp 2").Trim()
+        brand = $brand
+        model = $model
+        display_name = ("{0} {1}" -f $brand, $model).Trim()
         product_type = (Get-TrimmedValue -Row $Row -Column "size_type").Trim()
         diameter_inches = Convert-ToNullableNumber -Value (Get-TrimmedValue -Row $Row -Column "highlighted 2")
+        nominal_impedance_ohms = $nominalImpedanceOhms
         nominal_impedance_raw = ((Get-TrimmedValue -Row $Row -Column "brand_ref_imp 3").Trim() + " " + (Get-TrimmedValue -Row $Row -Column "brand_ref_imp 4").Trim()).Trim()
         fs_hz = Convert-ToNullableNumber -Value (Get-TrimmedValue -Row $Row -Column "value 2")
         sd_cm2 = Convert-ToNullableNumber -Value (Get-TrimmedValue -Row $Row -Column "value 4")
@@ -138,19 +146,47 @@ function Get-SampleRecord {
         usable_frequency_low_hz = $usableLow
         usable_frequency_high_hz = $usableHigh
         unlabeled_technical_value_1 = Convert-ToNullableNumber -Value (Get-TrimmedValue -Row $Row -Column "value 10")
+        source_trace = [pscustomobject]@{
+            csv_row_index = $RowIndex
+            source_url = $sourceUrl
+            source_image_url = $sourceImageUrl
+            raw_fields = [pscustomobject]@{
+                brand_ref_imp = (Get-TrimmedValue -Row $Row -Column "brand_ref_imp").Trim()
+                brand_ref_imp_2 = (Get-TrimmedValue -Row $Row -Column "brand_ref_imp 2").Trim()
+                brand_ref_imp_3 = (Get-TrimmedValue -Row $Row -Column "brand_ref_imp 3").Trim()
+                brand_ref_imp_4 = (Get-TrimmedValue -Row $Row -Column "brand_ref_imp 4").Trim()
+                highlighted_2 = (Get-TrimmedValue -Row $Row -Column "highlighted 2").Trim()
+                size_type = (Get-TrimmedValue -Row $Row -Column "size_type").Trim()
+                value_2 = (Get-TrimmedValue -Row $Row -Column "value 2").Trim()
+                value_4 = (Get-TrimmedValue -Row $Row -Column "value 4").Trim()
+                value_5 = (Get-TrimmedValue -Row $Row -Column "value 5").Trim()
+                fr_2 = (Get-TrimmedValue -Row $Row -Column "fr 2").Trim()
+                fr_3 = (Get-TrimmedValue -Row $Row -Column "fr 3").Trim()
+                value_10 = (Get-TrimmedValue -Row $Row -Column "value 10").Trim()
+            }
+        }
         grouped_parse = $grouped
     }
 }
 
 $rows = Import-Csv $CsvPath
 $samples = foreach ($model in $SampleModels) {
-    $row = $rows | Where-Object { $_."brand_ref_imp 2" -eq $model } | Select-Object -First 1
-    if ($null -eq $row) {
+    $match = for ($index = 0; $index -lt $rows.Count; $index++) {
+        if ($rows[$index]."brand_ref_imp 2" -eq $model) {
+            [pscustomobject]@{
+                Row = $rows[$index]
+                RowIndex = $index + 1
+            }
+            break
+        }
+    }
+
+    if ($null -eq $match) {
         Write-Warning "Sample model not found: $model"
         continue
     }
 
-    Get-SampleRecord -Row $row
+    Get-SampleRecord -Row $match.Row -RowIndex $match.RowIndex
 }
 
 $json = $samples | ConvertTo-Json -Depth 6

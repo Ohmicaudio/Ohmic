@@ -44,8 +44,10 @@ use:
 
 - `brand`
 - `model`
+- `display_name`
 - `product_type`
 - `diameter_inches`
+- `nominal_impedance_ohms`
 - `fs_hz`
 - `sd_cm2`
 - `qts`
@@ -54,15 +56,21 @@ use:
 - `grouped_parse.fields.xmax_mm` when explicit
 - `grouped_parse.fields.sensitivity_db_1w` when explicit
 - `grouped_parse.fields.power_max_w` when explicit
+- `source_trace.source_url`
+- `source_trace.source_image_url`
+- `source_trace.csv_row_index`
 
 ## Quarantined Fields
 
-The packet still includes one quarantined leftover:
+The packet still includes raw or unresolved leftovers that should not be turned
+into public speaker copy by default:
 
 - `unlabeled_technical_value_1`
+- `nominal_impedance_raw`
+- `source_trace.raw_fields.*`
 
-That value is preserved so the sample packet stays honest to the source data,
-but it is not promoted to a user-facing technical field yet.
+These stay in the packet so downstream work can audit provenance and ambiguous
+values without pretending they are polished display fields.
 
 ## Operational Value
 
@@ -73,3 +81,32 @@ for:
 - static page template wiring
 - extraction-lane planning
 - fixture-style checks for later parser revisions
+- one first speaker reference page packet
+
+## Current Representative Page Candidate
+
+The strongest first page candidate from this packet is:
+
+- `Beyma 15LEX1200Nd`
+
+Why:
+
+- full grouped-parse block is present
+- brand/model identity is clean
+- source URL and image URL are both preserved
+- the page can demonstrate provenance, quick specs, and grouped technical
+  fields without guessing beyond the sample
+
+## Boundary Rule
+
+Downstream page work should consume:
+
+- normalized display-safe fields
+- grouped parsed fields when explicit
+- `source_trace.source_url` and `source_trace.source_image_url`
+
+It should not surface:
+
+- `source_trace.raw_fields.*`
+- `unlabeled_technical_value_1`
+- speculative renamed fields that have not been proven yet

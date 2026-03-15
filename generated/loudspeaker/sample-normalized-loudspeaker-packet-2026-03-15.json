@@ -2,8 +2,10 @@
     {
         "brand":  "Beyma",
         "model":  "15LEX1200Nd",
+        "display_name":  "Beyma 15LEX1200Nd",
         "product_type":  "Subwoofer",
         "diameter_inches":  15,
+        "nominal_impedance_ohms":  8,
         "nominal_impedance_raw":  "Ω 8",
         "fs_hz":  36,
         "sd_cm2":  880,
@@ -11,6 +13,25 @@
         "usable_frequency_low_hz":  40,
         "usable_frequency_high_hz":  1500,
         "unlabeled_technical_value_1":  11.7,
+        "source_trace":  {
+                             "csv_row_index":  4,
+                             "source_url":  "https://loudspeakerdatabase.com/Beyma/15LEX1200Nd",
+                             "source_image_url":  "https://loudspeakerdatabase.com/images/mini/Beyma/15LEX1200Nd/Beyma_15LEX1200Nd_(Photo_1).webp.webp",
+                             "raw_fields":  {
+                                                "brand_ref_imp":  "Beyma",
+                                                "brand_ref_imp_2":  "15LEX1200Nd",
+                                                "brand_ref_imp_3":  "Ω",
+                                                "brand_ref_imp_4":  "8",
+                                                "highlighted_2":  "15",
+                                                "size_type":  "Subwoofer",
+                                                "value_2":  "36",
+                                                "value_4":  "880",
+                                                "value_5":  "0.30",
+                                                "fr_2":  "40",
+                                                "fr_3":  "1500",
+                                                "value_10":  "11.7"
+                                            }
+                         },
         "grouped_parse":  {
                               "variant":  "full_block",
                               "fields":  {
@@ -46,8 +67,10 @@
     {
         "brand":  "SICA",
         "model":  "10 H 2 CS",
+        "display_name":  "SICA 10 H 2 CS",
         "product_type":  "Mid Bass",
         "diameter_inches":  10,
+        "nominal_impedance_ohms":  8,
         "nominal_impedance_raw":  "Ω 8",
         "fs_hz":  30.3,
         "sd_cm2":  340,
@@ -55,6 +78,25 @@
         "usable_frequency_low_hz":  30,
         "usable_frequency_high_hz":  2500,
         "unlabeled_technical_value_1":  5.01,
+        "source_trace":  {
+                             "csv_row_index":  1,
+                             "source_url":  "https://loudspeakerdatabase.com/SICA/10H2CS",
+                             "source_image_url":  "https://loudspeakerdatabase.com/images/mini/SICA/10H2CS/SICA_10H2CS_(Photo_1).jpg.webp",
+                             "raw_fields":  {
+                                                "brand_ref_imp":  "SICA",
+                                                "brand_ref_imp_2":  "10 H 2 CS",
+                                                "brand_ref_imp_3":  "Ω",
+                                                "brand_ref_imp_4":  "8",
+                                                "highlighted_2":  "10",
+                                                "size_type":  "Mid Bass",
+                                                "value_2":  "30.3",
+                                                "value_4":  "340",
+                                                "value_5":  "0.37",
+                                                "fr_2":  "30",
+                                                "fr_3":  "2500",
+                                                "value_10":  "5.01"
+                                            }
+                         },
         "grouped_parse":  {
                               "variant":  "full_block",
                               "fields":  {
@@ -90,8 +132,10 @@
     {
         "brand":  "EUPHORIA",
         "model":  "ESW10D4",
+        "display_name":  "EUPHORIA ESW10D4",
         "product_type":  "Subwoofer",
         "diameter_inches":  10,
+        "nominal_impedance_ohms":  4,
         "nominal_impedance_raw":  "2 x  Ω 4",
         "fs_hz":  33.2,
         "sd_cm2":  330,
@@ -99,6 +143,25 @@
         "usable_frequency_low_hz":  null,
         "usable_frequency_high_hz":  null,
         "unlabeled_technical_value_1":  6.53,
+        "source_trace":  {
+                             "csv_row_index":  59,
+                             "source_url":  "https://loudspeakerdatabase.com/EUPHORIA/ESW10D4",
+                             "source_image_url":  "https://loudspeakerdatabase.com/images/mini/EUPHORIA/ESW10D4/EUPHORIA_ESW10D4_(Photo_1).webp.webp",
+                             "raw_fields":  {
+                                                "brand_ref_imp":  "EUPHORIA",
+                                                "brand_ref_imp_2":  "ESW10D4",
+                                                "brand_ref_imp_3":  "2 x  Ω",
+                                                "brand_ref_imp_4":  "4",
+                                                "highlighted_2":  "10",
+                                                "size_type":  "Subwoofer",
+                                                "value_2":  "33.2",
+                                                "value_4":  "330",
+                                                "value_5":  "0.57",
+                                                "fr_2":  "",
+                                                "fr_3":  "",
+                                                "value_10":  "6.53"
+                                            }
+                         },
         "grouped_parse":  {
                               "variant":  "shifted_missing_xmax",
                               "fields":  {

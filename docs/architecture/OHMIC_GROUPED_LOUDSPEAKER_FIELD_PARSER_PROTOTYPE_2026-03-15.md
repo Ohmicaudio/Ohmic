@@ -65,6 +65,8 @@ powershell -ExecutionPolicy Bypass -File B:\ohmic\tools\loudspeaker\prototype-gr
 Expected result shape:
 
 - each sample row emits stable identity fields
+- each sample row keeps a `source_trace` block with CSV row index, source URL,
+  source image URL, and the exact raw columns used in normalization
 - grouped fields are nested under `grouped_parse.fields`
 - row shape is labeled as either `full_block` or `shifted_missing_xmax`
 
@@ -75,6 +77,10 @@ Observed sample excerpt:
   {
     "brand": "Beyma",
     "model": "15LEX1200Nd",
+    "source_trace": {
+      "csv_row_index": 4,
+      "source_url": "https://loudspeakerdatabase.com/Beyma/15LEX1200Nd"
+    },
     "grouped_parse": {
       "variant": "full_block",
       "fields": {
@@ -115,6 +121,8 @@ Observed sample excerpt:
 This is enough proof to support the next extraction rule:
 
 - normalize stable identity fields directly
+- preserve raw-source lineage inside the packet instead of relying on external
+  notes
 - normalize grouped technical fields only through semantic block detection
 - quarantine unlabeled leftovers such as `value 10` until their meaning is
   proven
