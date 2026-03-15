@@ -1,4 +1,4 @@
-Status: ready
+Status: done
 Priority: medium
 Date: 2026-03-15
 Project: ohmic
@@ -26,3 +26,13 @@ system stops depending solely on PowerShell-centric coordination paths.
 - one concrete CLI skeleton exists
 - core command intent is visible in code or scaffolding
 - the migration path from PowerShell-only tooling is clearer
+
+## Completion Notes
+
+- implemented as `tools/sync/agentctl.py`
+- wired `validate` and `refresh` to the bash wrappers
+- added placeholder command groups for `claim` and `request`
+- documented the entrypoint in `tools/sync/README.md`
+- smoke checked:
+  - `python3 tools/sync/agentctl.py --help`
+  - `python3 tools/sync/agentctl.py validate --json`
