@@ -24,6 +24,17 @@ documentation rather than in public or operator-facing UI copy.
 - shell status labels
 - deck copy
 - control labels and empty-state language
+- public JSON or metadata fields that still expose raw scaffold markers like
+  `[VISUAL PLACEHOLDER: ...]`
+
+## Allowed Exceptions
+
+- literal HTML or React input `placeholder=` hints that help a user complete a
+  form
+- honest content taxonomy labels like `planned` when the page itself is a
+  planning/index surface rather than a fake finished surface
+- roadmap, QA, migration, and implementation packet language that is not shown
+  inside the product
 
 ## Preferred Replacement Pattern
 
@@ -46,3 +57,7 @@ product feel unfinished.
   rough placeholder language
 - resume app-shell copy cleanup with the same rule once the current claim on the
   hardware-shell surface clears
+- treat `public/ai-index.json` style raw placeholder markers as cleanup targets,
+  not acceptable public copy
+- keep implementation notes for those cleanup passes in roadmap or migration
+  docs instead of inline product strings
