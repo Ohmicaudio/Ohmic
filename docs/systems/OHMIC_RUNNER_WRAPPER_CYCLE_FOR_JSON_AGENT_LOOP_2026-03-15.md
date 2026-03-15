@@ -189,6 +189,10 @@ The wrapper should track at least:
 
 These can live in `agent_runtime.json`.
 
+Concrete runtime contract:
+
+- `docs/systems/OHMIC_AGENT_RUNTIME_JSON_CONTRACT_2026-03-15.md`
+
 ## Guardrails
 
 - do not let the wrapper overwrite append-only event history
