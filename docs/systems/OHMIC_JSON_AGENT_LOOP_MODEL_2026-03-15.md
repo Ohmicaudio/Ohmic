@@ -54,6 +54,12 @@ Optional supporting files:
 - `active_claims.json`
 - `recent_audits.jsonl`
 
+## Concrete Contract
+
+The first concrete `agent_state.json` packet contract lives in:
+
+- `docs/systems/OHMIC_LIVE_AGENT_STATE_JSON_CONTRACT_2026-03-15.md`
+
 ## Minimum State Shape
 
 ```json
