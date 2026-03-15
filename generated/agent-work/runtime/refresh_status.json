@@ -1,10 +1,10 @@
 {
-    "updated_at":  "2026-03-15T18:36:33.8269819Z",
+    "updated_at":  "2026-03-15T18:43:51.9150742Z",
     "status":  "success",
     "mode":  "once",
     "project":  "all",
-    "reason":  "claim-complete:public-worked-examples",
-    "last_success_at":  "2026-03-15T18:36:33.8269819Z",
+    "reason":  "claim-complete:first-speaker-static-page-slice",
+    "last_success_at":  "2026-03-15T18:43:51.9150742Z",
     "outputs":  [
                     "generated/agent-work/current-state.json",
                     "generated/agent-work/runtime/agent_state.json",

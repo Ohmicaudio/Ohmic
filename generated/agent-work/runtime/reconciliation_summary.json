@@ -1,16 +1,16 @@
 {
-    "generated_at":  "2026-03-15T18:36:33Z",
-    "source_latest_write_time":  "2026-03-15T18:36:13.7828929Z",
+    "generated_at":  "2026-03-15T18:43:51Z",
+    "source_latest_write_time":  "2026-03-15T18:43:36.0739422Z",
     "project":  "ohmic",
     "staleness":  {
                       "status":  "fresh",
                       "reason":  null
                   },
     "counts":  {
-                   "ready":  6,
+                   "ready":  4,
                    "active_claims":  0,
                    "blocked":  2,
-                   "done":  377
+                   "done":  381
                },
     "board_health":  "healthy",
     "queue_floor_met":  true,
@@ -28,7 +28,7 @@
                  },
     "top_priority":  [
                          "2026-03-15-implement-next-hardware-amp-lab-control-bridge-slice",
-                         "2026-03-15-add-hardware-shell-deck-smoke-check-coverage",
-                         "2026-03-15-identify-next-semantic-android-wrapper-slice-after-crlf-churn"
+                         "2026-03-15-add-backend-chirp-analyzer-requirements-artifact",
+                         "2026-03-15-add-hardware-shell-deck-smoke-check-coverage"
                      ]
 }

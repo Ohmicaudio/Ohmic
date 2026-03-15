@@ -9,7 +9,7 @@
                     "task_status":  "needs_input",
                     "orchestrator_active":  false,
                     "compact_count":  0,
-                    "updated_at":  "2026-03-15T18:36:33Z"
+                    "updated_at":  "2026-03-15T18:43:51Z"
                 },
     "input":  {
                   "pending":  true,
@@ -22,21 +22,21 @@
                   "handled_by":  ""
               },
     "state":  {
-                  "summary":  "Queue healthy. 6 ready tasks, 0 active claims.",
-                  "ready_count":  6,
+                  "summary":  "Queue healthy. 4 ready tasks, 0 active claims.",
+                  "ready_count":  4,
                   "active_claim_count":  0,
                   "board_health":  "healthy",
                   "top_priority":  [
                                        "2026-03-15-implement-next-hardware-amp-lab-control-bridge-slice",
-                                       "2026-03-15-add-hardware-shell-deck-smoke-check-coverage",
-                                       "2026-03-15-identify-next-semantic-android-wrapper-slice-after-crlf-churn"
+                                       "2026-03-15-add-backend-chirp-analyzer-requirements-artifact",
+                                       "2026-03-15-add-hardware-shell-deck-smoke-check-coverage"
                                    ],
                   "queue_floor_met":  true,
                   "stale_state_detected":  false,
                   "recent_completions":  [
-                                             "2026-03-15-verify-high-risk-public-worked-examples",
-                                             "2026-03-15-implement-android-wrapper-tracked-text-cleanup-slice",
-                                             "2026-03-15-define-android-wrapper-tracked-text-first-commit-slice"
+                                             "2026-03-15-implement-first-speaker-static-page-slice",
+                                             "2026-03-15-define-backend-chirp-analyzer-python-dependency-bootstrap",
+                                             "2026-03-15-identify-next-semantic-backend-slice-after-crlf-churn"
                                          ],
                   "risks":  [
                                 "Blocked tasks present: 2"
@@ -48,13 +48,13 @@
                      "current_action":  "awaiting inbox handling",
                      "recommended_next":  [
                                               "2026-03-15-implement-next-hardware-amp-lab-control-bridge-slice",
-                                              "2026-03-15-add-hardware-shell-deck-smoke-check-coverage",
-                                              "2026-03-15-identify-next-semantic-android-wrapper-slice-after-crlf-churn"
+                                              "2026-03-15-add-backend-chirp-analyzer-requirements-artifact",
+                                              "2026-03-15-add-hardware-shell-deck-smoke-check-coverage"
                                           ],
                      "completed":  [
-                                       "2026-03-15-verify-high-risk-public-worked-examples",
-                                       "2026-03-15-implement-android-wrapper-tracked-text-cleanup-slice",
-                                       "2026-03-15-define-android-wrapper-tracked-text-first-commit-slice"
+                                       "2026-03-15-implement-first-speaker-static-page-slice",
+                                       "2026-03-15-define-backend-chirp-analyzer-python-dependency-bootstrap",
+                                       "2026-03-15-identify-next-semantic-backend-slice-after-crlf-churn"
                                    ],
                      "blocked":  [
                                      "2026-03-15-promote-ops-unifier-incubator-when-ohmic-slack-exists",

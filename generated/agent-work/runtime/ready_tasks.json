@@ -1,5 +1,5 @@
 {
-    "generated_at":  "2026-03-15T18:36:33Z",
+    "generated_at":  "2026-03-15T18:43:51Z",
     "source":  {
                    "kind":  "repo_summary",
                    "path":  "B:\\ohmic\\agent-system\\requests\\ready"
@@ -8,8 +8,19 @@
                       "status":  "fresh",
                       "reason":  null
                   },
-    "count":  6,
+    "count":  4,
     "items":  [
+                  {
+                      "task_id":  "2026-03-15-add-backend-chirp-analyzer-requirements-artifact",
+                      "title":  "Add Backend Chirp Analyzer Requirements Artifact",
+                      "priority":  "medium",
+                      "project":  "ohmic-audio-labs",
+                      "status":  "ready",
+                      "date":  "2026-03-15",
+                      "owner":  "",
+                      "claim_id":  "",
+                      "file_path":  "B:\\ohmic\\agent-system\\requests\\ready\\2026-03-15-add-backend-chirp-analyzer-requirements-artifact.md"
+                  },
                   {
                       "task_id":  "2026-03-15-add-hardware-shell-deck-smoke-check-coverage",
                       "title":  "Add Hardware Shell Deck Smoke Check Coverage",
@@ -31,39 +42,6 @@
                       "owner":  "",
                       "claim_id":  "",
                       "file_path":  "B:\\ohmic\\agent-system\\requests\\ready\\2026-03-15-identify-next-semantic-android-wrapper-slice-after-crlf-churn.md"
-                  },
-                  {
-                      "task_id":  "2026-03-15-identify-next-semantic-backend-slice-after-crlf-churn",
-                      "title":  "Identify Next Semantic Backend Slice After CRLF Churn",
-                      "priority":  "medium",
-                      "project":  "ohmic-audio-labs",
-                      "status":  "ready",
-                      "date":  "2026-03-15",
-                      "owner":  "",
-                      "claim_id":  "",
-                      "file_path":  "B:\\ohmic\\agent-system\\requests\\ready\\2026-03-15-identify-next-semantic-backend-slice-after-crlf-churn.md"
-                  },
-                  {
-                      "task_id":  "2026-03-15-implement-backend-chirp-fixture-helper-slice",
-                      "title":  "Implement Backend Chirp Fixture Helper Slice",
-                      "priority":  "medium",
-                      "project":  "ohmic-audio-labs",
-                      "status":  "ready",
-                      "date":  "2026-03-15",
-                      "owner":  "",
-                      "claim_id":  "",
-                      "file_path":  "B:\\ohmic\\agent-system\\requests\\ready\\2026-03-15-implement-backend-chirp-fixture-helper-slice.md"
-                  },
-                  {
-                      "task_id":  "2026-03-15-implement-first-speaker-static-page-slice",
-                      "title":  "Implement First Speaker Static Page Slice",
-                      "priority":  "medium",
-                      "project":  "ohmicaudio-static",
-                      "status":  "ready",
-                      "date":  "2026-03-15",
-                      "owner":  "",
-                      "claim_id":  "",
-                      "file_path":  "B:\\ohmic\\agent-system\\requests\\ready\\2026-03-15-implement-first-speaker-static-page-slice.md"
                   },
                   {
                       "task_id":  "2026-03-15-implement-next-hardware-amp-lab-control-bridge-slice",
