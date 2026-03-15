@@ -26,6 +26,8 @@ updated: 2026-03-15
 - shared agent behavior needs one explicit contract or it drifts across sessions
 - queue drift often comes from stale metadata inside moved request files, not
   just from missing claim files
+- file-backed coordination still needs validation, or mixed schemas and stale
+  generated state quietly break the safety model
 
 ## Capability And Access Notes
 
