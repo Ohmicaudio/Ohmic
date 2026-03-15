@@ -1,4 +1,4 @@
-Status: ready
+Status: done
 Priority: low
 Date: 2026-03-15
 Project: ohmic
@@ -22,3 +22,13 @@ writes into the JSON inbox safely.
 - one bounded command-box behavior packet exists
 - it matches the inbox/outbox and writeback flow contracts
 - it stays implementation-ready without becoming a full UI spec
+
+## Outcome
+
+Completed on 2026-03-15.
+
+Result:
+
+- defined the minimal command box states from idle through answered/error
+- documented submit, pending, and duplicate-prevention behavior
+- kept command acceptance separate from actual completion or answer state
