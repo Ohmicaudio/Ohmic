@@ -87,6 +87,20 @@ Derived re-entry surfaces are written under:
 These are not truth surfaces. They are generated summaries for faster session
 bootstrap and queue inspection.
 
+Generated state should be treated as stale until proven fresh if:
+
+- queue or claim files were edited manually
+- refresh tooling was bypassed
+- validation has not been run since the latest coordination changes
+
+Canonical control-surface roles are defined in:
+
+- `B:\ohmic\docs\systems\OHMIC_SHARED_SYSTEM_CANONICAL_CONTROL_SURFACES_2026-03-15.md`
+
+Cross-platform tooling direction is defined in:
+
+- `B:\ohmic\docs\systems\OHMIC_CROSS_PLATFORM_AGENT_SYSTEM_CLI_PATH_2026-03-15.md`
+
 ## Sandbox Boundary
 
 Ignored nested repos or sandboxes living under `B:/ohmic` are not part of the

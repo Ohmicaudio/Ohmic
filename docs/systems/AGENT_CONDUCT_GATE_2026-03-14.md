@@ -99,6 +99,23 @@ When the same coordination miss repeats:
 
 The system should get safer after repeated mistakes, not just noisier.
 
+### 11. Long-running work must re-enter
+
+If the same task continues across multiple compacts, claim renewals, or long
+work windows:
+
+- do not assume the old context is still enough
+- force a mini re-entry
+
+Minimum re-entry:
+
+- reread short-term memory
+- re-check `requests/ready/`
+- re-check `jobs/active/`
+- re-check repo worktree state
+
+Treat `2` compacts on the same task as a mandatory re-entry trigger.
+
 ## Minimum Pre-Work Checklist
 
 Before starting a meaningful task:

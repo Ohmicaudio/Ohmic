@@ -28,6 +28,8 @@ updated: 2026-03-15
   just from missing claim files
 - file-backed coordination still needs validation, or mixed schemas and stale
   generated state quietly break the safety model
+- task-boundary-only reread rules are not enough; long-running work needs
+  forced re-entry triggers too
 
 ## Capability And Access Notes
 

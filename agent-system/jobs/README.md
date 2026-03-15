@@ -46,6 +46,34 @@ If a conflict exists:
 - default lease should be short enough to avoid stale locks
 - expired claims should be reviewed before being ignored
 
+## Canonical Claim Schema
+
+Active claims should use the YAML-style flat header written by
+`agent-claim.ps1`:
+
+```text
+claim_id: ...
+status: active
+owner: ...
+project: ...
+task: ...
+started: ...
+expires: ...
+
+# Files
+
+- B:\path\to\scope
+```
+
+Do not create new live claims using older ad hoc header styles like:
+
+- `Status:`
+- `Owner:`
+- `Task:`
+
+Those older forms are tolerated only as legacy repair input, not as the
+canonical live format.
+
 ## Tooling
 
 Use the helper script:
@@ -58,6 +86,12 @@ Typical flow:
 pwsh -File B:\ohmic\tools\sync\agent-claim.ps1 status -Paths B:\ohmic\repos\ohmic-audio-labs\services\backend\README.md
 pwsh -File B:\ohmic\tools\sync\agent-claim.ps1 claim -Owner codex-local -Project ohmic-audio-labs -Task "backend readme cleanup" -Paths B:\ohmic\repos\ohmic-audio-labs\services\backend\README.md
 pwsh -File B:\ohmic\tools\sync\agent-claim.ps1 complete -Id <claim-id>
+```
+
+Validation helper:
+
+```powershell
+pwsh -File B:\ohmic\tools\sync\validate-agent-system.ps1
 ```
 
 ## Reminder

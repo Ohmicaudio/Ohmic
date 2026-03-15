@@ -66,6 +66,8 @@ That means:
 - each task should carry enough metadata for another agent to triage it quickly
 - requests are not locks; they are intake records
 - only `jobs/active/` protects an edit scope
+- roadmap docs may explain or group queue work, but they do not outrank
+  `requests/` or `jobs/`
 
 ## Required Metadata
 

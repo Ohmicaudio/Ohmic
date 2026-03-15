@@ -178,6 +178,30 @@ Minimum mini-audit scope:
 
 The point is not to stop momentum. The point is to establish situational awareness: notice adjacent breakage, active conflicts, environment boundaries, and follow-on work before starting blind.
 
+## Long-Running Task Re-Entry Rule
+
+Task boundaries are not the only valid re-entry moments.
+
+If an agent stays on the same workstream long enough, the agent must force a
+mini re-entry even without picking up a brand new task.
+
+Mandatory re-entry triggers:
+
+1. the same task has crossed `2` compacts
+2. the same claim is being renewed or extended
+3. the current task has run long enough that queue or repo truth may have shifted
+
+Minimum forced re-entry:
+
+1. reread `memory/short-term.md`
+2. re-check `requests/ready/`
+3. re-check `jobs/active/`
+4. re-check current repo worktree state
+5. validate that the task is still the highest safe next action
+
+Do not assume `read this on the next task` will save you if there is no real
+task boundary for a long time.
+
 ## Ready Queue Accounting Rule
 
 Agents may not say there is `nothing to do` until they have accounted for `requests/ready/`.

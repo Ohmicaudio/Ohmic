@@ -67,6 +67,7 @@ function Parse-Claim {
 
     $claim = [ordered]@{
         ClaimId = ''
+        Status = ''
         Owner = ''
         Project = ''
         Task = ''
@@ -83,10 +84,24 @@ function Parse-Claim {
             continue
         }
         if ($line -match '^claim_id:\s*(.+)$') { $claim.ClaimId = $matches[1].Trim(); continue }
+        if ($line -match '^status:\s*(.+)$') { $claim.Status = $matches[1].Trim(); continue }
         if ($line -match '^owner:\s*(.+)$') { $claim.Owner = $matches[1].Trim(); continue }
         if ($line -match '^project:\s*(.+)$') { $claim.Project = $matches[1].Trim(); continue }
         if ($line -match '^task:\s*(.+)$') { $claim.Task = $matches[1].Trim(); continue }
+        if ($line -match '^Status:\s*(.+)$') { $claim.Status = $matches[1].Trim().ToLowerInvariant(); continue }
+        if ($line -match '^Owner:\s*(.+)$') { $claim.Owner = $matches[1].Trim(); continue }
+        if ($line -match '^Task:\s*(.+)$') { $claim.Task = $matches[1].Trim(); continue }
         if ($inFilesSection -and $line -match '^- (.+)$') { $claim.Paths += $matches[1].Trim() }
+    }
+
+    if (-not $claim.ClaimId) {
+        $claim.ClaimId = [System.IO.Path]::GetFileNameWithoutExtension($FilePath)
+    }
+    if (-not $claim.Status) {
+        $claim.Status = 'active'
+    }
+    if (-not $claim.Project) {
+        $claim.Project = 'org-wide'
     }
 
     [pscustomobject]$claim
@@ -97,7 +112,9 @@ function Get-ActiveClaims {
         return @()
     }
 
-    Get-ChildItem -Path $activeClaimsDir -Filter '*.md' -File | ForEach-Object { Parse-Claim $_.FullName }
+    Get-ChildItem -Path $activeClaimsDir -Filter '*.md' -File |
+        ForEach-Object { Parse-Claim $_.FullName } |
+        Where-Object { $_.Status -eq 'active' }
 }
 
 function Parse-Request {

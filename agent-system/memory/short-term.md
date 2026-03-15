@@ -40,9 +40,10 @@ updated: 2026-03-15
 - `ohmic-audio-labs` still has a very dirty worktree and remains the biggest
   completion risk
 - queue truth matters: when a task is taken, the request and claim must agree
-- active claim files are currently not guaranteed to share one parseable schema
-- generated `agent-work` snapshots can drift stale if work bypasses the official
-  refresh scripts
+- live active claims should use one canonical YAML schema only; legacy claim
+  headers are tolerated only as repair input
+- generated `agent-work` snapshots are derived and now carry freshness metadata,
+  but manual edits still require validation or refresh afterward
 - do not let `ohmic-audio-static-content` turn into a shadow loudspeaker
   database
 - loudspeaker work is still prototype-mode only; no mass extraction or page

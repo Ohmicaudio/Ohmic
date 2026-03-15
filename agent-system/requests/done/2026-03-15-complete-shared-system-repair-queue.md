@@ -1,7 +1,7 @@
 scope: system
 authority: working
 project: ohmic
-status: blocked
+status: done
 requested: 2026-03-15
 requester: agent
 origin: agent

@@ -81,6 +81,7 @@ function Parse-Claim {
         task = ''
         started = ''
         expires = ''
+        completed = ''
         file_path = $FilePath
         paths = @()
     }
@@ -100,9 +101,47 @@ function Parse-Claim {
         if ($inFiles -and $line -match '^- (.+)$') {
             $data.paths += $matches[1].Trim()
         }
+        if ($line -match '^completed:\s*(.+)$') { $data.completed = $matches[1].Trim(); continue }
+        if ($line -match '^Status:\s*(.+)$') { $data.status = $matches[1].Trim().ToLowerInvariant(); continue }
+        if ($line -match '^Owner:\s*(.+)$') { $data.owner = $matches[1].Trim(); continue }
+        if ($line -match '^Task:\s*(.+)$') { $data.task = $matches[1].Trim(); continue }
+        if ($line -match '^Date:\s*(.+)$') { $data.started = $matches[1].Trim(); continue }
+    }
+
+    if (-not $data.claim_id) {
+        $data.claim_id = [System.IO.Path]::GetFileNameWithoutExtension($FilePath)
+    }
+    if (-not $data.status) {
+        $data.status = 'active'
+    }
+    if (-not $data.project) {
+        $data.project = 'org-wide'
     }
 
     [pscustomobject]$data
+}
+
+function Get-LatestWriteIso {
+    param([string[]]$Roots)
+
+    $latest = $null
+    foreach ($root in $Roots) {
+        if (-not (Test-Path $root)) {
+            continue
+        }
+        $candidate = Get-ChildItem -Path $root -Recurse -File -ErrorAction SilentlyContinue |
+            Sort-Object LastWriteTimeUtc -Descending |
+            Select-Object -First 1
+        if ($candidate -and (-not $latest -or $candidate.LastWriteTimeUtc -gt $latest.LastWriteTimeUtc)) {
+            $latest = $candidate
+        }
+    }
+
+    if ($latest) {
+        return $latest.LastWriteTimeUtc.ToString('o')
+    }
+
+    return ''
 }
 
 function Parse-Transaction {
@@ -318,7 +357,11 @@ foreach ($status in @('inbox', 'ready', 'blocked', 'done')) {
 $activeClaims = @()
 $activeClaimsDir = Join-Path $jobsRoot 'active'
 if (Test-Path $activeClaimsDir) {
-    $activeClaims = @(Get-ChildItem -Path $activeClaimsDir -Filter '*.md' -File | ForEach-Object { Parse-Claim $_.FullName })
+    $activeClaims = @(
+        Get-ChildItem -Path $activeClaimsDir -Filter '*.md' -File |
+        ForEach-Object { Parse-Claim $_.FullName } |
+        Where-Object { $_.status -eq 'active' }
+    )
 }
 
 $transactionsByStatus = @{}
@@ -346,8 +389,21 @@ if (-not $allProjects) {
     $allProjects = @('org-wide')
 }
 
+$generatedAt = (Get-Date).ToString('o')
+$sourceLatestWriteTime = Get-LatestWriteIso -Roots @(
+    'B:\ohmic\agent-system',
+    'B:\ohmic\docs\systems',
+    'B:\ohmic\docs\roadmap'
+)
+
 $globalState = [pscustomobject]@{
-    timestamp = (Get-Date).ToString('o')
+    timestamp = $generatedAt
+    generated_at = $generatedAt
+    source_latest_write_time = $sourceLatestWriteTime
+    freshness = [pscustomobject]@{
+        derived = $true
+        stale_detection_required = $true
+    }
     projects = $allProjects
     counts = [pscustomobject]@{
         inbox = @($requestsByStatus.inbox).Count
@@ -397,7 +453,9 @@ foreach ($projectName in $allProjects) {
     }
 
     $currentState = [pscustomobject]@{
-        timestamp = (Get-Date).ToString('o')
+        timestamp = $generatedAt
+        generated_at = $generatedAt
+        source_latest_write_time = $sourceLatestWriteTime
         project = $projectName
         ready_requests = @($ready).Count
         blocked_requests = @($blocked).Count
