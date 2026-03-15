@@ -10,61 +10,99 @@ Provide the first pickup order for agents starting the next completion wave.
 
 ## First Pickup Order
 
-### 1. Loudspeaker generated-output closure
+### 1. Resolve generated loudspeaker output disposition
 
 Task:
 
-- `resolve-generated-loudspeaker-packet-lane`
+- `resolve-generated-loudspeaker-output-disposition`
 
 Why first:
 
-- one live generated-output drift item is still visible in `B:\ohmic`
-- this is the cleanest leftover open loop
+- one visible generated artifact is still carrying umbrella drift
+- cleanest remaining completion loop in `B:\ohmic`
 
-### 2. OSM subsystem inventory
+### 2. Commit first OSM editor-shell safe slice
 
 Task:
 
-- `inventory-products-ohmic-osm-dirty-subsystem`
+- `commit-first-ohmic-osm-editor-shell-safe-slice`
 
 Why second:
 
-- `products/ohmic-osm` is a large dirty subsystem inside the main repo
-- it should be isolated before anyone starts touching it casually
+- OSM inventory is done
+- the next real move is to take the first bounded `osm-web` slice instead of
+  re-inventorying it forever
 
-### 3. Hardware/control UI subsystem inventory
+### 3. Split first hardware/control safe commit slice
 
 Task:
 
-- `inventory-hardware-control-subsystem`
+- `split-first-hardware-control-safe-commit-slice`
 
 Why third:
 
-- `components/Hardware` and `services/hardware` are large and high-impact
-- likely the next major main-app lane after toolbox
+- `components/Hardware` is still one of the highest-value dirty lanes in the
+  main app
+- it now needs an executable first slice, not another abstract note
 
-### 4. Backend subsystem inventory
+### 4. Split first backend safe slice
 
 Task:
 
-- `inventory-services-backend-subsystem`
+- `split-first-backend-safe-commit-slice`
 
 Why fourth:
 
-- backend is big enough to deserve its own split map
-- likely safer to execute after the OSM and hardware/control inventories are
-  shaped
+- backend is still a meaningful dirty subsystem
+- the next move is a bounded first slice with verification, not generic triage
 
-### 5. Static-content durability verification
+### 5. Inventory Android wrapper dirty subsystem
 
 Task:
 
-- `verify-static-content-remote-durability`
+- `inventory-android-wrapper-dirty-subsystem`
 
 Why fifth:
 
-- lower urgency than the main app subsystem triage
-- but still worth closing if it is not fully remote yet
+- Android remains a large mixed dirty lane
+- it deserves explicit separation from the main web/runtime path
+
+### 6. Push static-content clean slice if remote not aligned
+
+Task:
+
+- `push-static-content-clean-slice-if-remote-not-aligned`
+
+Why sixth:
+
+- lower urgency than app completion
+- still worth closing if a local-only clean slice remains
+
+### 7. Define public and archive freeze boundary
+
+Task:
+
+- `define-public-and-archive-freeze-boundary`
+
+Why seventh:
+
+- prevents ongoing completion work from bleeding back into frozen high-noise
+  areas
+
+### 8. Page error reporting lane
+
+Tasks:
+
+- `define-page-issue-reporter-ui-contract`
+- `extend-support-intake-for-page-error-capture`
+- `build-page-report-triage-queue-view`
+- `implement-page-report-button-on-core-surfaces`
+
+Why now:
+
+- user explicitly wants it remembered and staged
+- backend triage path already exists, so this is an extension lane not a green
+  field system
 
 ## Coordination Rules
 

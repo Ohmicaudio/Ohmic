@@ -81,6 +81,28 @@ execution unless a specific blocker appears
 
 ## Split-Ready Task Board
 
+## Current Ready Queue
+
+### Highest priority active execution slices
+
+- `resolve-generated-loudspeaker-output-disposition`
+- `commit-first-ohmic-osm-editor-shell-safe-slice`
+- `split-first-hardware-control-safe-commit-slice`
+- `split-first-backend-safe-slice`
+- `inventory-android-wrapper-dirty-subsystem`
+
+### Medium priority completion support
+
+- `push-static-content-clean-slice-if-remote-not-aligned`
+- `define-public-and-archive-freeze-boundary`
+
+### Parallel product/system lane
+
+- `define-page-issue-reporter-ui-contract`
+- `extend-support-intake-for-page-error-capture`
+- `build-page-report-triage-queue-view`
+- `implement-page-report-button-on-core-surfaces`
+
 ## A. `ohmic-audio-labs` Completion Board
 
 ### A1. Lock the toolbox wave
