@@ -25,3 +25,14 @@ the bootstrap note can become executable without guesswork.
 - one concrete dependency artifact exists for the chirp analyzer runtime
 - package scope stays narrow
 - next operator can bootstrap the analyzer environment directly
+
+## Completion Notes
+
+- Landed in `ohmic-audio-labs` as commit `c9c2653` `Add chirp analyzer requirements artifact`
+- Added:
+  - `services/backend/tools/requirements-chirp-analyzer.txt`
+- Package scope stayed intentionally narrow:
+  - `numpy`
+  - `scipy`
+- This is enough for the next operator to create a venv and install the
+  analyzer runtime without guessing package names
