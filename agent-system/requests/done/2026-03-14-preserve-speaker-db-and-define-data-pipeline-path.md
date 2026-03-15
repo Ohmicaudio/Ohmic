@@ -1,6 +1,6 @@
 # Preserve Speaker DB And Define Data Pipeline Path
 
-Status: ready
+Status: done
 Priority: medium
 Owner: unassigned
 Date: 2026-03-14

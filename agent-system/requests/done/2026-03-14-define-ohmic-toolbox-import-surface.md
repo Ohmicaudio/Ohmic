@@ -1,6 +1,6 @@
 # Define Ohmic Toolbox Import Surface
 
-Status: ready
+Status: done
 Priority: high
 Owner: unassigned
 Date: 2026-03-14

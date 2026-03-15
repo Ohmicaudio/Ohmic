@@ -1,4 +1,4 @@
-Status: ready
+Status: done
 Priority: medium
 Date: 2026-03-14
 Project: ohmic-audio-labs

@@ -1,4 +1,4 @@
-Status: ready
+Status: done
 Priority: low
 Date: 2026-03-14
 Project: cross-project
