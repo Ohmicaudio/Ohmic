@@ -113,3 +113,9 @@ Why now:
   task instead of improvising it in chat
 - assume a doc-only or packet-only task may finish in one focused session and
   size it accordingly
+
+## Immediate Follow-On
+
+After the page error reporting lane is finished and tested, use:
+
+- `docs/roadmap/OHMIC_POST_ERROR_REPORTING_20_MINUTE_QUEUE_2026-03-15.md`
