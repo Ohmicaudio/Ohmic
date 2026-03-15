@@ -1,4 +1,4 @@
-Status: ready
+Status: done
 Priority: medium
 Date: 2026-03-15
 Project: ohmic
@@ -22,3 +22,14 @@ JSON loop.
 - one explicit event shape
 - clear rule for processed vs pending events
 - clear reason to prefer append-only logs over one mutable input field
+
+## Outcome
+
+Completed on 2026-03-15.
+
+Result:
+
+- created the first explicit append-only event contract for inbox and outbox
+- defined required fields, recommended fields, and processed-event rules
+- documented why the mutable `agent_state.json` input summary should not replace
+  inbox truth

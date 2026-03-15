@@ -113,6 +113,10 @@ Recommended fields:
 - handled by
 - handled at
 
+Concrete event contract:
+
+- `docs/systems/OHMIC_AGENT_INBOX_OUTBOX_EVENT_MODEL_2026-03-15.md`
+
 ## Multi-Agent Model
 
 The live loop should support:
