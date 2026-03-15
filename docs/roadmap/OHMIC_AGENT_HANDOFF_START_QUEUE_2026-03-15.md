@@ -16,17 +16,16 @@ Do not skip to lower-risk work while items 1-3 are open unless:
 - the item is truly blocked
 - or the blocker is recorded and visible in the queue
 
-### 1. Define next backend control-plane safe slice
+### 1. Implement next backend auth policy control plane slice
 
 Task:
 
-- `define-next-backend-control-plane-safe-slice`
+- `implement-next-backend-auth-policy-control-plane-slice`
 
 Why first:
 
-- the first backend family is already satisfied
-- the next backend move should be bounded before the service lane turns back
-  into one blur
+- the next backend slice is now bounded cleanly
+- the real move is implementation, not more abstract slice-writing
 
 ### 2. Define next OSM canvas disposition and noise fence
 

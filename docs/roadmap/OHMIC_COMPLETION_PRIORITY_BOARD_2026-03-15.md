@@ -88,6 +88,7 @@ execution unless a specific blocker appears
 Do these first unless they are already actively claimed or truly blocked.
 
 - `define-next-backend-control-plane-safe-slice`
+- `implement-next-backend-auth-policy-control-plane-slice`
 - `define-next-osm-canvas-disposition-and-noise-fence`
 - `enforce-public-and-archive-freeze-boundary-in-handoff-and-queue-surfaces`
 - `strip-remaining-raw-source-footers-from-public-pages`

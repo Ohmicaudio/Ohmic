@@ -22,14 +22,14 @@ This is the realistic “what happens after the next few task pickups” ladder.
 
 ### Primary tasks
 
-- `define-next-backend-control-plane-safe-slice`
+- `implement-next-backend-auth-policy-control-plane-slice`
 - `define-next-osm-canvas-disposition-and-noise-fence`
 - `enforce-public-and-archive-freeze-boundary-in-handoff-and-queue-surfaces`
 - `strip-remaining-raw-source-footers-from-public-pages`
 
 ### Success condition
 
-- the backend lane has a clean next slice
+- the backend lane has a real next implementation slice
 - the next OSM boundary is tighter
 - the freeze rule is visible where agents actually look
 - the public footer-cleanup lane is either finished or clearly bounded
