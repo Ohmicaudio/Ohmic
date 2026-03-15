@@ -3,23 +3,29 @@ horizon: mid
 authority: working
 project: org-wide
 topic: initiatives
-updated: 2026-03-13
+updated: 2026-03-15
 
 # Mid-Term Memory
 
 ## Current Initiatives
 
-- consolidate cross-project agent behavior into one shared contract
-- reduce repo drift by promoting stable truths into shared docs instead of re-deriving them in chat
-- use Docker + Chroma for fast retrieval across offline reference material
-- continue separating umbrella context from product repos
-- keep the `B:\ohmic\repos\*` repo set as the only active local work surface while GitHub org cleanup continues
+- keep the shared agent system truthful enough that queue state, memory, and
+  repo truth do not drift apart
+- keep `B:\ohmic\repos\*` as the only active local work surface
+- finish the main software lane in `ohmic-audio-labs` before side lanes steal
+  attention
+- keep one shared toolbox/math lane that can later feed both toolbox and public
+  surfaces
+- keep loudspeaker work in governed prototype/data mode until the main software
+  lane is calmer
 
 ## Learned Lessons
 
 - file-backed memory is easier to trust, diff, and repair than DB-only memory
 - retrieval should accelerate recall, not replace authority
 - shared agent behavior needs one explicit contract or it drifts across sessions
+- queue drift often comes from stale metadata inside moved request files, not
+  just from missing claim files
 
 ## Capability And Access Notes
 
@@ -31,21 +37,31 @@ updated: 2026-03-13
 ## Recurring Mistakes To Watch
 
 - overloading long-term memory with unstable details
-- letting archive or working folders keep misleading names for too long
 - confusing session continuity notes with canonical truth
+- letting the content repo absorb data-lane ownership because generation feels
+  close
+- pretending repo-wide lint or type-check results are trustworthy when the repo
+  is still too noisy
 
 ## Cross-Project Direction
 
 - `Ohmic` remains the umbrella/context repo, not a monorepo dump
 - product code should live in separate repos with explicit overlays and contracts
 - the shared agent system should span repos without replacing repo-local truth
-- `ohmic-audio-labs`, `amplab-firmware`, `cyd-remote`, and `ohmic-audio-static-content` are all part of one active migration workstream and should not be treated as unrelated repo chores
+- `ohmic-audio-labs`, `amplab-firmware`, `cyd-remote`, and
+  `ohmic-audio-static-content` should be treated as one coordinated ecosystem,
+  but main software completion still outranks the side repos
+- static-content should stay editorial/template-oriented, while normalized
+  loudspeaker facts stay in the data lane
 
 ## Known Work Ahead
 
-- define project overlay maintenance rules
-- define a reliable handoff cadence
-- index the highest-value docs first: contracts, migration docs, architecture, project overlays, durable handoffs
-- clean up repo landing zones under `B:\ohmic\repos` when migration timing is right
-- finish promoting migration truth into the always-load surfaces so it stops dropping out between sessions
-- decide how the preserved loudspeaker database files in `B:\junk` should feed future speaker data extraction, image collection, and static speaker pages
+- finish the `Wiring Lab` implementation packet and later UI-state model
+- identify minimum trusted runtime checks that actually mean something in
+  `ohmic-audio-labs`
+- keep toolbox/public-surface graduation deliberate, starting with `Ohm's Law`
+  only when route/copy/CTA guidance is clear
+- continue triaging `ohmic-audio-labs` into safe next commit slices instead of
+  letting the dirty worktree stay one giant blur
+- keep the loudspeaker lane narrow: parser proof, sample packet, then governed
+  data shape before any larger generation step
