@@ -26,3 +26,17 @@ and verification.
 - one bounded backend helper commit lands
 - the chirp fixture tools are verified or blocked precisely
 - router/control-plane churn stays out
+
+## Completion Notes
+
+- Landed in `ohmic-audio-labs` as commit `7a5a65d` `Add backend chirp fixture helper tools`
+- Included only:
+  - `services/backend/tools/generate_chirp_fixture.py`
+  - `services/backend/tools/verify_chirp_fixture.py`
+- Generator verified successfully:
+  - wrote WAV and manifest under `B:\ohmic-local\exports\measure-chirp-fixtures`
+  - reported `paired_event_count: 11` and `initial_offset_ms: 7.0`
+- Verifier failed precisely because the analyzer runtime is missing Python numeric
+  dependencies:
+  - `ModuleNotFoundError: No module named 'numpy'`
+- Router and control-plane backend churn stayed out of the slice
