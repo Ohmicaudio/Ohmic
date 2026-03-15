@@ -25,3 +25,13 @@ be resolved deliberately later instead of getting lost.
 - one small follow-on task exists for the OSM Tailwind warning
 - the warning is not treated as build failure
 - ownership is clearer for later cleanup
+
+## Completion Notes
+
+- Follow-up note created at
+  `docs/roadmap/OHMIC_OSM_TAILWIND_CONTENT_WARNING_FOLLOWUP_2026-03-15.md`
+- The warning is recorded as a config-ownership gap, not a failed OSM build
+- Current read is that the OSM workspace does not expose a local
+  `tailwind.config.*` or `postcss.config.*` file
+- This keeps the verified editor-shell slice closed while preserving the later
+  config cleanup need
