@@ -151,6 +151,18 @@ Expectation:
 - items 1 through 3 may collapse inside one session each if they stay scoped
 - this 2-day plan is a ceiling, not a promise that all tasks are large
 
+## Branching Rule
+
+As each current handoff task closes, immediately branch it into:
+
+- one safe implementation slice
+- or one narrower follow-on inventory
+- or one explicit freeze
+
+See:
+
+- `B:\ohmic\docs\roadmap\OHMIC_POST_INVENTORY_EXECUTION_BRANCHES_2026-03-15.md`
+
 ## Exit State
 
 If this 2-day plan succeeds, Ohmic should end the window with:
