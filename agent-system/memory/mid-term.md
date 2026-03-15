@@ -26,6 +26,7 @@ updated: 2026-03-13
 - agents can use the local semantic-index setup as a cross-project retrieval layer
 - reference and archive material should be consolidated under `B:\ohmic` for easier indexing and re-entry
 - project overlays are the right place for repo-specific current truth that should not pollute global long-term memory
+- `B:\junk` is the approved non-repo holding area for external datasets and scratch imports that may later feed productized data lanes
 
 ## Recurring Mistakes To Watch
 
@@ -47,3 +48,4 @@ updated: 2026-03-13
 - index the highest-value docs first: contracts, migration docs, architecture, project overlays, durable handoffs
 - clean up repo landing zones under `B:\ohmic\repos` when migration timing is right
 - finish promoting migration truth into the always-load surfaces so it stops dropping out between sessions
+- decide how the preserved loudspeaker database files in `B:\junk` should feed future speaker data extraction, image collection, and static speaker pages

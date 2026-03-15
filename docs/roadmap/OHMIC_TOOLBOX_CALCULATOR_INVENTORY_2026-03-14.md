@@ -52,6 +52,14 @@ Likely future homes:
 - subwoofer design pages
 - quick lead-gen mini-tool
 
+Future evolution:
+
+- speaker impedance and final load calculator
+- coil and sub-count option explorer
+- amp-target load matcher
+- safe/unsafe wiring explanation
+- better plain-language diagrams and why-this-works guidance
+
 ### 3. Ohm's Law
 
 Inputs:
@@ -70,6 +78,12 @@ Likely future homes:
 - reference utility
 - educational content companion
 - mobile quick tool
+
+Boundary note:
+
+- this should remain the generic electrical solver
+- it should not absorb speaker-load and sub wiring logic
+- speaker impedance, coil configuration, final load, and amp-match explanation belong under `Wiring Lab`
 
 ### 4. Time Alignment
 

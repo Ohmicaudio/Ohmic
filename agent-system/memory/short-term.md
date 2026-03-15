@@ -29,6 +29,8 @@ updated: 2026-03-14
 - `B:\ohmic\repos\amplab-firmware` is the active local repo home for the firmware lane
 - `B:\ohmic\repos\cyd-remote` is the active local repo home for the handheld lane
 - `B:\ohmic\repos\ohmic-audio-static-content` is the active local repo home for the static-content lane
+- `B:\junk` is the non-repo holding area for large external files and one-off imports that should not live inside active repos
+- `B:\junk\loudspeakerdatabase.csv` and `B:\junk\loudspeakerdatabase.xlsx` are preserved there for later speaker-data extraction, image gathering, and possible per-speaker static page generation
 - no other local path should be treated as an active work root
 - database/reference material kept from `ohmic-audio-universe` should live under `B:\ohmic` and below
 - the local Chroma semantic index is verified running from `B:\ohmic\tools\semantic-index`
@@ -67,3 +69,4 @@ updated: 2026-03-14
 - finish normalizing shared docs, manifests, and tooling around `B:\ohmic` and the migrated repo names
 - use the shared system to hand agents into the active repo quickly instead of parking them at the umbrella layer
 - treat `B:\ohmic\repos\ohmic-audio-static-content` as the only maintenance surface for static docs, tools, SEO files, and branding assets
+- use `B:\junk` for bulky external inputs that are intentionally kept outside repo history until they are normalized
