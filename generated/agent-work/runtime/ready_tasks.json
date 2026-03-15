@@ -1,5 +1,5 @@
 {
-    "generated_at":  "2026-03-15T18:43:51Z",
+    "generated_at":  "2026-03-15T18:50:33Z",
     "source":  {
                    "kind":  "repo_summary",
                    "path":  "B:\\ohmic\\agent-system\\requests\\ready"
@@ -8,19 +8,8 @@
                       "status":  "fresh",
                       "reason":  null
                   },
-    "count":  4,
+    "count":  2,
     "items":  [
-                  {
-                      "task_id":  "2026-03-15-add-backend-chirp-analyzer-requirements-artifact",
-                      "title":  "Add Backend Chirp Analyzer Requirements Artifact",
-                      "priority":  "medium",
-                      "project":  "ohmic-audio-labs",
-                      "status":  "ready",
-                      "date":  "2026-03-15",
-                      "owner":  "",
-                      "claim_id":  "",
-                      "file_path":  "B:\\ohmic\\agent-system\\requests\\ready\\2026-03-15-add-backend-chirp-analyzer-requirements-artifact.md"
-                  },
                   {
                       "task_id":  "2026-03-15-add-hardware-shell-deck-smoke-check-coverage",
                       "title":  "Add Hardware Shell Deck Smoke Check Coverage",
@@ -31,17 +20,6 @@
                       "owner":  "",
                       "claim_id":  "",
                       "file_path":  "B:\\ohmic\\agent-system\\requests\\ready\\2026-03-15-add-hardware-shell-deck-smoke-check-coverage.md"
-                  },
-                  {
-                      "task_id":  "2026-03-15-identify-next-semantic-android-wrapper-slice-after-crlf-churn",
-                      "title":  "Identify Next Semantic Android Wrapper Slice After CRLF Churn",
-                      "priority":  "medium",
-                      "project":  "ohmic-audio-labs",
-                      "status":  "ready",
-                      "date":  "2026-03-15",
-                      "owner":  "",
-                      "claim_id":  "",
-                      "file_path":  "B:\\ohmic\\agent-system\\requests\\ready\\2026-03-15-identify-next-semantic-android-wrapper-slice-after-crlf-churn.md"
                   },
                   {
                       "task_id":  "2026-03-15-implement-next-hardware-amp-lab-control-bridge-slice",

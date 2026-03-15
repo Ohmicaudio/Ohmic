@@ -1,5 +1,5 @@
 {
-    "generated_at":  "2026-03-15T18:43:51Z",
+    "generated_at":  "2026-03-15T18:50:33Z",
     "source":  {
                    "kind":  "dashboard_card_mapper",
                    "path":  "B:\\ohmic\\generated\\agent-work\\runtime"
@@ -30,7 +30,7 @@
                                      },
                                      {
                                          "label":  "Updated",
-                                         "value":  "2026-03-15T18:43:51Z"
+                                         "value":  "2026-03-15T18:50:33Z"
                                      },
                                      {
                                          "label":  "Loop state",
@@ -42,11 +42,11 @@
                       "card_id":  "queue_health",
                       "title":  "Queue Health",
                       "freshness":  "fresh",
-                      "emphasis":  "normal",
+                      "emphasis":  "warning",
                       "fields":  [
                                      {
                                          "label":  "Ready",
-                                         "value":  "4"
+                                         "value":  "2"
                                      },
                                      {
                                          "label":  "Active",
@@ -54,7 +54,7 @@
                                      },
                                      {
                                          "label":  "Board health",
-                                         "value":  "healthy"
+                                         "value":  "thin"
                                      },
                                      {
                                          "label":  "Summary freshness",
@@ -95,7 +95,7 @@
                       "fields":  [
                                      {
                                          "label":  "Risk",
-                                         "value":  "Blocked tasks present: 2"
+                                         "value":  "Ready queue is below the preferred floor of 3 tasks."
                                      },
                                      {
                                          "label":  "Blocker",
