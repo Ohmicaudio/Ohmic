@@ -1,4 +1,4 @@
-Status: ready
+Status: done
 Priority: low
 Date: 2026-03-15
 Project: ohmic
@@ -22,3 +22,14 @@ JSON loop safely and how the agent response should be written back for display.
 - one bounded writeback-flow packet exists
 - it matches the JSON loop and dashboard render tasks already in `ready`
 - it stays below the active product implementation lanes
+
+## Outcome
+
+Completed on 2026-03-15.
+
+Result:
+
+- defined the append-only inbox write path for dashboard commands
+- documented pending, handled, and answer-display behavior
+- linked dashboard display back to outbox/state truth instead of UI-invented
+  responses
