@@ -1,4 +1,4 @@
-Status: ready
+Status: done
 Priority: medium
 Date: 2026-03-15
 Project: ohmic
@@ -27,3 +27,11 @@ Windows shells stop falling back to hand edits.
 - one bash-friendly validator wrapper exists
 - usage is documented briefly
 - the wrapper lowers friction for mixed-shell validation
+
+## Completion Notes
+
+- implemented as `tools/sync/validate-agent-system.sh`
+- added sync-local usage note in `tools/sync/README.md`
+- wrapper prefers `pwsh`, then `powershell.exe`
+- smoke run succeeded from bash with `--json`
+- validator output surfaced real metadata and snapshot-staleness issues, which remain follow-on cleanup work rather than wrapper bugs
