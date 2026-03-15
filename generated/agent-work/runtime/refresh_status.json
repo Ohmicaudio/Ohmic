@@ -1,0 +1,15 @@
+{
+    "updated_at":  "2026-03-15T18:23:01.1801460Z",
+    "status":  "success",
+    "mode":  "once",
+    "project":  "all",
+    "reason":  "claim-complete:auto-refresh-hook",
+    "last_success_at":  "2026-03-15T18:23:01.1801460Z",
+    "outputs":  [
+                    "generated/agent-work/current-state.json",
+                    "generated/agent-work/runtime/agent_state.json",
+                    "generated/agent-work/runtime/reconciliation_summary.json",
+                    "generated/agent-work/runtime/dashboard_status_cards.json"
+                ],
+    "error":  null
+}

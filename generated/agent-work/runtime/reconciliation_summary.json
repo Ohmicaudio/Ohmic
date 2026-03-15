@@ -1,16 +1,16 @@
 {
-    "generated_at":  "2026-03-15T18:13:14Z",
-    "source_latest_write_time":  "2026-03-15T18:11:22.5798409Z",
+    "generated_at":  "2026-03-15T18:23:01Z",
+    "source_latest_write_time":  "2026-03-15T18:22:47.8324498Z",
     "project":  "ohmic",
     "staleness":  {
                       "status":  "fresh",
                       "reason":  null
                   },
     "counts":  {
-                   "ready":  16,
+                   "ready":  12,
                    "active_claims":  0,
                    "blocked":  2,
-                   "done":  367
+                   "done":  371
                },
     "board_health":  "healthy",
     "queue_floor_met":  true,

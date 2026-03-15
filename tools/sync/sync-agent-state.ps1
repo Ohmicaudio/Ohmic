@@ -380,9 +380,9 @@ $resolvedQuestions = @(Get-ResolvedQuestionEntries)
 
 $allProjects = @(
     $Project
-    ($requestsByStatus.Values | ForEach-Object { $_.project })
+    ($requestsByStatus.Values | ForEach-Object { @($_) | ForEach-Object { $_.project } })
     ($activeClaims | ForEach-Object { $_.project })
-    ($transactionsByStatus.Values | ForEach-Object { $_.project })
+    ($transactionsByStatus.Values | ForEach-Object { @($_) | ForEach-Object { $_.project } })
 ) | Where-Object { $_ } | Sort-Object -Unique
 
 if (-not $allProjects) {

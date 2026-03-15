@@ -20,8 +20,10 @@ New-Item -ItemType Directory -Force $activeDir | Out-Null
 New-Item -ItemType Directory -Force $completedDir | Out-Null
 
 function Refresh-WorkSnapshot {
+    param([string]$TriggerReason = 'claim-mutation')
+
     if (Test-Path $refreshScript) {
-        & $refreshScript -Project $Project | Out-Null
+        & $refreshScript -Project $Project -Reason $TriggerReason | Out-Null
     }
 }
 
@@ -235,7 +237,7 @@ switch ($Command) {
         )
 
         Set-Content -Path $filePath -Value $lines -Encoding UTF8
-        Refresh-WorkSnapshot
+        Refresh-WorkSnapshot -TriggerReason ('claim-create:{0}' -f $Task)
         Write-Output "Created claim $claimId"
         Write-Output $filePath
         exit 0
@@ -258,7 +260,7 @@ switch ($Command) {
         $dest = Join-Path $completedDir ($Id + '.md')
         Set-Content -Path $dest -Value $raw -Encoding UTF8
         Remove-Item $source -Force
-        Refresh-WorkSnapshot
+        Refresh-WorkSnapshot -TriggerReason ('claim-complete:{0}' -f $Id)
 
         Write-Output "Completed claim $Id"
         Write-Output $dest

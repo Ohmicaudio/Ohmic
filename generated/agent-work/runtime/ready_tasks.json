@@ -1,5 +1,5 @@
 {
-    "generated_at":  "2026-03-15T18:13:14Z",
+    "generated_at":  "2026-03-15T18:23:01Z",
     "source":  {
                    "kind":  "repo_summary",
                    "path":  "B:\\ohmic\\agent-system\\requests\\ready"
@@ -8,7 +8,7 @@
                       "status":  "fresh",
                       "reason":  null
                   },
-    "count":  16,
+    "count":  12,
     "items":  [
                   {
                       "task_id":  "2026-03-15-define-android-wrapper-tracked-text-first-commit-slice",
@@ -88,17 +88,6 @@
                       "file_path":  "B:\\ohmic\\agent-system\\requests\\ready\\2026-03-15-implement-first-speaker-static-page-slice.md"
                   },
                   {
-                      "task_id":  "2026-03-15-implement-generated-state-auto-refresh-hook",
-                      "title":  "Implement Generated State Auto Refresh Hook",
-                      "priority":  "medium",
-                      "project":  "ohmic",
-                      "status":  "ready",
-                      "date":  "2026-03-15",
-                      "owner":  "",
-                      "claim_id":  "",
-                      "file_path":  "B:\\ohmic\\agent-system\\requests\\ready\\2026-03-15-implement-generated-state-auto-refresh-hook.md"
-                  },
-                  {
                       "task_id":  "2026-03-15-implement-next-hardware-amp-lab-control-bridge-slice",
                       "title":  "Implement Next Hardware AmpLab Control Bridge Slice",
                       "priority":  "high",
@@ -108,17 +97,6 @@
                       "owner":  "",
                       "claim_id":  "",
                       "file_path":  "B:\\ohmic\\agent-system\\requests\\ready\\2026-03-15-implement-next-hardware-amp-lab-control-bridge-slice.md"
-                  },
-                  {
-                      "task_id":  "2026-03-15-implement-shared-agent-system-bash-validator-wrapper",
-                      "title":  "Implement Shared Agent System Bash Validator Wrapper",
-                      "priority":  "medium",
-                      "project":  "ohmic",
-                      "status":  "ready",
-                      "date":  "2026-03-15",
-                      "owner":  "",
-                      "claim_id":  "",
-                      "file_path":  "B:\\ohmic\\agent-system\\requests\\ready\\2026-03-15-implement-shared-agent-system-bash-validator-wrapper.md"
                   },
                   {
                       "task_id":  "2026-03-15-inventory-non-repo-doc-and-artifact-zones-under-ohmic",
@@ -143,17 +121,6 @@
                       "file_path":  "B:\\ohmic\\agent-system\\requests\\ready\\2026-03-15-normalize-legacy-active-claim-files.md"
                   },
                   {
-                      "task_id":  "2026-03-15-prototype-cross-platform-agent-cli-skeleton",
-                      "title":  "Prototype Cross Platform Agent CLI Skeleton",
-                      "priority":  "medium",
-                      "project":  "ohmic",
-                      "status":  "ready",
-                      "date":  "2026-03-15",
-                      "owner":  "",
-                      "claim_id":  "",
-                      "file_path":  "B:\\ohmic\\agent-system\\requests\\ready\\2026-03-15-prototype-cross-platform-agent-cli-skeleton.md"
-                  },
-                  {
                       "task_id":  "2026-03-15-verify-first-hardware-shell-deck-check-coverage",
                       "title":  "Verify First Hardware Shell Deck Check Coverage",
                       "priority":  "medium",
@@ -163,17 +130,6 @@
                       "owner":  "",
                       "claim_id":  "",
                       "file_path":  "B:\\ohmic\\agent-system\\requests\\ready\\2026-03-15-verify-first-hardware-shell-deck-check-coverage.md"
-                  },
-                  {
-                      "task_id":  "2026-03-15-verify-first-osm-web-editor-shell-slice-in-node-worktree",
-                      "title":  "Verify First OSM Web Editor Shell Slice In Node Worktree",
-                      "priority":  "medium",
-                      "project":  "ohmic-audio-labs",
-                      "status":  "ready",
-                      "date":  "2026-03-15",
-                      "owner":  "",
-                      "claim_id":  "",
-                      "file_path":  "B:\\ohmic\\agent-system\\requests\\ready\\2026-03-15-verify-first-osm-web-editor-shell-slice-in-node-worktree.md"
                   },
                   {
                       "task_id":  "2026-03-15-verify-high-risk-public-worked-examples",

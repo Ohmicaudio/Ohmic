@@ -29,8 +29,10 @@ foreach ($state in $validStates) {
 }
 
 function Refresh-WorkSnapshot {
+    param([string]$TriggerReason = 'request-mutation')
+
     if (Test-Path $refreshScript) {
-        & $refreshScript -Project $Project | Out-Null
+        & $refreshScript -Project $Project -Reason $TriggerReason | Out-Null
     }
 }
 
@@ -158,7 +160,7 @@ switch ($Command) {
         )
 
         Set-Content -Path $filePath -Value $lines -Encoding UTF8
-        Refresh-WorkSnapshot
+        Refresh-WorkSnapshot -TriggerReason ('request-create:{0}' -f $Status)
         Write-Output $filePath
         exit 0
     }
@@ -178,7 +180,7 @@ switch ($Command) {
         $raw = $raw -replace '(?m)^status:\s*.+$', "status: $Status"
         Set-Content -Path $dest -Value $raw -Encoding UTF8
         Remove-Item $source.FullName -Force
-        Refresh-WorkSnapshot
+        Refresh-WorkSnapshot -TriggerReason ('request-move:{0}:{1}' -f $Id, $Status)
         Write-Output $dest
         exit 0
     }
