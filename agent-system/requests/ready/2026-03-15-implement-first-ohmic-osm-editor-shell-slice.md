@@ -1,5 +1,5 @@
 Status: ready
-Priority: medium
+Priority: high
 Date: 2026-03-15
 Project: ohmic-audio-labs
 
@@ -13,6 +13,13 @@ commit.
 ## Source Packet
 
 - `docs/roadmap/OHMIC_OSM_FIRST_EDITOR_SHELL_SAFE_SLICE_2026-03-15.md`
+
+## Position In Queue
+
+This is a mandatory-first app slice.
+
+Do not skip it for lower-risk cleanup or editorial work unless it is actively
+claimed or a concrete blocker is recorded.
 
 ## Acceptance
 

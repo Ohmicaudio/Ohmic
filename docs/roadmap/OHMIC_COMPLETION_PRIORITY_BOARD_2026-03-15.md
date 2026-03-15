@@ -83,19 +83,30 @@ execution unless a specific blocker appears
 
 ## Current Ready Queue
 
-### Highest priority active execution slices
+### Mandatory-first execution slices
+
+Do these first unless they are already actively claimed, truly blocked, or
+fully done.
 
 - `implement-first-ohmic-osm-editor-shell-slice`
 - `implement-first-hardware-control-shell-slice`
 - `implement-first-backend-measurement-capture-slice`
-- `inventory-android-wrapper-dirty-subsystem`
 
-### Medium priority completion support
+Rule:
+
+- do not pick safer editorial, support, or polish work while any of these three
+  lanes are sitting open and unblocked
+- if an agent skips one of these three, they should record the blocker rather
+  than silently drifting to easier work
+
+### Secondary completion support
 
 - `push-static-content-clean-slice-if-remote-not-aligned`
 - `define-public-and-archive-freeze-boundary`
 
-### Parallel product/system lane
+These support the main completion lane but should not outrank it.
+
+### Parallel support lane
 
 - `define-page-issue-reporter-ui-contract`
 - `extend-support-intake-for-page-error-capture`
@@ -106,6 +117,17 @@ Rule:
 
 - do not let this lane outrank the first app-safe slices unless it is directly
   unblocking a live product failure
+
+### Lower-priority public cleanup
+
+- `strip-public-builder-and-scaffold-language`
+- `verify-high-risk-public-worked-examples`
+- `normalize-public-tables-duplicates-and-nav-labels`
+
+Rule:
+
+- these are valid tasks, but they are not acceptable substitutes for the top
+  three app lanes while those app lanes are open
 
 ## Horizon Links
 

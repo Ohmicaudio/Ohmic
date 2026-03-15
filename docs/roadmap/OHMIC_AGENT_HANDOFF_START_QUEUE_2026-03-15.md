@@ -10,6 +10,12 @@ Provide the first pickup order for agents starting the next completion wave.
 
 ## First Pickup Order
 
+Do not skip to lower-risk work while items 1-3 are open unless:
+
+- the item is already actively claimed
+- the item is truly blocked
+- or the blocker is recorded and visible in the queue
+
 ### 1. Implement first OSM editor-shell slice
 
 Task:
@@ -65,6 +71,10 @@ Why fifth:
 - lower urgency than app completion
 - still worth closing if a local-only clean slice remains
 
+Constraint:
+
+- do not choose this ahead of items 1-3 just because it is cleaner or safer
+
 ### 6. Define public and archive freeze boundary
 
 Task:
@@ -92,6 +102,12 @@ Why in parallel:
   field system
 - it should not outrank the first app-safe slices unless it is directly
   unblocking a live product failure
+
+## Avoidance Rule
+
+If an agent keeps selecting low-risk side work while the first app slices are
+open, that is not neutral prioritization. Treat it as avoidance and redirect
+back to items 1-3.
 
 ## Coordination Rules
 
