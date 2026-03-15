@@ -1,4 +1,4 @@
-Status: ready
+Status: done
 Priority: high
 Date: 2026-03-15
 Project: ohmic-audio-labs
@@ -28,3 +28,18 @@ the deeper transport and service layers yet.
   `docs/roadmap/OHMIC_HARDWARE_CONTROL_FIRST_SAFE_SLICE_2026-03-15.md`
 - service-heavy files stay out of scope
 - the slice is ready for later bridge work
+
+## Completion Notes
+
+- implemented in `ohmic-audio-labs` commit `39a359e`
+- packaged only the new host and deck files:
+  - `DashLabDeck.tsx`
+  - `DeckContentHost.tsx`
+  - `DesktopMeasureTopologyControls.tsx`
+  - `DesktopMeasureTopologyHost.tsx`
+  - `PhoneLabDeck.tsx`
+  - `PhoneLabDeckHost.tsx`
+  - `PhoneLabSurfaceHost.tsx`
+  - `SettingsDeck.tsx`
+- intentionally left modified companion panel files out because they are still noisy and would have widened the slice
+- verification should happen as a separate honest follow-on rather than pretending this shell can be blessed from the current mixed repo state
