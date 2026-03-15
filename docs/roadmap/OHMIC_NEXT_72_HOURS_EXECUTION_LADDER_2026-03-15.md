@@ -36,15 +36,13 @@ This is the realistic “what happens after the next few task pickups” ladder.
 
 ### First picks
 
-1. `resolve-generated-loudspeaker-output-disposition`
-2. `define-page-issue-reporter-ui-contract`
-3. `extend-support-intake-for-page-error-capture`
-4. `build-page-report-triage-queue-view`
-5. `implement-page-report-button-on-core-surfaces`
+1. `define-page-issue-reporter-ui-contract`
+2. `extend-support-intake-for-page-error-capture`
+3. `build-page-report-triage-queue-view`
+4. `implement-page-report-button-on-core-surfaces`
 
 ### Why this order
 
-- closes top-level ambiguity
 - moves the reporting lane forward without replacing app completion as the main
   focus
 
@@ -119,7 +117,6 @@ first three app-oriented lanes is already underway.
 The 72-hour ladder is successful if, by the end:
 
 - the page-reporting lane is no longer just a remembered idea
-- the generated loudspeaker artifact is no longer ambiguous
 - one OSM slice has moved beyond inventory
 - hardware/control and backend each have a first bounded executable slice
 - Android and public/archive are bounded enough not to contaminate stronger work

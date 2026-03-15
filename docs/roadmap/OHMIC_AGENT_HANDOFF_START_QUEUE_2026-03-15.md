@@ -43,51 +43,40 @@ Why third:
 - the split packet is done
 - the next move is one bounded backend commit with explicit verification
 
-### 4. Resolve generated loudspeaker output disposition
-
-Task:
-
-- `resolve-generated-loudspeaker-output-disposition`
-
-Why fourth:
-
-- one visible generated artifact is still carrying umbrella drift
-- worth closing, but weaker than the first three app completion slices
-
-### 5. Inventory Android wrapper dirty subsystem
+### 4. Inventory Android wrapper dirty subsystem
 
 Task:
 
 - `inventory-android-wrapper-dirty-subsystem`
 
-Why fifth:
+Why fourth:
 
 - Android remains a large mixed dirty lane
 - it deserves explicit separation from the main web/runtime path
 
-### 6. Push static-content clean slice if remote not aligned
+### 5. Push static-content clean slice if remote not aligned
 
 Task:
 
 - `push-static-content-clean-slice-if-remote-not-aligned`
 
-Why sixth:
+Why fifth:
 
 - lower urgency than app completion
 - still worth closing if a local-only clean slice remains
 
-### 7. Define public and archive freeze boundary
+### 6. Define public and archive freeze boundary
 
 Task:
 
 - `define-public-and-archive-freeze-boundary`
 
-Why seventh:
+Why sixth:
 
 - prevents ongoing completion work from bleeding back into frozen high-noise
   areas
 
-### 8. Page error reporting lane
+### 7. Page error reporting lane
 
 Tasks:
 

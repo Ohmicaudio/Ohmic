@@ -88,7 +88,6 @@ execution unless a specific blocker appears
 - `implement-first-ohmic-osm-editor-shell-slice`
 - `implement-first-hardware-control-shell-slice`
 - `implement-first-backend-measurement-capture-slice`
-- `resolve-generated-loudspeaker-output-disposition`
 - `inventory-android-wrapper-dirty-subsystem`
 
 ### Medium priority completion support
