@@ -41,16 +41,16 @@ Why second:
   be recorded cleanly
 - this keeps implementation durability honest
 
-### 3. Define next hardware service-bridge safe slice
+### 3. Implement next hardware AmpLab control bridge slice
 
 Task:
 
-- `define-next-hardware-service-bridge-safe-slice`
+- `implement-next-hardware-amp-lab-control-bridge-slice`
 
 Why third:
 
-- once the host shell exists, the next hardware lane should be a narrow
-  service/hook bridge, not a broad grab bag
+- the next hardware bridge is now bounded cleanly
+- the real move is implementation, not more abstract slice-writing
 
 ### 4. Define next Android wrapper tracked-text slice
 

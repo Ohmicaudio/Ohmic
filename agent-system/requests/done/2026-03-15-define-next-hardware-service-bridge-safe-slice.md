@@ -1,4 +1,4 @@
-Status: ready
+Status: done
 Priority: high
 Date: 2026-03-15
 Project: ohmic-audio-labs
@@ -25,3 +25,16 @@ service/hook files without absorbing the whole `services/hardware/*` lane.
 
 - produces one concrete next hardware implementation task
 - avoids reopening the entire hardware/control subsystem as one giant bucket
+
+## Outcome
+
+Completed on 2026-03-15.
+
+Result:
+
+- defined the next hardware slice as an AmpLab control bridge
+- bounded it to `AmpLabControlHost`, `AmpLabControlSurfaces`,
+  `useAmpLabControlPlane`, and the narrow supporting AmpLab session/command
+  contract files
+- explicitly fenced off discovery, telemetry, remote-session, measurement,
+  transport, DSP, and Android lanes

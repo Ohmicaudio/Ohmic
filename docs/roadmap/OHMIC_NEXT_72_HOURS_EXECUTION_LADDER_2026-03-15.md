@@ -24,7 +24,7 @@ This is the realistic “what happens after the next few task pickups” ladder.
 
 - `verify-first-osm-slice-in-correct-node-shell`
 - `verify-first-hardware-shell-slice-check-coverage`
-- `define-next-hardware-service-bridge-safe-slice`
+- `implement-next-hardware-amp-lab-control-bridge-slice`
 - `define-next-android-wrapper-tracked-text-slice`
 
 ### Success condition

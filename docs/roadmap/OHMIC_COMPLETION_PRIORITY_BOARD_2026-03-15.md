@@ -89,7 +89,7 @@ Do these first unless they are already actively claimed or truly blocked.
 
 - `verify-first-osm-slice-in-correct-node-shell`
 - `verify-first-hardware-shell-slice-check-coverage`
-- `define-next-hardware-service-bridge-safe-slice`
+- `implement-next-hardware-amp-lab-control-bridge-slice`
 - `define-next-android-wrapper-tracked-text-slice`
 
 Rule:
@@ -105,7 +105,6 @@ Rule:
 - `define-next-osm-canvas-disposition-and-noise-fence`
 - `run-static-boundary-and-host-smoke-floor`
 - `enforce-public-and-archive-freeze-boundary-in-handoff-and-queue-surfaces`
-- `verify-public-cleanup-wave-after-current-claims`
 
 These support the main completion lane but should not outrank it.
 
