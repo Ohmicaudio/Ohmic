@@ -290,3 +290,9 @@ At the end of 7 days, we should be able to say:
 - loudspeaker data is proven workable on at least one real sample
 - smarter `Wiring Lab` work can begin from a defined boundary
 - next-week planning is easier because this week ended in durable state
+
+## Companion Checklist
+
+Use the expanded companion when the week needs more granular task slicing:
+
+- `OHMIC_NEXT_7_DAYS_EXPANDED_TASK_LIST_2026-03-15.md`
