@@ -1,10 +1,10 @@
 {
-    "updated_at":  "2026-03-15T18:50:33.7985889Z",
+    "updated_at":  "2026-03-15T18:55:17.8372903Z",
     "status":  "success",
     "mode":  "once",
     "project":  "all",
-    "reason":  "claim-complete:android-generated-output-fence-slice",
-    "last_success_at":  "2026-03-15T18:50:33.7985889Z",
+    "reason":  "claim-complete:hardware-shell-deck-smoke-check",
+    "last_success_at":  "2026-03-15T18:55:17.8372903Z",
     "outputs":  [
                     "generated/agent-work/current-state.json",
                     "generated/agent-work/runtime/agent_state.json",

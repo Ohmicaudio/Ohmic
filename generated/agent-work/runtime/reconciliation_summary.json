@@ -1,16 +1,16 @@
 {
-    "generated_at":  "2026-03-15T18:50:33Z",
-    "source_latest_write_time":  "2026-03-15T18:50:18.5644020Z",
+    "generated_at":  "2026-03-15T18:55:17Z",
+    "source_latest_write_time":  "2026-03-15T18:55:01.6904623Z",
     "project":  "ohmic",
     "staleness":  {
                       "status":  "fresh",
                       "reason":  null
                   },
     "counts":  {
-                   "ready":  2,
+                   "ready":  1,
                    "active_claims":  0,
                    "blocked":  2,
-                   "done":  384
+                   "done":  385
                },
     "board_health":  "thin",
     "queue_floor_met":  false,
@@ -27,7 +27,6 @@
                      "message":  "Pending input: check queue freshness"
                  },
     "top_priority":  [
-                         "2026-03-15-implement-next-hardware-amp-lab-control-bridge-slice",
-                         "2026-03-15-add-hardware-shell-deck-smoke-check-coverage"
+                         "2026-03-15-implement-next-hardware-amp-lab-control-bridge-slice"
                      ]
 }

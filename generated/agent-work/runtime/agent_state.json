@@ -9,7 +9,7 @@
                     "task_status":  "needs_input",
                     "orchestrator_active":  false,
                     "compact_count":  0,
-                    "updated_at":  "2026-03-15T18:50:33Z"
+                    "updated_at":  "2026-03-15T18:55:17Z"
                 },
     "input":  {
                   "pending":  true,
@@ -22,20 +22,19 @@
                   "handled_by":  ""
               },
     "state":  {
-                  "summary":  "Queue thin. 2 ready tasks, 0 active claims.",
-                  "ready_count":  2,
+                  "summary":  "Queue thin. 1 ready tasks, 0 active claims.",
+                  "ready_count":  1,
                   "active_claim_count":  0,
                   "board_health":  "thin",
                   "top_priority":  [
-                                       "2026-03-15-implement-next-hardware-amp-lab-control-bridge-slice",
-                                       "2026-03-15-add-hardware-shell-deck-smoke-check-coverage"
+                                       "2026-03-15-implement-next-hardware-amp-lab-control-bridge-slice"
                                    ],
                   "queue_floor_met":  false,
                   "stale_state_detected":  false,
                   "recent_completions":  [
+                                             "2026-03-15-add-hardware-shell-deck-smoke-check-coverage",
                                              "2026-03-15-implement-android-generated-output-fence-slice",
-                                             "2026-03-15-identify-next-semantic-android-wrapper-slice-after-crlf-churn",
-                                             "2026-03-15-add-backend-chirp-analyzer-requirements-artifact"
+                                             "2026-03-15-identify-next-semantic-android-wrapper-slice-after-crlf-churn"
                                          ],
                   "risks":  [
                                 "Ready queue is below the preferred floor of 3 tasks.",
@@ -47,13 +46,12 @@
                      "message":  "Pending input: check queue freshness",
                      "current_action":  "awaiting inbox handling",
                      "recommended_next":  [
-                                              "2026-03-15-implement-next-hardware-amp-lab-control-bridge-slice",
-                                              "2026-03-15-add-hardware-shell-deck-smoke-check-coverage"
+                                              "2026-03-15-implement-next-hardware-amp-lab-control-bridge-slice"
                                           ],
                      "completed":  [
+                                       "2026-03-15-add-hardware-shell-deck-smoke-check-coverage",
                                        "2026-03-15-implement-android-generated-output-fence-slice",
-                                       "2026-03-15-identify-next-semantic-android-wrapper-slice-after-crlf-churn",
-                                       "2026-03-15-add-backend-chirp-analyzer-requirements-artifact"
+                                       "2026-03-15-identify-next-semantic-android-wrapper-slice-after-crlf-churn"
                                    ],
                      "blocked":  [
                                      "2026-03-15-promote-ops-unifier-incubator-when-ohmic-slack-exists",

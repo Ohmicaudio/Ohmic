@@ -1,5 +1,5 @@
 {
-    "generated_at":  "2026-03-15T18:50:33Z",
+    "generated_at":  "2026-03-15T18:55:17Z",
     "source":  {
                    "kind":  "repo_summary",
                    "path":  "B:\\ohmic\\agent-system\\requests\\ready"
@@ -8,19 +8,8 @@
                       "status":  "fresh",
                       "reason":  null
                   },
-    "count":  2,
+    "count":  1,
     "items":  [
-                  {
-                      "task_id":  "2026-03-15-add-hardware-shell-deck-smoke-check-coverage",
-                      "title":  "Add Hardware Shell Deck Smoke Check Coverage",
-                      "priority":  "medium",
-                      "project":  "ohmic-audio-labs",
-                      "status":  "ready",
-                      "date":  "2026-03-15",
-                      "owner":  "",
-                      "claim_id":  "",
-                      "file_path":  "B:\\ohmic\\agent-system\\requests\\ready\\2026-03-15-add-hardware-shell-deck-smoke-check-coverage.md"
-                  },
                   {
                       "task_id":  "2026-03-15-implement-next-hardware-amp-lab-control-bridge-slice",
                       "title":  "Implement Next Hardware AmpLab Control Bridge Slice",
