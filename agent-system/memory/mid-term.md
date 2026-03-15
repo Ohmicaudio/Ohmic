@@ -32,6 +32,8 @@ updated: 2026-03-15
   forced re-entry triggers too
 - the queue has to stay slightly ahead of execution; if the board empties
   faster than it is refreshed, agents start freelancing or stalling
+- the system needs one visible orchestrator at a time; when orchestration is
+  already active, the default mode should shift back to execution
 
 ## Capability And Access Notes
 

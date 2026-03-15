@@ -95,6 +95,69 @@ Default posture:
 - do the work rather than only describing it
 - promote only validated facts into shared memory
 
+## Orchestrator vs Performer Rule
+
+The system needs both execution and coordination, but not everybody should try
+to orchestrate at once.
+
+### Orchestrator
+
+The orchestrator is the agent currently responsible for:
+
+- keeping the board ahead of execution
+- refreshing priority order after meaningful completions
+- splitting newly exposed work into clean ready tasks
+- keeping handoff, queue, and memory surfaces aligned enough to trust
+
+Rules:
+
+- only one active orchestrator should exist at a time
+- an orchestrator may also perform real work
+- if no active orchestrator is visible, the current agent should assume the
+  orchestration duty until another clear orchestrator exists
+
+### Performer
+
+The performer is the agent currently responsible for:
+
+- claiming real execution work
+- completing bounded tasks
+- verifying the changed surface honestly
+- reporting newly exposed follow-ons back into the system
+
+Rules:
+
+- if active orchestration is already happening, default to performer behavior
+- do not compete with the orchestrator by constantly reshaping the board unless
+  the board is clearly starving or stale
+- performers should still queue real follow-on work they directly expose
+
+### Switching Rule
+
+Use the simpler mode that the system currently needs:
+
+1. if nobody is clearly orchestrating, start orchestrating
+2. if orchestration is already active and the board is healthy, perform
+3. if the board falls behind execution or turns misleading, repair the
+   orchestration layer before drifting back into pure execution
+
+### Worker Audit Cadence
+
+Pure execution should not run forever without feeding the coordinator.
+
+After every `3` meaningful task completions in the same wave, a performer should
+produce a short audit-and-suggestion report for the orchestrator or shared
+queue:
+
+- what changed
+- what is now unblocked
+- what new tasks should exist
+- what priorities now look stale
+- what risks or blockers are still underrepresented
+
+This does not need to be a big memo.
+It does need to be explicit enough that orchestration can refresh from it.
+
 ## Conflict Resolution
 
 If agents disagree:
@@ -113,6 +176,13 @@ Default meaning of `continue`:
 - keep moving the current workstream forward
 - choose the highest-priority safe next action
 - stop only for destructive, architectural, or hidden-risk decisions
+
+Meta-answer rule:
+
+- if the user asks a short planning, logic, or system-behavior question in the
+  middle of active work and does not explicitly pause execution, answer it and
+  then resume the highest safe queued action
+- do not treat a brief explanatory answer as permission to stop moving
 
 ## Memory Rules
 

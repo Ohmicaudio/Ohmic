@@ -83,6 +83,11 @@ After a meaningful checkpoint:
 
 Do not stop at “I found more work” and leave it only in chat.
 
+If you answer a brief meta or planning question during an active work wave:
+
+- answer it
+- then return to the queue unless the user explicitly paused or redirected you
+
 ### 9. Respect the active work root
 
 - `B:\ohmic\repos\*` are the active local repo homes
@@ -134,6 +139,26 @@ Valid replenishment work includes:
 Do not let the board starve down to one leftover task if more real work is
 already visible.
 
+### 13. Only one orchestrator at a time
+
+- if no active orchestrator is visible, step into orchestration long enough to
+  restore board health
+- if active orchestration is already visible, default to performer behavior
+- an orchestrator may still perform real work, but multiple agents should not
+  all reshape the board at once
+
+The point is coordination clarity, not hierarchy theater.
+
+### 14. Performers must report back periodically
+
+After every `3` meaningful completions in the same work wave:
+
+- stop and do a brief audit
+- identify stale priorities, newly exposed tasks, and missing follow-ons
+- report those back into the shared queue or handoff surfaces
+
+Do not let execution run so long that coordination only updates by accident.
+
 ## Minimum Pre-Work Checklist
 
 Before starting a meaningful task:
@@ -154,7 +179,9 @@ After a meaningful task:
 3. queue any newly exposed follow-up work
 4. complete or release the claim
 5. if the ready queue is getting thin, replenish it with real next steps
-6. only then move on
+6. if you are in performer mode and the wave has moved materially, feed a short
+   audit back to the orchestrator or queue
+7. only then move on
 
 ## Anti-Patterns
 
