@@ -123,3 +123,14 @@ The 72-hour ladder is successful if, by the end:
 - one OSM slice has moved beyond inventory
 - hardware/control and backend each have a first bounded executable slice
 - Android and public/archive are bounded enough not to contaminate stronger work
+
+## Seeded Follow-On Branches
+
+These are intentionally parked in `blocked` so the board stays ahead of
+execution without pretending they are current work:
+
+- `commit-second-ohmic-osm-support-slice-after-editor-shell`
+- `commit-first-hardware-control-implementation-slice-after-split`
+- `commit-first-backend-endpoint-slice-after-split`
+- `commit-first-android-wrapper-safe-slice-after-inventory`
+- `close-page-error-reporting-implementation-lane`
