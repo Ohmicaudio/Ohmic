@@ -27,3 +27,16 @@ created without manually retyping the dependency steps.
 - one small bootstrap script exists for the chirp analyzer environment
 - it uses the narrow requirements artifact
 - the backend helper lane becomes easier to reproduce
+
+## Completion Notes
+
+- Landed in `ohmic-audio-labs` as commit `e358179` `Add chirp analyzer bootstrap script`
+- Added:
+  - `services/backend/tools/bootstrap-chirp-analyzer-env.sh`
+- The script:
+  - creates a backend-tool virtualenv
+  - upgrades `pip`
+  - installs from `requirements-chirp-analyzer.txt`
+  - prints the suggested `OHMIC_CHIRP_ANALYZER_PYTHON` export
+- Verified safely with:
+  - `bash services/backend/tools/bootstrap-chirp-analyzer-env.sh --help`
