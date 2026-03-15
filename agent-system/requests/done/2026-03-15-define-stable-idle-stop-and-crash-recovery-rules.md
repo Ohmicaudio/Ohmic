@@ -1,4 +1,4 @@
-Status: ready
+Status: done
 Priority: medium
 Date: 2026-03-15
 Project: ohmic
@@ -22,3 +22,14 @@ crash without losing work.
 - one clear stop model
 - one clear crash-recovery model
 - does not confuse “no queue items” with “system is truly idle”
+
+## Outcome
+
+Completed on 2026-03-15.
+
+Result:
+
+- defined stable idle as a full-system condition, not a momentary quiet queue
+- added a practical backoff ladder and explicit sleep/stop distinction
+- defined crash-recovery inputs and restart sequence around inbox, outbox,
+  locks, state, and repo-backed truth

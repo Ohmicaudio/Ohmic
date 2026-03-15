@@ -148,6 +148,10 @@ Use stable idle instead:
 
 Then use an idle counter or backoff window before sleeping or exiting.
 
+Concrete stop and recovery rules:
+
+- `docs/systems/OHMIC_STABLE_IDLE_STOP_AND_CRASH_RECOVERY_RULES_2026-03-15.md`
+
 ## Crash Recovery
 
 Crash recovery should rely on:
