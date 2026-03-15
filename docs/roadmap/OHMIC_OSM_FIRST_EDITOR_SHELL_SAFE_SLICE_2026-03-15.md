@@ -11,17 +11,28 @@ that it can be claimed and executed without pulling in workspace noise.
 
 ## Exact Source Scope
 
-- `products/ohmic-osm/apps/osm-web/src/components/CanvasView.tsx`
+Primary active files:
+
 - `products/ohmic-osm/apps/osm-web/src/components/EquipmentManager.tsx`
 - `products/ohmic-osm/apps/osm-web/src/components/InspectorPanel.tsx`
 - `products/ohmic-osm/apps/osm-web/src/components/TopBar.tsx`
 - `products/ohmic-osm/apps/osm-web/src/components/VehicleSelector.tsx`
 
+Formatting-only watchout:
+
+- `products/ohmic-osm/apps/osm-web/src/components/CanvasView.tsx`
+
+Current read:
+
+- the first four files contain real UI token/styling changes
+- `CanvasView.tsx` currently reads as line-ending churn, not meaningful product
+  behavior change
+
 ## Why This Is The First Slice
 
-- all tracked source churn for the current OSM lane is concentrated here
-- these files define the active editor shell and interaction surface
-- they are meaningful product work, unlike the surrounding `dist/` and
+- the active OSM source churn is still concentrated in the editor shell
+- the meaningful changes are mostly shell/theme/presentation changes
+- this is still a coherent product slice, unlike the surrounding `dist/` and
   `node_modules/` noise
 
 ## Explicitly Out Of Scope
@@ -31,10 +42,12 @@ that it can be claimed and executed without pulling in workspace noise.
 - `BuildChecklist.tsx`
 - `TelemetryLog.tsx`
 - worker/API/package changes
+- `CanvasView.tsx` unless it is intentionally normalized and reviewed as more
+  than line-ending churn
 
 ## Blast Radius
 
-- OSM editor shell only
+- OSM editor shell and styling tokens only
 - should not require monorepo-wide package or schema changes
 
 ## Verification
