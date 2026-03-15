@@ -89,7 +89,8 @@ Do these first unless they are already actively claimed or truly blocked.
 
 - `fix-backend-index-type-check-spill-after-auth-policy-slice`
 - `commit-osm-canvas-theme-token-slice`
-- `enforce-public-and-archive-freeze-boundary-in-handoff-and-queue-surfaces`
+- `define-next-backend-post-auth-router-safe-slice`
+- `define-next-osm-post-canvas-safe-slice`
 
 Rule:
 
@@ -100,14 +101,14 @@ Rule:
 
 ### Secondary completion support
 
-- `define-next-backend-post-auth-router-safe-slice`
-- `define-next-osm-post-canvas-safe-slice`
+- `define-next-public-trust-cleanup-slice-after-freeze-boundary`
 - `define-live-agent-state-json-contract`
 - `define-agent-inbox-outbox-event-model`
 - `define-orchestrator-lock-and-worker-heartbeat-model`
 - `define-stable-idle-stop-and-crash-recovery-rules`
 - `define-runner-wrapper-cycle-for-json-agent-loop`
 - `define-json-dashboard-render-surface`
+- `define-json-dashboard-input-writeback-flow`
 
 These support the main completion lane but should not outrank it.
 

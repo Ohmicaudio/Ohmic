@@ -22,18 +22,17 @@ This is the realistic “what happens after the next few task pickups” ladder.
 
 ### Primary tasks
 
-- `fix-backend-index-type-check-spill-after-auth-policy-slice`
 - `commit-osm-canvas-theme-token-slice`
-- `enforce-public-and-archive-freeze-boundary-in-handoff-and-queue-surfaces`
 - `define-next-backend-post-auth-router-safe-slice`
 - `define-next-osm-post-canvas-safe-slice`
+- `define-next-public-trust-cleanup-slice-after-freeze-boundary`
 
 ### Success condition
 
-- the backend lane closes the remaining narrow type-check spill honestly
 - the OSM lane moves through a real one-file canvas slice
-- the freeze rule is visible where agents actually look
+- the backend lane already has its next bounded family staged
 - backend and OSM both have their next bounded follow-ons already staged
+- the next public trust cleanup move is deliberate rather than ambient drift
 
 ## Phase 2: Promote The Next Safe Subsystem Slices
 
@@ -45,6 +44,7 @@ This is the realistic “what happens after the next few task pickups” ladder.
 4. `define-stable-idle-stop-and-crash-recovery-rules`
 5. `define-runner-wrapper-cycle-for-json-agent-loop`
 6. `define-json-dashboard-render-surface`
+7. `define-json-dashboard-input-writeback-flow`
 
 ### Why this order
 
@@ -73,7 +73,7 @@ Run Phase 1 first, then Phase 2.
 ### If two people are working
 
 - person 1:
-  - backend auth/policy implementation
+  - backend post-auth router definition
   - then backend post-auth follow-on definition
 - person 2:
   - OSM canvas theme slice
@@ -81,15 +81,15 @@ Run Phase 1 first, then Phase 2.
 
 ### If three people are working
 
-- person 1: backend auth/policy implementation
+- person 1: backend post-auth router definition
 - person 2: OSM canvas theme slice
-- person 3: public freeze-boundary enforcement, then JSON-loop packet work
+- person 3: public trust-cleanup definition, then JSON-loop packet work
 
 ### If four people are working
 
-- person 1: backend auth/policy implementation
+- person 1: backend post-auth router definition
 - person 2: OSM canvas theme slice
-- person 3: public freeze-boundary enforcement
+- person 3: public trust-cleanup definition
 - person 4: JSON-loop packet lane
 
 Static/public durability should only outrank stronger app lanes if those app
@@ -113,7 +113,7 @@ lanes are already absent, claimed, or concretely blocked.
 
 The 72-hour ladder is successful if, by the end:
 
-- the current backend and OSM slices are either implemented or honestly fenced
+- the current OSM slice is either implemented or honestly fenced
 - the next backend and OSM follow-on slices are already queued
 - the freeze boundary is operational, not just documented
 - the ready board stays above the floor instead of collapsing after each burst

@@ -16,65 +16,56 @@ Do not skip to lower-risk work while items 1-3 are open unless:
 - the item is truly blocked
 - or the blocker is recorded and visible in the queue
 
-### 1. Fix backend index type-check spill after auth policy slice
-
-Task:
-
-- `fix-backend-index-type-check-spill-after-auth-policy-slice`
-
-Why first:
-
-- the bounded auth/policy slice is already validated and closed
-- the real remaining backend pressure is the narrow `index.ts` type-check spill
-- it is a sharper completion task than opening a brand new backend family
-
-### 2. Commit OSM canvas theme token slice
+### 1. Commit OSM canvas theme token slice
 
 Task:
 
 - `commit-osm-canvas-theme-token-slice`
 
-Why second:
+Why first:
 
 - the OSM lane now has a one-file canvas slice ready to land
 - it keeps generated workspace noise fenced out while moving the product lane
   forward
 
-### 3. Enforce public/archive freeze boundary in queue and handoff surfaces
-
-Task:
-
-- `enforce-public-and-archive-freeze-boundary-in-handoff-and-queue-surfaces`
-
-Why third:
-
-- the freeze rule exists
-- the operational surfaces should reflect it where agents actually look
-
-### 4. Define next backend post-auth router safe slice
+### 2. Define next backend post-auth router safe slice
 
 Task:
 
 - `define-next-backend-post-auth-router-safe-slice`
 
-Why fourth:
+Why second:
 
-- the current backend implementation slice should already have its next bounded
-  follow-on waiting
-- this keeps the backend lane from going empty after one commit
+- the backend auth/policy slice and the narrow type-check spill are now both
+  closed
+- the next useful backend move is to define the next bounded family before the
+  lane goes cold
 
-### 5. Define next OSM post-canvas safe slice
+### 3. Define next OSM post-canvas safe slice
 
 Task:
 
 - `define-next-osm-post-canvas-safe-slice`
 
-Why fifth:
+Why third:
 
 - the OSM queue should not depend on rediscovering the next boundary after the
   canvas slice lands
 - this keeps the product lane ahead of execution
-### 6. JSON loop packet lane
+
+### 4. Define next public trust cleanup slice after freeze boundary
+
+Task:
+
+- `define-next-public-trust-cleanup-slice-after-freeze-boundary`
+
+Why fourth:
+
+- the freeze boundary is now operational
+- the next public cleanup move should be chosen deliberately instead of drifting
+  back into broad site churn
+
+### 5. JSON loop packet lane
 
 Tasks:
 
@@ -83,8 +74,10 @@ Tasks:
 - `define-orchestrator-lock-and-worker-heartbeat-model`
 - `define-stable-idle-stop-and-crash-recovery-rules`
 - `define-runner-wrapper-cycle-for-json-agent-loop`
+- `define-json-dashboard-render-surface`
+- `define-json-dashboard-input-writeback-flow`
 
-Why sixth:
+Why fifth:
 
  - the reusable loop work is now a real background lane
  - it should stay below the stronger main completion work unless the board is
@@ -94,7 +87,7 @@ Why sixth:
 
 If an agent keeps selecting low-risk side work while the strongest current
 lanes are open, that is not neutral prioritization. Treat it as avoidance and
-redirect back to items 1-5.
+redirect back to items 1-4.
 
 ## Coordination Rules
 
@@ -112,5 +105,5 @@ redirect back to items 1-5.
 
 ## Immediate Follow-On
 
-After items 1-5 are either claimed or done, keep the queue above the floor by
+After items 1-4 are either claimed or done, keep the queue above the floor by
 promoting the next verified slice from the same subsystem instead of freelancing.
