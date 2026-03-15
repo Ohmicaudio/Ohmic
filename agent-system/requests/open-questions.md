@@ -30,4 +30,4 @@ Use this file for unresolved questions that should stay visible across agents an
 
 ## Current Questions
 
-- 2026-03-13: For the transitional `public/` cutover, who owns deployment of `ohmic-audio-static-content`, when will `ohmicaudiolabs.com` and `ohmicaudio.com` publish reachable public host records, and which domain is canonical vs alias/redirect at cutover time? Current default recommendation is documented in `docs/migration/TRANSITIONAL_PUBLIC_CUTOVER_DECISION_NOTE_2026-03-13.md`.
+- none currently
