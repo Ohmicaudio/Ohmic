@@ -95,10 +95,15 @@ Why:
 
 Tasks:
 
-- verify all recent toolbox commits are durable and pushed
 - keep `Ohm's Law`, `Cone Area`, and `Acoustic Gain` behavior stable
 - avoid formula drift from shared math
-- document the current toolbox surface cleanly enough for pickup
+- keep the current toolbox surface documented cleanly enough for pickup
+
+Current state:
+
+- recent toolbox extraction and shared-math slices are now committed and pushed
+- the next risk is no longer missing implementation; it is drift and silent
+  regression
 
 Split:
 
@@ -244,6 +249,12 @@ Tasks:
 - ensure the latest local static-content cleanup is remote
 - keep repo state clean
 
+Current state:
+
+- `ohmic-audio-static-content` is currently clean but still ahead of
+  `origin/main` by one commit
+- this remains a real durability task, not a hypothetical one
+
 ### C2. Only do blocker-level content work
 
 Priority: next
@@ -274,18 +285,15 @@ Tasks:
 
 ### D1. Finish the grouped-field parser prototype
 
-Priority: now
+Priority: done
 
 Why:
 
-- one active claim already exists here
-- this is the next concrete proof step
+- the parser proof and sample normalized packet now exist
 
 Tasks:
 
-- decode one grouped field family
-- test on a few rows
-- record what generalizes and what does not
+- preserve the current proof without widening into mass extraction
 
 ### D2. Stop before mass extraction
 
@@ -303,13 +311,13 @@ Tasks:
 
 ### D3. Build the first normalized seed shape only after parser proof
 
-Priority: next
+Priority: partial
 
 Tasks:
 
-- define a minimal trusted normalized record
-- identify confidence fields
-- identify unresolved values clearly
+- keep the sample normalized packet as the current trusted seed
+- do not treat the seed packet as license for broad import yet
+- only widen this lane when the main software completion pressure is lower
 
 ## E. `amplab-firmware`
 
@@ -402,13 +410,13 @@ Do not spend current completion time on:
 
 ## Immediate Next 8 Tasks
 
-1. finish the grouped loudspeaker field parser prototype
+1. push the current clean `ohmic-audio-static-content` slice so the canonical-host follow-through is durable
 2. write the `Wiring Lab` implementation packet from the safe amp-match rules
 3. inventory and split the `ohmic-audio-labs` dirty worktree by domain
-4. verify current toolbox changes are pushed and durable
+4. identify minimum trusted app/runtime checks in `ohmic-audio-labs`
 5. define the first standalone `Ohm's Law` extraction route/copy packet
-6. identify minimum trusted app/runtime checks in `ohmic-audio-labs`
-7. confirm current static-content repo durability and cleanliness
+6. keep the toolbox wave stable and document the current consumer boundaries
+7. preserve the loudspeaker lane in prototype mode without widening into mass extraction
 8. keep the umbrella queue and memory surfaces truthful after each slice
 
 ## Summary

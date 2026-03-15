@@ -1,5 +1,5 @@
 Status: ready
-Priority: high
+Priority: medium
 Date: 2026-03-15
 Project: ohmic-audio-labs
 
@@ -7,26 +7,26 @@ Project: ohmic-audio-labs
 
 ## Goal
 
-Break the current giant `ohmic-audio-labs` dirty worktree into understandable
-domains so completion work can be split safely.
+Turn the giant dirty `ohmic-audio-labs` worktree into a domain-based inventory
+that separates active product surfaces from churn, archive, and unrelated
+legacy edits.
 
 ## Why
 
-The current repo is the biggest ecosystem risk because too much unfinished work
-is mixed together.
+The repo is still the biggest completion risk, and it is too dirty to trust by
+feel.
+
+## Inputs
+
+- `B:\ohmic\repos\ohmic-audio-labs`
 
 ## Deliverable
 
-A triage note that groups the dirty worktree into domains such as:
-
-- runtime/app
-- Android wrapper
-- hardware/control UI
-- archive/legacy
-- docs/specs
-- generated/build artifacts
+One inventory note that groups the dirty worktree into domain buckets and calls
+out which areas look safe to commit, which need freezing, and which need later
+triage.
 
 ## Constraints
 
+- do not try to clean the whole repo in one pass
 - inventory only
-- do not normalize or rewrite the whole tree in this step
