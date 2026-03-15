@@ -9,24 +9,24 @@ Project: ohmic-audio-labs
 Define the first real `products/ohmic-osm` implementation slice tightly enough
 that it can be claimed and executed without pulling in workspace noise.
 
-## Exact Source Scope
+## Current Read
 
-Primary active files:
+The earlier dirty inventory showed seven tracked source files, but the current
+worktree now reads much cleaner and is dominated by `dist/` and `node_modules/`
+noise. That means this packet should be treated as a fresh bounded editor-shell
+seed, not a license to scoop up everything that once looked dirty.
+
+## Include In The First Slice
+
+Primary editor-shell files:
 
 - `products/ohmic-osm/apps/osm-web/src/components/EquipmentManager.tsx`
 - `products/ohmic-osm/apps/osm-web/src/components/InspectorPanel.tsx`
 - `products/ohmic-osm/apps/osm-web/src/components/TopBar.tsx`
 - `products/ohmic-osm/apps/osm-web/src/components/VehicleSelector.tsx`
 
-Formatting-only watchout:
-
-- `products/ohmic-osm/apps/osm-web/src/components/CanvasView.tsx`
-
-Current read:
-
-- the first four files contain real UI token/styling changes
-- `CanvasView.tsx` currently reads as line-ending churn, not meaningful product
-  behavior change
+These are the files that define editor framing, shell controls, and adjacent
+panel composition without opening deeper engine work.
 
 ## Why This Is The First Slice
 
@@ -37,13 +37,21 @@ Current read:
 
 ## Explicitly Out Of Scope
 
+- `products/ohmic-osm/apps/osm-web/src/components/CanvasView.tsx`
 - `products/ohmic-osm/apps/osm-web/dist/`
 - any `node_modules/` under `products/ohmic-osm`
 - `BuildChecklist.tsx`
 - `TelemetryLog.tsx`
 - worker/API/package changes
-- `CanvasView.tsx` unless it is intentionally normalized and reviewed as more
-  than line-ending churn
+- any cross-package schema or storage churn
+
+## Watchouts
+
+- `CanvasView.tsx` still looks like the easiest place to accidentally widen the
+  slice into editor-engine work
+- if `InspectorPanel.tsx` or `EquipmentManager.tsx` turn out to depend on
+  deeper canvas contracts than expected, stop and split the packet instead of
+  dragging `CanvasView.tsx` in by habit
 
 ## Blast Radius
 
@@ -54,17 +62,17 @@ Current read:
 
 At minimum:
 
-```bash
-cd /mnt/b/ohmic/repos/ohmic-audio-labs/products/ohmic-osm
-npm run osm:build
-npm run osm:test
-```
+- run `pnpm --dir products/ohmic-osm build`
+- run `pnpm --dir products/ohmic-osm test`
 
-If those scripts are not available from the nested package context, run the repo
-level equivalents already used for OSM validation.
+If the implementation happens from the repo root instead, the equivalent
+acceptable checks are:
+
+- `npm run osm:build`
+- `npm run osm:test`
 
 ## Finish Condition
 
 - one bounded OSM editor-shell commit lands
-- the file set stays inside `apps/osm-web`
+- the file set stays inside `products/ohmic-osm/apps/osm-web`
 - no generated/install noise is bundled

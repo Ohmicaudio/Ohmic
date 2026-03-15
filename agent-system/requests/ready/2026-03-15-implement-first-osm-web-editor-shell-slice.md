@@ -16,13 +16,14 @@ real code without dragging in unrelated canvas or deep data-model churn.
 
 ## Focus
 
-- top-level shell styling and tokens
-- editor shell framing
+- top-level shell framing and styling
+- `TopBar`, `VehicleSelector`, `InspectorPanel`, and `EquipmentManager`
 - support panel/theme consistency
-- keep canvas and deeper engine changes out
+- keep `CanvasView` and deeper engine changes out
 
 ## Acceptance
 
 - one bounded editor-shell commit slice is implemented
-- touched files stay inside the intended shell scope
+- touched files stay inside the shell scope defined in
+  `docs/roadmap/OHMIC_OSM_FIRST_EDITOR_SHELL_SAFE_SLICE_2026-03-15.md`
 - basic verification notes are captured honestly
