@@ -18,13 +18,12 @@ Use this order now.
 
 Task:
 
-- `group-next-ohmic-audio-labs-stabilization-wave`
+- completed; use the derived grouped waves below
 
 Why first:
 
-- `ohmic-audio-labs` is still ahead `47` and is by far the largest software
-  risk surface
-- the queue needs grouped app-work packets again, not more stale micro-slices
+- the grouped stabilization packet now exists
+- pickup should move directly into the derived grouped software waves
 
 ### 2. Bundle AmpLab browser and shell regression wave
 
@@ -59,7 +58,31 @@ Why fourth:
 - the chirp lane is proven, but it should be turned into a durable grouped
   follow-on before the context goes cold
 
-### 5. Static public trust wave
+### 5. Classify `ohmic-audio-labs` nonproduct dirty domains
+
+Task:
+
+- `classify-ohmic-audio-labs-nonproduct-dirty-domains`
+
+Why fifth:
+
+- broad `public`, `docs`, `archive`, and `android` dirt should stop competing
+  with active software work
+- those domains need an explicit freeze/classification pass instead of ambient
+  edits
+
+### 6. Define OSM and design-sandbox regrouping wave
+
+Task:
+
+- `define-osm-and-design-sandbox-regrouping-wave`
+
+Why sixth:
+
+- the dirty `products` lane needs a fresh grouped packet before execution can
+  restart there cleanly
+
+### 7. Static public trust wave
 
 Tasks:
 

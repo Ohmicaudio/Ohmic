@@ -97,10 +97,11 @@ The immediate job is rebuilding the queue around the current grouped waves.
 
 Do these first unless blocked or already claimed.
 
-- `group-next-ohmic-audio-labs-stabilization-wave`
 - `bundle-amplab-browser-shell-regression-wave`
 - `define-post-link-live-path-parity-wave`
 - `package-backend-chirp-regression-and-bootstrap-wave`
+- `classify-ohmic-audio-labs-nonproduct-dirty-domains`
+- `define-osm-and-design-sandbox-regrouping-wave`
 
 Rule:
 
