@@ -5,79 +5,160 @@ Status: working contract
 
 ## Purpose
 
-Define whether summary cards should show a lightweight freshness hint so users
-can tell which high-level dashboard areas reflect newer or older state.
+Define whether the dashboard summary card should show a lightweight freshness
+hint so users can tell whether the high-level summary reflects newer or older
+state.
+
+## Source Alignment
+
+This rule should align with:
+
+- `docs/systems/OHMIC_DASHBOARD_STATUS_CARD_MAPPING_2026-03-15.md`
+- `docs/systems/OHMIC_DASHBOARD_STALE_STATE_INDICATOR_BEHAVIOR_2026-03-15.md`
+- `docs/systems/OHMIC_DASHBOARD_RELATIVE_TIME_ROLLOVER_RULE_2026-03-15.md`
 
 ## Core Principle
 
-Card-level freshness hints are optional clarity, not a second global clock.
+The summary card should carry one small freshness hint, not a full freshness
+subsystem.
 
-Use them only when they improve local understanding of a card’s state without
-repeating the same timing information everywhere.
+Users need to know whether the headline card is current enough to trust at a
+glance.
 
-## Recommended Default
+They do not need freshness badges attached to every field.
 
-Summary cards may show a small freshness hint when:
+## Show A Freshness Hint
 
-- the card summarizes a state slice that can meaningfully age independently
-- the main dashboard freshness label is too far away to help local reading
-- the card’s content can look stale without a local cue
+The summary card should show a lightweight freshness hint in V1.
 
-Examples:
+Why:
 
-- a card summarizing queue state
-- a card summarizing runtime or lock state
+- the summary card is the first trust surface on the page
+- users need to distinguish current state from older-but-still-visible state
+- the page-level stale indicator may not be enough on its own when users are
+  scanning just the top card
 
-## Recommended Format
+## Hint Placement
 
-Keep the hint lightweight:
+Place the freshness hint in the summary card header area near:
 
-- small relative text
-- low-emphasis freshness badge
-- or a subtle `updated` line
+- the `Updated` label
+- or the summary card title line
 
-Do not turn each card into a timestamp panel.
+Do not place separate freshness chips beside each field like:
 
-## Scope Rule
+- `Project`
+- `Mode`
+- `Repo`
+- `Loop state`
 
-Card freshness hints should summarize only that card’s meaningful data surface.
+## Hint Scope
 
-Do not imply that the whole dashboard is equally fresh just because one card
-updated recently.
+The summary card freshness hint should describe the summary card as a whole.
 
-## Usefulness Rule
+It should not claim field-by-field precision.
 
-Prefer card-level hints when:
+Meaning:
 
-- cards can age at different rates
-- users need local trust cues
-- the card can be misunderstood without freshness context
+- `fresh` means the summary card is current enough for normal trust
+- `stale` means the summary card may lag behind stronger sources
+- `unknown` means freshness cannot be confirmed
 
-Avoid them when:
+## Recommended States
 
-- the global last-updated label already gives enough signal
-- every card would show the same time anyway
-- the card is already visually dense
+Use the same lightweight states already defined for stale-state behavior:
 
-## Relationship To Stale State
+- `fresh`
+- `reconciling`
+- `stale`
+- `unknown`
 
-If a card’s underlying data looks especially stale relative to the rest of the
-dashboard:
+If the page also shows a higher-level freshness chip, the summary card hint
+should mirror that state instead of inventing a second freshness vocabulary.
 
-- the card hint may become cautionary
-- but it should not outrank blocked or needs-input system state
+## Recommended Wording
+
+Keep the hint short.
+
+Good:
+
+- `Summary current`
+- `Refreshing summary`
+- `Summary may be out of date`
+- `Summary freshness unknown`
+
+Good compact alternative:
+
+- `Current`
+- `Refreshing`
+- `Possibly stale`
+- `Unknown`
+
+Avoid:
+
+- `This card is 83% trustworthy`
+- `Data integrity compromised`
+- `Project card cache invalid`
+
+## Relationship To Updated Label
+
+The freshness hint is not a replacement for the `Updated` label.
+
+Use both:
+
+- relative timestamp for age
+- freshness hint for trust state
+
+Example pairing:
+
+- `Updated 8m ago`
+- `Summary may be out of date`
+
+That keeps age and trust distinct.
+
+## When To Hide The Hint
+
+The summary card hint may stay visually subtle, but it should not disappear
+entirely while freshness matters.
+
+Hide or de-emphasize only when:
+
+- the summary is clearly `fresh`
+- the card already shows a recent `Updated just now` or low-age label
+- the design needs to reduce noise on small layouts
+
+Even then, preserve at least one low-emphasis freshness signal in the card
+header.
+
+## Mobile And Tight Layout Rule
+
+On tight layouts:
+
+- allow the hint to collapse to a short chip or muted label
+- keep the `Updated` line visible if possible
+
+Do not remove both the hint and the updated timestamp at the same time.
 
 ## Guardrails
 
-- do not put full timestamps on every card
-- do not duplicate identical freshness hints across the whole screen
-- do not imply a stronger trust guarantee than the underlying data deserves
-- do not let local card hints compete with global stale-state warnings
+- do not add separate freshness badges to every summary field
+- do not let the summary card freshness hint disagree with the shared stale
+  indicator without explanation
+- do not replace age text with vague trust wording alone
+- do not make the hint visually louder than blocked or needs-input states
+
+## Minimal Example
+
+```text
+Summary
+Updated 12m ago
+Summary may be out of date
+```
 
 ## Follow-On Dependencies
 
 This rule should feed:
 
-- `define-dashboard-summary-card-freshness-placement-rule`
-- `define-dashboard-summary-card-stale-override-rule`
-- `define-dashboard-summary-card-freshness-density-rule`
+- `define-dashboard-summary-card-freshness-suppression-rule`
+- `define-dashboard-return-from-sleep-reconciliation-rule`
+- `define-dashboard-last-updated-label-rule`
