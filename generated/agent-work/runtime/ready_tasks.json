@@ -1,5 +1,5 @@
 {
-    "generated_at":  "2026-03-15T18:27:16Z",
+    "generated_at":  "2026-03-15T18:29:49Z",
     "source":  {
                    "kind":  "repo_summary",
                    "path":  "B:\\ohmic\\agent-system\\requests\\ready"
@@ -8,7 +8,7 @@
                       "status":  "fresh",
                       "reason":  null
                   },
-    "count":  11,
+    "count":  8,
     "items":  [
                   {
                       "task_id":  "2026-03-15-add-hardware-shell-deck-smoke-check-coverage",
@@ -42,28 +42,6 @@
                       "owner":  "",
                       "claim_id":  "",
                       "file_path":  "B:\\ohmic\\agent-system\\requests\\ready\\2026-03-15-define-next-backend-measurement-session-follow-on-slice.md"
-                  },
-                  {
-                      "task_id":  "2026-03-15-define-non-repo-storage-migration-packet",
-                      "title":  "Define Non Repo Storage Migration Packet",
-                      "priority":  "low",
-                      "project":  "ohmic",
-                      "status":  "ready",
-                      "date":  "2026-03-15",
-                      "owner":  "",
-                      "claim_id":  "",
-                      "file_path":  "B:\\ohmic\\agent-system\\requests\\ready\\2026-03-15-define-non-repo-storage-migration-packet.md"
-                  },
-                  {
-                      "task_id":  "2026-03-15-define-user-requested-document-retention-rules",
-                      "title":  "Define User Requested Document Retention Rules",
-                      "priority":  "low",
-                      "project":  "ohmic",
-                      "status":  "ready",
-                      "date":  "2026-03-15",
-                      "owner":  "",
-                      "claim_id":  "",
-                      "file_path":  "B:\\ohmic\\agent-system\\requests\\ready\\2026-03-15-define-user-requested-document-retention-rules.md"
                   },
                   {
                       "task_id":  "2026-03-15-identify-next-semantic-backend-slice-after-crlf-churn",
@@ -108,17 +86,6 @@
                       "owner":  "",
                       "claim_id":  "",
                       "file_path":  "B:\\ohmic\\agent-system\\requests\\ready\\2026-03-15-implement-next-hardware-amp-lab-control-bridge-slice.md"
-                  },
-                  {
-                      "task_id":  "2026-03-15-inventory-non-repo-doc-and-artifact-zones-under-ohmic",
-                      "title":  "Inventory Non Repo Doc And Artifact Zones Under Ohmic",
-                      "priority":  "medium",
-                      "project":  "ohmic",
-                      "status":  "ready",
-                      "date":  "2026-03-15",
-                      "owner":  "",
-                      "claim_id":  "",
-                      "file_path":  "B:\\ohmic\\agent-system\\requests\\ready\\2026-03-15-inventory-non-repo-doc-and-artifact-zones-under-ohmic.md"
                   },
                   {
                       "task_id":  "2026-03-15-verify-high-risk-public-worked-examples",

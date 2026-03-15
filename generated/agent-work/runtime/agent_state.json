@@ -9,7 +9,7 @@
                     "task_status":  "needs_input",
                     "orchestrator_active":  false,
                     "compact_count":  0,
-                    "updated_at":  "2026-03-15T18:27:16Z"
+                    "updated_at":  "2026-03-15T18:29:49Z"
                 },
     "input":  {
                   "pending":  true,
@@ -22,8 +22,8 @@
                   "handled_by":  ""
               },
     "state":  {
-                  "summary":  "Queue healthy. 11 ready tasks, 0 active claims.",
-                  "ready_count":  11,
+                  "summary":  "Queue healthy. 8 ready tasks, 0 active claims.",
+                  "ready_count":  8,
                   "active_claim_count":  0,
                   "board_health":  "healthy",
                   "top_priority":  [
@@ -34,9 +34,9 @@
                   "queue_floor_met":  true,
                   "stale_state_detected":  false,
                   "recent_completions":  [
-                                             "2026-03-15-normalize-legacy-active-claim-files",
-                                             "2026-03-15-implement-first-backend-post-auth-router-slice",
-                                             "2026-03-15-verify-first-hardware-shell-deck-check-coverage"
+                                             "2026-03-15-define-user-requested-document-retention-rules",
+                                             "2026-03-15-define-non-repo-storage-migration-packet",
+                                             "2026-03-15-inventory-non-repo-doc-and-artifact-zones-under-ohmic"
                                          ],
                   "risks":  [
                                 "Blocked tasks present: 2"
@@ -52,9 +52,9 @@
                                               "2026-03-15-define-android-wrapper-tracked-text-first-commit-slice"
                                           ],
                      "completed":  [
-                                       "2026-03-15-normalize-legacy-active-claim-files",
-                                       "2026-03-15-implement-first-backend-post-auth-router-slice",
-                                       "2026-03-15-verify-first-hardware-shell-deck-check-coverage"
+                                       "2026-03-15-define-user-requested-document-retention-rules",
+                                       "2026-03-15-define-non-repo-storage-migration-packet",
+                                       "2026-03-15-inventory-non-repo-doc-and-artifact-zones-under-ohmic"
                                    ],
                      "blocked":  [
                                      "2026-03-15-promote-ops-unifier-incubator-when-ohmic-slack-exists",
