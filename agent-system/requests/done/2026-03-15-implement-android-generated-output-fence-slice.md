@@ -2,8 +2,6 @@ Status: done
 Priority: medium
 Date: 2026-03-15
 Project: ohmic-audio-labs
-Owner: d
-Claim ID: 20260315T184838Z-0c46a8c4
 
 # Implement Android Generated Output Fence Slice
 
@@ -29,25 +27,18 @@ the generated-output and local-state fence.
 - generated Android output stays out of Git truth
 - tracked wrapper CRLF noise is not mistaken for semantic product work
 
-## Outcome
+## Completion Notes
 
-Completed on 2026-03-15.
-
-Result:
-
-- verified the existing Android ignore boundary already fences the named generated and local paths
-- confirmed the generated/local Android paths exist on disk without surfacing in tracked Git truth
-- rechecked the previously suspected tracked wrapper packet and found no live diff to promote
-- closed the slice as a truthful verification artifact instead of forcing a fake app-repo edit
-
-## Artifact
-
-- `B:\ohmic\docs\roadmap\OHMIC_ANDROID_GENERATED_OUTPUT_FENCE_VERIFICATION_2026-03-15.md`
-- `B:\ohmic\repos\ohmic-audio-labs\android\.gitignore`
-- `B:\ohmic\repos\ohmic-audio-labs\android\app\.gitignore`
-
-## Verification
-
-- `git check-ignore -v` matched each named generated/local path to the Android ignore rules
-- `git status --short` showed none of the reviewed generated Android paths as tracked changes
-- both tracked-wrapper diff probes returned no file names for the reviewed wrapper/config file set
+- Verified the existing Android ignore fence is already active and effective
+- `git check-ignore -v` confirmed these are fenced by `android/.gitignore`:
+  - `android/local.properties`
+  - `android/app/build/`
+  - `android/build/`
+  - `android/capacitor-cordova-android-plugins/`
+  - `android/app/src/main/assets/public`
+  - generated Capacitor config/assets paths
+- `git status --ignored -- android` showed generated and local-state paths as
+  ignored (`!!`), not staged repo truth
+- No product-repo file edit was needed for this fence slice
+- The remaining Android pressure is tracked-file CRLF churn, which stays
+  separate from generated-output hygiene
