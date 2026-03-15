@@ -1,164 +1,151 @@
 # Ohmic Non-Repo Doc And Artifact Zone Inventory
 
-Purpose: identify the zones under `B:\ohmic` that are neither product-repo
-truth nor shared-system truth so the next cleanup packet can move them without
-touching active implementation surfaces.
+Purpose: inventory top-level zones under `B:\ohmic` that are not the shared
+system core or product repos, so later cleanup can move clutter deliberately
+instead of by guesswork.
 
-## Scope Exclusions
+## Summary
 
-This inventory explicitly leaves out:
+This pass found five notable non-core zones under `B:\ohmic`:
 
-- `B:\ohmic\repos\*` product repo truth
-- `B:\ohmic\agent-system\*` shared queue, memory, claim, and handoff truth
-- `B:\ohmic\docs\*`, `manifests\*`, `templates\*`, `tools\*`, and `generated\*`
-  when they are serving the live umbrella system
+1. `B:\ohmic\harvest`
+2. `B:\ohmic\manifests`
+3. `B:\ohmic\templates`
+4. `B:\ohmic\ohmic-audio-universe`
+5. `B:\ohmic\ohmic-audio-universe-db-reference`
 
-The goal here is not broad repo cleanup. It is just the mixed local-only
-artifact zones still sitting under the umbrella root.
+Each zone is tagged below as `keep`, `migrate`, or `review`.
 
-## Existing Ignore Boundary
+## Zone Decisions
 
-The top-level `.gitignore` already marks these as non-canonical local zones:
+### Keep
 
-- `B:\ohmic\harvest\`
-- `B:\ohmic\ohmic-audio-universe\`
-- `B:\ohmic\ohmic-audio-universe-db-reference\`
+#### `B:\ohmic\manifests`
 
-That makes them the obvious first inventory targets.
+Reason:
 
-## Inventory
+- small, explicit shared metadata surface
+- contains repo/app/device/import manifests
+- belongs with umbrella coordination truth rather than a product repo
 
-| Zone | Approx Size | Files | Why It Is Not Canonical Truth | Suggested Destination |
-| --- | ---: | ---: | --- | --- |
-| `B:\ohmic\harvest\` | 91.34 MB | 3,517 | raw captures, one-off lab project, and small firmware harvest copied into the umbrella root | split between `B:\junk\*` and `B:\ohmic-local\working\*` |
-| `B:\ohmic\ohmic-audio-universe\` | 2,142.81 MB | 73,200 | nested Git repo snapshot with its own `node_modules`, docs, captures, build logs, and report copies, but not mapped as an active repo home under `B:\ohmic\repos\*` | `B:\ohmic-local\archive\repo-snapshots\ohmic-audio-universe\` |
-| `B:\ohmic\ohmic-audio-universe-db-reference\` | 0.01 MB | 4 | tiny detached reference pack not wired into live repo or shared-system truth | `B:\ohmic-local\archive\reference-packs\ohmic-audio-universe-db-reference\` |
+Observed contents:
 
-## Zone Details
+- `apps.yaml`
+- `contracts.yaml`
+- `devices.yaml`
+- `repos.yaml`
+- `surfaces.yaml`
+- `import-surfaces/*.yaml`
 
-### 1. `B:\ohmic\harvest\`
+Action:
 
-Sub-zones:
+- keep in `B:\ohmic`
+- treat as shared-system support truth
 
-- `B:\ohmic\harvest\ohmic-audio-labs\captures\`
-  - contains two `.pcapng` files, one `.tsv`, one `.txt`, and four `.log`
-    files
-  - examples: `dayton_capture.pcapng`, `dayton_hid_data.tsv`,
-    `preview-helper.err.log`
-  - these are raw capture artifacts, not project truth
-- `B:\ohmic\harvest\ohmic-audio-labs\labs\lvgl-gauge-lab\`
-  - standalone lab app with `package.json`, `package-lock.json`,
-    `migrated_prompt_history\`, and a populated `node_modules\`
-  - useful as working material, but not a canonical repo or shared-system lane
-- `B:\ohmic\harvest\ohmic-audio-labs-firmware\esp32-amplab-sim\`
-  - four-file firmware simulation stub
-  - small and plausibly useful, but still harvest material rather than repo
-    truth
+#### `B:\ohmic\templates`
 
-Recommended destinations:
+Reason:
 
-- raw captures and logs -> `B:\junk\captures\dayton\`
-- local lab project -> `B:\ohmic-local\working\labs\lvgl-gauge-lab\`
-- small firmware stub -> `B:\ohmic-local\working\firmware-harvest\esp32-amplab-sim\`
+- small reusable bootstrap assets
+- supports repo setup and shared conventions
+- not local clutter
 
-### 2. `B:\ohmic\ohmic-audio-universe\`
+Observed contents:
 
-This is a full nested Git repo snapshot living outside the active repo map.
+- `templates/repo-bootstrap/README.ohmic-*.md`
+- `templates/repo-bootstrap/gitignore.firmware`
 
-It contains:
+Action:
 
-- its own `.git\`
-- its own `node_modules\`
-- product-style trees like `src\`, `packages\`, `firmware\`, `software\`,
-  `docs\`, `schemas\`, and `tools\`
-- root-level build and report artifacts such as:
-  - `build_fw_upload.txt`
-  - `build_v6.txt`
-  - `external-integration-pack.zip`
-  - `ohmic-audio-labs-threat-model.md`
-  - `security_best_practices_report.md`
+- keep in `B:\ohmic`
+- treat as reusable shared scaffolding
 
-This material may still be worth keeping, but it is not living in the declared
-repo homes under `B:\ohmic\repos\*`, so it should not continue to occupy the
-umbrella root.
+### Review
 
-Recommended destination:
+#### `B:\ohmic\harvest`
 
-- archive the tree as one repo snapshot at
-  `B:\ohmic-local\archive\repo-snapshots\ohmic-audio-universe\`
+Reason:
 
-Optional convenience split after the snapshot move:
+- currently empty at the top level during this pass
+- directory name implies import or capture staging rather than durable repo truth
+- could become a valid shared intake zone, but should not silently turn into a
+  junk drawer
 
-- copy the root `build_*.txt`, `.zip`, and report files into
-  `B:\ohmic-local\reports\ohmic-audio-universe\` if quick human access is still
-  needed
+Action:
 
-### 3. `B:\ohmic\ohmic-audio-universe-db-reference\`
+- review before using heavily
+- if it becomes raw intake storage, either:
+  - keep it as a governed shared intake surface, or
+  - migrate that role to `B:\junk` / `B:\ohmic-local`
 
-This is a tiny detached reference pack containing:
+#### `B:\ohmic\ohmic-audio-universe`
 
-- `software\backend\docs\specs\BACKEND_SERVING_STACK.md`
-- `tools\semantic-index\docker-compose.yml`
-- `tools\semantic-index\indexer.py`
-- `tools\semantic-index\README.md`
+Reason:
 
-It is small enough that it does not create immediate storage pressure, but it
-still belongs in a local archive/reference area instead of the umbrella root.
+- contains its own `.git` and behaves like a standalone sidecar repo
+- currently lives outside `B:\ohmic\repos\*`, which breaks the intended storage boundary
+- includes repo-like structure plus local-weight indicators such as `node_modules`
 
-Recommended destination:
+Observed signals:
 
-- `B:\ohmic-local\archive\reference-packs\ohmic-audio-universe-db-reference\`
+- `.git/`
+- `.github/`
+- `.husky/`
+- `README.md`
+- `agents/`
+- `architecture/`
+- `captures/`
+- `knowledge/`
+- `migration/`
+- `node_modules/`
+- `packages/`
 
-## Grouped Move Candidates By Destination
+Action:
 
-### `B:\junk\`
+- review as a priority migration candidate
+- likely end state should be one of:
+  - move under `B:\ohmic\repos\*` if it is a real repo worth keeping, or
+  - move to `B:\ohmic-local\archive` / `B:\junk` if it is reference or abandoned side work
 
-Move raw evidence and capture drops here:
+#### `B:\ohmic\ohmic-audio-universe-db-reference`
 
-- `harvest\ohmic-audio-labs\captures\*.pcapng`
-- `harvest\ohmic-audio-labs\captures\*.tsv`
-- `harvest\ohmic-audio-labs\captures\*.log`
-- `harvest\ohmic-audio-labs\captures\*.txt`
+Reason:
 
-### `B:\ohmic-local\working\`
+- looks like a reference-only support tree rather than active repo truth
+- currently outside both `repos` and `junk`
+- likely useful, but not clearly owned yet
 
-Move active but non-canonical working material here:
+Observed signals:
 
-- `harvest\ohmic-audio-labs\labs\lvgl-gauge-lab\`
-- `harvest\ohmic-audio-labs-firmware\esp32-amplab-sim\`
+- `software/`
+- `tools/`
 
-### `B:\ohmic-local\archive\`
+Action:
 
-Move preserved but non-live reference material here:
+- review for ownership and retention
+- likely destination is:
+  - `B:\junk` if it is raw reference material, or
+  - `B:\ohmic-local\archive` if it is local-only curated reference
 
-- `ohmic-audio-universe\`
-- `ohmic-audio-universe-db-reference\`
-- any abandoned harvest experiments that are worth keeping but no longer need a
-  working home
+### Migrate
 
-### `B:\ohmic-local\reports\`
+No immediate top-level migrations are required from this inventory alone.
 
-Move delivery copies and quick-open report bundles here when they should remain
-easy to open but not live in Git-centered zones:
+The main outcome is identifying `ohmic-audio-universe` and
+`ohmic-audio-universe-db-reference` as the highest-value review targets before a
+larger cleanup sweep.
 
-- root `build_*.txt` files from `ohmic-audio-universe\`
-- `external-integration-pack.zip`
-- report copies such as `ohmic-audio-labs-threat-model.md` and
-  `security_best_practices_report.md` if retained separately from the repo
-  snapshot
+## Recommended Next Order
 
-## First Safe Move Order
+1. define user-requested document retention rules
+2. define the non-repo storage migration packet
+3. review `ohmic-audio-universe` ownership and intended future
+4. review `ohmic-audio-universe-db-reference` retention value
+5. only then move any large sidecar trees
 
-1. Move the raw `harvest\ohmic-audio-labs\captures\` evidence bundle to
-   `B:\junk\captures\dayton\`.
-2. Move `harvest\ohmic-audio-labs\labs\lvgl-gauge-lab\` into
-   `B:\ohmic-local\working\labs\`.
-3. Move `harvest\ohmic-audio-labs-firmware\esp32-amplab-sim\` into
-   `B:\ohmic-local\working\firmware-harvest\`.
-4. Move `ohmic-audio-universe-db-reference\` into
-   `B:\ohmic-local\archive\reference-packs\`.
-5. Move `ohmic-audio-universe\` as a single archive snapshot instead of trying
-   to sort its 2+ GB contents in place.
+## Guardrails
 
-That sequence removes the obvious clutter first while keeping active repo truth
-and shared-system truth out of the blast radius.
+- do not move shared manifests or templates out of `B:\ohmic`
+- do not move sidecar repo trees blindly just because they are outside `repos`
+- do not mix raw imports, archived reference, and active repo truth in one move
+- prefer classifying ownership first, then relocating
