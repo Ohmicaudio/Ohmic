@@ -79,50 +79,44 @@ actively blocking delivery.
 ### Priority 4: Firmware and hardware stay warm, but do not dominate current
 execution unless a specific blocker appears
 
-## Split-Ready Task Board
+## Current Queue Truth
 
-## Current Ready Queue
+The previous mandatory-first board is stale.
 
-### Mandatory-first execution slices
+Live reality now:
 
-Do these first unless they are already actively claimed or truly blocked.
+- active claims: `0`
+- ready tasks: `2` real tasks
+- blocked tasks: `2` real tasks
 
-- `fix-backend-index-type-check-spill-after-auth-policy-slice`
-- `commit-osm-canvas-theme-token-slice`
-- `define-next-backend-post-auth-router-safe-slice`
-- `define-next-osm-post-canvas-safe-slice`
+That means the immediate job is not pretending the old board still exists.
 
-Rule:
+The immediate job is rebuilding the queue around the current grouped waves.
 
-- do not pick safer editorial, support, or polish work while any of these
-  lanes are sitting open and unblocked
-- if an agent skips one of these lanes, they should record the blocker rather
-  than silently drifting to easier work
+### Mandatory-first grouped lanes
 
-### Secondary completion support
+Do these first unless blocked or already claimed.
 
-- `define-next-public-trust-cleanup-slice-after-freeze-boundary`
-- `define-live-agent-state-json-contract`
-- `define-agent-inbox-outbox-event-model`
-- `define-orchestrator-lock-and-worker-heartbeat-model`
-- `define-stable-idle-stop-and-crash-recovery-rules`
-- `define-runner-wrapper-cycle-for-json-agent-loop`
-- `define-json-dashboard-render-surface`
-- `define-json-dashboard-input-writeback-flow`
-
-These support the main completion lane but should not outrank it.
-
-### Lower-priority public cleanup
-
-- site audit cleanup bundle remains valid, but it stays below the current app
-  and system lanes unless it directly blocks trust or deployment
-- app-side `public/` and archive surfaces are frozen by default and should not
-  be treated as normal ambient cleanup territory
+- `group-next-ohmic-audio-labs-stabilization-wave`
+- `bundle-amplab-browser-shell-regression-wave`
+- `define-post-link-live-path-parity-wave`
+- `package-backend-chirp-regression-and-bootstrap-wave`
 
 Rule:
 
-- these are valid tasks, but they are not acceptable substitutes for the
-  mandatory-first app lanes while those lanes are open
+- do not drift into low-risk static/editorial cleanup while these grouped
+  software lanes remain unclaimed and unblocked
+- if one of these cannot proceed, record the blocker and promote the next wave
+  from the same subsystem instead of freelancing
+
+### Secondary public-trust lane
+
+- `clean-ai-index-placeholder-descriptions`
+- `sweep-public-footer-placeholder-stat-copy`
+- `classify-static-engineering-diagram-dirty-wave`
+
+These are valid and useful, but they remain below the grouped
+`ohmic-audio-labs` stabilization waves unless software work is actively blocked.
 
 ### Queue Floor Rule
 

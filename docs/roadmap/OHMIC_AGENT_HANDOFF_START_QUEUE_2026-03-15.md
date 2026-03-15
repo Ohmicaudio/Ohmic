@@ -10,78 +10,68 @@ Provide the first pickup order for agents starting the next completion wave.
 
 ## First Pickup Order
 
-Do not skip to lower-risk work while items 1-3 are open unless:
+The old pickup order is stale.
 
-- the item is already actively claimed
-- the item is truly blocked
-- or the blocker is recorded and visible in the queue
+Use this order now.
 
-### 1. Commit OSM canvas theme token slice
+### 1. Group next `ohmic-audio-labs` stabilization wave
 
 Task:
 
-- `commit-osm-canvas-theme-token-slice`
+- `group-next-ohmic-audio-labs-stabilization-wave`
 
 Why first:
 
-- the OSM lane now has a one-file canvas slice ready to land
-- it keeps generated workspace noise fenced out while moving the product lane
-  forward
+- `ohmic-audio-labs` is still ahead `47` and is by far the largest software
+  risk surface
+- the queue needs grouped app-work packets again, not more stale micro-slices
 
-### 2. Define next backend post-auth router safe slice
+### 2. Bundle AmpLab browser and shell regression wave
 
 Task:
 
-- `define-next-backend-post-auth-router-safe-slice`
+- `bundle-amplab-browser-shell-regression-wave`
 
 Why second:
 
-- the backend auth/policy slice and the narrow type-check spill are now both
-  closed
-- the next useful backend move is to define the next bounded family before the
-  lane goes cold
+- the live-link and browser path just moved substantially
+- the next risk is regression drift, not missing tiny copy tweaks
 
-### 3. Define next OSM post-canvas safe slice
+### 3. Define post-link live-path parity wave
 
 Task:
 
-- `define-next-osm-post-canvas-safe-slice`
+- `define-post-link-live-path-parity-wave`
 
 Why third:
 
-- the OSM queue should not depend on rediscovering the next boundary after the
-  canvas slice lands
-- this keeps the product lane ahead of execution
+- browser, phone, deck, and linked-device behavior now need one honest parity
+  packet instead of rediscovering edge cases piecemeal
 
-### 4. Define next public trust cleanup slice after freeze boundary
+### 4. Package backend chirp regression and bootstrap wave
 
 Task:
 
-- `define-next-public-trust-cleanup-slice-after-freeze-boundary`
+- `package-backend-chirp-regression-and-bootstrap-wave`
 
 Why fourth:
 
-- the freeze boundary is now operational
-- the next public cleanup move should be chosen deliberately instead of drifting
-  back into broad site churn
+- the chirp lane is proven, but it should be turned into a durable grouped
+  follow-on before the context goes cold
 
-### 5. JSON loop packet lane
+### 5. Static public trust wave
 
 Tasks:
 
-- `define-live-agent-state-json-contract`
-- `define-agent-inbox-outbox-event-model`
-- `define-orchestrator-lock-and-worker-heartbeat-model`
-- `define-stable-idle-stop-and-crash-recovery-rules`
-- `define-runner-wrapper-cycle-for-json-agent-loop`
-- `define-json-dashboard-render-surface`
-- `define-json-dashboard-input-writeback-flow`
+- `clean-ai-index-placeholder-descriptions`
+- `sweep-public-footer-placeholder-stat-copy`
+- `classify-static-engineering-diagram-dirty-wave`
 
 Why fifth:
 
- - the reusable loop work is now a real background lane
- - it should stay below the stronger main completion work unless the board is
-   already healthy
+- static-content is still a large public-facing dirt wave
+- it is valid parallel work, but it should not outrank the grouped software
+  lane while that lane is open
 
 ## Avoidance Rule
 
@@ -96,8 +86,8 @@ redirect back to items 1-4.
 - if another agent completes a lane underfoot, do not re-open it casually
 - if a subsystem inventory reveals a safer narrower slice, create a new ready
   task instead of improvising it in chat
-- assume a doc-only or packet-only task may finish in one focused session and
-  size it accordingly
+- assume grouped wave-definition tasks may finish in one focused session and
+  size them accordingly
 - keep at least `4` executable ready tasks visible; if the board is thinning,
   replenish it before leaving the lane
 - app-side `public/` and archive surfaces are frozen by default; only touch
