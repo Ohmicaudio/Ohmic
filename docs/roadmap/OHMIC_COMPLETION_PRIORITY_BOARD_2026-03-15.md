@@ -85,9 +85,9 @@ execution unless a specific blocker appears
 
 ### Highest priority active execution slices
 
-- `commit-first-ohmic-osm-editor-shell-safe-slice`
-- `split-first-hardware-control-safe-commit-slice`
-- `split-first-backend-safe-commit-slice`
+- `implement-first-ohmic-osm-editor-shell-slice`
+- `implement-first-hardware-control-shell-slice`
+- `implement-first-backend-measurement-capture-slice`
 - `resolve-generated-loudspeaker-output-disposition`
 - `inventory-android-wrapper-dirty-subsystem`
 

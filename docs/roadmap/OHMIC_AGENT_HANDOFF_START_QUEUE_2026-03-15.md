@@ -10,40 +10,38 @@ Provide the first pickup order for agents starting the next completion wave.
 
 ## First Pickup Order
 
-### 1. Commit first OSM editor-shell safe slice
+### 1. Implement first OSM editor-shell slice
 
 Task:
 
-- `commit-first-ohmic-osm-editor-shell-safe-slice`
+- `implement-first-ohmic-osm-editor-shell-slice`
 
 Why first:
 
-- OSM inventory is done
-- the next real move is to take the first bounded `osm-web` slice instead of
-  re-inventorying it forever
+- the OSM packet is done
+- the next real move is the actual bounded `osm-web` commit
 
-### 2. Split first hardware/control safe commit slice
+### 2. Implement first hardware/control shell slice
 
 Task:
 
-- `split-first-hardware-control-safe-commit-slice`
+- `implement-first-hardware-control-shell-slice`
 
 Why second:
 
-- `components/Hardware` is still one of the highest-value dirty lanes in the
-  main app
-- it now needs an executable first slice, not another abstract note
+- the split packet is done
+- the next real move is one bounded hardware shell commit
 
-### 3. Split first backend safe slice
+### 3. Implement first backend measurement-capture slice
 
 Task:
 
-- `split-first-backend-safe-commit-slice`
+- `implement-first-backend-measurement-capture-slice`
 
 Why third:
 
-- backend is still a meaningful dirty subsystem
-- the next move is a bounded first slice with verification, not generic triage
+- the split packet is done
+- the next move is one bounded backend commit with explicit verification
 
 ### 4. Resolve generated loudspeaker output disposition
 

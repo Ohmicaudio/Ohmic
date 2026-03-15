@@ -9,7 +9,7 @@ Project: ohmic-audio-labs
 
 Wait for:
 
-- `commit-first-ohmic-osm-editor-shell-safe-slice`
+- `implement-first-ohmic-osm-editor-shell-slice`
 
 ## Goal
 
