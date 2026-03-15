@@ -29,3 +29,14 @@ environments.
 - one clear dependency/bootstrap note exists
 - required analyzer packages are named explicitly
 - the next implementation step can install or document the runtime cleanly
+
+## Completion Notes
+
+- Bootstrap note created at
+  `docs/roadmap/OHMIC_BACKEND_CHIRP_ANALYZER_PYTHON_DEPENDENCY_BOOTSTRAP_2026-03-15.md`
+- Required analyzer packages are explicitly named as `numpy` and `scipy`
+- The note defines:
+  - Linux/WSL and Windows virtualenv bootstrap commands
+  - `OHMIC_CHIRP_ANALYZER_PYTHON` runtime wiring
+  - the narrow verification path for the chirp fixture helpers
+- Current shell check confirmed both `numpy` and `scipy` are absent here
