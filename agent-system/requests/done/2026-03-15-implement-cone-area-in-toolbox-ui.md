@@ -1,7 +1,9 @@
-Status: ready
+Status: done
 Priority: medium
 Date: 2026-03-15
 Project: ohmic-audio-labs
+Owner: d
+Claim ID: 20260315T035326Z-a9c4ea3f
 
 # Implement Cone Area In Toolbox UI
 
@@ -34,12 +36,9 @@ A new `Cone Area` panel in `ohmic-toolbox` that:
 - reuse shared math
 - no separate formula implementation
 
-## Outcome
+## Completion
 
-Completed on 2026-03-15.
-
-Result:
-
-- `Cone Area` is now exposed inside `apps/ohmic-toolbox`
-- the UI accepts diameter and driver count
-- the copy positions it as a comparison helper rather than a full design lane
+- exposed `Cone Area` inside `apps/ohmic-toolbox`
+- added state wiring for diameter and driver count through the shared `calculateConeAreaResult` math
+- positioned the panel as a comparison/support helper rather than a full design workflow
+- added app-local regression coverage for the cone-area calculator re-export
