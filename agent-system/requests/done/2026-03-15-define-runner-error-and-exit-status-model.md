@@ -1,4 +1,4 @@
-Status: ready
+Status: done
 Priority: low
 Date: 2026-03-15
 Project: ohmic
@@ -21,3 +21,14 @@ and exit statuses for one-shot and long-running loop modes.
 - one explicit error/exit model exists
 - it fits the runner-wrapper cycle and stable-idle rules
 - it stays separate from business/task status
+
+## Outcome
+
+Completed on 2026-03-15.
+
+Result:
+
+- defined recoverable vs fatal wrapper error classes
+- separated runtime error/exit status from business/task result status
+- documented continue, backoff, sleep, and stop decisions for one-shot and
+  long-running modes
