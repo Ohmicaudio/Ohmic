@@ -38,6 +38,10 @@ The model assumes:
 
 The agent does not self-wake forever without that wrapper.
 
+Concrete runner/wrapper cycle:
+
+- `docs/systems/OHMIC_RUNNER_WRAPPER_CYCLE_FOR_JSON_AGENT_LOOP_2026-03-15.md`
+
 ## Required Live Surfaces
 
 Minimum recommended files:

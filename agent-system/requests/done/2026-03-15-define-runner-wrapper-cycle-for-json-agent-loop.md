@@ -1,4 +1,4 @@
-Status: ready
+Status: done
 Priority: medium
 Date: 2026-03-15
 Project: ohmic
@@ -23,3 +23,13 @@ mailbox/state model.
 - one explicit cycle description
 - clear external responsibilities vs agent responsibilities
 - suitable as the first implementation packet for a future UI/runner
+
+## Outcome
+
+Completed on 2026-03-15.
+
+Result:
+
+- defined the wrapper-owned loop from read -> invoke -> persist -> re-check
+- separated wrapper responsibilities from agent responsibilities
+- documented continue vs backoff vs sleep vs stop decisions
