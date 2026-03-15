@@ -107,6 +107,8 @@ redirect back to items 1-5.
   size it accordingly
 - keep at least `4` executable ready tasks visible; if the board is thinning,
   replenish it before leaving the lane
+- app-side `public/` and archive surfaces are frozen by default; only touch
+  them when a specific ready task names that lane explicitly
 
 ## Immediate Follow-On
 

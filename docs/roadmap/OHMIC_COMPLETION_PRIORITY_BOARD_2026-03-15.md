@@ -115,6 +115,8 @@ These support the main completion lane but should not outrank it.
 
 - site audit cleanup bundle remains valid, but it stays below the current app
   and system lanes unless it directly blocks trust or deployment
+- app-side `public/` and archive surfaces are frozen by default and should not
+  be treated as normal ambient cleanup territory
 
 Rule:
 

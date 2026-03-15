@@ -1,4 +1,4 @@
-Status: ready
+Status: done
 Priority: medium
 Date: 2026-03-15
 Project: ohmic
@@ -21,3 +21,16 @@ surfaces so agents stop drifting back into frozen legacy content lanes.
 
 - the freeze rule is not just in one system note
 - active queue and handoff surfaces reinforce it where agents actually look
+
+## Outcome
+
+Completed on 2026-03-15.
+
+Result:
+
+- the live handoff board now states that app-side `public/` and archive
+  surfaces are frozen by default
+- the completion board now repeats that those lanes are not normal ambient
+  cleanup territory
+- the freeze rule is now visible in the surfaces agents actually use for
+  pickup, not only in deeper system notes
