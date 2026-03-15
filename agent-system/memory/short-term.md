@@ -44,6 +44,8 @@ updated: 2026-03-15
   headers are tolerated only as repair input
 - generated `agent-work` snapshots are derived and now carry freshness metadata,
   but manual edits still require validation or refresh afterward
+- do not let `requests/ready/` collapse below `4` executable tasks if more
+  real work can be surfaced from audits, follow-ons, or verification lanes
 - do not let `ohmic-audio-static-content` turn into a shadow loudspeaker
   database
 - loudspeaker work is still prototype-mode only; no mass extraction or page

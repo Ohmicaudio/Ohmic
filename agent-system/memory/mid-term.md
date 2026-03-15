@@ -30,6 +30,8 @@ updated: 2026-03-15
   generated state quietly break the safety model
 - task-boundary-only reread rules are not enough; long-running work needs
   forced re-entry triggers too
+- the queue has to stay slightly ahead of execution; if the board empties
+  faster than it is refreshed, agents start freelancing or stalling
 
 ## Capability And Access Notes
 

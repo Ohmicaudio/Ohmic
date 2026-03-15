@@ -116,6 +116,24 @@ Minimum re-entry:
 
 Treat `2` compacts on the same task as a mandatory re-entry trigger.
 
+### 12. Keep the board ahead of execution
+
+- keep at least `4` executable ready tasks visible
+- prefer a deeper bench when the active program is broad enough
+- after closing a task or answering a queue-shaping question, replenish the
+  next real tasks before drifting away
+
+Valid replenishment work includes:
+
+- turning fresh findings into ready tasks
+- promoting the next safe slice after an implementation commit
+- adding verification or smoke-check work that makes recent slices trustworthy
+- surfacing lower-priority but real completion work when the main lane is
+  already represented
+
+Do not let the board starve down to one leftover task if more real work is
+already visible.
+
 ## Minimum Pre-Work Checklist
 
 Before starting a meaningful task:
@@ -135,7 +153,8 @@ After a meaningful task:
 2. update the queue if the task came from `requests/`
 3. queue any newly exposed follow-up work
 4. complete or release the claim
-5. only then move on
+5. if the ready queue is getting thin, replenish it with real next steps
+6. only then move on
 
 ## Anti-Patterns
 

@@ -219,6 +219,34 @@ Valid reasons include:
 - overlapping with an active claim
 - requires credentials, permissions, or hardware not currently available
 
+## Ready Queue Replenishment Rule
+
+Agents should keep the shared queue slightly ahead of execution instead of
+letting it collapse to one last obvious task.
+
+Minimum floor:
+
+- keep at least `4` executable tasks available in `requests/ready/`
+- prefer `~10` ready tasks when the workstream is broad enough to support it
+- keep blocked follow-ons staged behind the current wave when reasonable
+
+Replenishment triggers:
+
+1. after completing a meaningful task or answering a user request that changes
+   queue reality
+2. when `requests/ready/` drops below `4` executable tasks
+3. when several ready tasks were closed faster than the board was refreshed
+
+Valid replenishment sources:
+
+- audited follow-on tasks exposed by the completed work
+- verification, testing, smoke, and durability checks
+- subsystem inventories that unlock safer implementation slices
+- lower-priority but real completion work once the top lanes are already queued
+
+Do not pad the queue with fake tasks.
+Do seed real next steps before leaving a lane.
+
 Invalid behavior:
 
 - skipping the ready queue and declaring no work

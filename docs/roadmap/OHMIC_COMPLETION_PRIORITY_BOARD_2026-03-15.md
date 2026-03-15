@@ -85,49 +85,54 @@ execution unless a specific blocker appears
 
 ### Mandatory-first execution slices
 
-Do these first unless they are already actively claimed, truly blocked, or
-fully done.
+Do these first unless they are already actively claimed or truly blocked.
 
-- `implement-first-ohmic-osm-editor-shell-slice`
-- `implement-first-hardware-control-shell-slice`
-- `implement-first-backend-measurement-capture-slice`
+- `verify-first-osm-slice-in-correct-node-shell`
+- `verify-first-hardware-shell-slice-check-coverage`
+- `define-next-hardware-service-bridge-safe-slice`
+- `define-next-android-wrapper-tracked-text-slice`
 
 Rule:
 
-- do not pick safer editorial, support, or polish work while any of these three
+- do not pick safer editorial, support, or polish work while any of these
   lanes are sitting open and unblocked
-- if an agent skips one of these three, they should record the blocker rather
+- if an agent skips one of these lanes, they should record the blocker rather
   than silently drifting to easier work
 
 ### Secondary completion support
 
-- `push-static-content-clean-slice-if-remote-not-aligned`
-- `define-public-and-archive-freeze-boundary`
+- `define-next-backend-control-plane-safe-slice`
+- `define-next-osm-canvas-disposition-and-noise-fence`
+- `run-static-boundary-and-host-smoke-floor`
+- `enforce-public-and-archive-freeze-boundary-in-handoff-and-queue-surfaces`
+- `verify-public-cleanup-wave-after-current-claims`
 
 These support the main completion lane but should not outrank it.
 
 ### Parallel support lane
 
-- `define-page-issue-reporter-ui-contract`
-- `extend-support-intake-for-page-error-capture`
-- `build-page-report-triage-queue-view`
-- `implement-page-report-button-on-core-surfaces`
+- `strip-remaining-raw-source-footers-from-public-pages`
+- `verify-public-cleanup-wave-after-current-claims`
 
 Rule:
 
-- do not let this lane outrank the first app-safe slices unless it is directly
+- do not let this lane outrank the main completion slices unless it is directly
   unblocking a live product failure
 
 ### Lower-priority public cleanup
 
-- `strip-public-builder-and-scaffold-language`
-- `verify-high-risk-public-worked-examples`
-- `normalize-public-tables-duplicates-and-nav-labels`
+- none beyond the current public cleanup wave
 
 Rule:
 
-- these are valid tasks, but they are not acceptable substitutes for the top
-  three app lanes while those app lanes are open
+- these are valid tasks, but they are not acceptable substitutes for the
+  mandatory-first app lanes while those lanes are open
+
+### Queue Floor Rule
+
+- keep at least `4` executable ready tasks available
+- if the board drops under that floor, replenish it before drifting to unrelated
+  work
 
 ## Horizon Links
 

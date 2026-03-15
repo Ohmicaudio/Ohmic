@@ -18,46 +18,50 @@ This is the realistic “what happens after the next few task pickups” ladder.
 - `ohmic-audio-labs` remains the main completion risk
 - `B:\ohmic` should only carry intentional drift
 
-## Phase 1: Start Real App Slices
+## Phase 1: Close The First-Slice Wave Honestly
 
 ### Primary tasks
 
-- `implement-first-ohmic-osm-editor-shell-slice`
-- `implement-first-hardware-control-shell-slice`
-- `implement-first-backend-measurement-capture-slice`
+- `verify-first-osm-slice-in-correct-node-shell`
+- `verify-first-hardware-shell-slice-check-coverage`
+- `define-next-hardware-service-bridge-safe-slice`
+- `define-next-android-wrapper-tracked-text-slice`
 
 ### Success condition
 
-- OSM has one real bounded execution slice
-- hardware/control has a first executable slice
-- backend has a first executable slice
+- the first OSM slice has truthful verification or a recorded environment
+  blocker
+- the first hardware shell slice has truthful verification coverage recorded
+- the next hardware and Android follow-on slices are already bounded for pickup
 
-## Phase 2: Run Parallel Support And Drift Lanes
+## Phase 2: Promote The Next Safe Subsystem Slices
 
 ### First picks
 
-1. `define-page-issue-reporter-ui-contract`
-2. `extend-support-intake-for-page-error-capture`
-3. `build-page-report-triage-queue-view`
-4. `implement-page-report-button-on-core-surfaces`
+1. `define-next-hardware-service-bridge-safe-slice`
+2. `define-next-backend-control-plane-safe-slice`
+3. `define-next-osm-canvas-disposition-and-noise-fence`
 
 ### Why this order
 
-- moves the reporting lane forward without replacing app completion as the main
-  focus
+- keeps momentum inside the same dirty subsystems instead of drifting sideways
+- turns one finished slice into the next bounded slice fast enough that the
+  board stays ahead of execution
 
-## Phase 3: Bound The Remaining Noise
+## Phase 3: Run Parallel Verification And Public Hygiene
 
 ### Follow-on picks
 
-5. `inventory-android-wrapper-dirty-subsystem`
-6. `push-static-content-clean-slice-if-remote-not-aligned`
-7. `define-public-and-archive-freeze-boundary`
+4. `run-static-boundary-and-host-smoke-floor`
+5. `enforce-public-and-archive-freeze-boundary-in-handoff-and-queue-surfaces`
+6. `strip-public-builder-and-scaffold-language`
+7. `strip-remaining-raw-source-footers-from-public-pages`
+8. `verify-public-cleanup-wave-after-current-claims`
 
 ### Why these are later
 
-- useful, but not stronger than the first app slices
-- they are support lanes for cleaner completion, not the center of gravity
+- useful and real, but not stronger than the app-slice continuity work
+- they support trust and public cleanliness without becoming the center lane
 
 ## Parallel Split Guidance
 
@@ -68,66 +72,47 @@ Run Phase 1 first, then Phase 2.
 ### If two people are working
 
 - person 1:
-  - OSM editor-shell slice
-  - then error-reporting lane
+  - Android wrapper hygiene slice
+  - then OSM verification
 - person 2:
-  - hardware/control split
-  - then generated loudspeaker output disposition
+  - hardware verification
+  - then next hardware service-bridge definition
 
 ### If three people are working
 
-- person 1: OSM editor-shell slice
-- person 2: hardware/control split
-- person 3: backend split, then error-reporting lane
+- person 1: Android wrapper hygiene slice
+- person 2: OSM verification, then next OSM boundary definition
+- person 3: hardware verification, then next backend slice definition
 
 ### If four people are working
 
-- person 1: OSM editor-shell slice
-- person 2: hardware/control split
-- person 3: backend split
-- person 4: error-reporting lane
+- person 1: Android wrapper hygiene slice
+- person 2: OSM verification
+- person 3: hardware verification
+- person 4: public cleanup / static smoke lane
 
-Android and static-content durability should only be pulled in once one of the
-first three app-oriented lanes is already underway.
+Static/public durability should only outrank the app lanes if those app lanes
+are already claimed or concretely blocked.
 
 ## Branch Rules
 
-### If the error-reporting lane finishes fast
+### If verification is environment-blocked
 
-- do not invent a new reporting subproject
-- keep it parallel to app slices, not above them
+- record the exact shell/runtime blocker
+- queue the corrective verification task instead of pretending the slice is
+  fully blessed
 
-### If the OSM slice widens past `apps/osm-web`
+### If the ready queue drops below `4`
 
-- stop and create a narrower ready task
-- do not let it absorb packages, workers, or workspace cleanup
-
-### If the hardware/control split reveals one obviously safe implementation slice
-
-- queue it immediately as a new `ready` task
-- keep the split note separate from the implementation slice
-
-### If the backend split reveals a testable endpoint family
-
-- queue that endpoint family as the next backend implementation slice
-- include exact verification commands
+- replenish it before leaving the current lane
+- prefer real follow-ons from the just-finished subsystem over broad new idea
+  generation
 
 ## Completion Markers
 
 The 72-hour ladder is successful if, by the end:
 
-- the page-reporting lane is no longer just a remembered idea
-- one OSM slice has moved beyond inventory
-- hardware/control and backend each have a first bounded executable slice
-- Android and public/archive are bounded enough not to contaminate stronger work
-
-## Seeded Follow-On Branches
-
-These are intentionally parked in `blocked` so the board stays ahead of
-execution without pretending they are current work:
-
-- `commit-second-ohmic-osm-support-slice-after-editor-shell`
-- `commit-first-hardware-control-implementation-slice-after-split`
-- `commit-first-backend-endpoint-slice-after-split`
-- `commit-first-android-wrapper-safe-slice-after-inventory`
-- `close-page-error-reporting-implementation-lane`
+- the first-slice wave is actually verified or honestly blocked
+- Android is no longer a mysterious churn bucket
+- the next hardware, backend, and OSM slices are already queued
+- the ready board stays above the floor instead of collapsing after each burst
