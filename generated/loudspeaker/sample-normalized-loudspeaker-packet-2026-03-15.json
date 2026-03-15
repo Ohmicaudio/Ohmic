@@ -1,0 +1,126 @@
+[
+    {
+        "brand":  "Beyma",
+        "model":  "15LEX1200Nd",
+        "product_type":  "Subwoofer",
+        "diameter_inches":  15,
+        "nominal_impedance_raw":  "Ω 8",
+        "fs_hz":  36,
+        "sd_cm2":  880,
+        "qts":  0.3,
+        "usable_frequency_low_hz":  40,
+        "usable_frequency_high_hz":  1500,
+        "unlabeled_technical_value_1":  11.7,
+        "grouped_parse":  {
+                              "variant":  "full_block",
+                              "fields":  {
+                                             "xmax_mm":  11,
+                                             "sensitivity_db_1w":  94.8,
+                                             "power_max_w":  2400
+                                         },
+                              "raw_blocks":  [
+                                                 {
+                                                     "slot":  4,
+                                                     "symbol":  "x",
+                                                     "sub":  "max",
+                                                     "unit":  "mm",
+                                                     "raw_value":  "11"
+                                                 },
+                                                 {
+                                                     "slot":  5,
+                                                     "symbol":  "SPL",
+                                                     "sub":  "1W",
+                                                     "unit":  "dB",
+                                                     "raw_value":  "94.8"
+                                                 },
+                                                 {
+                                                     "slot":  7,
+                                                     "symbol":  "P",
+                                                     "sub":  "max",
+                                                     "unit":  "W",
+                                                     "raw_value":  "2400"
+                                                 }
+                                             ]
+                          }
+    },
+    {
+        "brand":  "SICA",
+        "model":  "10 H 2 CS",
+        "product_type":  "Mid Bass",
+        "diameter_inches":  10,
+        "nominal_impedance_raw":  "Ω 8",
+        "fs_hz":  30.3,
+        "sd_cm2":  340,
+        "qts":  0.37,
+        "usable_frequency_low_hz":  30,
+        "usable_frequency_high_hz":  2500,
+        "unlabeled_technical_value_1":  5.01,
+        "grouped_parse":  {
+                              "variant":  "full_block",
+                              "fields":  {
+                                             "xmax_mm":  6,
+                                             "sensitivity_db_1w":  89.1,
+                                             "power_max_w":  400
+                                         },
+                              "raw_blocks":  [
+                                                 {
+                                                     "slot":  4,
+                                                     "symbol":  "x",
+                                                     "sub":  "max",
+                                                     "unit":  "mm",
+                                                     "raw_value":  "6"
+                                                 },
+                                                 {
+                                                     "slot":  5,
+                                                     "symbol":  "SPL",
+                                                     "sub":  "1W",
+                                                     "unit":  "dB",
+                                                     "raw_value":  "89.1"
+                                                 },
+                                                 {
+                                                     "slot":  7,
+                                                     "symbol":  "P",
+                                                     "sub":  "max",
+                                                     "unit":  "W",
+                                                     "raw_value":  "400"
+                                                 }
+                                             ]
+                          }
+    },
+    {
+        "brand":  "EUPHORIA",
+        "model":  "ESW10D4",
+        "product_type":  "Subwoofer",
+        "diameter_inches":  10,
+        "nominal_impedance_raw":  "2 x  Ω 4",
+        "fs_hz":  33.2,
+        "sd_cm2":  330,
+        "qts":  0.57,
+        "usable_frequency_low_hz":  null,
+        "usable_frequency_high_hz":  null,
+        "unlabeled_technical_value_1":  6.53,
+        "grouped_parse":  {
+                              "variant":  "shifted_missing_xmax",
+                              "fields":  {
+                                             "sensitivity_db_1w":  84.1,
+                                             "power_max_w":  1000
+                                         },
+                              "raw_blocks":  [
+                                                 {
+                                                     "slot":  4,
+                                                     "symbol":  "SPL",
+                                                     "sub":  "1W",
+                                                     "unit":  "dB",
+                                                     "raw_value":  "84.1"
+                                                 },
+                                                 {
+                                                     "slot":  5,
+                                                     "symbol":  "P",
+                                                     "sub":  "max",
+                                                     "unit":  "W",
+                                                     "raw_value":  "1000"
+                                                 }
+                                             ]
+                          }
+    }
+]

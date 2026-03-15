@@ -1,6 +1,7 @@
 param(
     [string]$CsvPath = "B:\junk\loudspeakerdatabase.csv",
-    [string[]]$SampleModels = @("15LEX1200Nd", "10 H 2 CS", "ESW10D4")
+    [string[]]$SampleModels = @("15LEX1200Nd", "10 H 2 CS", "ESW10D4"),
+    [string]$OutputPath = ""
 )
 
 Set-StrictMode -Version Latest
@@ -152,4 +153,16 @@ $samples = foreach ($model in $SampleModels) {
     Get-SampleRecord -Row $row
 }
 
-$samples | ConvertTo-Json -Depth 6
+$json = $samples | ConvertTo-Json -Depth 6
+
+if (-not [string]::IsNullOrWhiteSpace($OutputPath)) {
+    $parent = Split-Path -Parent $OutputPath
+    if (-not [string]::IsNullOrWhiteSpace($parent) -and -not (Test-Path $parent)) {
+        New-Item -ItemType Directory -Path $parent -Force | Out-Null
+    }
+
+    $utf8NoBom = New-Object System.Text.UTF8Encoding($false)
+    [System.IO.File]::WriteAllText($OutputPath, $json, $utf8NoBom)
+}
+
+$json
