@@ -1,0 +1,115 @@
+{
+    "generated_at":  "2026-03-15T18:13:24Z",
+    "source":  {
+                   "kind":  "dashboard_card_mapper",
+                   "path":  "B:\\ohmic\\generated\\agent-work\\runtime"
+               },
+    "staleness":  {
+                      "status":  "fresh",
+                      "reason":  null
+                  },
+    "count":  4,
+    "cards":  [
+                  {
+                      "card_id":  "summary",
+                      "title":  "Summary",
+                      "freshness":  "fresh",
+                      "emphasis":  "normal",
+                      "fields":  [
+                                     {
+                                         "label":  "Project",
+                                         "value":  "ohmic"
+                                     },
+                                     {
+                                         "label":  "Mode",
+                                         "value":  "mixed"
+                                     },
+                                     {
+                                         "label":  "Repo",
+                                         "value":  "B:\\ohmic"
+                                     },
+                                     {
+                                         "label":  "Updated",
+                                         "value":  "2026-03-15T18:13:14Z"
+                                     },
+                                     {
+                                         "label":  "Loop state",
+                                         "value":  "pending input"
+                                     }
+                                 ]
+                  },
+                  {
+                      "card_id":  "queue_health",
+                      "title":  "Queue Health",
+                      "freshness":  "fresh",
+                      "emphasis":  "normal",
+                      "fields":  [
+                                     {
+                                         "label":  "Ready",
+                                         "value":  "16"
+                                     },
+                                     {
+                                         "label":  "Active",
+                                         "value":  "0"
+                                     },
+                                     {
+                                         "label":  "Board health",
+                                         "value":  "healthy"
+                                     },
+                                     {
+                                         "label":  "Summary freshness",
+                                         "value":  "fresh"
+                                     }
+                                 ]
+                  },
+                  {
+                      "card_id":  "current_action",
+                      "title":  "Current Action",
+                      "freshness":  "fresh",
+                      "emphasis":  "normal",
+                      "fields":  [
+                                     {
+                                         "label":  "Status",
+                                         "value":  "needs_input"
+                                     },
+                                     {
+                                         "label":  "Current action",
+                                         "value":  "Pending input: check queue freshness"
+                                     },
+                                     {
+                                         "label":  "Next",
+                                         "value":  "2026-03-15-implement-first-backend-post-auth-router-slice"
+                                     },
+                                     {
+                                         "label":  "Claim",
+                                         "value":  "none"
+                                     }
+                                 ]
+                  },
+                  {
+                      "card_id":  "blockers_risk",
+                      "title":  "Blockers And Risk",
+                      "freshness":  "fresh",
+                      "visible":  true,
+                      "emphasis":  "warning",
+                      "fields":  [
+                                     {
+                                         "label":  "Risk",
+                                         "value":  "Blocked tasks present: 2"
+                                     },
+                                     {
+                                         "label":  "Blocker",
+                                         "value":  "2026-03-15-promote-ops-unifier-incubator-when-ohmic-slack-exists"
+                                     },
+                                     {
+                                         "label":  "State drift",
+                                         "value":  "none"
+                                     },
+                                     {
+                                         "label":  "Runtime error",
+                                         "value":  "unknown"
+                                     }
+                                 ]
+                  }
+              ]
+}

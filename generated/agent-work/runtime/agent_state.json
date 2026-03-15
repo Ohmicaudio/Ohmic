@@ -1,71 +1,74 @@
 {
-  "session": {
-    "session_id": "loop_seed_20260315_01",
-    "project": "ohmic",
-    "mode": "mixed",
-    "active_repo": "B:\\ohmic",
-    "agent_id": "codex",
-    "task_id": "seed-first-live-json-runtime-files",
-    "task_status": "done",
-    "orchestrator_active": false,
-    "compact_count": 0,
-    "updated_at": "2026-03-15T17:51:56Z"
-  },
-  "input": {
-    "pending": false,
-    "message_id": "evt_20260315_0001",
-    "text": "continue with highest priority",
-    "source": "user",
-    "received_at": "2026-03-15T17:51:56Z",
-    "handled": true,
-    "handled_at": "2026-03-15T17:52:00Z",
-    "handled_by": "codex"
-  },
-  "state": {
-    "summary": "Live JSON runtime bootstrap created. Queue remains healthy and markdown stays authoritative.",
-    "ready_count": 24,
-    "active_claim_count": 1,
-    "board_health": "healthy",
-    "top_priority": [
-      "define-android-wrapper-tracked-text-first-commit-slice",
-      "define-next-backend-measurement-session-follow-on-slice",
-      "implement-first-speaker-static-page-slice"
-    ],
-    "queue_floor_met": true,
-    "stale_state_detected": false,
-    "recent_completions": [
-      "normalize-public-brand-strings-and-metadata",
-      "implement-first-public-trust-cleanup-slice",
-      "export-sample-normalized-loudspeaker-packet"
-    ],
-    "risks": [
-      "seed timestamps and counts must be refreshed by reconciliation before live display use"
-    ]
-  },
-  "response": {
-    "status": "done",
-    "message": "Initial JSON loop runtime files are seeded and ready for a wrapper to refresh.",
-    "current_action": "writing bootstrap files under generated/agent-work/runtime",
-    "recommended_next": [
-      "implement-state-reconciliation-summary-generator",
-      "implement-json-dashboard-status-card-mapper-prototype",
-      "implement-json-dashboard-command-writeback-prototype"
-    ],
-    "completed": [
-      "implement-first-agent-inbox-outbox-json-files",
-      "implement-first-live-agent-state-json-seed",
-      "implement-orchestrator-lock-and-worker-heartbeat-files"
-    ],
-    "blocked": [],
-    "notes": [
-      "This file is a bootstrap seed, not durable queue truth.",
-      "Refresh from repo-backed task and claim state before treating values as live."
-    ],
-    "updated_files": [
-      "generated/agent-work/runtime/agent_state.json",
-      "generated/agent-work/runtime/agent_inbox.jsonl",
-      "generated/agent-work/runtime/agent_outbox.jsonl",
-      "generated/agent-work/runtime/agent_locks.json"
-    ]
-  }
+    "session":  {
+                    "session_id":  "loop_seed_20260315_01",
+                    "project":  "ohmic",
+                    "mode":  "mixed",
+                    "active_repo":  "B:\\ohmic",
+                    "agent_id":  "codex",
+                    "task_id":  "",
+                    "task_status":  "needs_input",
+                    "orchestrator_active":  false,
+                    "compact_count":  0,
+                    "updated_at":  "2026-03-15T18:13:14Z"
+                },
+    "input":  {
+                  "pending":  true,
+                  "message_id":  "evt_20260315_180513_4e60b7",
+                  "text":  "check queue freshness",
+                  "source":  "ui",
+                  "received_at":  "2026-03-15T18:05:13Z",
+                  "handled":  false,
+                  "handled_at":  "",
+                  "handled_by":  ""
+              },
+    "state":  {
+                  "summary":  "Queue healthy. 16 ready tasks, 0 active claims.",
+                  "ready_count":  16,
+                  "active_claim_count":  0,
+                  "board_health":  "healthy",
+                  "top_priority":  [
+                                       "2026-03-15-implement-first-backend-post-auth-router-slice",
+                                       "2026-03-15-implement-next-hardware-amp-lab-control-bridge-slice",
+                                       "2026-03-15-define-android-wrapper-tracked-text-first-commit-slice"
+                                   ],
+                  "queue_floor_met":  true,
+                  "stale_state_detected":  false,
+                  "recent_completions":  [
+                                             "2026-03-15-implement-json-dashboard-command-writeback-prototype",
+                                             "2026-03-15-implement-json-dashboard-status-card-mapper-prototype",
+                                             "2026-03-15-implement-state-reconciliation-summary-generator"
+                                         ],
+                  "risks":  [
+                                "Blocked tasks present: 2"
+                            ]
+              },
+    "response":  {
+                     "status":  "needs_input",
+                     "message":  "Pending input: check queue freshness",
+                     "current_action":  "awaiting inbox handling",
+                     "recommended_next":  [
+                                              "2026-03-15-implement-first-backend-post-auth-router-slice",
+                                              "2026-03-15-implement-next-hardware-amp-lab-control-bridge-slice",
+                                              "2026-03-15-define-android-wrapper-tracked-text-first-commit-slice"
+                                          ],
+                     "completed":  [
+                                       "2026-03-15-implement-json-dashboard-command-writeback-prototype",
+                                       "2026-03-15-implement-json-dashboard-status-card-mapper-prototype",
+                                       "2026-03-15-implement-state-reconciliation-summary-generator"
+                                   ],
+                     "blocked":  [
+                                     "2026-03-15-promote-ops-unifier-incubator-when-ohmic-slack-exists",
+                                     "2026-03-15-turn-audit-image-briefs-into-production-graphics-queue"
+                                 ],
+                     "notes":  [
+                                   "Reconciled from repo-backed request and claim truth first.",
+                                   "Runtime JSON remains a summary surface, not queue authority."
+                               ],
+                     "updated_files":  [
+                                           "generated/agent-work/runtime/agent_state.json",
+                                           "generated/agent-work/runtime/ready_tasks.json",
+                                           "generated/agent-work/runtime/active_claims.json",
+                                           "generated/agent-work/runtime/reconciliation_summary.json"
+                                       ]
+                 }
 }

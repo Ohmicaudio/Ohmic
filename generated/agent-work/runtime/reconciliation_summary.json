@@ -1,0 +1,34 @@
+{
+    "generated_at":  "2026-03-15T18:13:14Z",
+    "source_latest_write_time":  "2026-03-15T18:11:22.5798409Z",
+    "project":  "ohmic",
+    "staleness":  {
+                      "status":  "fresh",
+                      "reason":  null
+                  },
+    "counts":  {
+                   "ready":  16,
+                   "active_claims":  0,
+                   "blocked":  2,
+                   "done":  367
+               },
+    "board_health":  "healthy",
+    "queue_floor_met":  true,
+    "mismatches":  [
+
+                   ],
+    "input":  {
+                  "pending":  true,
+                  "message_id":  "evt_20260315_180513_4e60b7",
+                  "text":  "check queue freshness"
+              },
+    "response":  {
+                     "status":  "needs_input",
+                     "message":  "Pending input: check queue freshness"
+                 },
+    "top_priority":  [
+                         "2026-03-15-implement-first-backend-post-auth-router-slice",
+                         "2026-03-15-implement-next-hardware-amp-lab-control-bridge-slice",
+                         "2026-03-15-define-android-wrapper-tracked-text-first-commit-slice"
+                     ]
+}
