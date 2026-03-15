@@ -77,10 +77,6 @@ function Read-Claim {
         if ($line -match '^started:\s*(.+)$') { $claim.Started = $matches[1].Trim(); continue }
         if ($line -match '^expires:\s*(.+)$') { $claim.Expires = $matches[1].Trim(); continue }
         if ($line -match '^completed:\s*(.+)$') { $claim.Completed = $matches[1].Trim(); continue }
-        if ($line -match '^Status:\s*(.+)$') { $claim.Status = $matches[1].Trim().ToLowerInvariant(); continue }
-        if ($line -match '^Owner:\s*(.+)$') { $claim.Owner = $matches[1].Trim(); continue }
-        if ($line -match '^Task:\s*(.+)$') { $claim.Task = $matches[1].Trim(); continue }
-        if ($line -match '^Date:\s*(.+)$') { $claim.Started = $matches[1].Trim(); continue }
         if ($inFilesSection -and $line -match '^- (.+)$') { $claim.Paths += $matches[1].Trim() }
     }
 

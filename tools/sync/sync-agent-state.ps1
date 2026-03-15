@@ -102,10 +102,6 @@ function Parse-Claim {
             $data.paths += $matches[1].Trim()
         }
         if ($line -match '^completed:\s*(.+)$') { $data.completed = $matches[1].Trim(); continue }
-        if ($line -match '^Status:\s*(.+)$') { $data.status = $matches[1].Trim().ToLowerInvariant(); continue }
-        if ($line -match '^Owner:\s*(.+)$') { $data.owner = $matches[1].Trim(); continue }
-        if ($line -match '^Task:\s*(.+)$') { $data.task = $matches[1].Trim(); continue }
-        if ($line -match '^Date:\s*(.+)$') { $data.started = $matches[1].Trim(); continue }
     }
 
     if (-not $data.claim_id) {

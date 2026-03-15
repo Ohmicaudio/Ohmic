@@ -1,16 +1,16 @@
 {
-    "generated_at":  "2026-03-15T18:23:01Z",
-    "source_latest_write_time":  "2026-03-15T18:22:47.8324498Z",
+    "generated_at":  "2026-03-15T18:27:16Z",
+    "source_latest_write_time":  "2026-03-15T18:27:03.3570419Z",
     "project":  "ohmic",
     "staleness":  {
                       "status":  "fresh",
                       "reason":  null
                   },
     "counts":  {
-                   "ready":  12,
+                   "ready":  11,
                    "active_claims":  0,
                    "blocked":  2,
-                   "done":  371
+                   "done":  374
                },
     "board_health":  "healthy",
     "queue_floor_met":  true,
@@ -27,8 +27,8 @@
                      "message":  "Pending input: check queue freshness"
                  },
     "top_priority":  [
-                         "2026-03-15-implement-first-backend-post-auth-router-slice",
                          "2026-03-15-implement-next-hardware-amp-lab-control-bridge-slice",
+                         "2026-03-15-add-hardware-shell-deck-smoke-check-coverage",
                          "2026-03-15-define-android-wrapper-tracked-text-first-commit-slice"
                      ]
 }

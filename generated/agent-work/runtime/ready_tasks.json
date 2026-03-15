@@ -1,5 +1,5 @@
 {
-    "generated_at":  "2026-03-15T18:23:01Z",
+    "generated_at":  "2026-03-15T18:27:16Z",
     "source":  {
                    "kind":  "repo_summary",
                    "path":  "B:\\ohmic\\agent-system\\requests\\ready"
@@ -8,8 +8,19 @@
                       "status":  "fresh",
                       "reason":  null
                   },
-    "count":  12,
+    "count":  11,
     "items":  [
+                  {
+                      "task_id":  "2026-03-15-add-hardware-shell-deck-smoke-check-coverage",
+                      "title":  "Add Hardware Shell Deck Smoke Check Coverage",
+                      "priority":  "medium",
+                      "project":  "ohmic-audio-labs",
+                      "status":  "ready",
+                      "date":  "2026-03-15",
+                      "owner":  "",
+                      "claim_id":  "",
+                      "file_path":  "B:\\ohmic\\agent-system\\requests\\ready\\2026-03-15-add-hardware-shell-deck-smoke-check-coverage.md"
+                  },
                   {
                       "task_id":  "2026-03-15-define-android-wrapper-tracked-text-first-commit-slice",
                       "title":  "Define Android Wrapper Tracked Text First Commit Slice",
@@ -55,6 +66,17 @@
                       "file_path":  "B:\\ohmic\\agent-system\\requests\\ready\\2026-03-15-define-user-requested-document-retention-rules.md"
                   },
                   {
+                      "task_id":  "2026-03-15-identify-next-semantic-backend-slice-after-crlf-churn",
+                      "title":  "Identify Next Semantic Backend Slice After CRLF Churn",
+                      "priority":  "medium",
+                      "project":  "ohmic-audio-labs",
+                      "status":  "ready",
+                      "date":  "2026-03-15",
+                      "owner":  "",
+                      "claim_id":  "",
+                      "file_path":  "B:\\ohmic\\agent-system\\requests\\ready\\2026-03-15-identify-next-semantic-backend-slice-after-crlf-churn.md"
+                  },
+                  {
                       "task_id":  "2026-03-15-implement-android-wrapper-tracked-text-cleanup-slice",
                       "title":  "Implement Android Wrapper Tracked Text Cleanup Slice",
                       "priority":  "medium",
@@ -64,17 +86,6 @@
                       "owner":  "",
                       "claim_id":  "",
                       "file_path":  "B:\\ohmic\\agent-system\\requests\\ready\\2026-03-15-implement-android-wrapper-tracked-text-cleanup-slice.md"
-                  },
-                  {
-                      "task_id":  "2026-03-15-implement-first-backend-post-auth-router-slice",
-                      "title":  "Implement First Backend Post Auth Router Slice",
-                      "priority":  "high",
-                      "project":  "ohmic-audio-labs",
-                      "status":  "ready",
-                      "date":  "2026-03-15",
-                      "owner":  "",
-                      "claim_id":  "",
-                      "file_path":  "B:\\ohmic\\agent-system\\requests\\ready\\2026-03-15-implement-first-backend-post-auth-router-slice.md"
                   },
                   {
                       "task_id":  "2026-03-15-implement-first-speaker-static-page-slice",
@@ -108,28 +119,6 @@
                       "owner":  "",
                       "claim_id":  "",
                       "file_path":  "B:\\ohmic\\agent-system\\requests\\ready\\2026-03-15-inventory-non-repo-doc-and-artifact-zones-under-ohmic.md"
-                  },
-                  {
-                      "task_id":  "2026-03-15-normalize-legacy-active-claim-files",
-                      "title":  "Normalize Legacy Active Claim Files",
-                      "priority":  "medium",
-                      "project":  "ohmic",
-                      "status":  "ready",
-                      "date":  "2026-03-15",
-                      "owner":  "",
-                      "claim_id":  "",
-                      "file_path":  "B:\\ohmic\\agent-system\\requests\\ready\\2026-03-15-normalize-legacy-active-claim-files.md"
-                  },
-                  {
-                      "task_id":  "2026-03-15-verify-first-hardware-shell-deck-check-coverage",
-                      "title":  "Verify First Hardware Shell Deck Check Coverage",
-                      "priority":  "medium",
-                      "project":  "ohmic-audio-labs",
-                      "status":  "ready",
-                      "date":  "2026-03-15",
-                      "owner":  "",
-                      "claim_id":  "",
-                      "file_path":  "B:\\ohmic\\agent-system\\requests\\ready\\2026-03-15-verify-first-hardware-shell-deck-check-coverage.md"
                   },
                   {
                       "task_id":  "2026-03-15-verify-high-risk-public-worked-examples",

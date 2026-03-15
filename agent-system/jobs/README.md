@@ -74,6 +74,10 @@ Do not create new live claims using older ad hoc header styles like:
 Those older forms are tolerated only as legacy repair input, not as the
 canonical live format.
 
+The completed archive may still contain older header-style files as historical
+trace. Those completed records are not part of live active-claim parsing and do
+not justify keeping legacy ambiguity in the active tooling.
+
 ## Tooling
 
 Use the helper script:
