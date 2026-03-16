@@ -1,7 +1,9 @@
-Status: ready
+Status: done
 Priority: low
 Date: 2026-03-16
 Project: ohmic
+Owner: d
+Claim ID: 20260316T053212Z-41a79af1
 
 # Scaffold Administrator Approval Evaluation Seam
 
@@ -22,3 +24,10 @@ approval-required, or disallowed.
 
 - one approval-evaluation packet is explicit
 - approval behavior has a concrete runtime seam
+
+## Result
+
+Done. The approval-evaluation seam now lives in
+`tools/sync/administrator/approval-evaluation.ps1` and emits bounded
+freely-allowed, approval-required, or disallowed decisions from matrix rules,
+overlay tightening, and queue capability flags.
