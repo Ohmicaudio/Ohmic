@@ -23,6 +23,8 @@ Current scaffolds:
 - `inactive-intake-shell.ps1`
 - `status-history-shell.ps1`
 - `warning-review-shell.ps1`
+- `filing-picker-read.ps1`
+- `reopen-writeback.ps1`
 
 These files are PowerShell-first on purpose because the current JSON runtime
 and desk writeback loop already live under `tools/sync`.
