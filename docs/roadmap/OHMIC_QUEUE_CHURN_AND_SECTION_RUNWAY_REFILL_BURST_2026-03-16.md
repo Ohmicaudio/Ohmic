@@ -1,33 +1,55 @@
-Status: active_handoff_board
+# Ohmic Queue Churn And Section Runway Refill Burst
+
 Date: 2026-03-16
 Project: ohmic
 
-# Ohmic Queue Churn And Section Runway Refill Burst
-
 ## Purpose
 
-Refill the queue around worker-facing churn reports and section-runway policy so
-the system can explain drain, refill, and successor pressure without collapsing
-back to a tiny board.
+Close the current queue-churn and section-runway burst as one coherent policy
+and reporting family instead of many unrelated singles.
 
-## Focus
+## Why This Burst Exists
 
-### 1. Worker Churn Visibility
+The board currently has a truth-gap problem:
 
-- closeout refill notice payload
-- stale-ready intent reasons
-- system claim origin types
-- worker-facing churn summary row
+- ready folder truth can diverge from generated `ready_tasks.json`
+- active claim folder truth can diverge from generated `active_claims.json`
+- workers need stable reporting shapes to interpret queue churn without guessing
 
-### 2. Section Runway Visibility
+## Packet Contents
 
-- section-wave intent flag shape
-- successor pressure warning
-- parallel section family availability report
-- runway shortfall audit event family
-- family drain prediction signal
+This burst standardizes two connected surfaces:
 
-## Outcome Standard
+- section runway and parallel family health
+- queue churn, stale-ready intent, grouped wave intent, and system-created
+  claim reporting
 
-If this burst lands, the queue regains runway in the exact family that explains
-why underfoot churn is happening.
+## Section Runway Outcome
+
+The burst makes these rules explicit:
+
+- healthy execution requires `2` parallel section families alive with runway
+- one surviving family is `pressure`, not full health
+- balanced runway is `1` active wave, `2` hot successors, and `1` staged
+  successor wave
+- successor staging starts before depletion
+- successor pressure and drain prediction surface refill before collapse
+
+## Queue Churn Outcome
+
+The burst gives workers stable shapes for:
+
+- refill during closeout
+- intentionally stale or superseded ready items
+- grouped wave intent
+- system-created claim origin
+- compact churn summary rows
+
+## Next Lane
+
+After this burst closes, the next refill should return to observable live work:
+
+- real device candidate discovery truth
+- phone/browser reachability and failure boundary
+- exact live-link failure signature
+- bounded phone-assisted AmpLab smoke rerun

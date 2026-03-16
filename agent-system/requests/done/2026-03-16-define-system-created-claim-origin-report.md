@@ -1,4 +1,4 @@
-Status: active
+Status: done
 Priority: medium
 Date: 2026-03-16
 Project: ohmic
@@ -24,3 +24,10 @@ by the system or automation path rather than by the current worker.
 
 - one system-claim-origin packet is explicit
 - workers can distinguish self-created and system-created claims clearly
+
+## Result
+
+- defined the worker-facing claim-origin report in
+  `docs/systems/OHMIC_SYSTEM_CREATED_CLAIM_ORIGIN_REPORT_2026-03-16.md`
+- tied the report to the shared origin catalog and related trigger or packet
+  linkage

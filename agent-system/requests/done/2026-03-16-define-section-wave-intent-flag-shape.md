@@ -1,4 +1,4 @@
-Status: active
+Status: done
 Priority: low
 Date: 2026-03-16
 Project: ohmic
@@ -24,3 +24,10 @@ than many unrelated singles.
 
 - one section-wave-intent packet is explicit
 - grouped wave intent gets a reusable runtime shape
+
+## Result
+
+- defined the grouped wave flag in
+  `docs/systems/OHMIC_SECTION_WAVE_INTENT_FLAG_SHAPE_2026-03-16.md`
+- standardized the family, parent packet, child count, and parallel context
+  fields that explain grouped intent

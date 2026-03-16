@@ -1,4 +1,4 @@
-Status: active
+Status: done
 Priority: low
 Date: 2026-03-16
 Project: ohmic
@@ -24,3 +24,10 @@ before the next refill.
 
 - one family-drain prediction packet is explicit
 - the board can warn earlier than actual collapse
+
+## Result
+
+- defined the drain prediction signal in
+  `docs/systems/OHMIC_WAVE_FAMILY_DRAIN_PREDICTION_SIGNAL_2026-03-16.md`
+- made family drain risk depend on worker count, successor depth, completion
+  pace, and refill age

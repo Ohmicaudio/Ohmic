@@ -1,4 +1,4 @@
-Status: active
+Status: done
 Priority: low
 Date: 2026-03-16
 Project: ohmic
@@ -24,3 +24,10 @@ rather than directly by a worker.
 
 - one claim-origin catalog is explicit
 - system-created claims become easier to interpret
+
+## Result
+
+- defined the shared claim-origin catalog in
+  `docs/systems/OHMIC_SYSTEM_CLAIM_ORIGIN_TYPE_CATALOG_2026-03-16.md`
+- standardized runtime, refresh, reconciliation, orchestrator, and
+  operator-forced system claim origins

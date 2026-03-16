@@ -1,4 +1,4 @@
-Status: active
+Status: done
 Priority: low
 Date: 2026-03-16
 Project: ohmic
@@ -24,3 +24,10 @@ and staged successor layers.
 
 - one runway-depth packet is explicit
 - section-family depth stops being guessed case by case
+
+## Result
+
+- defined the balanced and high-throughput runway targets in
+  `docs/systems/OHMIC_SECTION_RUNWAY_DEPTH_TARGET_MODEL_2026-03-16.md`
+- aligned the warning and refill-required thresholds with the existing reserve
+  and refill trigger docs

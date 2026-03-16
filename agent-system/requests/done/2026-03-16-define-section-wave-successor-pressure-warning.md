@@ -1,4 +1,4 @@
-Status: active
+Status: done
 Priority: low
 Date: 2026-03-16
 Project: ohmic
@@ -24,3 +24,10 @@ or staged successors.
 
 - one successor-pressure packet is explicit
 - section families warn before they collapse to one packet
+
+## Result
+
+- defined the warning shape in
+  `docs/systems/OHMIC_SECTION_WAVE_SUCCESSOR_PRESSURE_WARNING_2026-03-16.md`
+- made warning and critical thresholds explicit for hot and staged successor
+  depletion

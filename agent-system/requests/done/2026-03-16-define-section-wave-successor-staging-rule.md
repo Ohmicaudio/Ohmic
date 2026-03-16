@@ -1,4 +1,4 @@
-Status: active
+Status: done
 Priority: medium
 Date: 2026-03-16
 Project: ohmic
@@ -24,3 +24,9 @@ section wave.
 
 - one successor-staging packet is explicit
 - section waves stop waiting for depletion before replacing themselves
+
+## Result
+
+- defined the staging rule in
+  `docs/systems/OHMIC_SECTION_WAVE_SUCCESSOR_STAGING_RULE_2026-03-16.md`
+- locked successor staging to begin before depletion instead of after collapse

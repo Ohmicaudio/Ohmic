@@ -1,4 +1,4 @@
-Status: active
+Status: done
 Priority: low
 Date: 2026-03-16
 Project: ohmic
@@ -24,3 +24,10 @@ superseded.
 
 - one stale-ready reason catalog is explicit
 - stale-ready reporting uses a stable reason set
+
+## Result
+
+- defined the shared stale-ready catalog in
+  `docs/systems/OHMIC_STALE_READY_INTENT_REASON_CATALOG_2026-03-16.md`
+- standardized the five deliberate stale or superseded ready reasons used by
+  the new reports

@@ -1,4 +1,4 @@
-Status: active
+Status: done
 Priority: low
 Date: 2026-03-16
 Project: ohmic
@@ -24,3 +24,9 @@ alive with runway.
 
 - one parallel-family-availability packet is explicit
 - the two-family rule becomes directly reportable
+
+## Result
+
+- defined the availability report in
+  `docs/systems/OHMIC_PARALLEL_SECTION_FAMILY_AVAILABILITY_REPORT_2026-03-16.md`
+- made runway visibility depend on per-family hot and staged successor depth

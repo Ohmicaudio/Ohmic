@@ -1,4 +1,4 @@
-Status: active
+Status: done
 Priority: low
 Date: 2026-03-16
 Project: ohmic
@@ -24,3 +24,9 @@ target.
 
 - one runway-shortfall audit packet is explicit
 - section-runway failure becomes reviewable later
+
+## Result
+
+- defined the audit event family in
+  `docs/systems/OHMIC_SECTION_RUNWAY_SHORTFALL_AUDIT_EVENT_FAMILY_2026-03-16.md`
+- standardized the shortfall fields and first safe reason set for later review

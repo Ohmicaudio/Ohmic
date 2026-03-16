@@ -1,4 +1,4 @@
-Status: active
+Status: done
 Priority: low
 Date: 2026-03-16
 Project: ohmic
@@ -24,3 +24,10 @@ of a packet in that same family.
 
 - one closeout-refill payload packet is explicit
 - refill-during-closeout gets a stable worker-facing shape
+
+## Result
+
+- defined the compact worker-facing payload in
+  `docs/systems/OHMIC_CLOSEOUT_REFILL_NOTICE_PAYLOAD_2026-03-16.md`
+- standardized `closing_task_id`, `closing_family_id`, `refill_event_id`,
+  `new_child_count`, actor attribution, and `occurred_at`

@@ -1,4 +1,4 @@
-Status: active
+Status: done
 Priority: medium
 Date: 2026-03-16
 Project: ohmic
@@ -24,3 +24,9 @@ family rather than many unrelated singles.
 
 - one wave-intent report packet is explicit
 - workers can plan around grouped wave intent instead of atomizing it
+
+## Result
+
+- defined the grouped wave report in
+  `docs/systems/OHMIC_WAVE_AS_SINGLE_PACKET_INTENT_REPORT_2026-03-16.md`
+- connected the worker-facing report to the reusable section wave intent flag

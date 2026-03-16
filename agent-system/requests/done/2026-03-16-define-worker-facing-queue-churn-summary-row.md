@@ -1,4 +1,4 @@
-Status: active
+Status: done
 Priority: low
 Date: 2026-03-16
 Project: ohmic
@@ -25,3 +25,10 @@ events.
 
 - one churn-summary-row packet is explicit
 - worker-facing churn reporting gets a compact reusable row shape
+
+## Result
+
+- defined the compact worker summary row in
+  `docs/systems/OHMIC_WORKER_FACING_QUEUE_CHURN_SUMMARY_ROW_2026-03-16.md`
+- standardized the event, family, related object, intent summary, actor, and
+  timestamp fields used in churn reporting
