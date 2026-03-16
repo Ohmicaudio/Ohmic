@@ -38,6 +38,16 @@ Why first:
 
 - the worker model is the immediate control surface for multi-worker scaling
 - it gives stable names, roles, trust, capability limits, and budget fields
+- the first draft should be discarded and rerun only after reading the current
+  worker routing model and token budget policy carefully
+
+Rerun rule:
+
+- treat this as a clean second pass
+- read the current worker routing model first
+- read the current token budget policy first
+- align the schema to committed system docs instead of inventing a parallel
+  vocabulary
 
 ### 2. Define per-worker task stack model
 
