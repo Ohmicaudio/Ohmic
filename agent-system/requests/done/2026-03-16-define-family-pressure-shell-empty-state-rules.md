@@ -1,8 +1,8 @@
-Status: ready
+Status: done
 Priority: low
 Date: 2026-03-16
 Project: ohmic
-
+Owner: d
 # Define Family Pressure Shell Empty State Rules
 
 ## Goal
@@ -22,3 +22,8 @@ families or no active families at all.
 
 - one empty-state packet is explicit
 - family-pressure shell surfaces avoid awkward blank states
+Claim ID: 20260316T100756Z-ae12ccd3
+
+## Result
+
+Defined the family-pressure shell empty-state variants and aligned the first shell model with healthy, no-active-family, and stale behavior.

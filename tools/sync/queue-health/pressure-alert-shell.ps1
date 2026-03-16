@@ -17,6 +17,12 @@ function New-QueuePressureAlertShellModel {
     )
 
     $urgency = Get-QueueHealthObjectValue -InputObject $runtime -Name 'refill_urgency_projection' -Default $null
+    $staleness = Get-QueueHealthObjectValue -InputObject $runtime -Name 'staleness' -Default $null
+    $staleAlert = @(
+        [string](Get-QueueHealthObjectValue -InputObject $staleness -Name 'ready' -Default 'unknown'),
+        [string](Get-QueueHealthObjectValue -InputObject $staleness -Name 'active' -Default 'unknown'),
+        [string](Get-QueueHealthObjectValue -InputObject $staleness -Name 'reconciliation' -Default 'unknown')
+    ) -notcontains 'fresh'
     $rows = @(
         $urgentFamilies |
         ForEach-Object {
@@ -31,13 +37,54 @@ function New-QueuePressureAlertShellModel {
         }
     )
 
+    $alertState = 'cleared'
+    if ($staleAlert) {
+        $alertState = 'stale'
+    }
+    elseif (@($rows).Count -gt 0) {
+        $globalBand = [string](Get-QueueHealthObjectValue -InputObject $runtime -Name 'global_status_band' -Default 'healthy')
+        if ($globalBand -eq 'critical' -or [string](Get-QueueHealthObjectValue -InputObject $urgency -Name 'urgency_band' -Default 'healthy') -eq 'critical') {
+            $alertState = 'open_critical'
+        }
+        elseif ($globalBand -eq 'pressure' -or [string](Get-QueueHealthObjectValue -InputObject $urgency -Name 'urgency_band' -Default 'healthy') -eq 'pressure') {
+            $alertState = 'open_pressure'
+        }
+        else {
+            $alertState = 'open_watch'
+        }
+    }
+
+    $emptyVariant = if (@($rows).Count -gt 0) {
+        'not_empty'
+    }
+    elseif ([string](Get-QueueHealthObjectValue -InputObject $runtime -Name 'focus_family' -Default '') -eq 'general') {
+        'no_active_family'
+    }
+    else {
+        'healthy_clear'
+    }
+
+    $escalationHint = if ([bool](Get-QueueHealthObjectValue -InputObject $urgency -Name 'recommend_refill' -Default $false)) {
+        'refill_now'
+    }
+    elseif (@($rows).Count -gt 0) {
+        'watch_queue'
+    }
+    else {
+        'none'
+    }
+
     return [pscustomobject]@{
         module_id = 'queue_pressure_alerts'
         generated_at = New-UtcTimestamp
+        alert_state = $alertState
         global_status_band = [string](Get-QueueHealthObjectValue -InputObject $runtime -Name 'global_status_band' -Default 'healthy')
         urgency_band = [string](Get-QueueHealthObjectValue -InputObject $urgency -Name 'urgency_band' -Default 'healthy')
         urgency_score = [int](Get-QueueHealthObjectValue -InputObject $urgency -Name 'urgency_score' -Default 0)
         recommend_refill = [bool](Get-QueueHealthObjectValue -InputObject $urgency -Name 'recommend_refill' -Default $false)
+        escalation_hint = $escalationHint
+        stale_alert = $staleAlert
+        empty_variant = $emptyVariant
         empty_title = 'No queue pressure alerts'
         empty_body = 'Queue headroom is above the current floor and no family is requesting refill attention.'
         rows = @($rows)

@@ -1,8 +1,8 @@
-Status: ready
+Status: done
 Priority: low
 Date: 2026-03-16
 Project: ohmic
-
+Owner: d
 # Define Queue Headroom Card Priority Order
 
 ## Goal
@@ -22,3 +22,8 @@ shared dashboard shell.
 
 - one card-order packet is explicit
 - queue-capacity cards get a stable presentation order
+Claim ID: 20260316T100756Z-ae12ccd3
+
+## Result
+
+Defined the default queue-health card order and surfaced that order in the dashboard card mapper output.

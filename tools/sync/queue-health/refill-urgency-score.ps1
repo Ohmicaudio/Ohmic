@@ -77,6 +77,12 @@ function New-QueueHealthRefillUrgencyProjection {
         generated_at = New-UtcTimestamp
         hot_ready_floor = $HotReadyFloor
         hot_ready_target = $HotReadyTarget
+        band_thresholds = [ordered]@{
+            healthy_min = 0
+            watch_min = 30
+            pressure_min = 55
+            critical_min = 80
+        }
         effective_ready_count = $effectiveReadyCount
         active_claim_count = $activeClaimCount
         focus_family = $focusFamily

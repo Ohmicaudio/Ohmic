@@ -1,8 +1,8 @@
-Status: ready
+Status: done
 Priority: low
 Date: 2026-03-16
 Project: ohmic
-
+Owner: d
 # Define Claim Aware Ready Count Audit Event Family
 
 ## Goal
@@ -22,3 +22,8 @@ active claims.
 
 - one claim-aware audit packet is explicit
 - ready-count reconciliation becomes explainable later
+Claim ID: 20260316T100756Z-ae12ccd3
+
+## Result
+
+Defined the audit event family for claim-aware ready-count recalculation so queue-health can explain effective capacity later without changing queue authority.

@@ -64,6 +64,7 @@ function New-QueueHealthDashboardCards {
     return [pscustomobject]@{
         projection_name = 'queue_headroom_dashboard_cards'
         generated_at = New-UtcTimestamp
+        priority_order = @('queue_headroom', 'family_pressure', 'refill_urgency', 'queue_reconciliation')
         count = @($cards).Count
         cards = @($cards)
     }
