@@ -188,6 +188,53 @@ Escalate instead of grinding when:
 - project overlay rules conflict
 - trust tier is too low for the requested surface
 
+## User Intervention Rule
+
+User intervention should be first-class, not an afterthought.
+
+The system should support operator ability to:
+
+- pause a worker
+- redirect a worker
+- override normal routing
+- approve or reject a result
+- lower or raise audit depth for a task family
+- force escalation to review
+- mark a result as accepted despite a non-critical warning
+
+This intervention should be auditable, but it should not require a full system
+rewrite every time the operator wants to steer.
+
+## User Override Boundary
+
+Workers can propose.
+
+The user or operator can:
+
+- set priority
+- reorder work
+- change worker assignment
+- force fallback
+- reopen completed work
+- freeze a lane
+- declare a task good enough for now
+
+The system should record these as explicit state-changing events.
+
+## Audit Granularity Rule
+
+Default behavior should capture:
+
+- state-changing events
+- routing and reassignment events
+- claim lifecycle events
+- verification and acceptance events
+- escalation and override events
+- summarized context and token usage per task
+
+Deeper raw interaction logs should be tunable by worker, task family, and
+failure mode.
+
 ## Quota And Budget Model
 
 Each worker should have explicit operational budgets.
@@ -279,6 +326,7 @@ This model should plug into:
 - correctness reports
 - queue runtime summaries
 - per-agent and per-model performance surfaces
+- user intervention and override audit events
 
 ## Immediate Next Tasks
 
@@ -288,3 +336,4 @@ This model should plug into:
 4. define global vs worker queue boundary
 5. later: define worker context and token budget policy
 6. later: define multi-worker shared-task fan-out rules
+7. later: define user intervention and override rules
