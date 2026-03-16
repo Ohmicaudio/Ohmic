@@ -1,7 +1,9 @@
-Status: ready
+Status: done
 Priority: high
 Date: 2026-03-15
 Project: ohmic-audio-labs
+Owner: d
+Claim ID: 20260316T013136Z-b9a1b70c
 
 # Implement Handset Live Device Candidate Parity Wave
 
@@ -27,3 +29,15 @@ desktop/browser path.
 - the remaining parity gap is narrower than generic network debugging
 - desktop and handset expectations are aligned
 - targeted regression coverage travels with the parity fix
+
+## Result
+
+- propagated already-known live device candidates through shared sync presence
+  so handset/browser discovery can consume the same usable AmpLab endpoint list
+  as desktop/browser instead of relying only on local fallback candidates
+- updated `useAmpLabDiscoveryPlane` to prefer peer-shared device candidates
+  before local host/IP sweep fallbacks
+- verified:
+  - `npx vitest run test/components/AmpLabDiscoveryTelemetryHooks.test.tsx`
+  - `npm run backend:type-check`
+  - `npx playwright test e2e/amplab-shell.spec.ts`

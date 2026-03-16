@@ -1,5 +1,5 @@
 {
-    "generated_at":  "2026-03-16T01:29:45Z",
+    "generated_at":  "2026-03-16T01:40:09Z",
     "source":  {
                    "kind":  "repo_summary",
                    "path":  "B:\\ohmic\\agent-system\\requests\\ready"
@@ -8,7 +8,7 @@
                       "status":  "fresh",
                       "reason":  null
                   },
-    "count":  21,
+    "count":  20,
     "items":  [
                   {
                       "task_id":  "2026-03-15-add-reference-backend-chirp-smoke-harness-and-helper-regression",
@@ -75,17 +75,6 @@
                       "owner":  "",
                       "claim_id":  "",
                       "file_path":  "B:\\ohmic\\agent-system\\requests\\ready\\2026-03-15-define-master-administrator-web-scaffold-wave.md"
-                  },
-                  {
-                      "task_id":  "2026-03-15-implement-handset-live-device-candidate-parity-wave",
-                      "title":  "Implement Handset Live Device Candidate Parity Wave",
-                      "priority":  "high",
-                      "project":  "ohmic-audio-labs",
-                      "status":  "ready",
-                      "date":  "2026-03-15",
-                      "owner":  "",
-                      "claim_id":  "",
-                      "file_path":  "B:\\ohmic\\agent-system\\requests\\ready\\2026-03-15-implement-handset-live-device-candidate-parity-wave.md"
                   },
                   {
                       "task_id":  "2026-03-15-normalize-design-sandbox-stitch-support-surface",
