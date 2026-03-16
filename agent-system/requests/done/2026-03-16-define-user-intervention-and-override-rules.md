@@ -1,7 +1,9 @@
-Status: ready
+Status: done
 Priority: medium
 Date: 2026-03-16
 Project: ohmic
+Owner: d
+Claim ID: 20260316T023806Z-dd277d51
 
 # Define User Intervention And Override Rules
 
@@ -26,3 +28,12 @@ operation into chaos.
 - user intervention paths are explicit
 - override events are auditable
 - operator steering can coexist with worker autonomy
+
+## Result
+
+- defined the intervention model in
+  `docs/systems/OHMIC_USER_INTERVENTION_AND_OVERRIDE_RULES_2026-03-16.md`
+- made pause, resume, reroute, reassign, fallback, reopen, accept-as-is, and
+  audit-depth overrides explicit and auditable
+- set the authority boundary so operator steering wins cleanly without erasing
+  worker autonomy or queue truth
