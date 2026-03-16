@@ -48,7 +48,8 @@ function Slugify {
 
 function Get-RequestFiles {
     Get-ChildItem -Path $requestsRoot -Recurse -Filter '*.md' -File | Where-Object {
-        $_.DirectoryName -match '\\(inbox|blocked|ready|done)$'
+        $_.DirectoryName -match '\\(inbox|blocked|ready|done)$' -and
+        $_.Name -ine 'README.md'
     }
 }
 

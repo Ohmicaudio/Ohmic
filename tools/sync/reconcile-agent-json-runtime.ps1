@@ -102,6 +102,20 @@ function Read-ClaimSummary {
     }
 }
 
+function Test-QueueMarkdownCandidate {
+    param([System.IO.FileInfo]$FileInfo)
+
+    if (-not $FileInfo) {
+        return $false
+    }
+
+    if ($FileInfo.Name -eq '.gitkeep') {
+        return $false
+    }
+
+    return $FileInfo.Name -ine 'README.md'
+}
+
 function Get-SourceLatestWrite {
     param([string[]]$Paths)
 
@@ -199,7 +213,7 @@ $readyTasks = @()
 if (Test-Path $readyDir) {
     $readyTasks = @(
         Get-ChildItem -Path $readyDir -Filter '*.md' -File |
-        Where-Object { $_.Name -ne '.gitkeep' } |
+        Where-Object { Test-QueueMarkdownCandidate -FileInfo $_ } |
         ForEach-Object { Read-RequestSummary -PathText $_.FullName }
     )
 }
@@ -208,7 +222,7 @@ $doneTasks = @()
 if (Test-Path $doneDir) {
     $doneTasks = @(
         Get-ChildItem -Path $doneDir -Filter '*.md' -File |
-        Where-Object { $_.Name -ne '.gitkeep' } |
+        Where-Object { Test-QueueMarkdownCandidate -FileInfo $_ } |
         ForEach-Object { Read-RequestSummary -PathText $_.FullName }
     )
 }
@@ -217,7 +231,7 @@ $blockedTasks = @()
 if (Test-Path $blockedDir) {
     $blockedTasks = @(
         Get-ChildItem -Path $blockedDir -Filter '*.md' -File |
-        Where-Object { $_.Name -ne '.gitkeep' } |
+        Where-Object { Test-QueueMarkdownCandidate -FileInfo $_ } |
         ForEach-Object { Read-RequestSummary -PathText $_.FullName }
     )
 }

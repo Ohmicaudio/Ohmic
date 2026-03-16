@@ -17,7 +17,7 @@ function Read-ClaimShape {
     $hasYamlClaimId = $raw -match '(?m)^claim_id:\s*.+$'
     $hasYamlStatus = $raw -match '(?m)^status:\s*.+$'
     $hasLegacyStatus = $raw -match '(?m)^Status:\s*.+$'
-    $hasFiles = $raw -match '(?m)^# Files$'
+    $hasFiles = $raw -match '(?m)^# Files\r?$'
     $hasTask = $raw -match '(?m)^(task:|Task:)\s*.+$'
 
     $format =
@@ -33,6 +33,20 @@ function Read-ClaimShape {
         has_task = $hasTask
         is_valid_live_claim = ($format -eq 'yaml' -and $hasFiles -and $hasTask)
     }
+}
+
+function Test-QueueMarkdownCandidate {
+    param([System.IO.FileInfo]$FileInfo)
+
+    if (-not $FileInfo) {
+        return $false
+    }
+
+    if ($FileInfo.Name -in @('.gitkeep', 'open-questions.md', 'resolved-questions.md')) {
+        return $false
+    }
+
+    return $FileInfo.Name -ine 'README.md'
 }
 
 function Get-LatestWriteUtc {
@@ -130,7 +144,7 @@ foreach ($claim in $claimFindings) {
 $requestFindings = @()
 if (Test-Path $requestsRoot) {
     $requestFindings = @(Get-ChildItem -Path $requestsRoot -Recurse -Filter '*.md' -File |
-        Where-Object { $_.Name -ne '.gitkeep' -and $_.Name -ne 'open-questions.md' -and $_.Name -ne 'resolved-questions.md' } |
+        Where-Object { Test-QueueMarkdownCandidate -FileInfo $_ } |
         ForEach-Object { Test-RequestMetadata -FilePath $_.FullName })
 }
 
@@ -148,6 +162,7 @@ foreach ($request in $requestFindings) {
 $memoryFindings = @()
 if (Test-Path $memoryRoot) {
     $memoryFindings = @(Get-ChildItem -Path $memoryRoot -Filter '*.md' -File |
+        Where-Object { $_.Name -ine 'README.md' } |
         ForEach-Object { Test-MemoryHeader -FilePath $_.FullName })
 }
 

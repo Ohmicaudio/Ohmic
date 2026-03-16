@@ -107,6 +107,20 @@ function Parse-Claim {
     [pscustomobject]$claim
 }
 
+function Test-QueueMarkdownCandidate {
+    param([System.IO.FileInfo]$FileInfo)
+
+    if (-not $FileInfo) {
+        return $false
+    }
+
+    if ($FileInfo.Name -eq '.gitkeep') {
+        return $false
+    }
+
+    return $FileInfo.Name -ine 'README.md'
+}
+
 function Get-ActiveClaims {
     if (-not (Test-Path $activeClaimsDir)) {
         return @()
@@ -243,7 +257,9 @@ function Get-ReadyWork {
         return @()
     }
 
-    $items = Get-ChildItem -Path $readyDir -Filter '*.md' -File | ForEach-Object {
+    $items = Get-ChildItem -Path $readyDir -Filter '*.md' -File |
+        Where-Object { Test-QueueMarkdownCandidate -FileInfo $_ } |
+        ForEach-Object {
         $request = Parse-Request $_.FullName
         $result = Test-RequestEligible -Request $request -ActiveClaims $activeClaims -DoneRequestIds $doneRequestIds
 

@@ -25,6 +25,24 @@ def load_manifest(path: Path) -> dict[str, Any]:
     return data
 
 
+def validate_selected_repos(manifest: dict[str, Any], selected_repos: set[str]) -> None:
+    if not selected_repos:
+        return
+
+    manifest_names = {
+        str(repo_entry.get("name") or "unknown")
+        for repo_entry in manifest.get("repos", [])
+        if isinstance(repo_entry, dict)
+    }
+    unknown = sorted(selected_repos - manifest_names)
+    if not unknown:
+        return
+
+    valid = ", ".join(sorted(manifest_names))
+    requested = ", ".join(unknown)
+    raise ValueError(f"Unknown repo selector(s): {requested}. Valid repo names: {valid}")
+
+
 def normalize_patterns(raw: list[Any] | None) -> list[str]:
     patterns: list[str] = []
     for item in raw or []:
@@ -222,6 +240,7 @@ def main() -> int:
 
     manifest = load_manifest(args.manifest)
     selected_repos = set(args.repos or [])
+    validate_selected_repos(manifest, selected_repos)
 
     if args.dry_run:
         collection_name, total_documents, included_repos = collect_plan(manifest, selected_repos or None)
