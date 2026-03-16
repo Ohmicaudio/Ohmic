@@ -23,3 +23,8 @@ source truth.
 
 - ignore vs cleanup vs source-visible classes are explicit
 - later cleanup work can act without deleting truth by accident
+
+## Dependency
+
+Use the retention and relocation boundaries first so ignore/cleanup rules do not
+accidentally swallow useful local evidence or staging material.
