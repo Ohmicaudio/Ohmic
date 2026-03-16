@@ -1,7 +1,9 @@
-Status: ready
+Status: done
 Priority: medium
 Date: 2026-03-16
 Project: ohmic
+Owner: d
+Claim ID: 20260316T095256Z-1a650d8b
 
 # Define Queue Refill Urgency Score Model
 
@@ -22,3 +24,7 @@ refill attention.
 
 - one urgency-score packet is explicit
 - refill cards and warnings can sort by urgency instead of raw counts alone
+
+## Result
+
+Defined the refill urgency score model and implemented the first evaluator in tools/sync/queue-health/refill-urgency-score.ps1.
