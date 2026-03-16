@@ -1,5 +1,5 @@
 {
-    "generated_at":  "2026-03-16T01:40:09Z",
+    "generated_at":  "2026-03-16T01:50:12Z",
     "source":  {
                    "kind":  "dashboard_card_mapper",
                    "path":  "B:\\ohmic\\generated\\agent-work\\runtime"
@@ -30,7 +30,7 @@
                                      },
                                      {
                                          "label":  "Updated",
-                                         "value":  "2026-03-16T01:40:09Z"
+                                         "value":  "2026-03-16T01:50:12Z"
                                      },
                                      {
                                          "label":  "Loop state",
@@ -46,7 +46,7 @@
                       "fields":  [
                                      {
                                          "label":  "Ready",
-                                         "value":  "20"
+                                         "value":  "23"
                                      },
                                      {
                                          "label":  "Active",
@@ -78,7 +78,7 @@
                                      },
                                      {
                                          "label":  "Next",
-                                         "value":  "2026-03-15-add-reference-backend-chirp-smoke-harness-and-helper-regression"
+                                         "value":  "2026-03-15-reconcile-ohmic-audio-labs-public-deletion-wave"
                                      },
                                      {
                                          "label":  "Claim",

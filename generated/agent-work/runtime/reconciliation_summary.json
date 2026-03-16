@@ -1,16 +1,16 @@
 {
-    "generated_at":  "2026-03-16T01:40:09Z",
-    "source_latest_write_time":  "2026-03-16T01:39:48.9883952Z",
+    "generated_at":  "2026-03-16T01:50:12Z",
+    "source_latest_write_time":  "2026-03-16T01:49:57.2340406Z",
     "project":  "ohmic",
     "staleness":  {
                       "status":  "fresh",
                       "reason":  null
                   },
     "counts":  {
-                   "ready":  20,
+                   "ready":  23,
                    "active_claims":  0,
                    "blocked":  2,
-                   "done":  437
+                   "done":  438
                },
     "board_health":  "healthy",
     "queue_floor_met":  true,
@@ -27,8 +27,8 @@
                      "message":  "Pending input: check queue freshness"
                  },
     "top_priority":  [
-                         "2026-03-15-add-reference-backend-chirp-smoke-harness-and-helper-regression",
                          "2026-03-15-reconcile-ohmic-audio-labs-public-deletion-wave",
-                         "2026-03-15-define-master-administrator-command-routing-surface"
+                         "2026-03-15-define-master-administrator-command-routing-surface",
+                         "2026-03-15-define-master-administrator-file-and-email-intake-pipeline"
                      ]
 }

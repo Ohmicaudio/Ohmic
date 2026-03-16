@@ -1,5 +1,5 @@
 {
-    "generated_at":  "2026-03-16T01:40:09Z",
+    "generated_at":  "2026-03-16T01:50:12Z",
     "source":  {
                    "kind":  "repo_summary",
                    "path":  "B:\\ohmic\\agent-system\\requests\\ready"
@@ -8,19 +8,8 @@
                       "status":  "fresh",
                       "reason":  null
                   },
-    "count":  20,
+    "count":  23,
     "items":  [
-                  {
-                      "task_id":  "2026-03-15-add-reference-backend-chirp-smoke-harness-and-helper-regression",
-                      "title":  "Add Reference Backend Chirp Smoke Harness And Helper Regression",
-                      "priority":  "high",
-                      "project":  "ohmic-audio-labs",
-                      "status":  "ready",
-                      "date":  "2026-03-15",
-                      "owner":  "",
-                      "claim_id":  "",
-                      "file_path":  "B:\\ohmic\\agent-system\\requests\\ready\\2026-03-15-add-reference-backend-chirp-smoke-harness-and-helper-regression.md"
-                  },
                   {
                       "task_id":  "2026-03-15-define-master-administrator-command-routing-surface",
                       "title":  "Define Master Administrator Command Routing Surface",
@@ -132,6 +121,17 @@
                       "file_path":  "B:\\ohmic\\agent-system\\requests\\ready\\2026-03-16-define-agent-and-model-performance-report-surface.md"
                   },
                   {
+                      "task_id":  "2026-03-16-define-agent-graduation-checkpoints",
+                      "title":  "Define Agent Graduation Checkpoints",
+                      "priority":  "medium",
+                      "project":  "ohmic",
+                      "status":  "ready",
+                      "date":  "2026-03-16",
+                      "owner":  "",
+                      "claim_id":  "",
+                      "file_path":  "B:\\ohmic\\agent-system\\requests\\ready\\2026-03-16-define-agent-graduation-checkpoints.md"
+                  },
+                  {
                       "task_id":  "2026-03-16-define-agent-sanity-and-error-check-hook-layer",
                       "title":  "Define Agent Sanity And Error Check Hook Layer",
                       "priority":  "medium",
@@ -141,6 +141,39 @@
                       "owner":  "",
                       "claim_id":  "",
                       "file_path":  "B:\\ohmic\\agent-system\\requests\\ready\\2026-03-16-define-agent-sanity-and-error-check-hook-layer.md"
+                  },
+                  {
+                      "task_id":  "2026-03-16-define-agent-trust-tier-model",
+                      "title":  "Define Agent Trust Tier Model",
+                      "priority":  "medium",
+                      "project":  "ohmic",
+                      "status":  "ready",
+                      "date":  "2026-03-16",
+                      "owner":  "",
+                      "claim_id":  "",
+                      "file_path":  "B:\\ohmic\\agent-system\\requests\\ready\\2026-03-16-define-agent-trust-tier-model.md"
+                  },
+                  {
+                      "task_id":  "2026-03-16-define-fresh-agent-restriction-and-escalation-rules",
+                      "title":  "Define Fresh Agent Restriction And Escalation Rules",
+                      "priority":  "medium",
+                      "project":  "ohmic",
+                      "status":  "ready",
+                      "date":  "2026-03-16",
+                      "owner":  "",
+                      "claim_id":  "",
+                      "file_path":  "B:\\ohmic\\agent-system\\requests\\ready\\2026-03-16-define-fresh-agent-restriction-and-escalation-rules.md"
+                  },
+                  {
+                      "task_id":  "2026-03-16-define-live-task-route-training-lane",
+                      "title":  "Define Live Task Route Training Lane",
+                      "priority":  "medium",
+                      "project":  "ohmic",
+                      "status":  "ready",
+                      "date":  "2026-03-16",
+                      "owner":  "",
+                      "claim_id":  "",
+                      "file_path":  "B:\\ohmic\\agent-system\\requests\\ready\\2026-03-16-define-live-task-route-training-lane.md"
                   },
                   {
                       "task_id":  "2026-03-16-define-native-format-ingestion-normalization-pipeline",
