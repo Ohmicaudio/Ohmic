@@ -1,34 +1,24 @@
-Status: active_handoff_board
+# Ohmic Admin Orchestrator Variance Refill Burst
+
 Date: 2026-03-16
 Project: ohmic
 
-# Ohmic Administrator Orchestrator Variance Refill Burst
-
 ## Purpose
 
-Refill the queue around the administrator-vs-orchestrator stack split so that
-the worker-stack family does not collapse to a single variance packet.
+Capture the first bounded packet that separates administrator-heavy stacks from
+orchestrator-heavy stacks.
 
-## Focus
+## Packet Scope
 
-### 1. Administrator Bias
+This burst covers:
 
-- adjacent policy clustering
-- overload trim priority
-- policy-cluster spillback
+- administrator policy clustering
+- administrator overload trim and spillback behavior
+- orchestrator queue-repair reserve and refill rotation behavior
+- documentation fallback boundaries for hybrid workers
+- a shared audit model for comparing the two modes
 
-### 2. Orchestrator Bias
+## Desired Outcome
 
-- queue-repair reserve handling
-- refill fallback rotation
-- repair-vs-execution balance
-
-### 3. Shared Hybrid Boundary
-
-- documentation fallback boundary
-- audit diff model between administrator-heavy and orchestrator-heavy stacks
-
-## Outcome Standard
-
-If this burst lands, the system will have a real next rung after the variance
-packet instead of dropping back to starvation.
+The system should stop treating administrator-heavy and orchestrator-heavy
+workers as interchangeable just because they both work near queue truth.
