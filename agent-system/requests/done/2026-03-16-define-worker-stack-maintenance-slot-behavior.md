@@ -1,8 +1,8 @@
-Status: ready
+Status: done
 Priority: low
 Date: 2026-03-16
 Project: ohmic
-
+Owner: d
 # Define Worker Stack Maintenance Slot Behavior
 
 ## Goal
@@ -22,3 +22,8 @@ it should rotate out.
 
 - one maintenance-slot packet is explicit
 - maintenance fallbacks become deliberate instead of vague
+Claim ID: 20260316T101814Z-dc6366f5
+
+## Result
+
+Defined what the maintenance slot may and may not do inside a worker stack.
