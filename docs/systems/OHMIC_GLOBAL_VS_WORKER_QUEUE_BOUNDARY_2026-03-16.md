@@ -44,6 +44,20 @@ The global queue should answer:
 - what state it is in
 - whether it is ready, blocked, active, or done
 
+## Queue Tier Rule
+
+The global queue should distinguish between:
+
+- `hot ready`
+  - tasks immediately actionable without more packeting
+- `warm queued`
+  - packetizable follow-ons that are not yet promoted to ready
+- `cold backlog`
+  - known future actions grouped under waves, stacks, or parent packets
+
+This keeps the visible ready queue useful while still preserving a much larger
+set of queueable actions.
+
 ## Worker Stack Responsibilities
 
 The worker stack owns:
@@ -133,6 +147,20 @@ Rules:
 - claims own temporary protection
 - reporting must know which source each metric came from
 - completion reconciles into the queue first, then clears stack state
+- queue health should be measured at both the hot-ready and total-queueable
+  layers
+
+## Queue Capacity Guidance
+
+Recommended per active project:
+
+- hot ready floor: `20`
+- hot ready target: `28-32`
+- warm queued reserve: `10-20`
+- total queueable actions across hot/warm/cold tiers: `50+`
+
+That means the system should stop treating a near-empty ready folder as healthy
+just because some cold roadmap ideas exist somewhere else.
 
 ## Example Relationship
 

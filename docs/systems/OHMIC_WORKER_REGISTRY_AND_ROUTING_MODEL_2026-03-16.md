@@ -115,13 +115,16 @@ Each worker should have a bounded stack, not an infinite dump.
 Recommended stack shape:
 
 - 1 primary task
-- 2 near-term follow-ons
-- 1 fallback task
+- 3 near-term follow-ons
+- 2 same-family fallbacks
 - 1 maintenance or verification task
+- 1 low-risk documentation or queue-truth fallback
 
-That makes a normal live stack depth of `3-5` items.
+That makes a normal live stack depth of `5-8` items.
 
-Do not give fresh workers giant stacks they cannot hold in context.
+Do not give fresh workers giant context blobs they cannot hold in context.
+Do give trusted workers a deeper routed stack so they do not starve every time
+one task closes.
 
 ## Same-Task Multi-Worker Rule
 
@@ -256,8 +259,34 @@ Minimum tracked values:
 For a normal performer:
 
 - active claims: `1`
+- preferred stack depth: `6`
+- max stack depth: `8`
+
+For an orchestrator-performer hybrid:
+
+- active claims: `1`
+- preferred stack depth: `7`
+- max stack depth: `10`
+
+For a fresh or low-trust worker:
+
+- active claims: `1`
 - preferred stack depth: `4`
 - max stack depth: `6`
+
+## Queue Headroom Rule
+
+The worker stack should assume the global queue stays ahead by more than a bare
+survival margin.
+
+Recommended global posture:
+
+- hot ready floor per active project: `20` real tasks minimum
+- hot ready target per active project: `28-32`
+- cold queueable backlog target per active project: `50+` packetizable actions
+
+This lets workers close several related tasks without instantly collapsing the
+board.
 - target context usage: `40-60%` of available window
 - hard context ceiling: `80%`
 - reserve completion tokens: enough for verification and notes
