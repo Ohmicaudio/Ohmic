@@ -1,7 +1,9 @@
-Status: ready
+Status: done
 Priority: medium
 Date: 2026-03-16
 Project: ohmic
+Owner: d
+Claim ID: 20260316T094732Z-9a684b93
 
 # Define Same Family Ready Floor Policy
 
@@ -22,3 +24,10 @@ lane is considered at risk.
 
 - one same-family floor packet is explicit
 - active lanes stop pretending one remaining ready task is healthy
+
+## Result
+
+Done. The same-family ready floor policy now lives in
+`docs/systems/OHMIC_SAME_FAMILY_READY_FLOOR_POLICY_2026-03-16.md`, defining
+worker-aligned same-family floors, warning bands, emergency refill behavior,
+and auditable exceptions.

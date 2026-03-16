@@ -1,7 +1,9 @@
-Status: ready
+Status: done
 Priority: low
 Date: 2026-03-16
 Project: ohmic
+Owner: d
+Claim ID: 20260316T094732Z-9a684b93
 
 # Define Queue Refill Cadence Policy
 
@@ -22,3 +24,10 @@ must happen immediately.
 
 - one refill-cadence packet is explicit
 - queue refill timing becomes deliberate instead of ad hoc
+
+## Result
+
+Done. The refill cadence policy now lives in
+`docs/systems/OHMIC_QUEUE_REFILL_CADENCE_POLICY_2026-03-16.md`, defining
+baseline time cadence, completion-count cadence, immediate refill conditions,
+and manual override behavior.
