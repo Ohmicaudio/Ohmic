@@ -1,7 +1,9 @@
-Status: ready
+Status: done
 Priority: high
 Date: 2026-03-15
 Project: ohmic-audio-labs
+Owner: d
+Claim ID: 20260316T012028Z-8af7ea69
 
 # Implement AmpLab Browser Shell Regression Wave
 
@@ -27,3 +29,14 @@ travel together.
 - one grouped regression packet lands
 - browser shell behavior is covered as one lane instead of separate microchecks
 - one live browser rerun is obvious after the packet lands
+
+## Result
+
+- updated the AmpLab browser shell smoke to the current shell frame in
+  `e2e/amplab-shell.spec.ts` instead of the stale removed header copy
+- expanded the grouped regression packet so linked/current-device, shell route,
+  deck readiness, and discovery fallback all travel together across the
+  existing AmpLab component tests
+- verified:
+  - `npx vitest run test/components/HardwareLayoutAmpLabShell.test.tsx test/components/AmpLabDeckContentHost.test.tsx test/components/AmpLabHardwareDeckPanel.test.tsx test/components/AmpLabDiscoveryTelemetryHooks.test.tsx`
+  - `npx playwright test e2e/amplab-shell.spec.ts`

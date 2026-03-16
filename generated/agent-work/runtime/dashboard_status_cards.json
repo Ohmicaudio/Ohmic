@@ -1,5 +1,5 @@
 {
-    "generated_at":  "2026-03-15T18:55:17Z",
+    "generated_at":  "2026-03-16T01:29:45Z",
     "source":  {
                    "kind":  "dashboard_card_mapper",
                    "path":  "B:\\ohmic\\generated\\agent-work\\runtime"
@@ -30,7 +30,7 @@
                                      },
                                      {
                                          "label":  "Updated",
-                                         "value":  "2026-03-15T18:55:17Z"
+                                         "value":  "2026-03-16T01:29:45Z"
                                      },
                                      {
                                          "label":  "Loop state",
@@ -42,11 +42,11 @@
                       "card_id":  "queue_health",
                       "title":  "Queue Health",
                       "freshness":  "fresh",
-                      "emphasis":  "warning",
+                      "emphasis":  "normal",
                       "fields":  [
                                      {
                                          "label":  "Ready",
-                                         "value":  "1"
+                                         "value":  "21"
                                      },
                                      {
                                          "label":  "Active",
@@ -54,7 +54,7 @@
                                      },
                                      {
                                          "label":  "Board health",
-                                         "value":  "thin"
+                                         "value":  "healthy"
                                      },
                                      {
                                          "label":  "Summary freshness",
@@ -78,7 +78,7 @@
                                      },
                                      {
                                          "label":  "Next",
-                                         "value":  "2026-03-15-implement-next-hardware-amp-lab-control-bridge-slice"
+                                         "value":  "2026-03-15-add-reference-backend-chirp-smoke-harness-and-helper-regression"
                                      },
                                      {
                                          "label":  "Claim",
@@ -95,7 +95,7 @@
                       "fields":  [
                                      {
                                          "label":  "Risk",
-                                         "value":  "Ready queue is below the preferred floor of 3 tasks."
+                                         "value":  "Blocked tasks present: 2"
                                      },
                                      {
                                          "label":  "Blocker",

@@ -1,19 +1,19 @@
 {
-    "generated_at":  "2026-03-15T18:55:17Z",
-    "source_latest_write_time":  "2026-03-15T18:55:01.6904623Z",
+    "generated_at":  "2026-03-16T01:29:45Z",
+    "source_latest_write_time":  "2026-03-16T01:29:30.1060101Z",
     "project":  "ohmic",
     "staleness":  {
                       "status":  "fresh",
                       "reason":  null
                   },
     "counts":  {
-                   "ready":  1,
+                   "ready":  21,
                    "active_claims":  0,
                    "blocked":  2,
-                   "done":  385
+                   "done":  436
                },
-    "board_health":  "thin",
-    "queue_floor_met":  false,
+    "board_health":  "healthy",
+    "queue_floor_met":  true,
     "mismatches":  [
 
                    ],
@@ -27,6 +27,8 @@
                      "message":  "Pending input: check queue freshness"
                  },
     "top_priority":  [
-                         "2026-03-15-implement-next-hardware-amp-lab-control-bridge-slice"
+                         "2026-03-15-add-reference-backend-chirp-smoke-harness-and-helper-regression",
+                         "2026-03-15-implement-handset-live-device-candidate-parity-wave",
+                         "2026-03-15-reconcile-ohmic-audio-labs-public-deletion-wave"
                      ]
 }
