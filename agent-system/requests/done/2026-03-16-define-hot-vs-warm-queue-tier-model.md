@@ -1,7 +1,9 @@
-Status: ready
+Status: done
 Priority: medium
 Date: 2026-03-16
 Project: ohmic
+Owner: d
+Claim ID: 20260316T094242Z-d330879d
 
 # Define Hot Vs Warm Queue Tier Model
 
@@ -22,3 +24,10 @@ reserves without losing queue truth.
 
 - one queue-tier packet is explicit
 - hot and warm queue behavior is no longer implicit
+
+## Result
+
+Done. The explicit tier model now lives in
+`docs/systems/OHMIC_HOT_VS_WARM_QUEUE_TIER_MODEL_2026-03-16.md`, defining hot,
+warm, and cold queueable layers, their transitions, reporting boundary, and
+truth-preservation rules.
