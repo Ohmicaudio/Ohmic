@@ -1,0 +1,290 @@
+# Ohmic Worker Registry And Routing Model
+
+Date: 2026-03-16
+Status: working design
+
+## Purpose
+
+Define how workers should be named, registered, budgeted, routed, and stacked so
+the system can support:
+
+- multiple workers on the same larger objective
+- worker-specific naming and trust
+- per-worker queue depth and fallback order
+- per-worker context and token budgets
+- global queue truth without losing worker-local routing
+
+## Core Rule
+
+The system should distinguish between:
+
+- the global work queue
+- the worker registry
+- the live per-worker task stack
+
+Those are related, but they are not the same object.
+
+## Worker Identity Model
+
+Each worker should have a stable registry record.
+
+Minimum fields:
+
+- worker id
+- display name
+- short handle
+- worker class
+- provider
+- model identity
+- trust tier
+- role family
+- project overlay bindings
+- capabilities
+- restricted surfaces
+- fallback worker ids
+- status
+
+### Naming Rule
+
+Use three names:
+
+1. stable `worker_id`
+2. human-facing `display_name`
+3. optional project-local alias from overlay/config
+
+Do not let project-specific nicknames replace the stable worker id.
+
+## Worker Classes
+
+Recommended worker classes:
+
+- administrator
+- orchestrator
+- performer
+- reviewer
+- verifier
+- hybrid
+
+This lets one model run in different operating roles without pretending every
+worker behaves the same.
+
+## Project Overlay Binding
+
+Project-specific logic should not live in the worker core record.
+
+Instead:
+
+- global registry stores stable worker truth
+- project overlays map workers to project roles, lane preference, naming, and
+  destination rules
+
+Examples:
+
+- one worker is the preferred `ohmic-audio-labs` browser-shell performer
+- one worker is allowed only on static-content trust cleanup
+- one worker is route-trained for queue shaping but not public content
+
+## Global Queue vs Worker Stack
+
+### Global Queue
+
+Owns:
+
+- canonical ready tasks
+- blocked tasks
+- done tasks
+- project-level truth
+
+### Worker Stack
+
+Owns:
+
+- what a specific worker should do next
+- ordered priority for that worker
+- fallback tasks if the primary task blocks
+- local budget pressure
+
+The global queue is the source of truth.
+
+The worker stack is a routing view.
+
+## Per-Worker Task Stack
+
+Each worker should have a bounded stack, not an infinite dump.
+
+Recommended stack shape:
+
+- 1 primary task
+- 2 near-term follow-ons
+- 1 fallback task
+- 1 maintenance or verification task
+
+That makes a normal live stack depth of `3-5` items.
+
+Do not give fresh workers giant stacks they cannot hold in context.
+
+## Same-Task Multi-Worker Rule
+
+Multiple workers may work the same larger initiative, but not the same exact
+claimed file scope without explicit coordination.
+
+Use this split:
+
+- objective family: shared larger initiative
+- worker slice: worker-specific task packet
+- file claim: exact active edit boundary
+
+Examples:
+
+- two workers can both support the `master administrator` initiative
+- one defines intake envelope while another defines overlay rules
+- they may not both edit the same packet file without a shared plan and claim
+
+## Fan-Out Rule
+
+When one larger objective needs several workers, split it into:
+
+- one parent objective or packet
+- several worker-addressable child tasks
+- explicit completion criteria per child
+
+This prevents “same task” from meaning hidden duplicate effort.
+
+## Priority Model
+
+Each worker should carry:
+
+- default priority class
+- preferred task families
+- fallback priority order
+- escalation thresholds
+
+Recommended priority classes:
+
+- mission-critical
+- software-primary
+- support-parallel
+- maintenance
+- speculative
+
+## Fallback Rule
+
+Each worker should have explicit fallback order:
+
+1. primary lane
+2. same-family fallback
+3. verification/cleanup fallback
+4. queue-refill or documentation fallback
+
+Do not let workers idle just because the first task blocks.
+
+## Escalation Rule
+
+Escalate instead of grinding when:
+
+- task scope collides with another active claim
+- required verification cannot be run
+- context required exceeds worker budget
+- project overlay rules conflict
+- trust tier is too low for the requested surface
+
+## Quota And Budget Model
+
+Each worker should have explicit operational budgets.
+
+Minimum tracked values:
+
+- max concurrent active claims
+- preferred stack depth
+- max stack depth
+- target context tokens
+- hard context ceiling
+- reserved completion tokens
+- target input token budget per task
+- rolling token usage
+- verification budget expectation
+
+### Recommended Defaults
+
+For a normal performer:
+
+- active claims: `1`
+- preferred stack depth: `4`
+- max stack depth: `6`
+- target context usage: `40-60%` of available window
+- hard context ceiling: `80%`
+- reserve completion tokens: enough for verification and notes
+
+For a fresh worker:
+
+- active claims: `1`
+- preferred stack depth: `2-3`
+- lower context ceiling
+- smaller task packet size
+
+For an orchestrator:
+
+- fewer edit claims
+- larger queue/context review budget
+- stronger reporting and refill expectations
+
+## Context-Length Rule
+
+Expected context length should be planned, not discovered by overflow.
+
+Each worker/task match should estimate:
+
+- input context needed
+- likely retrieved references
+- expected command/test output volume
+- expected response/output size
+
+If estimated usage does not fit the target budget, split the task before
+assignment.
+
+## Token-Usage Rule
+
+Token usage should be measured at two levels:
+
+- per task
+- per worker over time
+
+Useful metrics:
+
+- average prompt/input volume
+- average completion volume
+- total usage by task family
+- correction/rework cost
+- token-to-correctness efficiency
+
+This matters because the cheapest-looking worker may be wasteful after rework.
+
+## Restriction Rule
+
+Fresh or low-trust workers should not be given:
+
+- large mixed-surface packets
+- broad queue reshaping
+- unbounded same-task multi-worker overlap
+- token-heavy synthesis without guardrails
+
+They should earn higher budgets through route-trained passes.
+
+## Reporting Relationship
+
+This model should plug into:
+
+- agent trust tiers
+- sanity/error hooks
+- correctness reports
+- queue runtime summaries
+- per-agent and per-model performance surfaces
+
+## Immediate Next Tasks
+
+1. define worker registry schema
+2. define per-worker task stack model
+3. define worker priority fallback and escalation rules
+4. define global vs worker queue boundary
+5. later: define worker context and token budget policy
+6. later: define multi-worker shared-task fan-out rules
