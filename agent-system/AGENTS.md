@@ -158,6 +158,34 @@ queue:
 This does not need to be a big memo.
 It does need to be explicit enough that orchestration can refresh from it.
 
+### Queue Floor And Orchestrator Execution Loop
+
+When the current agent is acting as orchestrator, the job is not finished just
+because the board looks healthier.
+
+Default loop:
+
+1. restore the ready queue to the current floor target for the active project
+2. if the queue is at or above floor, claim and complete at least one real task
+3. re-check queue depth and active claims
+4. if the queue fell below floor, refill it again
+5. if the queue is still healthy, complete another real task
+6. repeat until blocked by risk, exhaustion of truthful tasks, or an explicit
+   user redirect
+
+Rules:
+
+- queue maintenance does not replace execution
+- execution without queue maintenance is also incomplete once the board thins
+- architecture, cleanup, and planning lanes still count as real tasks only if
+  they produce durable docs, moves, verification, or code changes
+- if closing a task would drop the queue below floor, add enough truthful
+  follow-on tasks before or during that completion wave
+
+This rule exists because real execution exposes the next truthful tasks.
+Orchestration should stay coupled to execution instead of drifting into passive
+board gardening.
+
 ## Conflict Resolution
 
 If agents disagree:
