@@ -1,7 +1,9 @@
-Status: ready
+Status: active
 Priority: low
 Date: 2026-03-16
 Project: ohmic
+Owner: d
+Claim ID: 20260316T105600Z-e51283b0
 
 # Define Closeout Refill Notice Payload
 
