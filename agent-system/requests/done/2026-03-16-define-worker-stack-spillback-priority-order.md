@@ -1,8 +1,8 @@
-Status: ready
+Status: done
 Priority: low
 Date: 2026-03-16
 Project: ohmic
-
+Owner: d
 # Define Worker Stack Spillback Priority Order
 
 ## Goal
@@ -22,3 +22,8 @@ eligible for spillback.
 
 - one spillback-priority packet is explicit
 - overflow trimming order becomes deterministic instead of ad hoc
+Claim ID: 20260316T101338Z-c9964bc3
+
+## Result
+
+Defined the spillback order that sheds stale maintenance and low-value local work before protected stack entries.

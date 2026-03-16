@@ -1,8 +1,8 @@
-Status: ready
+Status: done
 Priority: low
 Date: 2026-03-16
 Project: ohmic
-
+Owner: d
 # Define Trust Tier Stack Overextension Guard Rules
 
 ## Goal
@@ -22,3 +22,8 @@ its trust tier should safely carry.
 
 - one overextension-guard packet is explicit
 - trust-tier depth policy gets an enforceable safety boundary
+Claim ID: 20260316T101338Z-c9964bc3
+
+## Result
+
+Defined the trust-tier overextension guard rules so worker stacks have explicit soft and hard safety boundaries.
