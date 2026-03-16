@@ -10,6 +10,12 @@ Current scaffolds:
 - `queue-target-validation.ps1`
 - `approval-evaluation.ps1`
 - `command-composer.ps1`
+- `projection-common.ps1`
+- `intake-queue-projection.ps1`
+- `recent-actions-projection.ps1`
+- `note-projection.ps1`
+- `tag-projection.ps1`
+- `inactive-intake-projection.ps1`
 
 These files are PowerShell-first on purpose because the current JSON runtime
 and desk writeback loop already live under `tools/sync`.
