@@ -1,4 +1,4 @@
-Status: validation_note
+Status: blocked
 Date: 2026-03-16
 Project: ohmic-audio-labs
 
@@ -9,41 +9,35 @@ Project: ohmic-audio-labs
 Rerun the smallest honest phone-assisted AmpLab smoke flow after rechecking
 discovery truth and the current failure boundary.
 
-## What Was Revalidated
+## Current Truth
 
-- the live device still responds directly at `http://192.168.1.113/api/status`
-- the browser shell is still reachable at `http://127.0.0.1:4175/`
-- `Ohmic Live Link` now shows the same failure shape consistently enough to
-  describe it precisely
+- the browser shell floor is recovered
+- the Fire tablet is back on `adb`
+- this rerun does not require the Fold to be present
+- desktop direct requests to both:
+  - `http://192.168.1.113/api/status`
+  - `http://192.168.4.1/api/status`
+  timed out during closeout
 
 ## What Did Not Fully Complete
 
-The connected Fire tablet remained at the lock screen during the current packet,
-so this rerun did not produce a fresh in-app phone-side interaction trace.
+No honest post-fix phone-side link pass was recorded while the live device
+endpoints were timing out from the desktop.
 
 ## Honest Outcome
 
-This packet still produced useful rerun value:
-
-- it confirmed the failure boundary did not move back to basic network
-  reachability
-- it narrowed the blocker to live-link candidate normalization
-- it produced a stable before-fix signature for the next rerun
+The candidate-normalization repair landed, but this rerun is still blocked on
+live endpoint reachability and a fresh on-device interaction trace.
 
 ## Rerun Status
 
-`partially_completed`
+`blocked_pending_live_endpoint_reachability`
 
-The bounded rerun is not considered a live-link pass. It is considered a valid
-pre-fix rerun packet that isolates the remaining blocker without pretending the
-phone flow succeeded.
+The bounded rerun is not considered a live-link pass.
 
-## Next Required Slice
+## Resume When
 
-Fix `Ohmic Live Link` candidate normalization first, then rerun the exact same
-phone-assisted flow against:
-
-- AP identity `192.168.4.1`
-- LAN identity `192.168.1.113`
-- stale alias removal
-- self-host candidate rejection
+- at least one live device endpoint responds again from the desktop
+- the Fire/handset path is rerun against the corrected host
+- the resulting pass or blocker can be attributed to a narrower seam than basic
+  device reachability
