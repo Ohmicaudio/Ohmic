@@ -16,6 +16,13 @@ Current scaffolds:
 - `note-projection.ps1`
 - `tag-projection.ps1`
 - `inactive-intake-projection.ps1`
+- `shell-common.ps1`
+- `aggregation-panel-shell.ps1`
+- `attachment-preview-shell.ps1`
+- `audit-summary-shell.ps1`
+- `inactive-intake-shell.ps1`
+- `status-history-shell.ps1`
+- `warning-review-shell.ps1`
 
 These files are PowerShell-first on purpose because the current JSON runtime
 and desk writeback loop already live under `tools/sync`.

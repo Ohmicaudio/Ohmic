@@ -1,7 +1,9 @@
-Status: ready
+Status: done
 Priority: low
 Date: 2026-03-16
 Project: ohmic
+Owner: d
+Claim ID: 20260316T055707Z-a8ef9918
 
 # Scaffold Administrator Attachment Preview Shell Module
 
@@ -22,3 +24,10 @@ references and preview-failure states.
 
 - one preview shell packet is explicit
 - attachment preview rendering has a concrete module seam
+
+## Result
+
+Done. The attachment-preview shell module now lives in
+`tools/sync/administrator/attachment-preview-shell.ps1` and renders projected
+preview refs, availability states, fallback labels, preview failure reasons,
+and warning-lane handoff actions.
