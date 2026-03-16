@@ -1,7 +1,9 @@
-Status: ready
+Status: done
 Priority: high
 Date: 2026-03-16
 Project: ohmic-audio-labs
+Owner: d
+Claim ID: 20260316T034616Z-7558dd78
 
 # Define Ohmic Audio Labs Ignore And Cleanup Boundary
 
@@ -28,3 +30,12 @@ source truth.
 
 Use the retention and relocation boundaries first so ignore/cleanup rules do not
 accidentally swallow useful local evidence or staging material.
+
+## Result
+
+- defined the repo boundary in
+  `docs/roadmap/OHMIC_OHMIC_AUDIO_LABS_IGNORE_AND_CLEANUP_BOUNDARY_2026-03-16.md`
+- separated ignoreable/rebuildable junk from local-only retained evidence and
+  from source-visible artifacts
+- made it explicit that Class 2 material must relocate or purge by policy
+  before ignore rules should hide it
