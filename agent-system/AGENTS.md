@@ -186,6 +186,29 @@ This rule exists because real execution exposes the next truthful tasks.
 Orchestration should stay coupled to execution instead of drifting into passive
 board gardening.
 
+### Section Wave Successor Rule
+
+When a coherent work family is large enough to behave like one section, wave, or
+service block, the system should not treat one claimed packet as sufficient
+runway.
+
+Rules:
+
+- an active section family should usually keep at least:
+  - `1` active section packet
+  - `1` hot-ready successor packet
+  - `1` additional warm or staged successor packet
+- claimed or active packets do not count as healthy reserve
+- successor packets should be staged before the current section completes, not
+  only after depletion
+- when possible, keep at least `2` parallel active section families alive with
+  successor runway behind each
+- prefer coherent section waves over atomized one-off singles when many packets
+  obviously belong to the same action, service, or family
+
+The goal is to stop the board from looking busy while actually starving behind
+currently claimed work.
+
 ## Conflict Resolution
 
 If agents disagree:
