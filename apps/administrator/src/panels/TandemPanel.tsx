@@ -10,8 +10,10 @@ export function TandemPanel() {
     configured,
     available,
     mode,
+    sessionState,
     baseUrl,
     sessionLabel,
+    activeTargetLabel,
     launchUrl,
     message,
     loading,
@@ -65,6 +67,13 @@ export function TandemPanel() {
           </div>
 
           <div className="grid grid-cols-1 gap-1 text-xs text-ohmic-text-dim">
+            <div>
+              Session state: <span className="text-ohmic-text">{sessionState}</span>
+            </div>
+            <div>
+              Active target:{' '}
+              <span className="text-ohmic-text">{activeTargetLabel || '--'}</span>
+            </div>
             <div>
               Base URL: <span className="text-ohmic-text">{baseUrl || '--'}</span>
             </div>

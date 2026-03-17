@@ -232,6 +232,8 @@ describe('administrator server', () => {
   it('serves the Tandem status seam from environment configuration', async () => {
     process.env.ADMINISTRATOR_TANDEM_BASE_URL = 'http://127.0.0.1:8765'
     process.env.ADMINISTRATOR_TANDEM_SESSION_LABEL = 'gmail-triage'
+    process.env.ADMINISTRATOR_TANDEM_SESSION_STATE = 'attached'
+    process.env.ADMINISTRATOR_TANDEM_ACTIVE_TARGET_LABEL = 'Gmail support inbox'
 
     const { createAdministratorServer } = await importServer()
     const app = createAdministratorServer(0)
@@ -243,23 +245,29 @@ describe('administrator server', () => {
     const tandem = (await tandemRes.json()) as {
       configured: boolean
       available: boolean
+      session_state: string
       base_url: string | null
       session_label: string | null
+      active_target_label: string | null
       launch_url: string | null
       mode: string
     }
 
     expect(tandem).toMatchObject({
       configured: true,
-      available: false,
+      available: true,
+      session_state: 'attached',
       base_url: 'http://127.0.0.1:8765',
       session_label: 'gmail-triage',
+      active_target_label: 'Gmail support inbox',
       launch_url: 'http://127.0.0.1:8765/?sessionLabel=gmail-triage',
       mode: 'configured',
     })
 
     delete process.env.ADMINISTRATOR_TANDEM_BASE_URL
     delete process.env.ADMINISTRATOR_TANDEM_SESSION_LABEL
+    delete process.env.ADMINISTRATOR_TANDEM_SESSION_STATE
+    delete process.env.ADMINISTRATOR_TANDEM_ACTIVE_TARGET_LABEL
   })
 
   it('validates and executes command routes against the live runtime root', async () => {

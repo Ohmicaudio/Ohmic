@@ -13,8 +13,10 @@ describe('tandemStore', () => {
       configured: false,
       available: false,
       mode: 'unconfigured',
+      sessionState: 'missing',
       baseUrl: null,
       sessionLabel: null,
+      activeTargetLabel: null,
       launchUrl: null,
       message: null,
       loading: false,
@@ -25,25 +27,28 @@ describe('tandemStore', () => {
   it('stores configured Tandem status from the server', async () => {
     vi.mocked(fetchTandemStatus).mockResolvedValue({
       configured: true,
-      available: false,
+      available: true,
       mode: 'configured',
+      session_state: 'attached',
       base_url: 'http://127.0.0.1:8765',
       session_label: 'gmail-triage',
+      active_target_label: 'Gmail support inbox',
       launch_url: 'http://127.0.0.1:8765/?sessionLabel=gmail-triage',
-      message: 'Tandem base is configured. Open Tandem from here while deeper session browsing and provider capture stay in the next slice.',
+      message: 'Tandem is attached to Gmail support inbox. Open the live provider session from here.',
     })
 
     await useTandemStore.getState().fetch()
 
     expect(useTandemStore.getState()).toMatchObject({
       configured: true,
-      available: false,
+      available: true,
       mode: 'configured',
+      sessionState: 'attached',
       baseUrl: 'http://127.0.0.1:8765',
       sessionLabel: 'gmail-triage',
+      activeTargetLabel: 'Gmail support inbox',
       launchUrl: 'http://127.0.0.1:8765/?sessionLabel=gmail-triage',
-      message:
-        'Tandem base is configured. Open Tandem from here while deeper session browsing and provider capture stay in the next slice.',
+      message: 'Tandem is attached to Gmail support inbox. Open the live provider session from here.',
       loading: false,
       error: null,
     })
