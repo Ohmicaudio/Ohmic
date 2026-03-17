@@ -33,6 +33,12 @@ npm run server
 npm run dev
 ```
 
+`npm test` covers:
+
+- projection store loading and staleness wiring
+- command store execute/writeback flow
+- PowerShell runner smoke against a temporary local-only runtime root
+
 To keep runtime state out of the repo checkout, you can point the admin server at a
 local-only runtime root before launching it:
 

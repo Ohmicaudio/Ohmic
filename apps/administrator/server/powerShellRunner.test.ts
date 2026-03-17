@@ -1,0 +1,82 @@
+import { afterEach, describe, expect, it, vi } from 'vitest'
+import { access, mkdir, mkdtemp, readFile, rm } from 'fs/promises'
+import { constants as fsConstants } from 'fs'
+import path from 'path'
+
+const localRuntimeBase = 'B:\\ohmic-local\\runtime\\administrator-tests'
+
+async function importRunner() {
+  vi.resetModules()
+  return import('./powerShellRunner')
+}
+
+describe('powerShellRunner', () => {
+  let previousRuntimeDir: string | undefined
+  let tempRuntimeDir: string | null = null
+
+  afterEach(async () => {
+    if (previousRuntimeDir === undefined) {
+      delete process.env.ADMINISTRATOR_RUNTIME_DIR
+    } else {
+      process.env.ADMINISTRATOR_RUNTIME_DIR = previousRuntimeDir
+    }
+
+    if (tempRuntimeDir) {
+      await rm(tempRuntimeDir, { recursive: true, force: true })
+      tempRuntimeDir = null
+    }
+  })
+
+  it('writes command results and projections into the configured local-only runtime root', async () => {
+    previousRuntimeDir = process.env.ADMINISTRATOR_RUNTIME_DIR
+
+    await mkdir(localRuntimeBase, { recursive: true })
+    tempRuntimeDir = await mkdtemp(path.join(localRuntimeBase, 'smoke-'))
+    process.env.ADMINISTRATOR_RUNTIME_DIR = tempRuntimeDir
+
+    const { executeCommand } = await importRunner()
+
+    const result = await executeCommand({
+      intake_id: 'admin-test-intake',
+      action: 'route_to_orchestrator',
+      queue_target: 'orchestrator',
+      note: 'Server smoke writeback into local runtime',
+      tags: ['server-smoke'],
+    })
+
+    expect(result).toMatchObject({
+      writeback: {
+        writeback_status: 'accepted',
+        resulting_status: 'routed',
+        note_written: true,
+        tags_written: 1,
+      },
+    })
+
+    const expectedFiles = [
+      'administrator_command_results.jsonl',
+      'administrator_notes.jsonl',
+      'administrator_tag_assignments.jsonl',
+      'administrator_recent_actions.json',
+      'administrator_note_projection.json',
+      'administrator_tag_assignment_projection.json',
+    ]
+
+    for (const fileName of expectedFiles) {
+      await access(path.join(tempRuntimeDir, fileName), fsConstants.F_OK)
+    }
+
+    const recentActionsRaw = await readFile(
+      path.join(tempRuntimeDir, 'administrator_recent_actions.json'),
+      'utf-8'
+    )
+    const recentActions = JSON.parse(recentActionsRaw) as {
+      recent_actions: Array<{ intake_id: string; resulting_status: string }>
+    }
+
+    expect(recentActions.recent_actions[0]).toMatchObject({
+      intake_id: 'admin-test-intake',
+      resulting_status: 'routed',
+    })
+  })
+})
