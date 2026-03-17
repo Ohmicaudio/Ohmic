@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import { access, mkdir, mkdtemp, readFile, rm } from 'fs/promises'
+import { access, mkdir, mkdtemp, readFile, rm, writeFile } from 'fs/promises'
 import { constants as fsConstants } from 'fs'
 import path from 'path'
 
@@ -34,6 +34,45 @@ describe('powerShellRunner', () => {
     tempRuntimeDir = await mkdtemp(path.join(localRuntimeBase, 'smoke-'))
     process.env.ADMINISTRATOR_RUNTIME_DIR = tempRuntimeDir
 
+    await writeFile(
+      path.join(tempRuntimeDir, 'administrator_intake_queue.json'),
+      JSON.stringify(
+        {
+          generated_at: '2026-03-17T18:00:00Z',
+          projection_name: 'administrator_intake_queue',
+          staleness: {
+            status: 'fresh',
+            reason: null,
+          },
+          refresh_triggers: ['intake_change', 'routing_change', 'warning_change'],
+          metadata: {
+            ordering: 'priority_then_received_at_desc',
+            includes_warning_state: true,
+          },
+          count: 1,
+          queue_items: [
+            {
+              intake_id: 'admin-test-intake',
+              title: 'Runtime smoke target',
+              intake_kind: 'manual',
+              received_at: '2026-03-17T18:00:00Z',
+              status: 'new',
+              routing_target: '',
+              trust_tier: 'internal',
+              priority_hint: 'high',
+              tags: ['seed'],
+              warning_state: 'clean',
+              warning_count: 0,
+              summary_label: 'Runtime smoke target',
+            },
+          ],
+        },
+        null,
+        2
+      ),
+      'utf-8'
+    )
+
     const { executeCommand } = await importRunner()
 
     const result = await executeCommand({
@@ -50,6 +89,7 @@ describe('powerShellRunner', () => {
         resulting_status: 'routed',
         note_written: true,
         tags_written: 1,
+        queue_item_updated: true,
       },
     })
 
@@ -60,6 +100,7 @@ describe('powerShellRunner', () => {
       'administrator_recent_actions.json',
       'administrator_note_projection.json',
       'administrator_tag_assignment_projection.json',
+      'administrator_intake_queue.json',
     ]
 
     for (const fileName of expectedFiles) {
@@ -78,5 +119,20 @@ describe('powerShellRunner', () => {
       intake_id: 'admin-test-intake',
       resulting_status: 'routed',
     })
+
+    const intakeQueueRaw = await readFile(
+      path.join(tempRuntimeDir, 'administrator_intake_queue.json'),
+      'utf-8'
+    )
+    const intakeQueue = JSON.parse(intakeQueueRaw) as {
+      queue_items: Array<{ intake_id: string; status: string; routing_target: string; tags: string[] }>
+    }
+
+    expect(intakeQueue.queue_items[0]).toMatchObject({
+      intake_id: 'admin-test-intake',
+      status: 'routed',
+      routing_target: 'orchestrator',
+    })
+    expect(intakeQueue.queue_items[0].tags).toEqual(['seed', 'server-smoke'])
   })
 })

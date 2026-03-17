@@ -75,6 +75,7 @@ describe('commandStore', () => {
         recent_actions_count: 1,
         note_written: true,
         tags_written: 1,
+        queue_item_updated: true,
       },
     })
 
@@ -115,6 +116,7 @@ describe('commandStore', () => {
       resulting_status: 'routed',
       note_written: true,
       tags_written: 1,
+      queue_item_updated: true,
     })
     expect(useCommandStore.getState().recentActions).toHaveLength(1)
   })

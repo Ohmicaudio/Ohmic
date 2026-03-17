@@ -116,6 +116,7 @@ export interface CommandWritebackResult {
   recent_actions_count: number
   note_written: boolean
   tags_written: number
+  queue_item_updated: boolean
 }
 
 export interface ExecuteCommandResponse {

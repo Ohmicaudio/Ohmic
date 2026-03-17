@@ -1,4 +1,5 @@
 import { spawn } from 'child_process'
+import { readFile, writeFile } from 'fs/promises'
 import path from 'path'
 import { getAdministratorRuntimeDir } from './runtimeConfig.js'
 
@@ -11,6 +12,65 @@ interface CommandInput {
   queue_target?: string
   note?: string
   tags?: string[]
+}
+
+interface CommandValidationResult {
+  command_id: string
+  selected_intake_id: string
+  action_input: string
+  resolved_action_id: string | null
+  resolved_action_label: string | null
+  requested_queue_target_id: string
+  resolved_queue_target_id: string | null
+  note_text: string
+  tags: string[]
+  requested_by: string
+  created_at: string
+  validation: {
+    validation_status: 'accepted' | 'accepted_with_warnings' | 'rejected'
+  }
+}
+
+interface CommandWritebackResult {
+  writeback_status: 'accepted' | 'rejected'
+  resulting_status: string | null
+  recent_actions_count: number
+  note_written: boolean
+  tags_written: number
+  queue_item_updated: boolean
+}
+
+interface ExecuteCommandResponse {
+  result: CommandValidationResult
+  writeback: CommandWritebackResult
+}
+
+interface IntakeQueueProjection {
+  generated_at: string
+  projection_name: string
+  staleness?: {
+    status: 'fresh' | 'stale'
+    reason: string | null
+  }
+  refresh_triggers?: string[]
+  metadata?: Record<string, unknown>
+  count: number
+  queue_items: IntakeQueueItem[]
+}
+
+interface IntakeQueueItem {
+  intake_id: string
+  title: string
+  intake_kind: string
+  received_at: string
+  status: string
+  routing_target: string
+  trust_tier: string
+  priority_hint: string
+  tags: string[]
+  warning_state: string
+  warning_count: number
+  summary_label: string
 }
 
 const commandComposerScript = asPowerShellPath('command-composer.ps1')
@@ -121,6 +181,7 @@ export async function executeCommand(input: CommandInput): Promise<unknown> {
           recent_actions_count = 0
           note_written = $false
           tags_written = 0
+          queue_item_updated = $false
         }
       } | ConvertTo-Json -Depth 10 -Compress
       return
@@ -217,11 +278,18 @@ export async function executeCommand(input: CommandInput): Promise<unknown> {
         recent_actions_count = @($recentActionsProjection.recent_actions).Count
         note_written = $noteWritten
         tags_written = $tagWriteCount
+        queue_item_updated = $false
       }
     } | ConvertTo-Json -Depth 10 -Compress
   `
 
-  return runPowerShell(psScript)
+  const response = (await runPowerShell(psScript)) as ExecuteCommandResponse
+
+  if (response.writeback.writeback_status === 'accepted') {
+    response.writeback.queue_item_updated = await updateQueueProjection(response)
+  }
+
+  return response
 }
 
 export async function getComposerOptions(): Promise<unknown> {
@@ -289,4 +357,69 @@ function runPowerShell(script: string): Promise<unknown> {
       reject(new Error(`Failed to spawn PowerShell: ${err.message}`))
     })
   })
+}
+
+async function updateQueueProjection(
+  response: ExecuteCommandResponse
+): Promise<boolean> {
+  const queueProjectionPath = path.join(RUNTIME_DIR, 'administrator_intake_queue.json')
+
+  let projection: IntakeQueueProjection
+  try {
+    projection = JSON.parse(await readFile(queueProjectionPath, 'utf-8')) as IntakeQueueProjection
+  } catch {
+    return false
+  }
+
+  const intakeId = response.result.selected_intake_id
+  const itemIndex = projection.queue_items.findIndex((item) => item.intake_id === intakeId)
+  if (itemIndex === -1) {
+    return false
+  }
+
+  const currentItem = projection.queue_items[itemIndex]
+  const nextStatus = deriveQueueStatus(currentItem.status, response.result.resolved_action_id)
+  const nextRoutingTarget =
+    response.result.resolved_queue_target_id || currentItem.routing_target || ''
+  const nextTags = Array.from(new Set([...(currentItem.tags ?? []), ...response.result.tags]))
+
+  projection.queue_items[itemIndex] = {
+    ...currentItem,
+    status: nextStatus,
+    routing_target: nextRoutingTarget,
+    tags: nextTags,
+  }
+  projection.generated_at = new Date().toISOString()
+  if (projection.staleness) {
+    projection.staleness = {
+      status: 'fresh',
+      reason: null,
+    }
+  }
+  projection.count = projection.queue_items.length
+
+  await writeFile(queueProjectionPath, `${JSON.stringify(projection, null, 2)}\n`, 'utf-8')
+  return true
+}
+
+function deriveQueueStatus(currentStatus: string, actionId: string | null): string {
+  switch (actionId) {
+    case 'route_to_orchestrator':
+      return 'routed'
+    case 'archive':
+      return 'archived'
+    case 'hold':
+      return 'hold'
+    case 'request_approval':
+      return 'pending_approval'
+    case 'waiting_on_provider':
+      return 'waiting_on_provider'
+    case 'waiting_on_human':
+      return 'waiting_on_human'
+    case 'add_note':
+    case 'tag_item':
+      return currentStatus
+    default:
+      return currentStatus
+  }
 }

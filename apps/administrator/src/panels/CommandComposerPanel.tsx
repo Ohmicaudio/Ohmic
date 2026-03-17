@@ -83,6 +83,12 @@ function ValidationResult() {
           <div>
             Tags written: <span className="text-ohmic-text">{lastWriteback.tags_written}</span>
           </div>
+          <div>
+            Queue updated:{' '}
+            <span className="text-ohmic-text">
+              {lastWriteback.queue_item_updated ? 'yes' : 'no'}
+            </span>
+          </div>
         </div>
       )}
 
