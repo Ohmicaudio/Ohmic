@@ -3,10 +3,11 @@ import { useCommandStore } from '@/store/commandStore'
 import { useWarningReviewStore } from '@/store/warningReviewStore'
 import { StatusBadge } from '@/components/StatusBadge'
 import { TagChip } from '@/components/TagChip'
+import { buildWarningReviewContextNote } from '@/panels/warningReviewContext'
 
 export function WarningReviewPanel() {
   const { items, select, selectedId } = useIntakeStore()
-  const { setIntakeId, setActionInput } = useCommandStore()
+  const { noteText, setIntakeId, setActionInput, setNoteText } = useCommandStore()
   const {
     items: warningRows,
     generatedAt,
@@ -23,6 +24,14 @@ export function WarningReviewPanel() {
     if (recommendedAction) {
       setActionInput(recommendedAction)
     }
+  }
+
+  function primeWarningContext(item: (typeof warningRows)[number], includeAction: boolean) {
+    focusWarningTarget(
+      item.intake_id,
+      includeAction ? item.recommended_next_action : undefined
+    )
+    setNoteText(buildWarningReviewContextNote(noteText, item))
   }
 
   return (
@@ -114,15 +123,38 @@ export function WarningReviewPanel() {
                 </div>
 
                 {item.recommended_next_action && (
-                  <div className="mt-3 pt-1">
+                  <div className="mt-3 flex flex-wrap gap-2 pt-1">
                     <button
                       onClick={(event) => {
                         event.stopPropagation()
-                        focusWarningTarget(item.intake_id, item.recommended_next_action)
+                        primeWarningContext(item, true)
                       }}
                       className="rounded bg-ohmic-accent px-3 py-1.5 text-xs font-medium text-white transition-colors hover:bg-ohmic-accent-dim"
                     >
                       Use Recommended Action
+                    </button>
+                    <button
+                      onClick={(event) => {
+                        event.stopPropagation()
+                        primeWarningContext(item, false)
+                      }}
+                      className="rounded border border-ohmic-border px-3 py-1.5 text-xs font-medium text-ohmic-text transition-colors hover:border-ohmic-warning/40"
+                    >
+                      Prime Review Context
+                    </button>
+                  </div>
+                )}
+
+                {!item.recommended_next_action && (
+                  <div className="mt-3 pt-1">
+                    <button
+                      onClick={(event) => {
+                        event.stopPropagation()
+                        primeWarningContext(item, false)
+                      }}
+                      className="rounded border border-ohmic-border px-3 py-1.5 text-xs font-medium text-ohmic-text transition-colors hover:border-ohmic-warning/40"
+                    >
+                      Prime Review Context
                     </button>
                   </div>
                 )}
