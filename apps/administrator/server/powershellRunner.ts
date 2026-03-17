@@ -20,6 +20,13 @@ interface ReopenInactiveInput {
   reopen_reason?: string
 }
 
+interface RecordFilingInput {
+  intake_id: string
+  filing_destination_id: string
+  archive_marker?: boolean
+  reason?: string
+}
+
 interface CommandValidationResult {
   command_id: string
   selected_intake_id: string
@@ -99,6 +106,18 @@ interface ReopenInactiveResponse {
   updated_intake?: Record<string, unknown>
 }
 
+interface RecordFilingResponse {
+  writeback: {
+    writeback_status: 'accepted' | 'rejected'
+    intake_id: string
+    filing_record_id: string | null
+    filing_destination_id: string | null
+    filing_history_count: number
+    rejection_reason?: string
+  }
+  filing_record?: Record<string, unknown>
+}
+
 interface IntakeQueueItem {
   intake_id: string
   title: string
@@ -119,7 +138,9 @@ const recentActionsProjectionScript = asPowerShellPath('recent-actions-projectio
 const noteProjectionScript = asPowerShellPath('note-projection.ps1')
 const tagProjectionScript = asPowerShellPath('tag-projection.ps1')
 const reopenWritebackScript = asPowerShellPath('reopen-writeback.ps1')
+const filingHistoryProjectionScript = asPowerShellPath('filing-history-projection.ps1')
 const filingPickerReadScript = asPowerShellPath('filing-picker-read.ps1')
+const filingWritebackScript = asPowerShellPath('filing-writeback.ps1')
 
 function asPowerShellPath(fileName: string): string {
   return path.join(ADMIN_SCRIPTS_DIR, fileName).replace(/\\/g, '\\\\')
@@ -176,6 +197,55 @@ function buildComposerStateScript(input: CommandInput): string {
     $composerState.tags = @(${tagsArray})
 
     $intent = Convert-AdministratorComposerStateToIntent -ComposerState $composerState -ActionRegistry $actionRegistry -TargetRegistry $targetRegistry
+  `
+}
+
+function buildFilingDestinationRegistryScript(): string {
+  return `
+    $destinationRegistryPath = Join-Path $runtimeDir 'administrator_filing_destination_registry.json'
+    $destinationRegistry = @()
+    if (Test-Path $destinationRegistryPath) {
+      $destinationRegistry = @((Get-Content $destinationRegistryPath -Raw | ConvertFrom-Json).destinations)
+    } else {
+      $destinationRegistry = @(
+        [pscustomobject]@{
+          filing_destination_id = 'customer_archive'
+          display_label = 'Customer Archive'
+          description = 'Default archive destination for customer-facing intake'
+          status = 'active'
+          allowed_intake_kinds = @('email', 'web_form', 'manual')
+          default_for_intake_kinds = @('email', 'web_form')
+          advanced_only = $false
+          blocked = $false
+          archive_marker_default = $true
+          is_default = $true
+        }
+        [pscustomobject]@{
+          filing_destination_id = 'issue_archive'
+          display_label = 'Issue Archive'
+          description = 'Archive destination for GitHub issue and PR intake'
+          status = 'active'
+          allowed_intake_kinds = @('github_issue', 'github_pr')
+          default_for_intake_kinds = @('github_issue', 'github_pr')
+          advanced_only = $false
+          blocked = $false
+          archive_marker_default = $true
+          is_default = $false
+        }
+        [pscustomobject]@{
+          filing_destination_id = 'provider_reference'
+          display_label = 'Provider Reference'
+          description = 'Advanced filing path for provider-supplied reference material'
+          status = 'active'
+          allowed_intake_kinds = @('email', 'manual')
+          default_for_intake_kinds = @()
+          advanced_only = $true
+          blocked = $false
+          archive_marker_default = $false
+          is_default = $false
+        }
+      )
+    }
   `
 }
 
@@ -378,56 +448,109 @@ export async function getFilingOptions(intakeId: string): Promise<unknown> {
       throw 'Selected intake item is not present in the active intake queue projection.'
     }
 
-    $destinationRegistryPath = Join-Path $runtimeDir 'administrator_filing_destination_registry.json'
-    $destinationRegistry = @()
-    if (Test-Path $destinationRegistryPath) {
-      $destinationRegistry = @((Get-Content $destinationRegistryPath -Raw | ConvertFrom-Json).destinations)
-    } else {
-      $destinationRegistry = @(
-        [pscustomobject]@{
-          filing_destination_id = 'customer_archive'
-          display_label = 'Customer Archive'
-          description = 'Default archive destination for customer-facing intake'
-          status = 'active'
-          allowed_intake_kinds = @('email', 'web_form', 'manual')
-          default_for_intake_kinds = @('email', 'web_form')
-          advanced_only = $false
-          blocked = $false
-          archive_marker_default = $true
-          is_default = $true
-        }
-        [pscustomobject]@{
-          filing_destination_id = 'issue_archive'
-          display_label = 'Issue Archive'
-          description = 'Archive destination for GitHub issue and PR intake'
-          status = 'active'
-          allowed_intake_kinds = @('github_issue', 'github_pr')
-          default_for_intake_kinds = @('github_issue', 'github_pr')
-          advanced_only = $false
-          blocked = $false
-          archive_marker_default = $true
-          is_default = $false
-        }
-        [pscustomobject]@{
-          filing_destination_id = 'provider_reference'
-          display_label = 'Provider Reference'
-          description = 'Advanced filing path for provider-supplied reference material'
-          status = 'active'
-          allowed_intake_kinds = @('email', 'manual')
-          default_for_intake_kinds = @()
-          advanced_only = $true
-          blocked = $false
-          archive_marker_default = $false
-          is_default = $false
-        }
-      )
-    }
+    ${buildFilingDestinationRegistryScript()}
 
     $model = New-AdministratorFilingPickerReadModel -IntakeItem $intakeItem -DestinationRegistry $destinationRegistry
     $model | ConvertTo-Json -Depth 10 -Compress
   `
 
   return runPowerShell(psScript)
+}
+
+export async function recordFiling(
+  input: RecordFilingInput
+): Promise<RecordFilingResponse> {
+  const runtimeDir = escapePowerShellString(RUNTIME_DIR)
+  const archiveMarkerSwitch =
+    input.archive_marker === undefined
+      ? ''
+      : ` -ArchiveMarker:$${input.archive_marker ? 'true' : 'false'}`
+
+  const psScript = `
+    Set-StrictMode -Version Latest
+    $ErrorActionPreference = 'Stop'
+
+    . '${filingPickerReadScript}'
+    . '${filingWritebackScript}'
+    . '${filingHistoryProjectionScript}'
+
+    $runtimeDir = '${runtimeDir}'
+    $queueProjectionPath = Join-Path $runtimeDir 'administrator_intake_queue.json'
+    $filingHistoryPath = Join-Path $runtimeDir 'administrator_filing_history.jsonl'
+
+    if (-not (Test-Path $queueProjectionPath)) {
+      throw 'Administrator intake queue projection is not available.'
+    }
+
+    $queueProjection = Get-Content $queueProjectionPath -Raw | ConvertFrom-Json
+    $intakeItem = @($queueProjection.queue_items) | Where-Object { $_.intake_id -eq '${escapePowerShellString(input.intake_id)}' } | Select-Object -First 1
+
+    if ($null -eq $intakeItem) {
+      [pscustomobject]@{
+        writeback = [pscustomobject]@{
+          writeback_status = 'rejected'
+          intake_id = '${escapePowerShellString(input.intake_id)}'
+          filing_record_id = $null
+          filing_destination_id = $null
+          filing_history_count = 0
+          rejection_reason = 'active_intake_not_found'
+        }
+      } | ConvertTo-Json -Depth 10 -Compress
+      return
+    }
+
+    ${buildFilingDestinationRegistryScript()}
+
+    $model = New-AdministratorFilingPickerReadModel -IntakeItem $intakeItem -DestinationRegistry $destinationRegistry
+    $destination = @($model.destinations) | Where-Object { $_.filing_destination_id -eq '${escapePowerShellString(input.filing_destination_id)}' } | Select-Object -First 1
+
+    if ($null -eq $destination) {
+      [pscustomobject]@{
+        writeback = [pscustomobject]@{
+          writeback_status = 'rejected'
+          intake_id = '${escapePowerShellString(input.intake_id)}'
+          filing_record_id = $null
+          filing_destination_id = '${escapePowerShellString(input.filing_destination_id)}'
+          filing_history_count = 0
+          rejection_reason = 'filing_destination_not_found'
+        }
+      } | ConvertTo-Json -Depth 10 -Compress
+      return
+    }
+
+    $writeback = Invoke-AdministratorFilingWriteback -IntakeItem $intakeItem -Destination $destination -RequestedBy 'operator:d' -Reason '${escapePowerShellString(input.reason ?? '')}'${archiveMarkerSwitch}
+
+    if ($writeback.writeback_status -ne 'accepted') {
+      [pscustomobject]@{
+        writeback = [pscustomobject]@{
+          writeback_status = 'rejected'
+          intake_id = '${escapePowerShellString(input.intake_id)}'
+          filing_record_id = $null
+          filing_destination_id = '${escapePowerShellString(input.filing_destination_id)}'
+          filing_history_count = 0
+          rejection_reason = $writeback.rejection_reason
+        }
+      } | ConvertTo-Json -Depth 10 -Compress
+      return
+    }
+
+    Append-JsonLine -PathText $filingHistoryPath -Value $writeback.filing_record
+    $filingHistory = @(Read-JsonLines -PathText $filingHistoryPath)
+    $projection = Write-AdministratorFilingHistoryProjection -FilingHistory $filingHistory -RuntimeDir $runtimeDir
+
+    [pscustomobject]@{
+      writeback = [pscustomobject]@{
+        writeback_status = 'accepted'
+        intake_id = $writeback.filing_record.intake_id
+        filing_record_id = $writeback.filing_record.filing_record_id
+        filing_destination_id = $writeback.filing_record.filing_destination_id
+        filing_history_count = @($projection.filing_history).Count
+      }
+      filing_record = $writeback.filing_record
+    } | ConvertTo-Json -Depth 10 -Compress
+  `
+
+  return runPowerShell(psScript) as Promise<RecordFilingResponse>
 }
 
 export async function reopenInactiveIntake(

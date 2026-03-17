@@ -6,6 +6,7 @@ import { getAdministratorRuntimeDir } from './runtimeConfig.js'
 import {
   executeCommand,
   getFilingOptions,
+  recordFiling,
   reopenInactiveIntake,
   validateCommand,
   getComposerOptions,
@@ -118,6 +119,23 @@ export function createAdministratorServer(port = PORT) {
       getFilingOptions(intakeId)
         .then((data) => sendJson(res, data))
         .catch((err) => sendJson(res, { error: err.message }, 500))
+      return
+    }
+
+    // Filing writeback: POST /api/filing/record
+    if (requestPath === '/api/filing/record' && req.method === 'POST') {
+      let body = ''
+      req.on('data', (chunk: Buffer) => { body += chunk.toString() })
+      req.on('end', () => {
+        try {
+          const input = JSON.parse(body)
+          recordFiling(input)
+            .then((result) => sendJson(res, result))
+            .catch((err) => sendJson(res, { error: err.message }, 500))
+        } catch {
+          sendJson(res, { error: 'Invalid JSON body' }, 400)
+        }
+      })
       return
     }
 

@@ -1,5 +1,7 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
+import { recordFiling } from '@/api/filing'
 import { useFilingPickerStore } from '@/store/filingPickerStore'
+import { useFilingHistoryStore } from '@/store/filingHistoryStore'
 import { useCommandStore } from '@/store/commandStore'
 import { useIntakeStore } from '@/store/intakeStore'
 import { StatusBadge } from '@/components/StatusBadge'
@@ -19,13 +21,20 @@ function buildFilingContextNote(existingNote: string, destinationLabel: string):
 }
 
 export function FilingPickerPanel() {
+  const [filingReason, setFilingReason] = useState('')
+  const [filingError, setFilingError] = useState<string | null>(null)
+  const [filingResult, setFilingResult] = useState<string | null>(null)
+  const [recording, setRecording] = useState(false)
   const selectedId = useIntakeStore((s) => s.selectedId)
   const { model, selectedDestinationId, loading, error, fetch, setSelectedDestination } =
     useFilingPickerStore()
+  const refreshFilingHistory = useFilingHistoryStore((s) => s.fetch)
   const { noteText, setIntakeId, setActionInput, setNoteText } = useCommandStore()
 
   useEffect(() => {
     void fetch(selectedId)
+    setFilingError(null)
+    setFilingResult(null)
   }, [selectedId, fetch])
 
   const selectedDestination =
@@ -44,6 +53,40 @@ export function FilingPickerPanel() {
     }
     if (selectedDestination) {
       setNoteText(buildFilingContextNote(noteText, selectedDestination.display_label))
+    }
+  }
+
+  async function handleRecordFiling() {
+    if (!selectedId || !selectedDestination || !selectedDestination.selectable) {
+      return
+    }
+
+    setRecording(true)
+    setFilingError(null)
+    setFilingResult(null)
+
+    try {
+      const response = await recordFiling({
+        intake_id: selectedId,
+        filing_destination_id: selectedDestination.filing_destination_id,
+        archive_marker: selectedDestination.archive_marker_default,
+        reason: filingReason.trim() || undefined,
+      })
+
+      if (response.writeback.writeback_status !== 'accepted') {
+        setFilingError(response.writeback.rejection_reason ?? 'Filing writeback was rejected')
+        return
+      }
+
+      setFilingResult(
+        `Recorded ${selectedDestination.display_label} for ${selectedId}`
+      )
+      setFilingReason('')
+      await refreshFilingHistory()
+    } catch (err) {
+      setFilingError(err instanceof Error ? err.message : 'Failed to record filing')
+    } finally {
+      setRecording(false)
     }
   }
 
@@ -134,16 +177,45 @@ export function FilingPickerPanel() {
             </button>
           ))}
 
-          <div className="pt-1">
-            <button
-              onClick={primeDestinationContext}
-              disabled={!selectedDestination || !selectedDestination.selectable}
-              className="rounded bg-ohmic-accent px-3 py-1.5 text-xs font-medium text-white transition-colors hover:bg-ohmic-accent-dim"
-            >
-              {selectedDestination?.archive_marker_default
-                ? 'Prime Archive Action'
-                : 'Prime Filing Context'}
-            </button>
+          <div className="panel space-y-3">
+            <div>
+              <label className="block text-xs text-ohmic-text-dim mb-1">
+                Filing reason (optional)
+              </label>
+              <textarea
+                value={filingReason}
+                onChange={(event) => setFilingReason(event.target.value)}
+                placeholder="Why this filing destination fits the current intake..."
+                rows={2}
+                className="w-full bg-ohmic-bg border border-ohmic-border rounded px-3 py-2 text-sm text-ohmic-text placeholder:text-ohmic-muted focus:border-ohmic-accent focus:outline-none transition-colors resize-none"
+              />
+            </div>
+
+            {filingError ? (
+              <div className="text-xs text-ohmic-danger">{filingError}</div>
+            ) : null}
+            {filingResult ? (
+              <div className="text-xs text-ohmic-success">{filingResult}</div>
+            ) : null}
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-1">
+              <button
+                onClick={primeDestinationContext}
+                disabled={!selectedDestination || !selectedDestination.selectable}
+                className="rounded bg-ohmic-accent px-3 py-1.5 text-xs font-medium text-white transition-colors hover:bg-ohmic-accent-dim disabled:bg-ohmic-border disabled:text-ohmic-muted"
+              >
+                {selectedDestination?.archive_marker_default
+                  ? 'Prime Archive Action'
+                  : 'Prime Filing Context'}
+              </button>
+              <button
+                onClick={() => void handleRecordFiling()}
+                disabled={!selectedDestination || !selectedDestination.selectable || recording}
+                className="rounded bg-ohmic-success px-3 py-1.5 text-xs font-medium text-white transition-colors hover:bg-ohmic-success/80 disabled:bg-ohmic-border disabled:text-ohmic-muted"
+              >
+                {recording ? 'Recording...' : 'Record Filing'}
+              </button>
+            </div>
           </div>
         </div>
       )}

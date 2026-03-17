@@ -369,6 +369,25 @@ export interface FilingHistoryProjection {
   filing_history: FilingHistoryItem[]
 }
 
+export interface RecordFilingRequest {
+  intake_id: string
+  filing_destination_id: string
+  archive_marker?: boolean
+  reason?: string
+}
+
+export interface RecordFilingResponse {
+  writeback: {
+    writeback_status: 'accepted' | 'rejected'
+    intake_id: string
+    filing_record_id: string | null
+    filing_destination_id: string | null
+    filing_history_count: number
+    rejection_reason?: string
+  }
+  filing_record?: FilingHistoryItem
+}
+
 // Ready tasks.
 export interface ReadyTask {
   task_id: string

@@ -161,4 +161,73 @@ describe('administrator server', () => {
     expect(filing.destinations.length).toBeGreaterThan(0)
     expect(filing.destinations[0]).toHaveProperty('filing_destination_id')
   })
+
+  it('records filing history for an active intake item', async () => {
+    await writeFile(
+      path.join(tempRuntimeDir!, 'administrator_intake_queue.json'),
+      JSON.stringify(
+        {
+          generated_at: '2026-03-17T16:06:00Z',
+          projection_name: 'administrator_intake_queue',
+          staleness: {
+            status: 'fresh',
+            reason: null,
+          },
+          refresh_triggers: ['routing_change'],
+          metadata: {
+            ordering: 'priority_then_received_at_desc',
+            includes_warning_state: true,
+          },
+          count: 1,
+          queue_items: [
+            {
+              intake_id: 'intake-2',
+              title: 'Archive for provider reference',
+              intake_kind: 'manual',
+              received_at: '2026-03-17T16:05:00Z',
+              status: 'triaging',
+              routing_target: '',
+              trust_tier: '2',
+              priority_hint: 'normal',
+              tags: [],
+              warning_state: 'clean',
+              warning_count: 0,
+              summary_label: 'Archive for provider reference',
+            },
+          ],
+        },
+        null,
+        2
+      ),
+      'utf-8'
+    )
+
+    const { createAdministratorServer } = await importServer()
+    const app = createAdministratorServer(0)
+    const baseUrl = await app.start()
+    stopServer = app.stop
+
+    const filingRes = await fetch(`${baseUrl}/api/filing/record`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        intake_id: 'intake-2',
+        filing_destination_id: 'customer_archive',
+        reason: 'Retained after operator review.',
+      }),
+    })
+
+    expect(filingRes.ok).toBe(true)
+    const filing = (await filingRes.json()) as {
+      writeback: {
+        writeback_status: string
+        filing_destination_id: string
+        filing_history_count: number
+      }
+    }
+
+    expect(filing.writeback.writeback_status).toBe('accepted')
+    expect(filing.writeback.filing_destination_id).toBe('customer_archive')
+    expect(filing.writeback.filing_history_count).toBe(1)
+  })
 })

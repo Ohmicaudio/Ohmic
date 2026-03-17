@@ -17,6 +17,7 @@ Current scaffolds:
 - `tag-projection.ps1`
 - `filing-history-projection.ps1`
 - `inactive-intake-projection.ps1`
+- `filing-writeback.ps1`
 - `shell-common.ps1`
 - `aggregation-panel-shell.ps1`
 - `attachment-preview-shell.ps1`

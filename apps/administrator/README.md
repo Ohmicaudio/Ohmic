@@ -10,7 +10,7 @@ This app is currently a Phase 1 plus early Phase 2 scaffold:
 - intake queue viewer
 - inactive intake browser with reopen action
 - intake detail with note and tag context
-- filing picker read panel for the selected intake item
+- filing picker with direct filing-record writeback
 - filing history panel with optional runtime module support
 - warning review panel with optional runtime module support
 - aggregation bundle panel with optional runtime module support
@@ -21,7 +21,7 @@ This app is currently a Phase 1 plus early Phase 2 scaffold:
 - recent action / audit projection viewer with intake jump-back
 - SSE refresh from runtime projection changes
 
-It is now a usable intake triage foundation, but it is not yet a full operator desk. The current branch can validate and apply commands back into the administrator runtime, reopen inactive items, and consume several optional runtime shell modules, but it still stops short of provider integrations, filing flows, and richer operator-specific writeback surfaces.
+It is now a usable intake triage foundation, but it is not yet a full operator desk. The current branch can validate and apply commands back into the administrator runtime, reopen inactive items, record direct filing history, and consume several optional runtime shell modules, but it still stops short of provider integrations, advanced filing flows, and richer operator-specific writeback surfaces.
 
 ## Location
 
@@ -74,6 +74,7 @@ Backend:
 - `GET /api/projections/stream`
 - `GET /api/commands/options`
 - `GET /api/filing/options?intakeId=...`
+- `POST /api/filing/record`
 - `POST /api/commands/validate`
 - `POST /api/commands/execute`
 - `POST /api/inactive/reopen`
@@ -89,8 +90,7 @@ Good to share as a foundation branch for:
 
 Not yet complete for:
 
-- filing writeback flows
-- filing history generation in the shared runtime
+- filing destination migration and replacement flows
 - richer status-history selection sync and audit-summary action handoff
 - attachment preview writeback or Tandem handoff flows
 - Tandem integration

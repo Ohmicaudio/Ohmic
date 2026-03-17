@@ -254,4 +254,91 @@ describe('powerShellRunner', () => {
     expect(inactiveProjection.count).toBe(0)
     expect(inactiveProjection.inactive_items).toEqual([])
   })
+
+  it('records a filing record and regenerates filing history in the local runtime root', async () => {
+    previousRuntimeDir = process.env.ADMINISTRATOR_RUNTIME_DIR
+
+    await mkdir(localRuntimeBase, { recursive: true })
+    tempRuntimeDir = await mkdtemp(path.join(localRuntimeBase, 'filing-'))
+    process.env.ADMINISTRATOR_RUNTIME_DIR = tempRuntimeDir
+
+    await writeFile(
+      path.join(tempRuntimeDir, 'administrator_intake_queue.json'),
+      JSON.stringify(
+        {
+          generated_at: '2026-03-17T20:00:00Z',
+          projection_name: 'administrator_intake_queue',
+          staleness: {
+            status: 'fresh',
+            reason: null,
+          },
+          refresh_triggers: ['intake_change', 'routing_change', 'warning_change'],
+          metadata: {
+            ordering: 'priority_then_received_at_desc',
+            includes_warning_state: true,
+          },
+          count: 1,
+          queue_items: [
+            {
+              intake_id: 'filing-intake-1',
+              title: 'Provider follow-up packet',
+              intake_kind: 'manual',
+              received_at: '2026-03-17T19:55:00Z',
+              status: 'triaging',
+              routing_target: '',
+              trust_tier: 'internal',
+              priority_hint: 'normal',
+              tags: [],
+              warning_state: 'clean',
+              warning_count: 0,
+              summary_label: 'Provider follow-up packet',
+            },
+          ],
+        },
+        null,
+        2
+      ),
+      'utf-8'
+    )
+
+    const { recordFiling } = await importRunner()
+
+    const result = await recordFiling({
+      intake_id: 'filing-intake-1',
+      filing_destination_id: 'customer_archive',
+      reason: 'Retained as reference after intake review.',
+    })
+
+    expect(result).toMatchObject({
+      writeback: {
+        writeback_status: 'accepted',
+        intake_id: 'filing-intake-1',
+        filing_destination_id: 'customer_archive',
+        filing_history_count: 1,
+      },
+    })
+
+    await access(
+      path.join(tempRuntimeDir, 'administrator_filing_history.jsonl'),
+      fsConstants.F_OK
+    )
+    await access(
+      path.join(tempRuntimeDir, 'administrator_filing_history_projection.json'),
+      fsConstants.F_OK
+    )
+
+    const filingProjectionRaw = await readFile(
+      path.join(tempRuntimeDir, 'administrator_filing_history_projection.json'),
+      'utf-8'
+    )
+    const filingProjection = JSON.parse(filingProjectionRaw) as {
+      filing_history: Array<{ intake_id: string; filing_destination_id: string; archive_marker: boolean }>
+    }
+
+    expect(filingProjection.filing_history[0]).toMatchObject({
+      intake_id: 'filing-intake-1',
+      filing_destination_id: 'customer_archive',
+      archive_marker: true,
+    })
+  })
 })
