@@ -18,6 +18,16 @@ guarded, and the live display slot is not yet a real stream-backed surface.
 - finish shared telemetry/control/status language across active participant classes
 - reserve the live display slot as a real stream surface, not decorative runtime
 
+## Correction Notes
+
+- the shared network core is device-wide, not a remote-only behavior family
+- connection, discovery, probe, and target-selection work should be
+  command-first under the firmware/runtime contract, not owned by button code
+- discovery and candidate selection should be the primary operator path
+- manual host entry stays available as a fallback or recovery tool, not the
+  first-class path
+- UI pages are invokers of network/control behavior, not the source of truth
+
 ## Child Requests
 
 - `2026-03-17-run-network-and-telemetry-stack-consolidation-wave.md`
@@ -26,4 +36,3 @@ guarded, and the live display slot is not yet a real stream-backed surface.
 - `2026-03-17-normalize-ap-vs-lan-target-selection-over-the-shared-network-contract.md`
 - `2026-03-17-finish-shared-status-control-and-stream-contract-across-active-nodes.md`
 - `2026-03-17-carve-live-display-stream-slot-and-missing-stream-state-outside-demo-mode.md`
-

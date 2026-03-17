@@ -16,3 +16,10 @@ This is intentionally not a full shared Wi-Fi client yet. It is the extraction
 step that defines the common network truth layer so remote and other firmware
 targets can stop growing local-only network divergence on top of ad hoc status
 fields.
+
+Direction correction:
+
+- scan, join, saved target, retry, probe, and host-selection behavior should
+  converge under this shared core
+- device UI should invoke that behavior, not reimplement it locally
+- manual host entry remains a recovery tool, not the primary network model

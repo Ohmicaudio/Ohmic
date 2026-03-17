@@ -46,7 +46,41 @@ Consumers should know:
 - supported jobs
 - artifact references
 
-### 3. Long captures are artifacts, not just streams
+### 3. Commands are command-first and surface-agnostic
+
+Every operator action should exist as a real contract command before it exists
+as a button, gesture, page, or shortcut on any surface.
+
+That means:
+
+- firmware/API behavior is the source of truth
+- web, Android, handheld, desktop, and future shells invoke the same command
+  surface
+- acceptance, rejection, auth, busy, and routing behavior should be identical
+  regardless of which surface invoked the action
+- a UI callback is never the real implementation of an action
+
+### 4. Discovery is primary; manual entry is fallback
+
+The normal connection path should be:
+
+- discover reachable candidate devices and hosts
+- show truthful candidate identity and route class
+- choose the preferred actionable target
+- keep manual host entry only as an operator escape hatch
+
+Do not design the platform around typing IP addresses as the first-class path.
+
+### 5. Network truth belongs to the shared device contract
+
+Joined network truth, AP-vs-LAN posture, saved target state, retry/probe
+behavior, and host selection rules should converge under a shared network core.
+
+Different devices may present that logic differently in UI, but they should not
+quietly invent separate network behavior families when they are participating in
+the same Ohmic system contract.
+
+### 6. Long captures are artifacts, not just streams
 
 Use live transport for:
 
@@ -163,6 +197,14 @@ Every command path should support:
 - busy
 - auth required
 
+Important rule:
+
+- command routes should be testable without any specific UI present
+- handheld, web, Android, and desktop controls should be thin invokers of the
+  same command behavior
+- control routing should be explicit when a command may target different
+  backends such as DSP, transport, local output, or a delegated node
+
 ## Layer 6. Artifacts
 
 Artifacts are named outputs or stored inputs that can be retrieved later.
@@ -209,6 +251,9 @@ The handheld should be a focused consumer of the same contract:
 - selected quick actions
 
 No local translator is required for the current Ohmic-native path.
+
+It should not grow its own private command family or its own private network
+truth model when those behaviors are intended to be shared across active nodes.
 
 ## 3. Shared-core mini apps
 

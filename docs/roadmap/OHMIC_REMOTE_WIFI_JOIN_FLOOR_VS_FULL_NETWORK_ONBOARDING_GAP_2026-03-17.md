@@ -21,3 +21,11 @@ What it does not do yet:
 
 The next honest follow-on is shared target selection and onboarding truth over
 the converged network core, not more local-only Wi-Fi UI branching.
+
+Correction note:
+
+- the handheld Wi-Fi page can expose join actions, but those actions should map
+  onto shared network-core behavior
+- discovery and candidate host selection should become the default follow-on
+  after join
+- manual target entry should remain available only as fallback or recovery

@@ -17,6 +17,17 @@ actually owns a control at any given moment.
 - define control routing truth so the handheld never implies the wrong target
 - quarantine fake or display-only surfaces outside normal runtime
 
+## Contract Rule
+
+Operator controls should stay command-first and surface-agnostic.
+
+That means:
+
+- the shared control command is the real behavior
+- handheld UI, web UI, Android UI, and desktop UI are just invokers
+- authority, routing, rejection, and lockout truth must come from the same
+  shared control model
+
 ## Child Requests
 
 - `2026-03-17-run-remote-operator-modes-and-control-authority-wave.md`
@@ -24,4 +35,3 @@ actually owns a control at any given moment.
 - `2026-03-17-define-control-authority-and-routing-truth-for-remote-actions.md`
 - `2026-03-17-define-remote-operator-lockout-and-safe-unlock-gesture.md`
 - `2026-03-17-define-store-demo-mode-boundary-and-fake-surface-quarantine.md`
-
