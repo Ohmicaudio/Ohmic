@@ -2,34 +2,21 @@ import { useAttachmentPreviewStore } from '@/store/attachmentPreviewStore'
 import { useCommandStore } from '@/store/commandStore'
 import { useIntakeStore } from '@/store/intakeStore'
 import { StatusBadge } from '@/components/StatusBadge'
-
-function buildPreviewContextNote(existingNote: string, assetLabel: string): string {
-  const nextLine = `Attachment preview focus: ${assetLabel}`
-
-  if (!existingNote.trim()) {
-    return nextLine
-  }
-
-  if (existingNote.includes(nextLine)) {
-    return existingNote
-  }
-
-  return `${existingNote.trim()}\n${nextLine}`
-}
+import { buildAttachmentPreviewContextNote } from '@/panels/attachmentPreviewContext'
 
 export function AttachmentPreviewPanel() {
   const { items, generatedAt, loading, error, available, fetch } = useAttachmentPreviewStore()
   const selectedIntakeId = useIntakeStore((s) => s.selectedId)
   const { noteText, setIntakeId, setActionInput, setNoteText } = useCommandStore()
 
-  function primeReviewHandoff(action: string, label: string) {
+  function primeReviewHandoff(action: string, item: (typeof items)[number]) {
     if (!selectedIntakeId) {
       return
     }
 
     setIntakeId(selectedIntakeId)
     setActionInput(action)
-    setNoteText(buildPreviewContextNote(noteText, label))
+    setNoteText(buildAttachmentPreviewContextNote(noteText, item))
   }
 
   return (
@@ -97,10 +84,7 @@ export function AttachmentPreviewPanel() {
                   </div>
                   <button
                     onClick={() =>
-                      primeReviewHandoff(
-                        item.review_handoff_action!,
-                        item.fallback_label || item.asset_id
-                      )
+                      primeReviewHandoff(item.review_handoff_action!, item)
                     }
                     disabled={!selectedIntakeId}
                     className="rounded border border-ohmic-border px-3 py-1.5 text-xs font-medium text-ohmic-text transition-colors hover:border-ohmic-accent/30 disabled:text-ohmic-muted disabled:hover:border-ohmic-border"
