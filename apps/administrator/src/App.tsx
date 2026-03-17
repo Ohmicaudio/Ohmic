@@ -15,12 +15,14 @@ import { useIntakeContextStore } from '@/store/intakeContextStore'
 import { useIntakeStore } from '@/store/intakeStore'
 import { useCommandStore } from '@/store/commandStore'
 import { useServerHealthStore } from '@/store/serverHealthStore'
+import { useWarningReviewStore } from '@/store/warningReviewStore'
 
 export function App() {
   const fetchDashboard = useDashboardStore((s) => s.fetch)
   const fetchIntake = useIntakeStore((s) => s.fetch)
   const fetchInactiveIntake = useInactiveIntakeStore((s) => s.fetch)
   const fetchIntakeContext = useIntakeContextStore((s) => s.fetch)
+  const fetchWarningReview = useWarningReviewStore((s) => s.fetch)
   const loadAuditTrail = useCommandStore((s) => s.loadAuditTrail)
   const fetchHealth = useServerHealthStore((s) => s.fetch)
   const healthStatus = useServerHealthStore((s) => s.status)
@@ -35,6 +37,7 @@ export function App() {
       if (name === 'administrator_inactive_intake_projection') fetchInactiveIntake()
       if (name === 'administrator_note_projection') fetchIntakeContext()
       if (name === 'administrator_tag_assignment_projection') fetchIntakeContext()
+      if (name === 'administrator_warning_review') fetchWarningReview()
       if (name === 'administrator_recent_actions') loadAuditTrail()
       fetchHealth()
     })
@@ -45,6 +48,7 @@ export function App() {
     fetchInactiveIntake,
     fetchIntake,
     fetchIntakeContext,
+    fetchWarningReview,
     loadAuditTrail,
   ])
 
@@ -52,7 +56,8 @@ export function App() {
     fetchHealth()
     fetchInactiveIntake()
     fetchIntakeContext()
-  }, [fetchHealth, fetchInactiveIntake, fetchIntakeContext])
+    fetchWarningReview()
+  }, [fetchHealth, fetchInactiveIntake, fetchIntakeContext, fetchWarningReview])
 
   return (
     <div className="min-h-screen flex flex-col">

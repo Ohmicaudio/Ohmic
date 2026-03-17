@@ -177,6 +177,33 @@ export interface AdministratorTagAssignmentProjection {
   tag_assignments: AdministratorTagAssignment[]
 }
 
+export interface WarningReviewItem {
+  intake_id: string
+  source_type: string
+  title: string
+  received_at: string
+  warning_level: string
+  primary_warning_family: string
+  warning_reasons: string[]
+  parse_confidence: string
+  attachment_warning_count: number
+  latest_reprocess_status: string
+  reprocess_eligible: boolean
+  recommended_next_action: string
+}
+
+export interface WarningReviewProjection {
+  module_id: string
+  generated_at: string
+  row_count: number
+  filter_presets: Array<Record<string, unknown>>
+  empty_state: {
+    title: string
+    body: string
+  }
+  rows: WarningReviewItem[]
+}
+
 // Ready tasks.
 export interface ReadyTask {
   task_id: string

@@ -12,6 +12,7 @@ const PROJECTION_FILES = [
   'administrator_recent_actions.json',
   'administrator_note_projection.json',
   'administrator_tag_assignment_projection.json',
+  'administrator_warning_review.json',
   'ready_tasks.json',
 ]
 

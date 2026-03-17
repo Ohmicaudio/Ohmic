@@ -5,6 +5,7 @@ import type {
   InactiveIntakeProjection,
   IntakeQueueProjection,
   ReadyTasksProjection,
+  WarningReviewProjection,
 } from '@/types/intake'
 
 const API_BASE = '/api'
@@ -39,6 +40,10 @@ export async function fetchTagAssignmentProjection(): Promise<AdministratorTagAs
   return fetchJson<AdministratorTagAssignmentProjection>(
     '/projections/administrator_tag_assignment_projection'
   )
+}
+
+export async function fetchWarningReviewProjection(): Promise<WarningReviewProjection> {
+  return fetchJson<WarningReviewProjection>('/projections/administrator_warning_review')
 }
 
 export async function fetchReadyTasks(): Promise<ReadyTasksProjection> {
