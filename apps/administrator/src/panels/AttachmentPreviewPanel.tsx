@@ -1,8 +1,36 @@
 import { useAttachmentPreviewStore } from '@/store/attachmentPreviewStore'
+import { useCommandStore } from '@/store/commandStore'
+import { useIntakeStore } from '@/store/intakeStore'
 import { StatusBadge } from '@/components/StatusBadge'
+
+function buildPreviewContextNote(existingNote: string, assetLabel: string): string {
+  const nextLine = `Attachment preview focus: ${assetLabel}`
+
+  if (!existingNote.trim()) {
+    return nextLine
+  }
+
+  if (existingNote.includes(nextLine)) {
+    return existingNote
+  }
+
+  return `${existingNote.trim()}\n${nextLine}`
+}
 
 export function AttachmentPreviewPanel() {
   const { items, generatedAt, loading, error, available, fetch } = useAttachmentPreviewStore()
+  const selectedIntakeId = useIntakeStore((s) => s.selectedId)
+  const { noteText, setIntakeId, setActionInput, setNoteText } = useCommandStore()
+
+  function primeReviewHandoff(action: string, label: string) {
+    if (!selectedIntakeId) {
+      return
+    }
+
+    setIntakeId(selectedIntakeId)
+    setActionInput(action)
+    setNoteText(buildPreviewContextNote(noteText, label))
+  }
 
   return (
     <div className="space-y-4">
@@ -62,9 +90,23 @@ export function AttachmentPreviewPanel() {
               )}
 
               {item.review_handoff_action && (
-                <div className="text-xs text-ohmic-text-dim">
-                  Review handoff action:{' '}
-                  <span className="text-ohmic-text">{item.review_handoff_action}</span>
+                <div className="space-y-2">
+                  <div className="text-xs text-ohmic-text-dim">
+                    Review handoff action:{' '}
+                    <span className="text-ohmic-text">{item.review_handoff_action}</span>
+                  </div>
+                  <button
+                    onClick={() =>
+                      primeReviewHandoff(
+                        item.review_handoff_action!,
+                        item.fallback_label || item.asset_id
+                      )
+                    }
+                    disabled={!selectedIntakeId}
+                    className="rounded border border-ohmic-border px-3 py-1.5 text-xs font-medium text-ohmic-text transition-colors hover:border-ohmic-accent/30 disabled:text-ohmic-muted disabled:hover:border-ohmic-border"
+                  >
+                    Prime Review Action
+                  </button>
                 </div>
               )}
 

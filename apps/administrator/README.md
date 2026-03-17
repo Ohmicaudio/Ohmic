@@ -14,7 +14,7 @@ This app is currently a Phase 1 plus early Phase 2 scaffold:
 - filing history panel with optional runtime module support
 - warning review panel with optional runtime module support
 - aggregation bundle panel with optional runtime module support
-- attachment preview panel with optional runtime module support
+- attachment preview panel with optional runtime module support and composer handoff
 - audit summary panel with optional runtime module support
 - per-intake status history panel with optional runtime module support
 - command composer with PowerShell-backed validation and execute/writeback
@@ -92,7 +92,7 @@ Not yet complete for:
 
 - filing destination migration and replacement flows
 - richer status-history selection sync and audit-summary action handoff
-- attachment preview writeback or Tandem handoff flows
+- attachment preview writeback or external Tandem handoff flows
 - Tandem integration
 - ContextKeep or memory integration
 - provider connectors
