@@ -38,6 +38,7 @@ export type IntakeKind =
   | 'unknown'
 
 export type IntakeStatus =
+  | 'queued'
   | 'new'
   | 'triaging'
   | 'pending_approval'
@@ -112,6 +113,25 @@ export interface InactiveIntakeProjection {
   }
   count: number
   inactive_items: InactiveIntakeItem[]
+}
+
+export interface ReopenInactiveIntakeRequest {
+  intake_id: string
+  restored_status?: string
+  reopen_reason?: string
+}
+
+export interface ReopenInactiveIntakeResponse {
+  writeback: {
+    writeback_status: 'accepted' | 'rejected'
+    intake_id: string
+    restored_status: string | null
+    recent_actions_count: number
+    queue_item_updated: boolean
+    inactive_item_removed: boolean
+    rejection_reason?: string
+  }
+  updated_intake?: Record<string, unknown>
 }
 
 export interface AdministratorNote {

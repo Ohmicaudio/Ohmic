@@ -4,9 +4,14 @@ import {
   useInactiveIntakeStore,
 } from '@/store/inactiveIntakeStore'
 import { fetchInactiveIntake } from '@/api/projections'
+import { reopenInactiveIntake } from '@/api/inactive'
 
 vi.mock('@/api/projections', () => ({
   fetchInactiveIntake: vi.fn(),
+}))
+
+vi.mock('@/api/inactive', () => ({
+  reopenInactiveIntake: vi.fn(),
 }))
 
 describe('inactiveIntakeStore', () => {
@@ -18,6 +23,7 @@ describe('inactiveIntakeStore', () => {
       generatedAt: null,
       loading: false,
       error: null,
+      reopeningId: null,
       activeFilter: 'inactive_all',
     })
   })
@@ -65,6 +71,58 @@ describe('inactiveIntakeStore', () => {
     expect(useInactiveIntakeStore.getState()).toMatchObject({
       count: 0,
       loading: false,
+      error: null,
+    })
+  })
+
+  it('removes a reopened item from the inactive list after successful writeback', async () => {
+    useInactiveIntakeStore.setState({
+      items: [
+        {
+          intake_id: 'inactive-1',
+          title: 'Archived customer follow-up',
+          inactive_status: 'archived',
+          inactive_since: '2026-03-17T14:00:00Z',
+          last_active_status: 'triaging',
+          reopen_allowed: true,
+          reopen_target_status: 'queued',
+          summary_label: 'Archived after duplicate confirmation',
+        },
+      ],
+      count: 1,
+      generatedAt: '2026-03-17T15:25:00Z',
+      loading: false,
+      error: null,
+      reopeningId: null,
+      activeFilter: 'inactive_all',
+    })
+
+    vi.mocked(reopenInactiveIntake).mockResolvedValue({
+      writeback: {
+        writeback_status: 'accepted',
+        intake_id: 'inactive-1',
+        restored_status: 'queued',
+        recent_actions_count: 2,
+        queue_item_updated: true,
+        inactive_item_removed: true,
+      },
+      updated_intake: {
+        intake_id: 'inactive-1',
+        status: 'queued',
+      },
+    })
+
+    const response = await useInactiveIntakeStore.getState().reopen('inactive-1', 'queued')
+
+    expect(reopenInactiveIntake).toHaveBeenCalledWith({
+      intake_id: 'inactive-1',
+      restored_status: 'queued',
+    })
+    expect(response.writeback.writeback_status).toBe('accepted')
+    expect(useInactiveIntakeStore.getState()).toMatchObject({
+      items: [],
+      count: 0,
+      reopeningId: null,
       error: null,
     })
   })

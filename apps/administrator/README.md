@@ -8,6 +8,7 @@ This app is currently a Phase 1 plus early Phase 2 scaffold:
 
 - dashboard projection viewer
 - intake queue viewer
+- inactive intake browser with reopen action
 - intake detail and warning review panels
 - per-intake status history panel
 - command composer with PowerShell-backed validation and execute/writeback
@@ -65,6 +66,7 @@ Backend:
 - `GET /api/commands/options`
 - `POST /api/commands/validate`
 - `POST /api/commands/execute`
+- `POST /api/inactive/reopen`
 
 ## Current collaboration posture
 
@@ -79,7 +81,7 @@ Not yet complete for:
 
 - attachment preview
 - aggregation bundles
-- filing picker / inactive intake browser
+- filing picker
 - Tandem integration
 - ContextKeep or memory integration
 - provider connectors

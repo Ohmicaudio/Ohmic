@@ -4,6 +4,7 @@ interface StatusBadgeProps {
 }
 
 const statusColors: Record<string, string> = {
+  queued: 'bg-blue-500/20 text-blue-400 border-blue-500/30',
   new: 'bg-blue-500/20 text-blue-400 border-blue-500/30',
   triaging: 'bg-yellow-500/20 text-yellow-400 border-yellow-500/30',
   pending_approval: 'bg-purple-500/20 text-purple-400 border-purple-500/30',

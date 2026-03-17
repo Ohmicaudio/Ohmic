@@ -3,6 +3,7 @@ import { ProjectionReader } from './projectionReader.js'
 import { getAdministratorRuntimeDir } from './runtimeConfig.js'
 import {
   executeCommand,
+  reopenInactiveIntake,
   validateCommand,
   getComposerOptions,
 } from './powerShellRunner.js'
@@ -126,6 +127,23 @@ const server = http.createServer((req, res) => {
       try {
         const input = JSON.parse(body)
         executeCommand(input)
+          .then((result) => sendJson(res, result))
+          .catch((err) => sendJson(res, { error: err.message }, 500))
+      } catch {
+        sendJson(res, { error: 'Invalid JSON body' }, 400)
+      }
+    })
+    return
+  }
+
+  // Inactive reopen: POST /api/inactive/reopen
+  if (path === '/api/inactive/reopen' && req.method === 'POST') {
+    let body = ''
+    req.on('data', (chunk: Buffer) => { body += chunk.toString() })
+    req.on('end', () => {
+      try {
+        const input = JSON.parse(body)
+        reopenInactiveIntake(input)
           .then((result) => sendJson(res, result))
           .catch((err) => sendJson(res, { error: err.message }, 500))
       } catch {

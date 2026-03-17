@@ -4,6 +4,8 @@ import {
   type InactiveFilterPreset,
   useInactiveIntakeStore,
 } from '@/store/inactiveIntakeStore'
+import { useIntakeStore } from '@/store/intakeStore'
+import { useCommandStore } from '@/store/commandStore'
 import { StatusBadge } from '@/components/StatusBadge'
 
 const FILTERS: Array<{ id: InactiveFilterPreset; label: string }> = [
@@ -21,10 +23,15 @@ export function InactiveIntakePanel() {
     generatedAt,
     loading,
     error,
+    reopeningId,
     activeFilter,
     fetch,
+    reopen,
     setFilter,
   } = useInactiveIntakeStore()
+  const fetchActiveIntake = useIntakeStore((s) => s.fetch)
+  const selectActiveIntake = useIntakeStore((s) => s.select)
+  const loadAuditTrail = useCommandStore((s) => s.loadAuditTrail)
 
   useEffect(() => {
     if (items.length === 0 && !loading) {
@@ -35,6 +42,16 @@ export function InactiveIntakePanel() {
   const filteredItems = items.filter((item) =>
     matchesInactiveFilter(item.inactive_status, activeFilter)
   )
+
+  async function handleReopen(intakeId: string, restoredStatus: string) {
+    const response = await reopen(intakeId, restoredStatus || 'queued')
+    if (response.writeback.writeback_status !== 'accepted') {
+      return
+    }
+
+    await Promise.all([fetch(), fetchActiveIntake(), loadAuditTrail()])
+    selectActiveIntake(intakeId)
+  }
 
   return (
     <div className="space-y-4 mt-8">
@@ -113,6 +130,18 @@ export function InactiveIntakePanel() {
                   <span className="text-ohmic-text">{item.reopen_target_status || '--'}</span>
                 </div>
               </div>
+
+              {item.reopen_allowed && (
+                <div className="pt-1">
+                  <button
+                    onClick={() => void handleReopen(item.intake_id, item.reopen_target_status)}
+                    disabled={reopeningId === item.intake_id}
+                    className="rounded bg-ohmic-accent px-3 py-1.5 text-xs font-medium text-white transition-colors hover:bg-ohmic-accent-dim disabled:bg-ohmic-border disabled:text-ohmic-muted"
+                  >
+                    {reopeningId === item.intake_id ? 'Reopening...' : 'Reopen Intake'}
+                  </button>
+                </div>
+              )}
             </div>
           ))}
         </div>

@@ -135,4 +135,123 @@ describe('powerShellRunner', () => {
     })
     expect(intakeQueue.queue_items[0].tags).toEqual(['seed', 'server-smoke'])
   })
+
+  it('reopens an inactive intake item back into the active queue and audit trail', async () => {
+    previousRuntimeDir = process.env.ADMINISTRATOR_RUNTIME_DIR
+
+    await mkdir(localRuntimeBase, { recursive: true })
+    tempRuntimeDir = await mkdtemp(path.join(localRuntimeBase, 'reopen-'))
+    process.env.ADMINISTRATOR_RUNTIME_DIR = tempRuntimeDir
+
+    await writeFile(
+      path.join(tempRuntimeDir, 'administrator_intake_queue.json'),
+      JSON.stringify(
+        {
+          generated_at: '2026-03-17T19:00:00Z',
+          projection_name: 'administrator_intake_queue',
+          staleness: {
+            status: 'fresh',
+            reason: null,
+          },
+          refresh_triggers: ['intake_change', 'routing_change', 'warning_change'],
+          metadata: {
+            ordering: 'priority_then_received_at_desc',
+            includes_warning_state: true,
+          },
+          count: 0,
+          queue_items: [],
+        },
+        null,
+        2
+      ),
+      'utf-8'
+    )
+
+    await writeFile(
+      path.join(tempRuntimeDir, 'administrator_inactive_intake_projection.json'),
+      JSON.stringify(
+        {
+          generated_at: '2026-03-17T19:00:01Z',
+          projection_name: 'administrator_inactive_intake_projection',
+          refresh_triggers: ['archive_writeback'],
+          metadata: {
+            ordering: 'inactive_since_desc',
+            default_visibility: 'opt_in_only',
+          },
+          count: 1,
+          inactive_items: [
+            {
+              intake_id: 'inactive-reopen-1',
+              title: 'Archived status packet',
+              inactive_status: 'archived',
+              inactive_since: '2026-03-17T18:30:00Z',
+              last_active_status: 'triaging',
+              reopen_allowed: true,
+              reopen_target_status: 'queued',
+              summary_label: 'Archived after duplicate confirmation',
+            },
+          ],
+        },
+        null,
+        2
+      ),
+      'utf-8'
+    )
+
+    const { reopenInactiveIntake } = await importRunner()
+
+    const result = await reopenInactiveIntake({
+      intake_id: 'inactive-reopen-1',
+      restored_status: 'queued',
+    })
+
+    expect(result).toMatchObject({
+      writeback: {
+        writeback_status: 'accepted',
+        intake_id: 'inactive-reopen-1',
+        restored_status: 'queued',
+        queue_item_updated: true,
+        inactive_item_removed: true,
+      },
+    })
+
+    const recentActionsRaw = await readFile(
+      path.join(tempRuntimeDir, 'administrator_recent_actions.json'),
+      'utf-8'
+    )
+    const recentActions = JSON.parse(recentActionsRaw) as {
+      recent_actions: Array<{ intake_id: string; action: string; resulting_status: string }>
+    }
+
+    expect(recentActions.recent_actions[0]).toMatchObject({
+      intake_id: 'inactive-reopen-1',
+      action: 'reopen',
+      resulting_status: 'queued',
+    })
+
+    const intakeQueueRaw = await readFile(
+      path.join(tempRuntimeDir, 'administrator_intake_queue.json'),
+      'utf-8'
+    )
+    const intakeQueue = JSON.parse(intakeQueueRaw) as {
+      queue_items: Array<{ intake_id: string; status: string }>
+    }
+
+    expect(intakeQueue.queue_items[0]).toMatchObject({
+      intake_id: 'inactive-reopen-1',
+      status: 'queued',
+    })
+
+    const inactiveRaw = await readFile(
+      path.join(tempRuntimeDir, 'administrator_inactive_intake_projection.json'),
+      'utf-8'
+    )
+    const inactiveProjection = JSON.parse(inactiveRaw) as {
+      count: number
+      inactive_items: Array<{ intake_id: string }>
+    }
+
+    expect(inactiveProjection.count).toBe(0)
+    expect(inactiveProjection.inactive_items).toEqual([])
+  })
 })
