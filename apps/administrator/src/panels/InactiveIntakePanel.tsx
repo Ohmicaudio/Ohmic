@@ -1,20 +1,12 @@
 import { useEffect } from 'react'
 import {
-  matchesInactiveFilter,
+  DEFAULT_INACTIVE_FILTERS,
   type InactiveFilterPreset,
   useInactiveIntakeStore,
 } from '@/store/inactiveIntakeStore'
 import { useIntakeStore } from '@/store/intakeStore'
 import { useCommandStore } from '@/store/commandStore'
 import { StatusBadge } from '@/components/StatusBadge'
-
-const FILTERS: Array<{ id: InactiveFilterPreset; label: string }> = [
-  { id: 'inactive_all', label: 'All Inactive' },
-  { id: 'archived_only', label: 'Archived' },
-  { id: 'routed_only', label: 'Routed' },
-  { id: 'held_only', label: 'Held' },
-  { id: 'waiting_only', label: 'Waiting' },
-]
 
 export function InactiveIntakePanel() {
   const {
@@ -25,6 +17,8 @@ export function InactiveIntakePanel() {
     error,
     reopeningId,
     activeFilter,
+    filterPresets,
+    shellAvailable,
     fetch,
     reopen,
     setFilter,
@@ -39,8 +33,11 @@ export function InactiveIntakePanel() {
     }
   }, [items.length, loading, fetch])
 
+  const activePreset =
+    filterPresets.find((preset) => preset.preset_id === activeFilter) ??
+    DEFAULT_INACTIVE_FILTERS[0]
   const filteredItems = items.filter((item) =>
-    matchesInactiveFilter(item.inactive_status, activeFilter)
+    activePreset.included_statuses.includes(item.inactive_status)
   )
 
   async function handleReopen(intakeId: string, restoredStatus: string) {
@@ -61,24 +58,28 @@ export function InactiveIntakePanel() {
             Inactive Intake
           </h2>
           <div className="text-xs text-ohmic-text-dim mt-1">
-            {generatedAt ? `Projection updated ${new Date(generatedAt).toLocaleString()}` : 'Optional runtime surface'}
+            {generatedAt
+              ? `Projection updated ${new Date(generatedAt).toLocaleString()}`
+              : 'Optional runtime surface'}
           </div>
         </div>
-        <div className="text-xs text-ohmic-text-dim">{count} total</div>
+        <div className="text-xs text-ohmic-text-dim">
+          {count} total{shellAvailable ? ' - shell presets active' : ''}
+        </div>
       </div>
 
       <div className="flex flex-wrap gap-2">
-        {FILTERS.map((filter) => (
+        {filterPresets.map((filter) => (
           <button
-            key={filter.id}
-            onClick={() => setFilter(filter.id)}
+            key={filter.preset_id}
+            onClick={() => setFilter(filter.preset_id as InactiveFilterPreset)}
             className={`rounded border px-2.5 py-1 text-xs transition-colors ${
-              activeFilter === filter.id
+              activeFilter === filter.preset_id
                 ? 'border-ohmic-accent bg-ohmic-accent/10 text-ohmic-text'
                 : 'border-ohmic-border text-ohmic-text-dim hover:text-ohmic-text'
             }`}
           >
-            {filter.label}
+            {filter.display_label}
           </button>
         ))}
       </div>

@@ -1,13 +1,15 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import {
+  DEFAULT_INACTIVE_FILTERS,
   matchesInactiveFilter,
   useInactiveIntakeStore,
 } from '@/store/inactiveIntakeStore'
-import { fetchInactiveIntake } from '@/api/projections'
+import { fetchInactiveIntake, fetchInactiveIntakeShell } from '@/api/projections'
 import { reopenInactiveIntake } from '@/api/inactive'
 
 vi.mock('@/api/projections', () => ({
   fetchInactiveIntake: vi.fn(),
+  fetchInactiveIntakeShell: vi.fn(),
 }))
 
 vi.mock('@/api/inactive', () => ({
@@ -25,10 +27,61 @@ describe('inactiveIntakeStore', () => {
       error: null,
       reopeningId: null,
       activeFilter: 'inactive_all',
+      filterPresets: DEFAULT_INACTIVE_FILTERS,
+      shellAvailable: false,
     })
   })
 
+  it('prefers the optional inactive shell module when present', async () => {
+    vi.mocked(fetchInactiveIntakeShell).mockResolvedValue({
+      module_id: 'administrator_inactive_intake',
+      generated_at: '2026-03-17T15:24:00Z',
+      row_count: 1,
+      filter_presets: [
+        {
+          preset_id: 'archived_only',
+          display_label: 'Archived',
+          included_statuses: ['archived'],
+          default_sort: 'inactive_since_desc',
+        },
+      ],
+      empty_state: {
+        title: 'No inactive intake items',
+        body: 'Inactive rows appear here.',
+      },
+      metadata: {
+        active_filter_preset: 'archived_only',
+      },
+      rows: [
+        {
+          intake_id: 'inactive-1',
+          title: 'Archived customer follow-up',
+          inactive_status: 'archived',
+          inactive_since: '2026-03-17T14:00:00Z',
+          last_active_status: 'triaging',
+          reopen_allowed: true,
+          reopen_target_status: 'queued',
+          summary_label: 'Archived after duplicate confirmation',
+        },
+      ],
+    })
+
+    await useInactiveIntakeStore.getState().fetch()
+
+    expect(useInactiveIntakeStore.getState()).toMatchObject({
+      count: 1,
+      activeFilter: 'archived_only',
+      shellAvailable: true,
+      loading: false,
+      error: null,
+    })
+    expect(useInactiveIntakeStore.getState().filterPresets).toHaveLength(1)
+  })
+
   it('loads inactive intake items when the projection is present', async () => {
+    vi.mocked(fetchInactiveIntakeShell).mockRejectedValue(
+      new Error('Projection fetch failed: 404')
+    )
     vi.mocked(fetchInactiveIntake).mockResolvedValue({
       generated_at: '2026-03-17T15:25:00Z',
       projection_name: 'administrator_inactive_intake_projection',
@@ -59,11 +112,15 @@ describe('inactiveIntakeStore', () => {
       generatedAt: '2026-03-17T15:25:00Z',
       loading: false,
       error: null,
+      shellAvailable: false,
     })
     expect(useInactiveIntakeStore.getState().items).toHaveLength(1)
   })
 
   it('treats a missing inactive projection as an empty optional surface', async () => {
+    vi.mocked(fetchInactiveIntakeShell).mockRejectedValue(
+      new Error('Projection fetch failed: 404')
+    )
     vi.mocked(fetchInactiveIntake).mockRejectedValue(new Error('Projection fetch failed: 404'))
 
     await useInactiveIntakeStore.getState().fetch()
@@ -72,6 +129,7 @@ describe('inactiveIntakeStore', () => {
       count: 0,
       loading: false,
       error: null,
+      shellAvailable: false,
     })
   })
 
@@ -95,6 +153,8 @@ describe('inactiveIntakeStore', () => {
       error: null,
       reopeningId: null,
       activeFilter: 'inactive_all',
+      filterPresets: DEFAULT_INACTIVE_FILTERS,
+      shellAvailable: false,
     })
 
     vi.mocked(reopenInactiveIntake).mockResolvedValue({

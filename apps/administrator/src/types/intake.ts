@@ -115,6 +115,28 @@ export interface InactiveIntakeProjection {
   inactive_items: InactiveIntakeItem[]
 }
 
+export interface InactiveFilterPresetRow {
+  preset_id: string
+  display_label: string
+  included_statuses: string[]
+  default_sort: string
+}
+
+export interface InactiveIntakeShellProjection {
+  module_id: string
+  generated_at: string
+  row_count: number
+  filter_presets: InactiveFilterPresetRow[]
+  empty_state: {
+    title: string
+    body: string
+  }
+  metadata?: {
+    active_filter_preset?: string
+  }
+  rows: InactiveIntakeItem[]
+}
+
 export interface ReopenInactiveIntakeRequest {
   intake_id: string
   restored_status?: string

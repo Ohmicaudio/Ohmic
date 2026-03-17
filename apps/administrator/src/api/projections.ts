@@ -7,6 +7,7 @@ import type {
   AttachmentPreviewProjection,
   DashboardStatusCards,
   FilingHistoryProjection,
+  InactiveIntakeShellProjection,
   InactiveIntakeProjection,
   IntakeQueueProjection,
   ReadyTasksProjection,
@@ -35,6 +36,10 @@ export async function fetchInactiveIntake(): Promise<InactiveIntakeProjection> {
   return fetchJson<InactiveIntakeProjection>(
     '/projections/administrator_inactive_intake_projection'
   )
+}
+
+export async function fetchInactiveIntakeShell(): Promise<InactiveIntakeShellProjection> {
+  return fetchJson<InactiveIntakeShellProjection>('/projections/administrator_inactive_intake')
 }
 
 export async function fetchNoteProjection(): Promise<AdministratorNoteProjection> {

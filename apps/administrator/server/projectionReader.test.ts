@@ -33,7 +33,7 @@ describe('ProjectionReader', () => {
     }
   })
 
-  it('loads note, tag, audit, status, and filing projections into the watched projection floor', async () => {
+  it('loads note, tag, audit, inactive shell, status, and filing projections into the watched projection floor', async () => {
     await writeFile(
       path.join(tempRuntimeDir!, 'administrator_note_projection.json'),
       JSON.stringify({
@@ -43,6 +43,22 @@ describe('ProjectionReader', () => {
         visibility_context: 'desk',
         ordering: 'created_at_desc',
         notes: [],
+      }),
+      'utf-8'
+    )
+
+    await writeFile(
+      path.join(tempRuntimeDir!, 'administrator_inactive_intake.json'),
+      JSON.stringify({
+        module_id: 'administrator_inactive_intake',
+        generated_at: '2026-03-17T15:20:01Z',
+        row_count: 0,
+        filter_presets: [],
+        empty_state: {
+          title: 'No inactive rows',
+          body: 'Inactive rows appear here',
+        },
+        rows: [],
       }),
       'utf-8'
     )
@@ -111,6 +127,7 @@ describe('ProjectionReader', () => {
       'administrator_tag_assignment_projection'
     )
     expect(reader.getExpectedProjectionNames()).toContain('administrator_audit_summary')
+    expect(reader.getExpectedProjectionNames()).toContain('administrator_inactive_intake')
     expect(reader.getExpectedProjectionNames()).toContain(
       'administrator_filing_history_projection'
     )
@@ -120,6 +137,7 @@ describe('ProjectionReader', () => {
       'administrator_tag_assignment_projection'
     )
     expect(reader.getLoadedProjectionNames()).toContain('administrator_audit_summary')
+    expect(reader.getLoadedProjectionNames()).toContain('administrator_inactive_intake')
     expect(reader.getLoadedProjectionNames()).toContain(
       'administrator_filing_history_projection'
     )

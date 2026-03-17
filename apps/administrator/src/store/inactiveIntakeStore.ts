@@ -1,10 +1,11 @@
 import { create } from 'zustand'
 import type {
+  InactiveFilterPresetRow,
   InactiveIntakeItem,
   InactiveIntakeStatus,
   ReopenInactiveIntakeResponse,
 } from '@/types/intake'
-import { fetchInactiveIntake } from '@/api/projections'
+import { fetchInactiveIntake, fetchInactiveIntakeShell } from '@/api/projections'
 import { reopenInactiveIntake } from '@/api/inactive'
 
 export type InactiveFilterPreset =
@@ -14,6 +15,39 @@ export type InactiveFilterPreset =
   | 'held_only'
   | 'waiting_only'
 
+export const DEFAULT_INACTIVE_FILTERS: InactiveFilterPresetRow[] = [
+  {
+    preset_id: 'inactive_all',
+    display_label: 'All Inactive',
+    included_statuses: ['archived', 'routed', 'held', 'waiting_on_human', 'waiting_on_provider'],
+    default_sort: 'inactive_since_desc',
+  },
+  {
+    preset_id: 'archived_only',
+    display_label: 'Archived',
+    included_statuses: ['archived'],
+    default_sort: 'inactive_since_desc',
+  },
+  {
+    preset_id: 'routed_only',
+    display_label: 'Routed',
+    included_statuses: ['routed'],
+    default_sort: 'inactive_since_desc',
+  },
+  {
+    preset_id: 'held_only',
+    display_label: 'Held',
+    included_statuses: ['held'],
+    default_sort: 'inactive_since_desc',
+  },
+  {
+    preset_id: 'waiting_only',
+    display_label: 'Waiting',
+    included_statuses: ['waiting_on_human', 'waiting_on_provider'],
+    default_sort: 'inactive_since_desc',
+  },
+]
+
 interface InactiveIntakeState {
   items: InactiveIntakeItem[]
   count: number
@@ -22,6 +56,8 @@ interface InactiveIntakeState {
   error: string | null
   reopeningId: string | null
   activeFilter: InactiveFilterPreset
+  filterPresets: InactiveFilterPresetRow[]
+  shellAvailable: boolean
   fetch: () => Promise<void>
   setFilter: (filter: InactiveFilterPreset) => void
   reopen: (intakeId: string, restoredStatus?: string) => Promise<ReopenInactiveIntakeResponse>
@@ -35,10 +71,36 @@ export const useInactiveIntakeStore = create<InactiveIntakeState>((set) => ({
   error: null,
   reopeningId: null,
   activeFilter: 'inactive_all',
+  filterPresets: DEFAULT_INACTIVE_FILTERS,
+  shellAvailable: false,
 
   fetch: async () => {
     set({ loading: true, error: null })
     try {
+      try {
+        const shell = await fetchInactiveIntakeShell()
+        const nextFilter = (shell.metadata?.active_filter_preset ?? 'inactive_all') as InactiveFilterPreset
+
+        set({
+          items: shell.rows,
+          count: shell.row_count,
+          generatedAt: shell.generated_at,
+          loading: false,
+          error: null,
+          activeFilter: nextFilter,
+          filterPresets: shell.filter_presets,
+          shellAvailable: true,
+        })
+        return
+      } catch (shellError) {
+        const message =
+          shellError instanceof Error ? shellError.message : 'Failed to load inactive shell'
+        const isMissingShell = message.includes('404')
+        if (!isMissingShell) {
+          throw shellError
+        }
+      }
+
       const data = await fetchInactiveIntake()
       set({
         items: data.inactive_items,
@@ -46,6 +108,8 @@ export const useInactiveIntakeStore = create<InactiveIntakeState>((set) => ({
         generatedAt: data.generated_at,
         loading: false,
         error: null,
+        filterPresets: DEFAULT_INACTIVE_FILTERS,
+        shellAvailable: false,
       })
     } catch (err) {
       const message = err instanceof Error ? err.message : 'Failed to load inactive intake'
@@ -57,6 +121,8 @@ export const useInactiveIntakeStore = create<InactiveIntakeState>((set) => ({
         generatedAt: null,
         loading: false,
         error: isMissingProjection ? null : message,
+        filterPresets: DEFAULT_INACTIVE_FILTERS,
+        shellAvailable: false,
       })
     }
   },

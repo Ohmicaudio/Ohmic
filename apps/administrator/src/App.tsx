@@ -52,6 +52,7 @@ export function App() {
       if (name === 'administrator_audit_summary') fetchAuditSummary()
       if (name === 'administrator_filing_history_projection') fetchFilingHistory()
       if (name === 'administrator_intake_queue') fetchIntake()
+      if (name === 'administrator_inactive_intake') fetchInactiveIntake()
       if (name === 'administrator_inactive_intake_projection') fetchInactiveIntake()
       if (name === 'administrator_note_projection') fetchIntakeContext()
       if (name === 'administrator_tag_assignment_projection') fetchIntakeContext()

@@ -8,6 +8,7 @@ const RUNTIME_DIR = getAdministratorRuntimeDir()
 const PROJECTION_FILES = [
   'dashboard_status_cards.json',
   'administrator_intake_queue.json',
+  'administrator_inactive_intake.json',
   'administrator_inactive_intake_projection.json',
   'administrator_recent_actions.json',
   'administrator_note_projection.json',
