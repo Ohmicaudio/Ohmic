@@ -1,17 +1,23 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { useCommandStore } from '@/store/commandStore'
+import { useIntakeStore } from '@/store/intakeStore'
 import {
   executeCommand,
   fetchComposerOptions,
   fetchRecentActions,
   validateCommand,
 } from '@/api/commands'
+import { fetchIntakeQueue } from '@/api/projections'
 
 vi.mock('@/api/commands', () => ({
   fetchComposerOptions: vi.fn(),
   validateCommand: vi.fn(),
   executeCommand: vi.fn(),
   fetchRecentActions: vi.fn(),
+}))
+
+vi.mock('@/api/projections', () => ({
+  fetchIntakeQueue: vi.fn(),
 }))
 
 describe('commandStore', () => {
@@ -42,9 +48,19 @@ describe('commandStore', () => {
       recentActions: [],
       auditLoading: false,
     })
+
+    useIntakeStore.setState({
+      items: [],
+      count: 0,
+      generatedAt: null,
+      staleness: 'unknown',
+      loading: false,
+      error: null,
+      selectedId: 'intake-1',
+    })
   })
 
-  it('stores writeback details and refreshes the audit trail after execute', async () => {
+  it('stores writeback details and refreshes the audit trail and queue after execute', async () => {
     vi.mocked(executeCommand).mockResolvedValue({
       result: {
         command_id: 'admin_cmd_1',
@@ -101,6 +117,37 @@ describe('commandStore', () => {
       ],
     })
 
+    vi.mocked(fetchIntakeQueue).mockResolvedValue({
+      generated_at: '2026-03-17T15:00:02Z',
+      projection_name: 'administrator_intake_queue',
+      staleness: {
+        status: 'fresh',
+        reason: null,
+      },
+      refresh_triggers: ['routing_change'],
+      metadata: {
+        ordering: 'priority_then_received_at_desc',
+        includes_warning_state: true,
+      },
+      count: 1,
+      queue_items: [
+        {
+          intake_id: 'intake-1',
+          title: 'Escalated packet',
+          intake_kind: 'manual',
+          received_at: '2026-03-17T14:55:00Z',
+          status: 'routed',
+          routing_target: 'orchestrator',
+          trust_tier: '2',
+          priority_hint: 'high',
+          tags: ['urgent'],
+          warning_state: 'clean',
+          warning_count: 0,
+          summary_label: 'Escalated packet',
+        },
+      ],
+    })
+
     await useCommandStore.getState().execute()
 
     expect(executeCommand).toHaveBeenCalledWith({
@@ -111,6 +158,7 @@ describe('commandStore', () => {
       tags: ['urgent'],
     })
     expect(fetchRecentActions).toHaveBeenCalled()
+    expect(fetchIntakeQueue).toHaveBeenCalled()
     expect(useCommandStore.getState().lastWriteback).toMatchObject({
       writeback_status: 'accepted',
       resulting_status: 'routed',
@@ -119,5 +167,10 @@ describe('commandStore', () => {
       queue_item_updated: true,
     })
     expect(useCommandStore.getState().recentActions).toHaveLength(1)
+    expect(useIntakeStore.getState().items[0]).toMatchObject({
+      intake_id: 'intake-1',
+      status: 'routed',
+      routing_target: 'orchestrator',
+    })
   })
 })

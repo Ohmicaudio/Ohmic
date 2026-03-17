@@ -11,6 +11,7 @@ import {
   executeCommand,
   fetchRecentActions,
 } from '@/api/commands'
+import { useIntakeStore } from '@/store/intakeStore'
 
 interface ActionOption {
   action_id: string
@@ -202,6 +203,7 @@ export const useCommandStore = create<CommandState>((set, get) => ({
       })
 
       await get().loadAuditTrail()
+      await useIntakeStore.getState().fetch()
     } catch (err) {
       set({
         executing: false,
