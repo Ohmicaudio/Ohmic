@@ -3,6 +3,7 @@ import { RuntimeIndicator } from '@/components/RuntimeIndicator'
 import { DashboardPanel } from '@/panels/DashboardPanel'
 import { IntakeQueuePanel } from '@/panels/IntakeQueuePanel'
 import { IntakeDetailPanel } from '@/panels/IntakeDetailPanel'
+import { StatusHistoryPanel } from '@/panels/StatusHistoryPanel'
 import { CommandComposerPanel } from '@/panels/CommandComposerPanel'
 import { AuditTrailPanel } from '@/panels/AuditTrailPanel'
 import { WarningReviewPanel } from '@/panels/WarningReviewPanel'
@@ -60,6 +61,7 @@ export function App() {
 
           <div className="space-y-8">
             <IntakeDetailPanel />
+            <StatusHistoryPanel />
             <WarningReviewPanel />
             <CommandComposerPanel />
             <AuditTrailPanel />

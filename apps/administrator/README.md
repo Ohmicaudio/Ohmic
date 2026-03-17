@@ -8,11 +8,13 @@ This app is currently a Phase 1 plus early Phase 2 scaffold:
 
 - dashboard projection viewer
 - intake queue viewer
-- command composer with PowerShell-backed validation
+- intake detail and warning review panels
+- per-intake status history panel
+- command composer with PowerShell-backed validation and execute/writeback
 - recent action / audit projection viewer
 - SSE refresh from runtime projection changes
 
-It is not yet a full execution/writeback surface. Command validation works, but applying commands back into the admin runtime is still a follow-on step.
+It is now a usable intake triage foundation, but it is not yet a full operator desk. The current branch can validate and apply commands back into the administrator runtime, but it still stops short of provider integrations, attachment preview, aggregation bundles, and richer filing or inactive-item workflows.
 
 ## Location
 
@@ -70,13 +72,14 @@ Good to share as a foundation branch for:
 
 - UI review
 - projection contract review
-- PowerShell validation bridge review
+- PowerShell validation and writeback bridge review
+- runtime-root collaboration and local-only runtime testing
 
 Not yet complete for:
 
-- command execution/writeback
 - attachment preview
-- warning review lane
+- aggregation bundles
+- filing picker / inactive intake browser
 - Tandem integration
 - ContextKeep or memory integration
 - provider connectors
