@@ -83,6 +83,49 @@ export interface IntakeQueueProjection {
   queue_items: IntakeQueueItem[]
 }
 
+export interface AdministratorNote {
+  note_id: string
+  intake_id: string
+  body_text: string
+  authorship_class: string
+  authored_by: string
+  created_at: string
+  visibility: string
+  source_action_id: string
+  display_author_label: string
+}
+
+export interface AdministratorNoteProjection {
+  projection_name: string
+  generated_at: string
+  refresh_triggers: string[]
+  visibility_context: string
+  ordering: string
+  notes: AdministratorNote[]
+}
+
+export interface AdministratorTagAssignment {
+  tag_assignment_id: string
+  intake_id: string
+  tag_id: string
+  tag_label: string
+  tag_class: string
+  source: string
+  applied_by: string
+  applied_at: string
+  is_default: boolean
+  is_suggested: boolean
+}
+
+export interface AdministratorTagAssignmentProjection {
+  projection_name: string
+  generated_at: string
+  refresh_triggers: string[]
+  ordering: string
+  duplicate_suppression: string
+  tag_assignments: AdministratorTagAssignment[]
+}
+
 // Ready tasks.
 export interface ReadyTask {
   task_id: string

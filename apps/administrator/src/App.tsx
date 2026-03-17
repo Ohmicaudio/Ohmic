@@ -9,6 +9,7 @@ import { AuditTrailPanel } from '@/panels/AuditTrailPanel'
 import { WarningReviewPanel } from '@/panels/WarningReviewPanel'
 import { subscribeToUpdates } from '@/api/projections'
 import { useDashboardStore } from '@/store/dashboardStore'
+import { useIntakeContextStore } from '@/store/intakeContextStore'
 import { useIntakeStore } from '@/store/intakeStore'
 import { useCommandStore } from '@/store/commandStore'
 import { useServerHealthStore } from '@/store/serverHealthStore'
@@ -16,6 +17,7 @@ import { useServerHealthStore } from '@/store/serverHealthStore'
 export function App() {
   const fetchDashboard = useDashboardStore((s) => s.fetch)
   const fetchIntake = useIntakeStore((s) => s.fetch)
+  const fetchIntakeContext = useIntakeContextStore((s) => s.fetch)
   const loadAuditTrail = useCommandStore((s) => s.loadAuditTrail)
   const fetchHealth = useServerHealthStore((s) => s.fetch)
   const healthStatus = useServerHealthStore((s) => s.status)
@@ -25,14 +27,17 @@ export function App() {
     const unsub = subscribeToUpdates((name) => {
       if (name === 'dashboard_status_cards') fetchDashboard()
       if (name === 'administrator_intake_queue') fetchIntake()
+      if (name === 'administrator_note_projection') fetchIntakeContext()
+      if (name === 'administrator_tag_assignment_projection') fetchIntakeContext()
       if (name === 'administrator_recent_actions') loadAuditTrail()
     })
     return unsub
-  }, [fetchDashboard, fetchIntake, loadAuditTrail])
+  }, [fetchDashboard, fetchIntake, fetchIntakeContext, loadAuditTrail])
 
   useEffect(() => {
     fetchHealth()
-  }, [fetchHealth])
+    fetchIntakeContext()
+  }, [fetchHealth, fetchIntakeContext])
 
   return (
     <div className="min-h-screen flex flex-col">

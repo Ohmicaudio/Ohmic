@@ -1,4 +1,6 @@
 import type {
+  AdministratorNoteProjection,
+  AdministratorTagAssignmentProjection,
   DashboardStatusCards,
   IntakeQueueProjection,
   ReadyTasksProjection,
@@ -20,6 +22,16 @@ export async function fetchDashboardCards(): Promise<DashboardStatusCards> {
 
 export async function fetchIntakeQueue(): Promise<IntakeQueueProjection> {
   return fetchJson<IntakeQueueProjection>('/projections/administrator_intake_queue')
+}
+
+export async function fetchNoteProjection(): Promise<AdministratorNoteProjection> {
+  return fetchJson<AdministratorNoteProjection>('/projections/administrator_note_projection')
+}
+
+export async function fetchTagAssignmentProjection(): Promise<AdministratorTagAssignmentProjection> {
+  return fetchJson<AdministratorTagAssignmentProjection>(
+    '/projections/administrator_tag_assignment_projection'
+  )
 }
 
 export async function fetchReadyTasks(): Promise<ReadyTasksProjection> {
