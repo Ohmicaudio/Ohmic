@@ -1,9 +1,11 @@
 import { useEffect } from 'react'
 import { useCommandStore } from '@/store/commandStore'
+import { useIntakeStore } from '@/store/intakeStore'
 import { StatusBadge } from '@/components/StatusBadge'
 
 export function AuditTrailPanel() {
   const { recentActions, auditLoading, loadAuditTrail } = useCommandStore()
+  const { selectedId, select } = useIntakeStore()
 
   useEffect(() => {
     loadAuditTrail()
@@ -33,15 +35,20 @@ export function AuditTrailPanel() {
       ) : (
         <div className="space-y-1">
           {recentActions.map((action) => (
-            <div
+            <button
               key={action.command_id}
-              className="panel py-2 px-3 flex items-center justify-between gap-3"
+              onClick={() => select(action.intake_id)}
+              className={`panel py-2 px-3 w-full text-left flex items-center justify-between gap-3 transition-colors ${
+                selectedId === action.intake_id
+                  ? 'border-ohmic-accent/50 bg-ohmic-accent/10'
+                  : 'hover:border-ohmic-accent/30'
+              }`}
             >
               <div className="flex items-center gap-3 min-w-0">
-                <span className="text-xs font-medium text-ohmic-text whitespace-nowrap">
-                  {action.action}
+                <span className="text-xs font-medium text-ohmic-text truncate">
+                  {action.summary_label || action.action}
                 </span>
-                <span className="text-xs text-ohmic-text-dim truncate">
+                <span className="text-xs text-ohmic-text-dim whitespace-nowrap">
                   {action.intake_id}
                 </span>
               </div>
@@ -53,7 +60,7 @@ export function AuditTrailPanel() {
                     : '--'}
                 </span>
               </div>
-            </div>
+            </button>
           ))}
         </div>
       )}
