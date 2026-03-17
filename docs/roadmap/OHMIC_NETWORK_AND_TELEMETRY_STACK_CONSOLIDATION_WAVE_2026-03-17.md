@@ -34,5 +34,6 @@ guarded, and the live display slot is not yet a real stream-backed surface.
 - `2026-03-17-extract-shared-firmware-network-core-from-current-live-behavior.md`
 - `2026-03-17-converge-remote-off-local-wifi-flow-and-onto-shared-network-core.md`
 - `2026-03-17-normalize-ap-vs-lan-target-selection-over-the-shared-network-contract.md`
+- `2026-03-17-carry-live-amplab-network-and-status-floor-into-shared-core-runtime.md`
 - `2026-03-17-finish-shared-status-control-and-stream-contract-across-active-nodes.md`
 - `2026-03-17-carve-live-display-stream-slot-and-missing-stream-state-outside-demo-mode.md`
