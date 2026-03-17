@@ -11,6 +11,7 @@ This app is currently a Phase 1 plus early Phase 2 scaffold:
 - inactive intake browser with reopen action
 - intake detail with note and tag context
 - filing picker read panel for the selected intake item
+- filing history panel with optional runtime module support
 - warning review panel with optional runtime module support
 - aggregation bundle panel with optional runtime module support
 - attachment preview panel with optional runtime module support
@@ -89,6 +90,7 @@ Good to share as a foundation branch for:
 Not yet complete for:
 
 - filing writeback flows
+- filing history generation in the shared runtime
 - richer status-history selection sync and audit-summary action handoff
 - attachment preview writeback or Tandem handoff flows
 - Tandem integration

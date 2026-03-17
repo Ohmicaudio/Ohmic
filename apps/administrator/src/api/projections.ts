@@ -6,6 +6,7 @@ import type {
   AggregationPanelProjection,
   AttachmentPreviewProjection,
   DashboardStatusCards,
+  FilingHistoryProjection,
   InactiveIntakeProjection,
   IntakeQueueProjection,
   ReadyTasksProjection,
@@ -56,6 +57,10 @@ export async function fetchAggregationPanelProjection(): Promise<AggregationPane
 
 export async function fetchAttachmentPreviewProjection(): Promise<AttachmentPreviewProjection> {
   return fetchJson<AttachmentPreviewProjection>('/projections/administrator_attachment_preview')
+}
+
+export async function fetchFilingHistoryProjection(): Promise<FilingHistoryProjection> {
+  return fetchJson<FilingHistoryProjection>('/projections/administrator_filing_history_projection')
 }
 
 export async function fetchAuditSummaryProjection(): Promise<AdministratorAuditSummaryProjection> {

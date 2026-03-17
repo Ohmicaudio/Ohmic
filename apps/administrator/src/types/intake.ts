@@ -328,6 +328,25 @@ export interface FilingPickerReadModel {
   destinations: FilingDestinationOption[]
 }
 
+export interface FilingHistoryItem {
+  filing_record_id: string
+  intake_id: string
+  filing_destination_id: string
+  display_label: string
+  archive_marker: boolean
+  reason: string
+  filed_by: string
+  filed_at: string
+  status: string
+}
+
+export interface FilingHistoryProjection {
+  projection_name?: string
+  generated_at: string
+  refresh_triggers?: string[]
+  filing_history: FilingHistoryItem[]
+}
+
 // Ready tasks.
 export interface ReadyTask {
   task_id: string

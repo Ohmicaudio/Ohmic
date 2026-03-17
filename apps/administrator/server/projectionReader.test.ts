@@ -33,7 +33,7 @@ describe('ProjectionReader', () => {
     }
   })
 
-  it('loads note, tag, audit, and status projections into the watched projection floor', async () => {
+  it('loads note, tag, audit, status, and filing projections into the watched projection floor', async () => {
     await writeFile(
       path.join(tempRuntimeDir!, 'administrator_note_projection.json'),
       JSON.stringify({
@@ -91,6 +91,16 @@ describe('ProjectionReader', () => {
       'utf-8'
     )
 
+    await writeFile(
+      path.join(tempRuntimeDir!, 'administrator_filing_history_projection.json'),
+      JSON.stringify({
+        projection_name: 'administrator_filing_history_projection',
+        generated_at: '2026-03-17T15:20:04Z',
+        filing_history: [],
+      }),
+      'utf-8'
+    )
+
     const { ProjectionReader } = await importReader()
     const reader = new ProjectionReader()
 
@@ -101,12 +111,18 @@ describe('ProjectionReader', () => {
       'administrator_tag_assignment_projection'
     )
     expect(reader.getExpectedProjectionNames()).toContain('administrator_audit_summary')
+    expect(reader.getExpectedProjectionNames()).toContain(
+      'administrator_filing_history_projection'
+    )
     expect(reader.getExpectedProjectionNames()).toContain('administrator_status_history')
     expect(reader.getLoadedProjectionNames()).toContain('administrator_note_projection')
     expect(reader.getLoadedProjectionNames()).toContain(
       'administrator_tag_assignment_projection'
     )
     expect(reader.getLoadedProjectionNames()).toContain('administrator_audit_summary')
+    expect(reader.getLoadedProjectionNames()).toContain(
+      'administrator_filing_history_projection'
+    )
     expect(reader.getLoadedProjectionNames()).toContain('administrator_status_history')
   })
 })
