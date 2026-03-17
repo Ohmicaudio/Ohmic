@@ -32,9 +32,10 @@ export function App() {
       if (name === 'administrator_note_projection') fetchIntakeContext()
       if (name === 'administrator_tag_assignment_projection') fetchIntakeContext()
       if (name === 'administrator_recent_actions') loadAuditTrail()
+      fetchHealth()
     })
     return unsub
-  }, [fetchDashboard, fetchIntake, fetchIntakeContext, loadAuditTrail])
+  }, [fetchDashboard, fetchHealth, fetchIntake, fetchIntakeContext, loadAuditTrail])
 
   useEffect(() => {
     fetchHealth()
