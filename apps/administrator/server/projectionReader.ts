@@ -1,8 +1,9 @@
 import { watch, readFile } from 'fs'
 import { join, basename } from 'path'
 import { EventEmitter } from 'events'
+import { getAdministratorRuntimeDir } from './runtimeConfig.js'
 
-const RUNTIME_DIR = 'B:\\ohmic\\generated\\agent-work\\runtime'
+const RUNTIME_DIR = getAdministratorRuntimeDir()
 
 const PROJECTION_FILES = [
   'dashboard_status_cards.json',

@@ -1,8 +1,9 @@
 import { spawn } from 'child_process'
 import path from 'path'
+import { getAdministratorRuntimeDir } from './runtimeConfig.js'
 
 const ADMIN_SCRIPTS_DIR = 'B:\\ohmic\\tools\\sync\\administrator'
-const RUNTIME_DIR = 'B:\\ohmic\\generated\\agent-work\\runtime'
+const RUNTIME_DIR = getAdministratorRuntimeDir()
 
 interface CommandInput {
   intake_id: string
@@ -26,8 +27,10 @@ function escapePowerShellString(value: string): string {
 }
 
 function buildRegistryBootstrapScript(): string {
+  const runtimeDir = escapePowerShellString(RUNTIME_DIR)
+
   return `
-    $actionRegistryPath = '${RUNTIME_DIR}\\administrator_action_registry.json'
+    $actionRegistryPath = '${runtimeDir}\\administrator_action_registry.json'
     $actionRegistry = @()
     if (Test-Path $actionRegistryPath) {
       $actionRegistry = @((Get-Content $actionRegistryPath -Raw | ConvertFrom-Json).actions)
@@ -44,7 +47,7 @@ function buildRegistryBootstrapScript(): string {
       )
     }
 
-    $targetRegistryPath = '${RUNTIME_DIR}\\administrator_target_registry.json'
+    $targetRegistryPath = '${runtimeDir}\\administrator_target_registry.json'
     $targetRegistry = @()
     if (Test-Path $targetRegistryPath) {
       $targetRegistry = @((Get-Content $targetRegistryPath -Raw | ConvertFrom-Json).targets)
@@ -90,6 +93,8 @@ export async function validateCommand(input: CommandInput): Promise<unknown> {
 }
 
 export async function executeCommand(input: CommandInput): Promise<unknown> {
+  const runtimeDir = escapePowerShellString(RUNTIME_DIR)
+
   const psScript = `
     Set-StrictMode -Version Latest
     $ErrorActionPreference = 'Stop'
@@ -99,7 +104,7 @@ export async function executeCommand(input: CommandInput): Promise<unknown> {
     . '${noteProjectionScript}'
     . '${tagProjectionScript}'
 
-    $runtimeDir = '${RUNTIME_DIR}'
+    $runtimeDir = '${runtimeDir}'
     $commandResultsPath = Join-Path $runtimeDir 'administrator_command_results.jsonl'
     $notesPath = Join-Path $runtimeDir 'administrator_notes.jsonl'
     $tagAssignmentsPath = Join-Path $runtimeDir 'administrator_tag_assignments.jsonl'

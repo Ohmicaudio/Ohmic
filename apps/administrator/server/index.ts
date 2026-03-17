@@ -1,5 +1,6 @@
 import http from 'http'
 import { ProjectionReader } from './projectionReader.js'
+import { getAdministratorRuntimeDir } from './runtimeConfig.js'
 import {
   executeCommand,
   validateCommand,
@@ -48,7 +49,11 @@ const server = http.createServer((req, res) => {
 
   // Health check
   if (path === '/api/health') {
-    sendJson(res, { status: 'ok', uptime: process.uptime() })
+    sendJson(res, {
+      status: 'ok',
+      uptime: process.uptime(),
+      runtime_dir: getAdministratorRuntimeDir(),
+    })
     return
   }
 
