@@ -10,6 +10,7 @@ This app is currently a Phase 1 plus early Phase 2 scaffold:
 - intake queue viewer
 - inactive intake browser with reopen action
 - intake detail with note and tag context
+- filing picker read panel for the selected intake item
 - warning review panel with optional runtime module support
 - aggregation bundle panel with optional runtime module support
 - attachment preview panel with optional runtime module support
@@ -70,6 +71,7 @@ Backend:
 - `GET /api/projections/:name`
 - `GET /api/projections/stream`
 - `GET /api/commands/options`
+- `GET /api/filing/options?intakeId=...`
 - `POST /api/commands/validate`
 - `POST /api/commands/execute`
 - `POST /api/inactive/reopen`
@@ -85,7 +87,7 @@ Good to share as a foundation branch for:
 
 Not yet complete for:
 
-- filing picker
+- filing writeback flows
 - richer status-history and audit-summary shell integration
 - attachment preview writeback or Tandem handoff flows
 - Tandem integration

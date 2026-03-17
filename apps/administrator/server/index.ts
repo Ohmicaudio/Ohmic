@@ -5,6 +5,7 @@ import { ProjectionReader } from './projectionReader.js'
 import { getAdministratorRuntimeDir } from './runtimeConfig.js'
 import {
   executeCommand,
+  getFilingOptions,
   reopenInactiveIntake,
   validateCommand,
   getComposerOptions,
@@ -101,6 +102,20 @@ export function createAdministratorServer(port = PORT) {
     // Command composer options: GET /api/commands/options
     if (requestPath === '/api/commands/options' && req.method === 'GET') {
       getComposerOptions()
+        .then((data) => sendJson(res, data))
+        .catch((err) => sendJson(res, { error: err.message }, 500))
+      return
+    }
+
+    // Filing picker options: GET /api/filing/options?intakeId=...
+    if (requestPath === '/api/filing/options' && req.method === 'GET') {
+      const intakeId = url.searchParams.get('intakeId')
+      if (!intakeId) {
+        sendJson(res, { error: 'Missing intakeId query parameter' }, 400)
+        return
+      }
+
+      getFilingOptions(intakeId)
         .then((data) => sendJson(res, data))
         .catch((err) => sendJson(res, { error: err.message }, 500))
       return

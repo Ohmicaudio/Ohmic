@@ -6,6 +6,7 @@ import { DashboardPanel } from '@/panels/DashboardPanel'
 import { IntakeQueuePanel } from '@/panels/IntakeQueuePanel'
 import { InactiveIntakePanel } from '@/panels/InactiveIntakePanel'
 import { IntakeDetailPanel } from '@/panels/IntakeDetailPanel'
+import { FilingPickerPanel } from '@/panels/FilingPickerPanel'
 import { StatusHistoryPanel } from '@/panels/StatusHistoryPanel'
 import { CommandComposerPanel } from '@/panels/CommandComposerPanel'
 import { AuditTrailPanel } from '@/panels/AuditTrailPanel'
@@ -112,6 +113,7 @@ export function App() {
 
           <div className="space-y-8">
             <IntakeDetailPanel />
+            <FilingPickerPanel />
             <StatusHistoryPanel />
             <WarningReviewPanel />
             <AttachmentPreviewPanel />

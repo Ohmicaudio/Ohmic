@@ -251,6 +251,27 @@ export interface AttachmentPreviewProjection {
   rows: AttachmentPreviewItem[]
 }
 
+export interface FilingDestinationOption {
+  filing_destination_id: string
+  display_label: string
+  description: string
+  archive_marker_default: boolean
+  allowed_for_current_intake: boolean
+  status: string
+  selectable: boolean
+  disabled_reason: string | null
+  is_default: boolean
+  requires_advanced_flow: boolean
+}
+
+export interface FilingPickerReadModel {
+  intake_id: string
+  overlay_context_id: string
+  default_destination_ids: string[]
+  advanced_destination_ids: string[]
+  destinations: FilingDestinationOption[]
+}
+
 // Ready tasks.
 export interface ReadyTask {
   task_id: string

@@ -100,4 +100,61 @@ describe('administrator server', () => {
 
     expect(projection.cards[0].card_id).toBe('summary')
   })
+
+  it('serves filing options for an active intake item', async () => {
+    await writeFile(
+      path.join(tempRuntimeDir!, 'administrator_intake_queue.json'),
+      JSON.stringify(
+        {
+          generated_at: '2026-03-17T16:05:00Z',
+          projection_name: 'administrator_intake_queue',
+          staleness: {
+            status: 'fresh',
+            reason: null,
+          },
+          refresh_triggers: ['routing_change'],
+          metadata: {
+            ordering: 'priority_then_received_at_desc',
+            includes_warning_state: true,
+          },
+          count: 1,
+          queue_items: [
+            {
+              intake_id: 'intake-1',
+              title: 'Customer escalation',
+              intake_kind: 'email',
+              received_at: '2026-03-17T16:04:00Z',
+              status: 'triaging',
+              routing_target: '',
+              trust_tier: '2',
+              priority_hint: 'high',
+              tags: [],
+              warning_state: 'clean',
+              warning_count: 0,
+              summary_label: 'Customer escalation',
+            },
+          ],
+        },
+        null,
+        2
+      ),
+      'utf-8'
+    )
+
+    const { createAdministratorServer } = await importServer()
+    const app = createAdministratorServer(0)
+    const baseUrl = await app.start()
+    stopServer = app.stop
+
+    const filingRes = await fetch(`${baseUrl}/api/filing/options?intakeId=intake-1`)
+    expect(filingRes.ok).toBe(true)
+    const filing = (await filingRes.json()) as {
+      intake_id: string
+      destinations: Array<{ filing_destination_id: string }>
+    }
+
+    expect(filing.intake_id).toBe('intake-1')
+    expect(filing.destinations.length).toBeGreaterThan(0)
+    expect(filing.destinations[0]).toHaveProperty('filing_destination_id')
+  })
 })
