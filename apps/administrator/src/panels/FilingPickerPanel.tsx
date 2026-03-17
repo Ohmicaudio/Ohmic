@@ -4,22 +4,47 @@ import { useCommandStore } from '@/store/commandStore'
 import { useIntakeStore } from '@/store/intakeStore'
 import { StatusBadge } from '@/components/StatusBadge'
 
+function buildFilingContextNote(existingNote: string, destinationLabel: string): string {
+  const nextLine = `Filing destination: ${destinationLabel}`
+
+  if (!existingNote.trim()) {
+    return nextLine
+  }
+
+  if (existingNote.includes(nextLine)) {
+    return existingNote
+  }
+
+  return `${existingNote.trim()}\n${nextLine}`
+}
+
 export function FilingPickerPanel() {
   const selectedId = useIntakeStore((s) => s.selectedId)
-  const { model, loading, error, fetch } = useFilingPickerStore()
-  const { setIntakeId, setActionInput } = useCommandStore()
+  const { model, selectedDestinationId, loading, error, fetch, setSelectedDestination } =
+    useFilingPickerStore()
+  const { noteText, setIntakeId, setActionInput, setNoteText } = useCommandStore()
 
   useEffect(() => {
     void fetch(selectedId)
   }, [selectedId, fetch])
 
-  function primeArchiveAction() {
+  const selectedDestination =
+    model?.destinations.find(
+      (destination) => destination.filing_destination_id === selectedDestinationId
+    ) ?? null
+
+  function primeDestinationContext() {
     if (!selectedId) {
       return
     }
 
     setIntakeId(selectedId)
-    setActionInput('archive')
+    if (selectedDestination?.archive_marker_default) {
+      setActionInput('archive')
+    }
+    if (selectedDestination) {
+      setNoteText(buildFilingContextNote(noteText, selectedDestination.display_label))
+    }
   }
 
   return (
@@ -52,7 +77,16 @@ export function FilingPickerPanel() {
       ) : (
         <div className="space-y-2">
           {model.destinations.map((destination) => (
-            <div key={destination.filing_destination_id} className="panel space-y-2">
+            <button
+              key={destination.filing_destination_id}
+              type="button"
+              onClick={() => setSelectedDestination(destination.filing_destination_id)}
+              className={`panel space-y-2 w-full text-left transition-colors ${
+                selectedDestinationId === destination.filing_destination_id
+                  ? 'border-ohmic-accent/50 bg-ohmic-accent/10'
+                  : 'hover:border-ohmic-accent/30'
+              }`}
+            >
               <div className="flex items-start justify-between gap-3">
                 <div className="space-y-1 min-w-0">
                   <div className="text-sm font-medium text-ohmic-text break-words">
@@ -84,6 +118,12 @@ export function FilingPickerPanel() {
                     {destination.requires_advanced_flow ? 'advanced' : 'direct'}
                   </span>
                 </div>
+                <div>
+                  Selected:{' '}
+                  <span className="text-ohmic-text">
+                    {selectedDestinationId === destination.filing_destination_id ? 'yes' : 'no'}
+                  </span>
+                </div>
                 {!destination.selectable && destination.disabled_reason && (
                   <div>
                     Disabled reason:{' '}
@@ -91,15 +131,18 @@ export function FilingPickerPanel() {
                   </div>
                 )}
               </div>
-            </div>
+            </button>
           ))}
 
           <div className="pt-1">
             <button
-              onClick={primeArchiveAction}
+              onClick={primeDestinationContext}
+              disabled={!selectedDestination || !selectedDestination.selectable}
               className="rounded bg-ohmic-accent px-3 py-1.5 text-xs font-medium text-white transition-colors hover:bg-ohmic-accent-dim"
             >
-              Prime Archive Action
+              {selectedDestination?.archive_marker_default
+                ? 'Prime Archive Action'
+                : 'Prime Filing Context'}
             </button>
           </div>
         </div>
