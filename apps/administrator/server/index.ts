@@ -49,10 +49,18 @@ const server = http.createServer((req, res) => {
 
   // Health check
   if (path === '/api/health') {
+    const expectedProjections = reader.getExpectedProjectionNames()
+    const loadedProjections = reader.getLoadedProjectionNames()
+
     sendJson(res, {
       status: 'ok',
       uptime: process.uptime(),
       runtime_dir: getAdministratorRuntimeDir(),
+      expected_projections: expectedProjections,
+      loaded_projections: loadedProjections,
+      missing_projections: expectedProjections.filter(
+        (name) => !loadedProjections.includes(name)
+      ),
     })
     return
   }

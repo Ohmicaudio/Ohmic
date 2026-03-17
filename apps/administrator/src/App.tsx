@@ -22,6 +22,8 @@ export function App() {
   const fetchHealth = useServerHealthStore((s) => s.fetch)
   const healthStatus = useServerHealthStore((s) => s.status)
   const runtimeDir = useServerHealthStore((s) => s.runtimeDir)
+  const loadedProjectionCount = useServerHealthStore((s) => s.loadedProjections.length)
+  const expectedProjectionCount = useServerHealthStore((s) => s.expectedProjections.length)
 
   useEffect(() => {
     const unsub = subscribeToUpdates((name) => {
@@ -50,7 +52,12 @@ export function App() {
             </h1>
           </div>
           <div className="flex items-center gap-4">
-            <RuntimeIndicator status={healthStatus} runtimeDir={runtimeDir} />
+            <RuntimeIndicator
+              status={healthStatus}
+              runtimeDir={runtimeDir}
+              loadedProjectionCount={loadedProjectionCount}
+              expectedProjectionCount={expectedProjectionCount}
+            />
             <div className="text-xs text-ohmic-text-dim">Intake Triage &amp; Routing</div>
           </div>
         </div>

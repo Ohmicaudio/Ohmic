@@ -9,6 +9,8 @@ const PROJECTION_FILES = [
   'dashboard_status_cards.json',
   'administrator_intake_queue.json',
   'administrator_recent_actions.json',
+  'administrator_note_projection.json',
+  'administrator_tag_assignment_projection.json',
   'ready_tasks.json',
 ]
 
@@ -45,6 +47,14 @@ export class ProjectionReader extends EventEmitter {
 
   get(name: string): unknown {
     return this.cache[name] ?? null
+  }
+
+  getLoadedProjectionNames(): string[] {
+    return Object.keys(this.cache).sort()
+  }
+
+  getExpectedProjectionNames(): string[] {
+    return PROJECTION_FILES.map((file) => basename(file, '.json')).sort()
   }
 
   startWatching(): void {
