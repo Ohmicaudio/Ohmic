@@ -2,6 +2,7 @@ import type {
   AdministratorNoteProjection,
   AdministratorTagAssignmentProjection,
   DashboardStatusCards,
+  InactiveIntakeProjection,
   IntakeQueueProjection,
   ReadyTasksProjection,
 } from '@/types/intake'
@@ -22,6 +23,12 @@ export async function fetchDashboardCards(): Promise<DashboardStatusCards> {
 
 export async function fetchIntakeQueue(): Promise<IntakeQueueProjection> {
   return fetchJson<IntakeQueueProjection>('/projections/administrator_intake_queue')
+}
+
+export async function fetchInactiveIntake(): Promise<InactiveIntakeProjection> {
+  return fetchJson<InactiveIntakeProjection>(
+    '/projections/administrator_inactive_intake_projection'
+  )
 }
 
 export async function fetchNoteProjection(): Promise<AdministratorNoteProjection> {

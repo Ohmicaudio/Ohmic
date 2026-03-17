@@ -83,6 +83,37 @@ export interface IntakeQueueProjection {
   queue_items: IntakeQueueItem[]
 }
 
+export type InactiveIntakeStatus =
+  | 'archived'
+  | 'routed'
+  | 'held'
+  | 'waiting_on_human'
+  | 'waiting_on_provider'
+  | ''
+
+export interface InactiveIntakeItem {
+  intake_id: string
+  title: string
+  inactive_status: InactiveIntakeStatus
+  inactive_since: string
+  last_active_status: string
+  reopen_allowed: boolean
+  reopen_target_status: string
+  summary_label: string
+}
+
+export interface InactiveIntakeProjection {
+  generated_at: string
+  projection_name: string
+  refresh_triggers: string[]
+  metadata?: {
+    ordering?: string
+    default_visibility?: string
+  }
+  count: number
+  inactive_items: InactiveIntakeItem[]
+}
+
 export interface AdministratorNote {
   note_id: string
   intake_id: string

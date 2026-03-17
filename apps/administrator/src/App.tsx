@@ -2,6 +2,7 @@ import { useEffect } from 'react'
 import { RuntimeIndicator } from '@/components/RuntimeIndicator'
 import { DashboardPanel } from '@/panels/DashboardPanel'
 import { IntakeQueuePanel } from '@/panels/IntakeQueuePanel'
+import { InactiveIntakePanel } from '@/panels/InactiveIntakePanel'
 import { IntakeDetailPanel } from '@/panels/IntakeDetailPanel'
 import { StatusHistoryPanel } from '@/panels/StatusHistoryPanel'
 import { CommandComposerPanel } from '@/panels/CommandComposerPanel'
@@ -9,6 +10,7 @@ import { AuditTrailPanel } from '@/panels/AuditTrailPanel'
 import { WarningReviewPanel } from '@/panels/WarningReviewPanel'
 import { subscribeToUpdates } from '@/api/projections'
 import { useDashboardStore } from '@/store/dashboardStore'
+import { useInactiveIntakeStore } from '@/store/inactiveIntakeStore'
 import { useIntakeContextStore } from '@/store/intakeContextStore'
 import { useIntakeStore } from '@/store/intakeStore'
 import { useCommandStore } from '@/store/commandStore'
@@ -17,6 +19,7 @@ import { useServerHealthStore } from '@/store/serverHealthStore'
 export function App() {
   const fetchDashboard = useDashboardStore((s) => s.fetch)
   const fetchIntake = useIntakeStore((s) => s.fetch)
+  const fetchInactiveIntake = useInactiveIntakeStore((s) => s.fetch)
   const fetchIntakeContext = useIntakeContextStore((s) => s.fetch)
   const loadAuditTrail = useCommandStore((s) => s.loadAuditTrail)
   const fetchHealth = useServerHealthStore((s) => s.fetch)
@@ -29,18 +32,27 @@ export function App() {
     const unsub = subscribeToUpdates((name) => {
       if (name === 'dashboard_status_cards') fetchDashboard()
       if (name === 'administrator_intake_queue') fetchIntake()
+      if (name === 'administrator_inactive_intake_projection') fetchInactiveIntake()
       if (name === 'administrator_note_projection') fetchIntakeContext()
       if (name === 'administrator_tag_assignment_projection') fetchIntakeContext()
       if (name === 'administrator_recent_actions') loadAuditTrail()
       fetchHealth()
     })
     return unsub
-  }, [fetchDashboard, fetchHealth, fetchIntake, fetchIntakeContext, loadAuditTrail])
+  }, [
+    fetchDashboard,
+    fetchHealth,
+    fetchInactiveIntake,
+    fetchIntake,
+    fetchIntakeContext,
+    loadAuditTrail,
+  ])
 
   useEffect(() => {
     fetchHealth()
+    fetchInactiveIntake()
     fetchIntakeContext()
-  }, [fetchHealth, fetchIntakeContext])
+  }, [fetchHealth, fetchInactiveIntake, fetchIntakeContext])
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -70,6 +82,7 @@ export function App() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-8">
           <div className="lg:col-span-2">
             <IntakeQueuePanel />
+            <InactiveIntakePanel />
           </div>
 
           <div className="space-y-8">
