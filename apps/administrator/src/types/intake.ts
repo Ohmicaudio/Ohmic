@@ -204,6 +204,30 @@ export interface WarningReviewProjection {
   rows: WarningReviewItem[]
 }
 
+export interface AggregationPanelItem {
+  aggregation_bundle_id: string
+  bundle_label: string
+  bundle_kind: string
+  member_count: number
+  summary_text: string
+  recommended_next_action: string
+  status: string
+  latest_activity_at: string
+  primary_member_intake_id: string
+}
+
+export interface AggregationPanelProjection {
+  module_id: string
+  generated_at: string
+  row_count: number
+  filter_presets: Array<Record<string, unknown>>
+  empty_state: {
+    title: string
+    body: string
+  }
+  rows: AggregationPanelItem[]
+}
+
 // Ready tasks.
 export interface ReadyTask {
   task_id: string

@@ -1,6 +1,7 @@
 import type {
   AdministratorNoteProjection,
   AdministratorTagAssignmentProjection,
+  AggregationPanelProjection,
   DashboardStatusCards,
   InactiveIntakeProjection,
   IntakeQueueProjection,
@@ -44,6 +45,10 @@ export async function fetchTagAssignmentProjection(): Promise<AdministratorTagAs
 
 export async function fetchWarningReviewProjection(): Promise<WarningReviewProjection> {
   return fetchJson<WarningReviewProjection>('/projections/administrator_warning_review')
+}
+
+export async function fetchAggregationPanelProjection(): Promise<AggregationPanelProjection> {
+  return fetchJson<AggregationPanelProjection>('/projections/administrator_aggregation_panel')
 }
 
 export async function fetchReadyTasks(): Promise<ReadyTasksProjection> {
