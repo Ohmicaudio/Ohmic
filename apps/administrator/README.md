@@ -9,13 +9,16 @@ This app is currently a Phase 1 plus early Phase 2 scaffold:
 - dashboard projection viewer
 - intake queue viewer
 - inactive intake browser with reopen action
-- intake detail and warning review panels
+- intake detail with note and tag context
+- warning review panel with optional runtime module support
+- aggregation bundle panel with optional runtime module support
+- attachment preview panel with optional runtime module support
 - per-intake status history panel
 - command composer with PowerShell-backed validation and execute/writeback
-- recent action / audit projection viewer
+- recent action / audit projection viewer with intake jump-back
 - SSE refresh from runtime projection changes
 
-It is now a usable intake triage foundation, but it is not yet a full operator desk. The current branch can validate and apply commands back into the administrator runtime, but it still stops short of provider integrations, attachment preview, aggregation bundles, and richer filing or inactive-item workflows.
+It is now a usable intake triage foundation, but it is not yet a full operator desk. The current branch can validate and apply commands back into the administrator runtime, reopen inactive items, and consume several optional runtime shell modules, but it still stops short of provider integrations, filing flows, and richer operator-specific writeback surfaces.
 
 ## Location
 
@@ -40,6 +43,9 @@ npm run dev
 
 - projection store loading and staleness wiring
 - command store execute/writeback flow
+- inactive reopen store behavior
+- optional warning / aggregation / attachment module loading
+- projection reader coverage for the watched runtime floor
 - PowerShell runner smoke against a temporary local-only runtime root
 
 To keep runtime state out of the repo checkout, you can point the admin server at a
@@ -79,9 +85,9 @@ Good to share as a foundation branch for:
 
 Not yet complete for:
 
-- attachment preview
-- aggregation bundles
 - filing picker
+- richer status-history and audit-summary shell integration
+- attachment preview writeback or Tandem handoff flows
 - Tandem integration
 - ContextKeep or memory integration
 - provider connectors
