@@ -1,0 +1,9 @@
+node_modules/
+dist/
+dist-node/
+.claude/
+.vite/
+.vite-temp/
+*.tsbuildinfo
+*.log
+npm-debug.log*

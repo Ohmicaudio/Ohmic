@@ -23,3 +23,8 @@
 .DS_Store
 Thumbs.db
 desktop.ini
+
+# Local tool state and generated review artifacts do not belong in the repo.
+/.claude/
+/.playwright-cli/
+/output/

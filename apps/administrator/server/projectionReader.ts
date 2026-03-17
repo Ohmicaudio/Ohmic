@@ -1,0 +1,73 @@
+import { watch, readFile } from 'fs'
+import { join, basename } from 'path'
+import { EventEmitter } from 'events'
+
+const RUNTIME_DIR = 'B:\\ohmic\\generated\\agent-work\\runtime'
+
+const PROJECTION_FILES = [
+  'dashboard_status_cards.json',
+  'administrator_intake_queue.json',
+  'administrator_recent_actions.json',
+  'ready_tasks.json',
+]
+
+export interface ProjectionCache {
+  [name: string]: unknown
+}
+
+export class ProjectionReader extends EventEmitter {
+  private cache: ProjectionCache = {}
+  private watchers: ReturnType<typeof watch>[] = []
+
+  async loadAll(): Promise<void> {
+    const loads = PROJECTION_FILES.map((file) => this.loadFile(file))
+    await Promise.allSettled(loads)
+  }
+
+  private async loadFile(filename: string): Promise<void> {
+    const filePath = join(RUNTIME_DIR, filename)
+    const name = basename(filename, '.json')
+
+    try {
+      const raw = await new Promise<string>((resolve, reject) => {
+        readFile(filePath, 'utf-8', (err, data) => {
+          if (err) reject(err)
+          else resolve(data)
+        })
+      })
+      this.cache[name] = JSON.parse(raw)
+      this.emit('updated', name)
+    } catch {
+      // File may not exist yet — that's fine
+    }
+  }
+
+  get(name: string): unknown {
+    return this.cache[name] ?? null
+  }
+
+  startWatching(): void {
+    // Watch the entire runtime directory for changes
+    try {
+      const watcher = watch(RUNTIME_DIR, (eventType, filename) => {
+        if (!filename || !filename.endsWith('.json')) return
+        if (!PROJECTION_FILES.includes(filename)) return
+
+        // Debounce: small delay to let file writes complete
+        setTimeout(() => {
+          this.loadFile(filename)
+        }, 100)
+      })
+      this.watchers.push(watcher)
+    } catch {
+      console.warn('[projectionReader] Could not watch runtime dir — polling disabled')
+    }
+  }
+
+  stopWatching(): void {
+    for (const w of this.watchers) {
+      w.close()
+    }
+    this.watchers = []
+  }
+}
