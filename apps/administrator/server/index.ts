@@ -1,6 +1,10 @@
 import http from 'http'
 import { ProjectionReader } from './projectionReader.js'
-import { validateCommand, getComposerOptions } from './powershellRunner.js'
+import {
+  executeCommand,
+  validateCommand,
+  getComposerOptions,
+} from './powerShellRunner.js'
 
 const PORT = 5181
 const reader = new ProjectionReader()
@@ -93,6 +97,23 @@ const server = http.createServer((req, res) => {
         const input = JSON.parse(body)
         validateCommand(input)
           .then((result) => sendJson(res, { result }))
+          .catch((err) => sendJson(res, { error: err.message }, 500))
+      } catch {
+        sendJson(res, { error: 'Invalid JSON body' }, 400)
+      }
+    })
+    return
+  }
+
+  // Command execution: POST /api/commands/execute
+  if (path === '/api/commands/execute' && req.method === 'POST') {
+    let body = ''
+    req.on('data', (chunk: Buffer) => { body += chunk.toString() })
+    req.on('end', () => {
+      try {
+        const input = JSON.parse(body)
+        executeCommand(input)
+          .then((result) => sendJson(res, result))
           .catch((err) => sendJson(res, { error: err.message }, 500))
       } catch {
         sendJson(res, { error: 'Invalid JSON body' }, 400)

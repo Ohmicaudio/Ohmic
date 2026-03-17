@@ -4,7 +4,7 @@ import { useIntakeStore } from '@/store/intakeStore'
 import { TagChip } from '@/components/TagChip'
 
 function ValidationResult() {
-  const { validation, lastResult, error } = useCommandStore()
+  const { validation, lastResult, lastWriteback, error } = useCommandStore()
 
   if (error) {
     return (
@@ -17,7 +17,11 @@ function ValidationResult() {
 
   if (validation.validation_status === 'idle') return null
   if (validation.validation_status === 'validating') {
-    return <div className="text-ohmic-text-dim text-xs animate-pulse">Validating via PowerShell...</div>
+    return (
+      <div className="text-ohmic-text-dim text-xs animate-pulse">
+        Validating via PowerShell...
+      </div>
+    )
   }
 
   const statusColor =
@@ -58,6 +62,27 @@ function ValidationResult() {
           {lastResult.resolved_queue_target_id && (
             <span> -&gt; {lastResult.resolved_queue_target_id}</span>
           )}
+        </div>
+      )}
+
+      {lastWriteback && (
+        <div className="text-xs text-ohmic-text-dim bg-ohmic-bg rounded px-2 py-2">
+          <div>
+            Writeback: <span className="text-ohmic-text">{lastWriteback.writeback_status}</span>
+          </div>
+          <div>
+            Resulting status:{' '}
+            <span className="text-ohmic-text">{lastWriteback.resulting_status ?? '--'}</span>
+          </div>
+          <div>
+            Audit rows: <span className="text-ohmic-text">{lastWriteback.recent_actions_count}</span>
+          </div>
+          <div>
+            Notes written: <span className="text-ohmic-text">{lastWriteback.note_written ? 'yes' : 'no'}</span>
+          </div>
+          <div>
+            Tags written: <span className="text-ohmic-text">{lastWriteback.tags_written}</span>
+          </div>
         </div>
       )}
 
@@ -104,6 +129,8 @@ export function CommandComposerPanel() {
     availableTargets,
     optionsLoaded,
     validating,
+    executing,
+    validation,
     setIntakeId,
     setActionInput,
     setNoteText,
@@ -113,6 +140,7 @@ export function CommandComposerPanel() {
     setQueueTarget,
     loadOptions,
     validate,
+    execute,
     reset,
   } = useCommandStore()
 
@@ -138,6 +166,10 @@ export function CommandComposerPanel() {
         ['route_to_orchestrator', 'request_approval'].includes(a.action_id) &&
         (a.action_id === actionInput || a.aliases.includes(actionInput.toLowerCase()))
     )
+
+  const canApply =
+    validation.validation_status === 'accepted' ||
+    validation.validation_status === 'accepted_with_warnings'
 
   return (
     <div className="space-y-4">
@@ -239,13 +271,22 @@ export function CommandComposerPanel() {
           )}
         </div>
 
-        <button
-          onClick={validate}
-          disabled={validating || !selectedIntakeId || !actionInput}
-          className="w-full bg-ohmic-accent hover:bg-ohmic-accent-dim disabled:bg-ohmic-border disabled:text-ohmic-muted text-white font-medium rounded px-4 py-2 text-sm transition-colors"
-        >
-          {validating ? 'Validating...' : 'Validate Command'}
-        </button>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+          <button
+            onClick={validate}
+            disabled={validating || executing || !selectedIntakeId || !actionInput}
+            className="w-full bg-ohmic-accent hover:bg-ohmic-accent-dim disabled:bg-ohmic-border disabled:text-ohmic-muted text-white font-medium rounded px-4 py-2 text-sm transition-colors"
+          >
+            {validating ? 'Validating...' : 'Validate Command'}
+          </button>
+          <button
+            onClick={execute}
+            disabled={validating || executing || !canApply}
+            className="w-full bg-ohmic-success hover:bg-ohmic-success/80 disabled:bg-ohmic-border disabled:text-ohmic-muted text-white font-medium rounded px-4 py-2 text-sm transition-colors"
+          >
+            {executing ? 'Applying...' : 'Apply Command'}
+          </button>
+        </div>
       </div>
 
       <ValidationResult />

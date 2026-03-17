@@ -109,3 +109,16 @@ export interface ValidateCommandRequest {
 export interface ValidateCommandResponse {
   result: CommandValidationResult
 }
+
+export interface CommandWritebackResult {
+  writeback_status: 'accepted' | 'rejected'
+  resulting_status: string | null
+  recent_actions_count: number
+  note_written: boolean
+  tags_written: number
+}
+
+export interface ExecuteCommandResponse {
+  result: CommandValidationResult
+  writeback: CommandWritebackResult
+}

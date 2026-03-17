@@ -2,11 +2,13 @@ import { create } from 'zustand'
 import type {
   ValidationFeedback,
   CommandValidationResult,
+  CommandWritebackResult,
   RecentAction,
 } from '@/types/commands'
 import {
   fetchComposerOptions,
   validateCommand,
+  executeCommand,
   fetchRecentActions,
 } from '@/api/commands'
 
@@ -24,7 +26,6 @@ interface TargetOption {
 }
 
 interface CommandState {
-  // Composer form state
   selectedIntakeId: string
   actionInput: string
   noteText: string
@@ -32,22 +33,20 @@ interface CommandState {
   tags: string[]
   queueTargetId: string
 
-  // Options from PowerShell
   availableActions: ActionOption[]
   availableTargets: TargetOption[]
   optionsLoaded: boolean
 
-  // Validation result
   validation: ValidationFeedback
   lastResult: CommandValidationResult | null
+  lastWriteback: CommandWritebackResult | null
   validating: boolean
+  executing: boolean
   error: string | null
 
-  // Audit trail
   recentActions: RecentAction[]
   auditLoading: boolean
 
-  // Actions
   setIntakeId: (id: string) => void
   setActionInput: (input: string) => void
   setNoteText: (text: string) => void
@@ -57,6 +56,7 @@ interface CommandState {
   setQueueTarget: (id: string) => void
   loadOptions: () => Promise<void>
   validate: () => Promise<void>
+  execute: () => Promise<void>
   reset: () => void
   loadAuditTrail: () => Promise<void>
 }
@@ -67,6 +67,15 @@ const emptyValidation: ValidationFeedback = {
   warning_reasons: [],
   rejection_details: [],
   warning_details: [],
+}
+
+function clearResultState() {
+  return {
+    validation: { ...emptyValidation },
+    lastResult: null as CommandValidationResult | null,
+    lastWriteback: null as CommandWritebackResult | null,
+    error: null as string | null,
+  }
 }
 
 export const useCommandStore = create<CommandState>((set, get) => ({
@@ -83,26 +92,33 @@ export const useCommandStore = create<CommandState>((set, get) => ({
 
   validation: { ...emptyValidation },
   lastResult: null,
+  lastWriteback: null,
   validating: false,
+  executing: false,
   error: null,
 
   recentActions: [],
   auditLoading: false,
 
-  setIntakeId: (id) => set({ selectedIntakeId: id, validation: { ...emptyValidation } }),
-  setActionInput: (input) => set({ actionInput: input, validation: { ...emptyValidation } }),
-  setNoteText: (text) => set({ noteText: text }),
+  setIntakeId: (id) => set({ selectedIntakeId: id, ...clearResultState() }),
+  setActionInput: (input) => set({ actionInput: input, ...clearResultState() }),
+  setNoteText: (text) => set({ noteText: text, lastWriteback: null, error: null }),
   setTagInput: (input) => set({ tagInput: input }),
   addTag: (tag) => {
     const trimmed = tag.trim().toLowerCase()
     if (!trimmed) return
     const current = get().tags
     if (!current.includes(trimmed)) {
-      set({ tags: [...current, trimmed], tagInput: '' })
+      set({ tags: [...current, trimmed], tagInput: '', lastWriteback: null, error: null })
     }
   },
-  removeTag: (tag) => set({ tags: get().tags.filter((t) => t !== tag) }),
-  setQueueTarget: (id) => set({ queueTargetId: id, validation: { ...emptyValidation } }),
+  removeTag: (tag) =>
+    set({
+      tags: get().tags.filter((t) => t !== tag),
+      lastWriteback: null,
+      error: null,
+    }),
+  setQueueTarget: (id) => set({ queueTargetId: id, ...clearResultState() }),
 
   loadOptions: async () => {
     try {
@@ -119,7 +135,12 @@ export const useCommandStore = create<CommandState>((set, get) => ({
 
   validate: async () => {
     const state = get()
-    set({ validating: true, error: null, validation: { ...emptyValidation, validation_status: 'validating' } })
+    set({
+      validating: true,
+      error: null,
+      lastWriteback: null,
+      validation: { ...emptyValidation, validation_status: 'validating' },
+    })
 
     try {
       const response = await validateCommand({
@@ -151,16 +172,54 @@ export const useCommandStore = create<CommandState>((set, get) => ({
     }
   },
 
-  reset: () => set({
-    actionInput: '',
-    noteText: '',
-    tagInput: '',
-    tags: [],
-    queueTargetId: '',
-    validation: { ...emptyValidation },
-    lastResult: null,
-    error: null,
-  }),
+  execute: async () => {
+    const state = get()
+    set({ executing: true, error: null, lastWriteback: null })
+
+    try {
+      const response = await executeCommand({
+        intake_id: state.selectedIntakeId,
+        action: state.actionInput,
+        queue_target: state.queueTargetId || undefined,
+        note: state.noteText || undefined,
+        tags: state.tags.length > 0 ? state.tags : undefined,
+      })
+
+      const result = response.result as CommandValidationResult
+      const writeback = response.writeback
+
+      set({
+        executing: false,
+        lastResult: result,
+        lastWriteback: writeback,
+        validation: {
+          validation_status: result.validation.validation_status,
+          rejection_reasons: result.validation.rejection_reasons,
+          warning_reasons: result.validation.warning_reasons,
+          rejection_details: result.validation.rejection_details,
+          warning_details: result.validation.warning_details,
+        },
+      })
+
+      await get().loadAuditTrail()
+    } catch (err) {
+      set({
+        executing: false,
+        error: err instanceof Error ? err.message : 'Command execution failed',
+      })
+    }
+  },
+
+  reset: () =>
+    set({
+      actionInput: '',
+      noteText: '',
+      tagInput: '',
+      tags: [],
+      queueTargetId: '',
+      executing: false,
+      ...clearResultState(),
+    }),
 
   loadAuditTrail: async () => {
     set({ auditLoading: true })

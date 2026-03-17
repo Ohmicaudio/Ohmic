@@ -47,6 +47,7 @@ Backend:
 - `GET /api/projections/stream`
 - `GET /api/commands/options`
 - `POST /api/commands/validate`
+- `POST /api/commands/execute`
 
 ## Current collaboration posture
 
