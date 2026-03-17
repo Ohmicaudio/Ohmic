@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 import { DashboardPanel } from '@/panels/DashboardPanel'
 import { IntakeQueuePanel } from '@/panels/IntakeQueuePanel'
+import { IntakeDetailPanel } from '@/panels/IntakeDetailPanel'
 import { CommandComposerPanel } from '@/panels/CommandComposerPanel'
 import { AuditTrailPanel } from '@/panels/AuditTrailPanel'
 import { subscribeToUpdates } from '@/api/projections'
@@ -45,6 +46,7 @@ export function App() {
           </div>
 
           <div className="space-y-8">
+            <IntakeDetailPanel />
             <CommandComposerPanel />
             <AuditTrailPanel />
           </div>
