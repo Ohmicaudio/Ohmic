@@ -69,15 +69,19 @@ function Invoke-AdministratorFilingWriteback {
     $auditEvent = [pscustomobject]@{
         event_id = New-AdministratorFilingEventId
         event_type = 'administrator.filing.created'
+        event_family = 'filing_migration'
         filing_record_id = $filingRecord.filing_record_id
         intake_id = $intakeId
         filing_destination_id = $destinationId
         archive_marker = $archiveMarkerValue
         actor_id = $RequestedBy
         actor_type = 'human_operator'
+        actor_label = $RequestedBy
         occurred_at = $occurredAt
         summary_label = 'Filing created'
         reason = $Reason
+        target_label = [string](Get-AdministratorObjectValue -InputObject $Destination -Name 'display_label' -Default $destinationId)
+        status_delta = ''
     }
 
     return [pscustomobject]@{

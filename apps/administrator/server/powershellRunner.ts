@@ -137,6 +137,7 @@ const commandComposerScript = asPowerShellPath('command-composer.ps1')
 const recentActionsProjectionScript = asPowerShellPath('recent-actions-projection.ps1')
 const noteProjectionScript = asPowerShellPath('note-projection.ps1')
 const tagProjectionScript = asPowerShellPath('tag-projection.ps1')
+const auditSummaryProjectionScript = asPowerShellPath('audit-summary-projection.ps1')
 const reopenWritebackScript = asPowerShellPath('reopen-writeback.ps1')
 const filingHistoryProjectionScript = asPowerShellPath('filing-history-projection.ps1')
 const filingPickerReadScript = asPowerShellPath('filing-picker-read.ps1')
@@ -276,11 +277,13 @@ export async function executeCommand(input: CommandInput): Promise<unknown> {
     . '${recentActionsProjectionScript}'
     . '${noteProjectionScript}'
     . '${tagProjectionScript}'
+    . '${auditSummaryProjectionScript}'
 
     $runtimeDir = '${runtimeDir}'
     $commandResultsPath = Join-Path $runtimeDir 'administrator_command_results.jsonl'
     $notesPath = Join-Path $runtimeDir 'administrator_notes.jsonl'
     $tagAssignmentsPath = Join-Path $runtimeDir 'administrator_tag_assignments.jsonl'
+    $auditEventsPath = Join-Path $runtimeDir 'administrator_audit_events.jsonl'
 
     ${buildRegistryBootstrapScript()}
     ${buildComposerStateScript(input)}
@@ -338,6 +341,37 @@ export async function executeCommand(input: CommandInput): Promise<unknown> {
     $commandResults = @(Read-JsonLines -PathText $commandResultsPath)
     $recentActionsProjection = Write-AdministratorRecentActionsProjection -CommandResults $commandResults -RuntimeDir $runtimeDir
 
+    $primaryEventFamily = switch ($intent.resolved_action_id) {
+      'add_note' { 'note' }
+      'tag_item' { 'tag' }
+      default { 'status_transition' }
+    }
+    $primaryTargetLabel = if (-not [string]::IsNullOrWhiteSpace([string]$intent.resolved_queue_target_id)) {
+      [string]$intent.resolved_queue_target_id
+    } elseif ($primaryEventFamily -eq 'tag' -and @($intent.tags).Count -gt 0) {
+      @($intent.tags) -join ', '
+    } else {
+      ''
+    }
+    $primaryStatusDelta = if ($primaryEventFamily -eq 'status_transition') {
+      [string]$resultingStatus
+    } else {
+      ''
+    }
+    $auditEventsToAppend = @(
+      [pscustomobject]@{
+        event_id = $commandResult.audit_id
+        event_type = 'administrator.command.executed'
+        event_family = $primaryEventFamily
+        intake_id = $intent.selected_intake_id
+        summary_label = $commandResult.summary_label
+        actor_label = $intent.requested_by
+        occurred_at = $occurredAt
+        status_delta = $primaryStatusDelta
+        target_label = $primaryTargetLabel
+      }
+    )
+
     $noteWritten = $false
     if (-not [string]::IsNullOrWhiteSpace($intent.note_text)) {
       $noteRecord = [pscustomobject]@{
@@ -355,6 +389,20 @@ export async function executeCommand(input: CommandInput): Promise<unknown> {
       $allNotes = @(Read-JsonLines -PathText $notesPath)
       Write-AdministratorNoteProjection -Notes $allNotes -VisibilityContext 'desk' -RuntimeDir $runtimeDir | Out-Null
       $noteWritten = $true
+
+      if ($intent.resolved_action_id -ne 'add_note') {
+        $auditEventsToAppend += [pscustomobject]@{
+          event_id = "note_$($intent.command_id)"
+          event_type = 'administrator.note.created'
+          event_family = 'note'
+          intake_id = $intent.selected_intake_id
+          summary_label = 'Note added'
+          actor_label = $intent.requested_by
+          occurred_at = $occurredAt
+          status_delta = ''
+          target_label = ''
+        }
+      }
     }
 
     $tagWriteCount = 0
@@ -381,7 +429,27 @@ export async function executeCommand(input: CommandInput): Promise<unknown> {
 
       $allTagAssignments = @(Read-JsonLines -PathText $tagAssignmentsPath)
       Write-AdministratorTagProjection -TagAssignments $allTagAssignments -RuntimeDir $runtimeDir | Out-Null
+
+      if ($intent.resolved_action_id -ne 'tag_item') {
+        $auditEventsToAppend += [pscustomobject]@{
+          event_id = "tag_$($intent.command_id)"
+          event_type = 'administrator.tag.assignment'
+          event_family = 'tag'
+          intake_id = $intent.selected_intake_id
+          summary_label = 'Tags updated'
+          actor_label = $intent.requested_by
+          occurred_at = $occurredAt
+          status_delta = ''
+          target_label = @($intent.tags) -join ', '
+        }
+      }
     }
+
+    foreach ($auditEvent in @($auditEventsToAppend)) {
+      Append-JsonLine -PathText $auditEventsPath -Value $auditEvent
+    }
+    $auditEvents = @(Read-JsonLines -PathText $auditEventsPath)
+    Write-AdministratorAuditSummaryProjection -AuditEvents $auditEvents -RuntimeDir $runtimeDir | Out-Null
 
     [pscustomobject]@{
       result = $intent
@@ -473,10 +541,12 @@ export async function recordFiling(
     . '${filingPickerReadScript}'
     . '${filingWritebackScript}'
     . '${filingHistoryProjectionScript}'
+    . '${auditSummaryProjectionScript}'
 
     $runtimeDir = '${runtimeDir}'
     $queueProjectionPath = Join-Path $runtimeDir 'administrator_intake_queue.json'
     $filingHistoryPath = Join-Path $runtimeDir 'administrator_filing_history.jsonl'
+    $auditEventsPath = Join-Path $runtimeDir 'administrator_audit_events.jsonl'
 
     if (-not (Test-Path $queueProjectionPath)) {
       throw 'Administrator intake queue projection is not available.'
@@ -537,6 +607,9 @@ export async function recordFiling(
     Append-JsonLine -PathText $filingHistoryPath -Value $writeback.filing_record
     $filingHistory = @(Read-JsonLines -PathText $filingHistoryPath)
     $projection = Write-AdministratorFilingHistoryProjection -FilingHistory $filingHistory -RuntimeDir $runtimeDir
+    Append-JsonLine -PathText $auditEventsPath -Value $writeback.audit_event
+    $auditEvents = @(Read-JsonLines -PathText $auditEventsPath)
+    Write-AdministratorAuditSummaryProjection -AuditEvents $auditEvents -RuntimeDir $runtimeDir | Out-Null
 
     [pscustomobject]@{
       writeback = [pscustomobject]@{
@@ -564,10 +637,12 @@ export async function reopenInactiveIntake(
 
     . '${reopenWritebackScript}'
     . '${recentActionsProjectionScript}'
+    . '${auditSummaryProjectionScript}'
 
     $runtimeDir = '${runtimeDir}'
     $inactiveProjectionPath = Join-Path $runtimeDir 'administrator_inactive_intake_projection.json'
     $commandResultsPath = Join-Path $runtimeDir 'administrator_command_results.jsonl'
+    $auditEventsPath = Join-Path $runtimeDir 'administrator_audit_events.jsonl'
 
     if (-not (Test-Path $inactiveProjectionPath)) {
       throw 'Inactive intake projection is not available.'
@@ -636,6 +711,21 @@ export async function reopenInactiveIntake(
     Append-JsonLine -PathText $commandResultsPath -Value $commandResult
     $commandResults = @(Read-JsonLines -PathText $commandResultsPath)
     $recentActionsProjection = Write-AdministratorRecentActionsProjection -CommandResults $commandResults -RuntimeDir $runtimeDir
+
+    $auditEvent = [pscustomobject]@{
+      event_id = $reopen.audit_event.reopen_event_id
+      event_type = 'administrator.intake.reopened'
+      event_family = 'reopen'
+      intake_id = $reopen.updated_intake.intake_id
+      summary_label = "Reopened -> $([string]$reopen.updated_intake.status)"
+      actor_label = $reopen.audit_event.reopened_by
+      occurred_at = $reopen.audit_event.reopened_at
+      status_delta = "$([string]$reopen.audit_event.previous_status) -> $([string]$reopen.audit_event.restored_status)"
+      target_label = [string]$reopen.audit_event.restored_status
+    }
+    Append-JsonLine -PathText $auditEventsPath -Value $auditEvent
+    $auditEvents = @(Read-JsonLines -PathText $auditEventsPath)
+    Write-AdministratorAuditSummaryProjection -AuditEvents $auditEvents -RuntimeDir $runtimeDir | Out-Null
 
     [pscustomobject]@{
       writeback = [pscustomobject]@{

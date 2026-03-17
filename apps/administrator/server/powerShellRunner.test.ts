@@ -95,6 +95,8 @@ describe('powerShellRunner', () => {
 
     const expectedFiles = [
       'administrator_command_results.jsonl',
+      'administrator_audit_events.jsonl',
+      'administrator_audit_summary.json',
       'administrator_notes.jsonl',
       'administrator_tag_assignments.jsonl',
       'administrator_recent_actions.json',
@@ -134,6 +136,26 @@ describe('powerShellRunner', () => {
       routing_target: 'orchestrator',
     })
     expect(intakeQueue.queue_items[0].tags).toEqual(['seed', 'server-smoke'])
+
+    const auditSummaryRaw = await readFile(
+      path.join(tempRuntimeDir, 'administrator_audit_summary.json'),
+      'utf-8'
+    )
+    const auditSummary = JSON.parse(auditSummaryRaw) as {
+      rows: Array<{ event_family: string; intake_id: string; target_label: string }>
+    }
+
+    expect(auditSummary.rows.map((row) => row.event_family).sort()).toEqual([
+      'note',
+      'status_transition',
+      'tag',
+    ])
+    expect(
+      auditSummary.rows.find((row) => row.event_family === 'status_transition')
+    ).toMatchObject({
+      intake_id: 'admin-test-intake',
+      target_label: 'orchestrator',
+    })
   })
 
   it('reopens an inactive intake item back into the active queue and audit trail', async () => {
@@ -253,6 +275,20 @@ describe('powerShellRunner', () => {
 
     expect(inactiveProjection.count).toBe(0)
     expect(inactiveProjection.inactive_items).toEqual([])
+
+    const auditSummaryRaw = await readFile(
+      path.join(tempRuntimeDir, 'administrator_audit_summary.json'),
+      'utf-8'
+    )
+    const auditSummary = JSON.parse(auditSummaryRaw) as {
+      rows: Array<{ event_family: string; intake_id: string; status_delta: string }>
+    }
+
+    expect(auditSummary.rows[0]).toMatchObject({
+      event_family: 'reopen',
+      intake_id: 'inactive-reopen-1',
+      status_delta: 'archived -> queued',
+    })
   })
 
   it('records a filing record and regenerates filing history in the local runtime root', async () => {
@@ -326,6 +362,10 @@ describe('powerShellRunner', () => {
       path.join(tempRuntimeDir, 'administrator_filing_history_projection.json'),
       fsConstants.F_OK
     )
+    await access(
+      path.join(tempRuntimeDir, 'administrator_audit_summary.json'),
+      fsConstants.F_OK
+    )
 
     const filingProjectionRaw = await readFile(
       path.join(tempRuntimeDir, 'administrator_filing_history_projection.json'),
@@ -339,6 +379,20 @@ describe('powerShellRunner', () => {
       intake_id: 'filing-intake-1',
       filing_destination_id: 'customer_archive',
       archive_marker: true,
+    })
+
+    const auditSummaryRaw = await readFile(
+      path.join(tempRuntimeDir, 'administrator_audit_summary.json'),
+      'utf-8'
+    )
+    const auditSummary = JSON.parse(auditSummaryRaw) as {
+      rows: Array<{ event_family: string; intake_id: string; target_label: string }>
+    }
+
+    expect(auditSummary.rows[0]).toMatchObject({
+      event_family: 'filing_migration',
+      intake_id: 'filing-intake-1',
+      target_label: 'Customer Archive',
     })
   })
 })
