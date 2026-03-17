@@ -1,10 +1,12 @@
 import { useIntakeStore } from '@/store/intakeStore'
+import { useCommandStore } from '@/store/commandStore'
 import { useWarningReviewStore } from '@/store/warningReviewStore'
 import { StatusBadge } from '@/components/StatusBadge'
 import { TagChip } from '@/components/TagChip'
 
 export function WarningReviewPanel() {
   const { items, select, selectedId } = useIntakeStore()
+  const { setIntakeId, setActionInput } = useCommandStore()
   const {
     items: warningRows,
     generatedAt,
@@ -14,6 +16,14 @@ export function WarningReviewPanel() {
     fetch,
   } = useWarningReviewStore()
   const warningItems = items.filter((item) => item.warning_state === 'warnings_present')
+
+  function focusWarningTarget(intakeId: string, recommendedAction?: string) {
+    select(intakeId)
+    setIntakeId(intakeId)
+    if (recommendedAction) {
+      setActionInput(recommendedAction)
+    }
+  }
 
   return (
     <div className="space-y-4">
@@ -46,9 +56,17 @@ export function WarningReviewPanel() {
         ) : (
           <div className="space-y-2">
             {warningRows.map((item) => (
-              <button
+              <div
                 key={item.intake_id}
-                onClick={() => select(item.intake_id)}
+                onClick={() => focusWarningTarget(item.intake_id)}
+                onKeyDown={(event) => {
+                  if (event.key === 'Enter' || event.key === ' ') {
+                    event.preventDefault()
+                    focusWarningTarget(item.intake_id)
+                  }
+                }}
+                role="button"
+                tabIndex={0}
                 className={`w-full text-left panel transition-colors ${
                   selectedId === item.intake_id
                     ? 'border-ohmic-warning/60 bg-ohmic-warning/10'
@@ -94,7 +112,21 @@ export function WarningReviewPanel() {
                     </div>
                   )}
                 </div>
-              </button>
+
+                {item.recommended_next_action && (
+                  <div className="mt-3 pt-1">
+                    <button
+                      onClick={(event) => {
+                        event.stopPropagation()
+                        focusWarningTarget(item.intake_id, item.recommended_next_action)
+                      }}
+                      className="rounded bg-ohmic-accent px-3 py-1.5 text-xs font-medium text-white transition-colors hover:bg-ohmic-accent-dim"
+                    >
+                      Use Recommended Action
+                    </button>
+                  </div>
+                )}
+              </div>
             ))}
           </div>
         )
