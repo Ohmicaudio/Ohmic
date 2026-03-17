@@ -11,7 +11,7 @@ This app is currently a Phase 1 plus early Phase 2 scaffold:
 - inactive intake browser with reopen action
 - intake detail with note and tag context
 - filing picker with direct filing-record writeback
-- filing history panel with optional runtime module support
+- filing history panel with optional runtime module support and composer handoff
 - warning review panel with optional runtime module support and composer handoff
 - aggregation bundle panel with optional runtime module support and composer handoff
 - attachment preview panel with optional runtime module support and composer handoff

@@ -5,20 +5,7 @@ import { useFilingHistoryStore } from '@/store/filingHistoryStore'
 import { useCommandStore } from '@/store/commandStore'
 import { useIntakeStore } from '@/store/intakeStore'
 import { StatusBadge } from '@/components/StatusBadge'
-
-function buildFilingContextNote(existingNote: string, destinationLabel: string): string {
-  const nextLine = `Filing destination: ${destinationLabel}`
-
-  if (!existingNote.trim()) {
-    return nextLine
-  }
-
-  if (existingNote.includes(nextLine)) {
-    return existingNote
-  }
-
-  return `${existingNote.trim()}\n${nextLine}`
-}
+import { buildFilingContextNote } from '@/panels/filingContext'
 
 export function FilingPickerPanel() {
   const [filingReason, setFilingReason] = useState('')
@@ -52,7 +39,13 @@ export function FilingPickerPanel() {
       setActionInput('archive')
     }
     if (selectedDestination) {
-      setNoteText(buildFilingContextNote(noteText, selectedDestination.display_label))
+      setNoteText(
+        buildFilingContextNote(
+          noteText,
+          selectedDestination.display_label,
+          filingReason.trim() || undefined
+        )
+      )
     }
   }
 

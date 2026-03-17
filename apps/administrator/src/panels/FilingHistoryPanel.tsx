@@ -1,11 +1,14 @@
 import { useEffect } from 'react'
 import { useFilingHistoryStore } from '@/store/filingHistoryStore'
 import { useIntakeStore } from '@/store/intakeStore'
+import { useCommandStore } from '@/store/commandStore'
 import { StatusBadge } from '@/components/StatusBadge'
+import { buildFilingContextNote } from '@/panels/filingContext'
 
 export function FilingHistoryPanel() {
   const selectedId = useIntakeStore((s) => s.selectedId)
   const { items, generatedAt, loading, error, available, fetch } = useFilingHistoryStore()
+  const { noteText, setIntakeId, setActionInput, setNoteText } = useCommandStore()
 
   useEffect(() => {
     void fetch()
@@ -14,6 +17,19 @@ export function FilingHistoryPanel() {
   const filteredItems = selectedId
     ? items.filter((item) => item.intake_id === selectedId)
     : []
+
+  function primeFilingContext(
+    intakeId: string,
+    destinationLabel: string,
+    reason: string,
+    archiveMarker: boolean
+  ) {
+    setIntakeId(intakeId)
+    if (archiveMarker) {
+      setActionInput('archive')
+    }
+    setNoteText(buildFilingContextNote(noteText, destinationLabel, reason || undefined))
+  }
 
   return (
     <div className="space-y-4">
@@ -86,6 +102,22 @@ export function FilingHistoryPanel() {
                 <div>
                   Reason: <span className="text-ohmic-text">{item.reason || '--'}</span>
                 </div>
+              </div>
+
+              <div className="pt-1">
+                <button
+                  onClick={() =>
+                    primeFilingContext(
+                      item.intake_id,
+                      item.display_label || item.filing_destination_id,
+                      item.reason,
+                      item.archive_marker
+                    )
+                  }
+                  className="rounded border border-ohmic-border px-3 py-1.5 text-xs font-medium text-ohmic-text transition-colors hover:border-ohmic-accent/30"
+                >
+                  {item.archive_marker ? 'Prime Archive Context' : 'Prime Filing Context'}
+                </button>
               </div>
             </div>
           ))}
