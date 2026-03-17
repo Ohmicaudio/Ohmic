@@ -15,6 +15,8 @@ const PROJECTION_FILES = [
   'administrator_warning_review.json',
   'administrator_aggregation_panel.json',
   'administrator_attachment_preview.json',
+  'administrator_audit_summary.json',
+  'administrator_status_history.json',
   'ready_tasks.json',
 ]
 

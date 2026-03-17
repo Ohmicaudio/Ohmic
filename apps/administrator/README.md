@@ -14,7 +14,8 @@ This app is currently a Phase 1 plus early Phase 2 scaffold:
 - warning review panel with optional runtime module support
 - aggregation bundle panel with optional runtime module support
 - attachment preview panel with optional runtime module support
-- per-intake status history panel
+- audit summary panel with optional runtime module support
+- per-intake status history panel with optional runtime module support
 - command composer with PowerShell-backed validation and execute/writeback
 - recent action / audit projection viewer with intake jump-back
 - SSE refresh from runtime projection changes
@@ -88,7 +89,7 @@ Good to share as a foundation branch for:
 Not yet complete for:
 
 - filing writeback flows
-- richer status-history and audit-summary shell integration
+- richer status-history selection sync and audit-summary action handoff
 - attachment preview writeback or Tandem handoff flows
 - Tandem integration
 - ContextKeep or memory integration

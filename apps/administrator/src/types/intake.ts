@@ -251,6 +251,62 @@ export interface AttachmentPreviewProjection {
   rows: AttachmentPreviewItem[]
 }
 
+export interface AuditFilterPreset {
+  preset_id: string
+  display_label: string
+  included_event_families: string[]
+  included_statuses: string[]
+  include_archived: boolean
+  include_routed: boolean
+}
+
+export interface AdministratorAuditSummaryItem {
+  event_id: string
+  event_family: string
+  intake_id: string
+  summary_label: string
+  actor_label: string
+  occurred_at: string
+  status_delta: string
+  target_label: string
+}
+
+export interface AdministratorAuditSummaryProjection {
+  module_id: string
+  generated_at: string
+  row_count: number
+  filter_presets: AuditFilterPreset[]
+  empty_state: {
+    title: string
+    body: string
+  }
+  metadata?: {
+    active_filter_preset?: string
+  }
+  rows: AdministratorAuditSummaryItem[]
+}
+
+export interface AdministratorStatusHistoryItem {
+  status_history_record_id: string
+  previous_status: string
+  new_status: string
+  actor_label: string
+  transition_reason: string
+  changed_at: string
+  is_current: boolean
+}
+
+export interface AdministratorStatusHistoryProjection {
+  module_id: string
+  generated_at: string
+  row_count: number
+  empty_state: {
+    title: string
+    body: string
+  }
+  rows: AdministratorStatusHistoryItem[]
+}
+
 export interface FilingDestinationOption {
   filing_destination_id: string
   display_label: string

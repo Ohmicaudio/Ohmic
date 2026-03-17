@@ -1,5 +1,7 @@
 import type {
+  AdministratorAuditSummaryProjection,
   AdministratorNoteProjection,
+  AdministratorStatusHistoryProjection,
   AdministratorTagAssignmentProjection,
   AggregationPanelProjection,
   AttachmentPreviewProjection,
@@ -54,6 +56,16 @@ export async function fetchAggregationPanelProjection(): Promise<AggregationPane
 
 export async function fetchAttachmentPreviewProjection(): Promise<AttachmentPreviewProjection> {
   return fetchJson<AttachmentPreviewProjection>('/projections/administrator_attachment_preview')
+}
+
+export async function fetchAuditSummaryProjection(): Promise<AdministratorAuditSummaryProjection> {
+  return fetchJson<AdministratorAuditSummaryProjection>('/projections/administrator_audit_summary')
+}
+
+export async function fetchStatusHistoryProjection(): Promise<AdministratorStatusHistoryProjection> {
+  return fetchJson<AdministratorStatusHistoryProjection>(
+    '/projections/administrator_status_history'
+  )
 }
 
 export async function fetchReadyTasks(): Promise<ReadyTasksProjection> {

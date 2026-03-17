@@ -91,6 +91,8 @@ describe('administrator server', () => {
     expect(health.runtime_dir).toBe(tempRuntimeDir)
     expect(health.loaded_projections).toContain('dashboard_status_cards')
     expect(health.expected_projections).toContain('administrator_attachment_preview')
+    expect(health.expected_projections).toContain('administrator_audit_summary')
+    expect(health.expected_projections).toContain('administrator_status_history')
 
     const projectionRes = await fetch(`${baseUrl}/api/projections/dashboard_status_cards`)
     expect(projectionRes.ok).toBe(true)

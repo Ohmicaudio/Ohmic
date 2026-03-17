@@ -1,20 +1,28 @@
 import { useEffect } from 'react'
 import { useCommandStore } from '@/store/commandStore'
 import { useIntakeStore } from '@/store/intakeStore'
+import { useStatusHistoryStore } from '@/store/statusHistoryStore'
 import { StatusBadge } from '@/components/StatusBadge'
 
 export function StatusHistoryPanel() {
   const { recentActions, auditLoading, loadAuditTrail } = useCommandStore()
   const { selectedId, items } = useIntakeStore()
+  const {
+    items: historyItems,
+    loading,
+    available,
+    fetch,
+  } = useStatusHistoryStore()
 
   useEffect(() => {
+    fetch()
     if (recentActions.length === 0) {
       void loadAuditTrail()
     }
-  }, [recentActions.length, loadAuditTrail])
+  }, [fetch, recentActions.length, loadAuditTrail])
 
   const selectedItem = items.find((item) => item.intake_id === selectedId) ?? null
-  const history = selectedId
+  const fallbackHistory = selectedId
     ? recentActions.filter((action) => action.intake_id === selectedId)
     : []
 
@@ -26,7 +34,8 @@ export function StatusHistoryPanel() {
         </h2>
         {selectedId && (
           <span className="text-xs text-ohmic-text-dim">
-            {history.length} event{history.length === 1 ? '' : 's'}
+            {(available ? historyItems.length : fallbackHistory.length)} event
+            {(available ? historyItems.length : fallbackHistory.length) === 1 ? '' : 's'}
           </span>
         )}
       </div>
@@ -35,50 +44,100 @@ export function StatusHistoryPanel() {
         <div className="panel text-sm text-ohmic-text-dim py-6">
           Select an intake item to inspect its command and status timeline.
         </div>
-      ) : auditLoading && recentActions.length === 0 ? (
-        <div className="panel text-sm text-ohmic-text-dim py-6 animate-pulse">
-          Loading status history...
-        </div>
-      ) : history.length === 0 ? (
-        <div className="panel text-sm text-ohmic-text-dim py-6">
-          No command history is recorded yet for this intake item.
-        </div>
-      ) : (
-        <div className="space-y-2">
-          {history.map((action) => (
-            <div key={action.command_id} className="panel space-y-2">
-              <div className="flex items-start justify-between gap-3">
-                <div className="space-y-1 min-w-0">
-                  <div className="text-sm font-medium text-ohmic-text break-words">
-                    {action.summary_label || action.action}
+      ) : available ? (
+        loading ? (
+          <div className="panel text-sm text-ohmic-text-dim py-6 animate-pulse">
+            Loading status history...
+          </div>
+        ) : historyItems.length === 0 ? (
+          <div className="panel text-sm text-ohmic-text-dim py-6">
+            No status history is projected yet for this intake item.
+          </div>
+        ) : (
+          <div className="space-y-2">
+            {historyItems.map((entry) => (
+              <div key={entry.status_history_record_id} className="panel space-y-2">
+                <div className="flex items-start justify-between gap-3">
+                  <div className="space-y-1 min-w-0">
+                    <div className="flex flex-wrap items-center gap-2">
+                      <StatusBadge status={entry.new_status} />
+                      {entry.is_current ? (
+                        <span className="rounded-full border border-ohmic-accent/40 bg-ohmic-accent/10 px-2 py-0.5 text-[10px] uppercase tracking-widest text-ohmic-accent">
+                          Current
+                        </span>
+                      ) : null}
+                    </div>
+                    <div className="text-xs text-ohmic-text-dim">
+                      {entry.changed_at ? new Date(entry.changed_at).toLocaleString() : '--'}
+                    </div>
                   </div>
-                  <div className="text-xs text-ohmic-text-dim">
-                    {action.occurred_at
-                      ? new Date(action.occurred_at).toLocaleString()
-                      : '--'}
-                  </div>
+                  {entry.previous_status ? (
+                    <span className="text-xs text-ohmic-text-dim text-right">
+                      {entry.previous_status} {'->'} {entry.new_status}
+                    </span>
+                  ) : null}
                 </div>
-                <StatusBadge status={action.resulting_status || action.validation_status} />
-              </div>
 
-              <div className="grid grid-cols-1 gap-1 text-xs text-ohmic-text-dim">
-                <div>
-                  Action: <span className="text-ohmic-text">{action.action}</span>
-                </div>
-                <div>
-                  Validation:{' '}
-                  <span className="text-ohmic-text">{action.validation_status}</span>
-                </div>
-                <div>
-                  Result: <span className="text-ohmic-text">{action.resulting_status}</span>
-                </div>
-                <div>
-                  Command ID: <span className="text-ohmic-text font-mono">{action.command_id}</span>
+                <div className="grid grid-cols-1 gap-1 text-xs text-ohmic-text-dim">
+                  <div>
+                    Actor: <span className="text-ohmic-text">{entry.actor_label || '--'}</span>
+                  </div>
+                  <div>
+                    Reason:{' '}
+                    <span className="text-ohmic-text">
+                      {entry.transition_reason || 'No transition reason recorded'}
+                    </span>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        )
+      ) : (
+        auditLoading && recentActions.length === 0 ? (
+          <div className="panel text-sm text-ohmic-text-dim py-6 animate-pulse">
+            Loading status history...
+          </div>
+        ) : fallbackHistory.length === 0 ? (
+          <div className="panel text-sm text-ohmic-text-dim py-6">
+            No command history is recorded yet for this intake item.
+          </div>
+        ) : (
+          <div className="space-y-2">
+            {fallbackHistory.map((action) => (
+              <div key={action.command_id} className="panel space-y-2">
+                <div className="flex items-start justify-between gap-3">
+                  <div className="space-y-1 min-w-0">
+                    <div className="text-sm font-medium text-ohmic-text break-words">
+                      {action.summary_label || action.action}
+                    </div>
+                    <div className="text-xs text-ohmic-text-dim">
+                      {action.occurred_at ? new Date(action.occurred_at).toLocaleString() : '--'}
+                    </div>
+                  </div>
+                  <StatusBadge status={action.resulting_status || action.validation_status} />
+                </div>
+
+                <div className="grid grid-cols-1 gap-1 text-xs text-ohmic-text-dim">
+                  <div>
+                    Action: <span className="text-ohmic-text">{action.action}</span>
+                  </div>
+                  <div>
+                    Validation:{' '}
+                    <span className="text-ohmic-text">{action.validation_status}</span>
+                  </div>
+                  <div>
+                    Result: <span className="text-ohmic-text">{action.resulting_status}</span>
+                  </div>
+                  <div>
+                    Command ID:{' '}
+                    <span className="text-ohmic-text font-mono">{action.command_id}</span>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        )
       )}
     </div>
   )
