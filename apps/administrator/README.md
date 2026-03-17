@@ -26,6 +26,8 @@ From `B:\ohmic\apps\administrator`:
 
 ```powershell
 npm install
+npm test
+npm run type-check
 npm run server
 npm run dev
 ```
