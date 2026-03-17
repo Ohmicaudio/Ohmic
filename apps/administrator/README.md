@@ -13,7 +13,7 @@ This app is currently a Phase 1 plus early Phase 2 scaffold:
 - filing picker with direct filing-record writeback
 - filing history panel with optional runtime module support
 - warning review panel with optional runtime module support and composer handoff
-- aggregation bundle panel with optional runtime module support
+- aggregation bundle panel with optional runtime module support and composer handoff
 - attachment preview panel with optional runtime module support and composer handoff
 - audit summary panel with optional runtime module support and composer handoff
 - per-intake status history panel with optional runtime module support

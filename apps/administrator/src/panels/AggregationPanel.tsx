@@ -2,11 +2,12 @@ import { useCommandStore } from '@/store/commandStore'
 import { useIntakeStore } from '@/store/intakeStore'
 import { useAggregationPanelStore } from '@/store/aggregationPanelStore'
 import { StatusBadge } from '@/components/StatusBadge'
+import { buildAggregationContextNote } from '@/panels/aggregationContext'
 
 export function AggregationPanel() {
   const { items, generatedAt, loading, error, available, fetch } = useAggregationPanelStore()
   const { select } = useIntakeStore()
-  const { setIntakeId, setActionInput } = useCommandStore()
+  const { noteText, setIntakeId, setActionInput, setNoteText } = useCommandStore()
 
   function focusBundle(primaryIntakeId: string, recommendedAction?: string) {
     if (!primaryIntakeId) {
@@ -18,6 +19,18 @@ export function AggregationPanel() {
     if (recommendedAction) {
       setActionInput(recommendedAction)
     }
+  }
+
+  function primeBundleContext(item: (typeof items)[number], includeAction: boolean) {
+    if (!item.primary_member_intake_id) {
+      return
+    }
+
+    focusBundle(
+      item.primary_member_intake_id,
+      includeAction ? item.recommended_next_action || undefined : undefined
+    )
+    setNoteText(buildAggregationContextNote(noteText, item))
   }
 
   return (
@@ -100,17 +113,20 @@ export function AggregationPanel() {
               </div>
 
               {item.primary_member_intake_id && (
-                <div className="pt-1">
+                <div className="flex flex-wrap gap-2 pt-1">
+                  {item.recommended_next_action ? (
+                    <button
+                      onClick={() => primeBundleContext(item, true)}
+                      className="rounded bg-ohmic-accent px-3 py-1.5 text-xs font-medium text-white transition-colors hover:bg-ohmic-accent-dim"
+                    >
+                      Use Recommended Action
+                    </button>
+                  ) : null}
                   <button
-                    onClick={() =>
-                      focusBundle(
-                        item.primary_member_intake_id,
-                        item.recommended_next_action || undefined
-                      )
-                    }
-                    className="rounded bg-ohmic-accent px-3 py-1.5 text-xs font-medium text-white transition-colors hover:bg-ohmic-accent-dim"
+                    onClick={() => primeBundleContext(item, false)}
+                    className="rounded border border-ohmic-border px-3 py-1.5 text-xs font-medium text-ohmic-text transition-colors hover:border-ohmic-accent/30"
                   >
-                    Open Bundle Focus
+                    Prime Bundle Context
                   </button>
                 </div>
               )}
