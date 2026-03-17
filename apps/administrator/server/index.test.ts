@@ -245,6 +245,7 @@ describe('administrator server', () => {
       available: boolean
       base_url: string | null
       session_label: string | null
+      launch_url: string | null
       mode: string
     }
 
@@ -253,6 +254,7 @@ describe('administrator server', () => {
       available: false,
       base_url: 'http://127.0.0.1:8765',
       session_label: 'gmail-triage',
+      launch_url: 'http://127.0.0.1:8765/?sessionLabel=gmail-triage',
       mode: 'configured',
     })
 

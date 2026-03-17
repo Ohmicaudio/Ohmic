@@ -8,6 +8,7 @@ export function TandemPanel() {
     mode,
     baseUrl,
     sessionLabel,
+    launchUrl,
     message,
     loading,
     error,
@@ -64,12 +65,28 @@ export function TandemPanel() {
             <div>
               Session label: <span className="text-ohmic-text">{sessionLabel || '--'}</span>
             </div>
+            <div>
+              Launch URL: <span className="text-ohmic-text break-all">{launchUrl || '--'}</span>
+            </div>
           </div>
 
           <div className="text-xs text-ohmic-text-dim">
             {message ||
               'This is the first external-provider seam. Full tab/session handoff will build on this status floor.'}
           </div>
+
+          {launchUrl ? (
+            <div className="pt-1">
+              <a
+                href={launchUrl}
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex items-center rounded-md border border-ohmic-accent/40 px-3 py-1.5 text-xs font-medium text-ohmic-accent transition-colors hover:border-ohmic-accent hover:bg-ohmic-accent/10"
+              >
+                Open Tandem
+              </a>
+            </div>
+          ) : null}
         </div>
       )}
     </div>

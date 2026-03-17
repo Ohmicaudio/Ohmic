@@ -15,6 +15,7 @@ describe('tandemStore', () => {
       mode: 'unconfigured',
       baseUrl: null,
       sessionLabel: null,
+      launchUrl: null,
       message: null,
       loading: false,
       error: null,
@@ -28,7 +29,8 @@ describe('tandemStore', () => {
       mode: 'configured',
       base_url: 'http://127.0.0.1:8765',
       session_label: 'gmail-triage',
-      message: 'Tandem base is configured but no session is attached yet.',
+      launch_url: 'http://127.0.0.1:8765/?sessionLabel=gmail-triage',
+      message: 'Tandem base is configured. Open Tandem from here while deeper session browsing and provider capture stay in the next slice.',
     })
 
     await useTandemStore.getState().fetch()
@@ -39,7 +41,9 @@ describe('tandemStore', () => {
       mode: 'configured',
       baseUrl: 'http://127.0.0.1:8765',
       sessionLabel: 'gmail-triage',
-      message: 'Tandem base is configured but no session is attached yet.',
+      launchUrl: 'http://127.0.0.1:8765/?sessionLabel=gmail-triage',
+      message:
+        'Tandem base is configured. Open Tandem from here while deeper session browsing and provider capture stay in the next slice.',
       loading: false,
       error: null,
     })
