@@ -1,7 +1,9 @@
-Status: ready
+Status: done
 Priority: high
 Date: 2026-03-17
 Project: firmware
+Owner: d
+Claim ID: 20260317T152410Z-b1f03c2a
 
 # Extract Shared Firmware Network Core From Current Live Behavior
 
@@ -26,3 +28,6 @@ and remote behavior as source truth instead of continuing local clones.
 - current live behavior is classified into shared vs device-specific layers
 - new remote-only network divergence is no longer the default path
 
+## Result
+
+- `docs/roadmap/OHMIC_SHARED_FIRMWARE_NETWORK_CORE_EXTRACTION_RESULT_2026-03-17.md`
