@@ -9,6 +9,11 @@ interface TandemState {
   baseUrl: string | null
   sessionLabel: string | null
   activeTargetLabel: string | null
+  targetPresets: Array<{
+    preset_id: string
+    display_label: string
+    target_label: string
+  }>
   launchUrl: string | null
   message: string | null
   loading: boolean
@@ -24,6 +29,7 @@ export const useTandemStore = create<TandemState>((set) => ({
   baseUrl: null,
   sessionLabel: null,
   activeTargetLabel: null,
+  targetPresets: [],
   launchUrl: null,
   message: null,
   loading: false,
@@ -41,6 +47,7 @@ export const useTandemStore = create<TandemState>((set) => ({
         baseUrl: data.base_url,
         sessionLabel: data.session_label,
         activeTargetLabel: data.active_target_label,
+        targetPresets: data.target_presets,
         launchUrl: data.launch_url,
         message: data.message,
         loading: false,

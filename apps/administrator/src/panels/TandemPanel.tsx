@@ -14,6 +14,7 @@ export function TandemPanel() {
     baseUrl,
     sessionLabel,
     activeTargetLabel,
+    targetPresets,
     launchUrl,
     message,
     loading,
@@ -87,6 +88,25 @@ export function TandemPanel() {
               </span>
             </div>
           </div>
+
+          {targetPresets.length > 0 ? (
+            <div className="space-y-2">
+              <div className="text-xs uppercase tracking-wider text-ohmic-text-dim">
+                Target presets
+              </div>
+              <div className="flex flex-wrap gap-2">
+                {targetPresets.map((preset) => (
+                  <div
+                    key={preset.preset_id}
+                    className="rounded border border-ohmic-border px-2.5 py-1.5 text-[11px] text-ohmic-text-dim"
+                  >
+                    <span className="text-ohmic-text">{preset.display_label}</span>
+                    <span>{' -> '}{preset.target_label}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          ) : null}
 
           <div className="text-xs text-ohmic-text-dim">
             {message ||

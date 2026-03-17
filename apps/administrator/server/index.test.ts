@@ -234,6 +234,8 @@ describe('administrator server', () => {
     process.env.ADMINISTRATOR_TANDEM_SESSION_LABEL = 'gmail-triage'
     process.env.ADMINISTRATOR_TANDEM_SESSION_STATE = 'attached'
     process.env.ADMINISTRATOR_TANDEM_ACTIVE_TARGET_LABEL = 'Gmail support inbox'
+    process.env.ADMINISTRATOR_TANDEM_TARGET_PRESETS =
+      'gmail-support;Gmail Support;Gmail support inbox|github-bugs;GitHub Bugs;GitHub issues queue'
 
     const { createAdministratorServer } = await importServer()
     const app = createAdministratorServer(0)
@@ -249,6 +251,11 @@ describe('administrator server', () => {
       base_url: string | null
       session_label: string | null
       active_target_label: string | null
+      target_presets: Array<{
+        preset_id: string
+        display_label: string
+        target_label: string
+      }>
       launch_url: string | null
       mode: string
     }
@@ -263,11 +270,24 @@ describe('administrator server', () => {
       launch_url: 'http://127.0.0.1:8765/?sessionLabel=gmail-triage',
       mode: 'configured',
     })
+    expect(tandem.target_presets).toEqual([
+      {
+        preset_id: 'gmail-support',
+        display_label: 'Gmail Support',
+        target_label: 'Gmail support inbox',
+      },
+      {
+        preset_id: 'github-bugs',
+        display_label: 'GitHub Bugs',
+        target_label: 'GitHub issues queue',
+      },
+    ])
 
     delete process.env.ADMINISTRATOR_TANDEM_BASE_URL
     delete process.env.ADMINISTRATOR_TANDEM_SESSION_LABEL
     delete process.env.ADMINISTRATOR_TANDEM_SESSION_STATE
     delete process.env.ADMINISTRATOR_TANDEM_ACTIVE_TARGET_LABEL
+    delete process.env.ADMINISTRATOR_TANDEM_TARGET_PRESETS
   })
 
   it('validates and executes command routes against the live runtime root', async () => {

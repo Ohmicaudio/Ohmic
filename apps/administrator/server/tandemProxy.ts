@@ -6,6 +6,11 @@ export interface TandemStatusResponse {
   base_url: string | null
   session_label: string | null
   active_target_label: string | null
+  target_presets: Array<{
+    preset_id: string
+    display_label: string
+    target_label: string
+  }>
   launch_url: string | null
   message: string
 }
@@ -38,11 +43,36 @@ function readSessionState(): 'missing' | 'idle' | 'attached' {
   return 'missing'
 }
 
+function readTargetPresets(): Array<{
+  preset_id: string
+  display_label: string
+  target_label: string
+}> {
+  const raw = readOptionalEnv('ADMINISTRATOR_TANDEM_TARGET_PRESETS')
+  if (!raw) {
+    return []
+  }
+
+  return raw
+    .split('|')
+    .map((entry) => entry.trim())
+    .filter(Boolean)
+    .map((entry, index) => {
+      const [presetId, displayLabel, targetLabel] = entry.split(';').map((part) => part?.trim() ?? '')
+      return {
+        preset_id: presetId || `preset-${index + 1}`,
+        display_label: displayLabel || targetLabel || `Preset ${index + 1}`,
+        target_label: targetLabel || displayLabel || `target-${index + 1}`,
+      }
+    })
+}
+
 export function readTandemStatus(): TandemStatusResponse {
   const baseUrl = readOptionalEnv('ADMINISTRATOR_TANDEM_BASE_URL')
   const sessionLabel = readOptionalEnv('ADMINISTRATOR_TANDEM_SESSION_LABEL')
   const sessionState = readSessionState()
   const activeTargetLabel = readOptionalEnv('ADMINISTRATOR_TANDEM_ACTIVE_TARGET_LABEL')
+  const targetPresets = readTargetPresets()
   const configured = Boolean(baseUrl)
 
   if (!configured) {
@@ -54,6 +84,7 @@ export function readTandemStatus(): TandemStatusResponse {
       base_url: null,
       session_label: sessionLabel,
       active_target_label: null,
+      target_presets: targetPresets,
       launch_url: null,
       message:
         'Set ADMINISTRATOR_TANDEM_BASE_URL to expose the first Tandem handoff seam.',
@@ -71,6 +102,7 @@ export function readTandemStatus(): TandemStatusResponse {
     base_url: baseUrl,
     session_label: sessionLabel,
     active_target_label: activeTargetLabel,
+    target_presets: targetPresets,
     launch_url: launchUrl,
     message:
       !launchUrl

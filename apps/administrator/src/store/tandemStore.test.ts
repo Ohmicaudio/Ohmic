@@ -17,6 +17,7 @@ describe('tandemStore', () => {
       baseUrl: null,
       sessionLabel: null,
       activeTargetLabel: null,
+      targetPresets: [],
       launchUrl: null,
       message: null,
       loading: false,
@@ -33,6 +34,13 @@ describe('tandemStore', () => {
       base_url: 'http://127.0.0.1:8765',
       session_label: 'gmail-triage',
       active_target_label: 'Gmail support inbox',
+      target_presets: [
+        {
+          preset_id: 'gmail-support',
+          display_label: 'Gmail Support',
+          target_label: 'Gmail support inbox',
+        },
+      ],
       launch_url: 'http://127.0.0.1:8765/?sessionLabel=gmail-triage',
       message: 'Tandem is attached to Gmail support inbox. Open the live provider session from here.',
     })
@@ -47,6 +55,13 @@ describe('tandemStore', () => {
       baseUrl: 'http://127.0.0.1:8765',
       sessionLabel: 'gmail-triage',
       activeTargetLabel: 'Gmail support inbox',
+      targetPresets: [
+        {
+          preset_id: 'gmail-support',
+          display_label: 'Gmail Support',
+          target_label: 'Gmail support inbox',
+        },
+      ],
       launchUrl: 'http://127.0.0.1:8765/?sessionLabel=gmail-triage',
       message: 'Tandem is attached to Gmail support inbox. Open the live provider session from here.',
       loading: false,
