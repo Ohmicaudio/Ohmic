@@ -1,13 +1,19 @@
 import { useAttachmentPreviewStore } from '@/store/attachmentPreviewStore'
 import { useCommandStore } from '@/store/commandStore'
 import { useIntakeStore } from '@/store/intakeStore'
+import { useTandemStore } from '@/store/tandemStore'
 import { StatusBadge } from '@/components/StatusBadge'
 import { buildAttachmentPreviewContextNote } from '@/panels/attachmentPreviewContext'
+import { buildTandemAttachmentReviewUrl } from '@/panels/tandemContext'
 
 export function AttachmentPreviewPanel() {
   const { items, generatedAt, loading, error, available, fetch } = useAttachmentPreviewStore()
   const selectedIntakeId = useIntakeStore((s) => s.selectedId)
+  const intakeItems = useIntakeStore((s) => s.items)
+  const tandemLaunchUrl = useTandemStore((s) => s.launchUrl)
   const { noteText, setIntakeId, setActionInput, setNoteText } = useCommandStore()
+  const selectedIntake =
+    intakeItems.find((item) => item.intake_id === selectedIntakeId) ?? null
 
   function primeReviewHandoff(action: string, item: (typeof items)[number]) {
     if (!selectedIntakeId) {
@@ -82,15 +88,35 @@ export function AttachmentPreviewPanel() {
                     Review handoff action:{' '}
                     <span className="text-ohmic-text">{item.review_handoff_action}</span>
                   </div>
-                  <button
-                    onClick={() =>
-                      primeReviewHandoff(item.review_handoff_action!, item)
-                    }
-                    disabled={!selectedIntakeId}
-                    className="rounded border border-ohmic-border px-3 py-1.5 text-xs font-medium text-ohmic-text transition-colors hover:border-ohmic-accent/30 disabled:text-ohmic-muted disabled:hover:border-ohmic-border"
-                  >
-                    Prime Review Action
-                  </button>
+                  <div className="flex flex-wrap gap-2">
+                    <button
+                      onClick={() =>
+                        primeReviewHandoff(item.review_handoff_action!, item)
+                      }
+                      disabled={!selectedIntakeId}
+                      className="rounded border border-ohmic-border px-3 py-1.5 text-xs font-medium text-ohmic-text transition-colors hover:border-ohmic-accent/30 disabled:text-ohmic-muted disabled:hover:border-ohmic-border"
+                    >
+                      Prime Review Action
+                    </button>
+                    {buildTandemAttachmentReviewUrl(
+                      tandemLaunchUrl,
+                      selectedIntake,
+                      item
+                    ) ? (
+                      <a
+                        href={buildTandemAttachmentReviewUrl(
+                          tandemLaunchUrl,
+                          selectedIntake,
+                          item
+                        )!}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="rounded border border-ohmic-accent/40 px-3 py-1.5 text-xs font-medium text-ohmic-accent transition-colors hover:border-ohmic-accent hover:bg-ohmic-accent/10"
+                      >
+                        Open in Tandem
+                      </a>
+                    ) : null}
+                  </div>
                 </div>
               )}
 

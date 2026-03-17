@@ -1,5 +1,8 @@
 import { describe, expect, it } from 'vitest'
-import { buildTandemContextUrl } from '@/panels/tandemContext'
+import {
+  buildTandemAttachmentReviewUrl,
+  buildTandemContextUrl,
+} from '@/panels/tandemContext'
 
 describe('buildTandemContextUrl', () => {
   it('returns null when no launch url exists', () => {
@@ -30,6 +33,40 @@ describe('buildTandemContextUrl', () => {
       })
     ).toBe(
       'http://127.0.0.1:8765/?sessionLabel=gmail-triage&intakeId=intake-42&intakeTitle=Customer+mail+thread&routingTarget=operator'
+    )
+  })
+
+  it('adds attachment review context to the tandem launch url', () => {
+    expect(
+      buildTandemAttachmentReviewUrl(
+        'http://127.0.0.1:8765/?sessionLabel=gmail-triage',
+        {
+          intake_id: 'intake-42',
+          title: 'Customer mail thread',
+          intake_kind: 'email',
+          received_at: '2026-03-17T10:00:00Z',
+          status: 'triaging',
+          routing_target: 'operator',
+          trust_tier: '2',
+          priority_hint: 'high',
+          tags: [],
+          warning_state: 'clean',
+          warning_count: 0,
+          summary_label: 'Customer needs follow-up',
+        },
+        {
+          preview_ref_id: 'preview-1',
+          asset_id: 'asset-1',
+          preview_kind: 'image',
+          availability: 'available',
+          preview_url: 'https://example.com/preview.png',
+          fallback_label: 'DSP screenshot',
+          failure_reason: '',
+          review_handoff_action: 'add_note',
+        }
+      )
+    ).toBe(
+      'http://127.0.0.1:8765/?sessionLabel=gmail-triage&intakeId=intake-42&intakeTitle=Customer+mail+thread&routingTarget=operator&attachmentId=asset-1&previewRefId=preview-1&previewKind=image&attachmentLabel=DSP+screenshot&previewUrl=https%3A%2F%2Fexample.com%2Fpreview.png'
     )
   })
 })
