@@ -1,7 +1,9 @@
-Status: ready
+Status: done
 Priority: high
 Date: 2026-03-17
 Project: firmware
+Owner: d
+Claim ID: 20260317T200959Z-0d3e96f4
 
 # Carry Live AmpLab Network And Status Floor Into Shared Core Runtime
 
@@ -29,3 +31,7 @@ runtime floor.
   network/status floor
 - shared status and legacy operator expectations are both accounted for
 - the result gives DSP a real shared runtime floor to converge onto
+
+## Result
+
+- `docs/roadmap/OHMIC_LIVE_AMPLAB_NETWORK_AND_STATUS_FLOOR_CARRY_FORWARD_RESULT_2026-03-17.md`
