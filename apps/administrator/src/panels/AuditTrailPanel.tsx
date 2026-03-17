@@ -20,15 +20,14 @@ export function AuditTrailPanel() {
           disabled={auditLoading}
           className="text-xs text-ohmic-text-dim hover:text-ohmic-text transition-colors disabled:opacity-50"
         >
-          ↻ refresh
+          refresh
         </button>
       </div>
 
       {auditLoading ? (
-        <div className="text-ohmic-text-dim text-xs animate-pulse">Loading audit trail…</div>
+        <div className="text-ohmic-text-dim text-xs animate-pulse">Loading audit trail...</div>
       ) : recentActions.length === 0 ? (
         <div className="panel text-center text-ohmic-text-dim text-sm py-6">
-          <div className="text-2xl mb-2">📋</div>
           No recent actions
         </div>
       ) : (
@@ -51,7 +50,7 @@ export function AuditTrailPanel() {
                 <span className="text-[10px] text-ohmic-text-dim whitespace-nowrap">
                   {action.occurred_at
                     ? new Date(action.occurred_at).toLocaleString()
-                    : '—'}
+                    : '--'}
                 </span>
               </div>
             </div>

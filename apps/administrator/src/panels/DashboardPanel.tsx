@@ -6,9 +6,11 @@ import type { StatusCard } from '@/types/intake'
 
 function CardView({ card }: { card: StatusCard }) {
   const emphasisBorder =
-    card.emphasis === 'warning' ? 'border-ohmic-warning/40' :
-    card.emphasis === 'critical' ? 'border-ohmic-danger/40' :
-    'border-ohmic-border'
+    card.emphasis === 'warning'
+      ? 'border-ohmic-warning/40'
+      : card.emphasis === 'critical'
+        ? 'border-ohmic-danger/40'
+        : 'border-ohmic-border'
 
   return (
     <div className={`panel ${emphasisBorder}`}>
@@ -52,7 +54,7 @@ export function DashboardPanel() {
             disabled={loading}
             className="text-xs text-ohmic-text-dim hover:text-ohmic-text transition-colors disabled:opacity-50"
           >
-            ↻ refresh
+            refresh
           </button>
         </div>
       </div>
@@ -64,7 +66,7 @@ export function DashboardPanel() {
       )}
 
       {loading && cards.length === 0 ? (
-        <div className="text-ohmic-text-dim text-xs animate-pulse">Loading projections…</div>
+        <div className="text-ohmic-text-dim text-xs animate-pulse">Loading projections...</div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
           {cards.map((card) => (

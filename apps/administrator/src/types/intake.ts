@@ -1,5 +1,4 @@
-// ── Dashboard Status Cards ──────────────────────────────────────────
-
+// Dashboard status cards.
 export interface StatusCardField {
   label: string
   value: string
@@ -28,8 +27,7 @@ export interface DashboardStatusCards {
   cards: StatusCard[]
 }
 
-// ── Intake Queue ────────────────────────────────────────────────────
-
+// Intake queue.
 export type IntakeKind =
   | 'email'
   | 'github_issue'
@@ -50,16 +48,9 @@ export type IntakeStatus =
   | 'routed'
   | 'rejected'
 
-export type PriorityHint =
-  | 'critical'
-  | 'high'
-  | 'normal'
-  | 'low'
-  | ''
+export type PriorityHint = 'critical' | 'high' | 'normal' | 'low' | ''
 
-export type WarningState =
-  | 'clean'
-  | 'warnings_present'
+export type WarningState = 'clean' | 'warnings_present'
 
 export interface IntakeQueueItem {
   intake_id: string
@@ -92,8 +83,7 @@ export interface IntakeQueueProjection {
   queue_items: IntakeQueueItem[]
 }
 
-// ── Ready Tasks ─────────────────────────────────────────────────────
-
+// Ready tasks.
 export interface ReadyTask {
   task_id: string
   title: string
@@ -109,8 +99,7 @@ export interface ReadyTasksProjection {
   tasks: ReadyTask[]
 }
 
-// ── Commands (Phase 2 prep) ─────────────────────────────────────────
-
+// Commands.
 export type ActionVerb =
   | 'route_to_orchestrator'
   | 'hold'

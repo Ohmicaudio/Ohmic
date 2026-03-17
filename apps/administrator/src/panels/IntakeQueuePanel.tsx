@@ -41,14 +41,10 @@ function IntakeRow({
         <span className="bg-ohmic-bg px-1.5 py-0.5 rounded text-[10px] uppercase tracking-wider">
           {item.intake_kind}
         </span>
-        {item.routing_target && (
-          <span>→ {item.routing_target}</span>
-        )}
-        {item.trust_tier && (
-          <span className="opacity-60">T{item.trust_tier}</span>
-        )}
+        {item.routing_target && <span>-&gt; {item.routing_target}</span>}
+        {item.trust_tier && <span className="opacity-60">T{item.trust_tier}</span>}
         <span className="ml-auto opacity-50">
-          {item.received_at ? new Date(item.received_at).toLocaleString() : '—'}
+          {item.received_at ? new Date(item.received_at).toLocaleString() : '--'}
         </span>
       </div>
 
@@ -68,7 +64,7 @@ function IntakeRow({
 
       {item.warning_count > 0 && (
         <div className="flex items-center gap-1 mt-2 text-xs text-ohmic-warning">
-          ⚠ {item.warning_count} warning{item.warning_count !== 1 ? 's' : ''}
+          Warning: {item.warning_count} warning{item.warning_count !== 1 ? 's' : ''}
         </div>
       )}
     </button>
@@ -76,8 +72,17 @@ function IntakeRow({
 }
 
 export function IntakeQueuePanel() {
-  const { items, count, generatedAt, loading, error, selectedId, fetch, select } =
-    useIntakeStore()
+  const {
+    items,
+    count,
+    generatedAt,
+    staleness,
+    loading,
+    error,
+    selectedId,
+    fetch,
+    select,
+  } = useIntakeStore()
 
   useEffect(() => {
     fetch()
@@ -93,16 +98,13 @@ export function IntakeQueuePanel() {
           )}
         </h2>
         <div className="flex items-center gap-3">
-          <FreshnessIndicator
-            generatedAt={generatedAt}
-            staleness={generatedAt ? 'fresh' : 'unknown'}
-          />
+          <FreshnessIndicator generatedAt={generatedAt} staleness={staleness} />
           <button
             onClick={fetch}
             disabled={loading}
             className="text-xs text-ohmic-text-dim hover:text-ohmic-text transition-colors disabled:opacity-50"
           >
-            ↻ refresh
+            refresh
           </button>
         </div>
       </div>
@@ -114,11 +116,10 @@ export function IntakeQueuePanel() {
       )}
 
       {loading && items.length === 0 ? (
-        <div className="text-ohmic-text-dim text-xs animate-pulse">Loading intake queue…</div>
+        <div className="text-ohmic-text-dim text-xs animate-pulse">Loading intake queue...</div>
       ) : items.length === 0 ? (
         <div className="panel text-center text-ohmic-text-dim text-sm py-8">
-          <div className="text-2xl mb-2">📭</div>
-          No items in queue
+          Queue empty
         </div>
       ) : (
         <div className="space-y-2">

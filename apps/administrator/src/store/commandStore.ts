@@ -168,7 +168,7 @@ export const useCommandStore = create<CommandState>((set, get) => ({
       const data = await fetchRecentActions()
       set({ recentActions: data.recent_actions, auditLoading: false })
     } catch {
-      // Projection may not exist yet — that's fine
+      // Projection may not exist yet; that is fine.
       set({ recentActions: [], auditLoading: false })
     }
   },

@@ -26,8 +26,7 @@ export async function fetchReadyTasks(): Promise<ReadyTasksProjection> {
   return fetchJson<ReadyTasksProjection>('/projections/ready_tasks')
 }
 
-// ── SSE stream for live updates ─────────────────────────────────────
-
+// SSE stream for live updates.
 export function subscribeToUpdates(
   onUpdate: (projectionName: string) => void
 ): () => void {
@@ -38,12 +37,12 @@ export function subscribeToUpdates(
       const data = JSON.parse(event.data) as { name: string }
       onUpdate(data.name)
     } catch {
-      // ignore malformed events
+      // Ignore malformed events.
     }
   })
 
   source.onerror = () => {
-    // EventSource auto-reconnects
+    // EventSource auto-reconnects.
   }
 
   return () => source.close()

@@ -38,7 +38,7 @@ export class ProjectionReader extends EventEmitter {
       this.cache[name] = JSON.parse(raw)
       this.emit('updated', name)
     } catch {
-      // File may not exist yet — that's fine
+      // File may not exist yet; that is fine.
     }
   }
 
@@ -47,20 +47,19 @@ export class ProjectionReader extends EventEmitter {
   }
 
   startWatching(): void {
-    // Watch the entire runtime directory for changes
     try {
-      const watcher = watch(RUNTIME_DIR, (eventType, filename) => {
+      const watcher = watch(RUNTIME_DIR, (_eventType, filename) => {
         if (!filename || !filename.endsWith('.json')) return
         if (!PROJECTION_FILES.includes(filename)) return
 
-        // Debounce: small delay to let file writes complete
+        // Debounce slightly so file writes finish before reload.
         setTimeout(() => {
           this.loadFile(filename)
         }, 100)
       })
       this.watchers.push(watcher)
     } catch {
-      console.warn('[projectionReader] Could not watch runtime dir — polling disabled')
+      console.warn('[projectionReader] Could not watch runtime dir; polling disabled')
     }
   }
 

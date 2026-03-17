@@ -6,6 +6,7 @@ interface IntakeState {
   items: IntakeQueueItem[]
   count: number
   generatedAt: string | null
+  staleness: 'fresh' | 'stale' | 'unknown'
   loading: boolean
   error: string | null
   selectedId: string | null
@@ -18,6 +19,7 @@ export const useIntakeStore = create<IntakeState>((set) => ({
   items: [],
   count: 0,
   generatedAt: null,
+  staleness: 'unknown',
   loading: false,
   error: null,
   selectedId: null,
@@ -30,6 +32,7 @@ export const useIntakeStore = create<IntakeState>((set) => ({
         items: data.queue_items,
         count: data.count,
         generatedAt: data.generated_at,
+        staleness: data.staleness?.status ?? 'unknown',
         loading: false,
       })
     } catch (err) {

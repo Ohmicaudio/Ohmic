@@ -1,5 +1,4 @@
-// ── Action Registry ─────────────────────────────────────────────────
-
+// Action registry.
 export interface ActionRegistryEntry {
   action_id: string
   display_label: string
@@ -16,9 +15,13 @@ export interface QueueTargetEntry {
   capability_flags: string[]
 }
 
-// ── Composer State ──────────────────────────────────────────────────
-
-export type ValidationStatus = 'idle' | 'validating' | 'accepted' | 'accepted_with_warnings' | 'rejected'
+// Composer state.
+export type ValidationStatus =
+  | 'idle'
+  | 'validating'
+  | 'accepted'
+  | 'accepted_with_warnings'
+  | 'rejected'
 
 export interface ReasonDetail {
   code: string
@@ -46,8 +49,7 @@ export interface ComposerState {
   validation: ValidationFeedback
 }
 
-// ── Command Intent (result from PowerShell validation) ──────────────
-
+// Command intent result from PowerShell validation.
 export interface CommandValidationResult {
   command_id: string
   selected_intake_id: string
@@ -72,8 +74,7 @@ export interface CommandValidationResult {
   }
 }
 
-// ── Recent Actions (audit trail) ────────────────────────────────────
-
+// Recent actions audit trail.
 export interface RecentAction {
   command_id: string
   action: string
@@ -96,8 +97,7 @@ export interface RecentActionsProjection {
   recent_actions: RecentAction[]
 }
 
-// ── API request/response ────────────────────────────────────────────
-
+// API request and response shapes.
 export interface ValidateCommandRequest {
   intake_id: string
   action: string

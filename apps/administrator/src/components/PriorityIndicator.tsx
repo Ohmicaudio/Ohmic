@@ -9,7 +9,7 @@ const priorityConfig: Record<string, { dot: string; label: string }> = {
   high: { dot: 'bg-orange-500', label: 'HIGH' },
   normal: { dot: 'bg-blue-400', label: 'NORM' },
   low: { dot: 'bg-gray-500', label: 'LOW' },
-  '': { dot: 'bg-gray-600', label: '—' },
+  '': { dot: 'bg-gray-600', label: '--' },
 }
 
 export function PriorityIndicator({ priority }: PriorityIndicatorProps) {
