@@ -30,6 +30,11 @@ It is now a usable intake triage foundation, but it is not yet a full operator d
 - Runtime projections: `B:\ohmic\generated\agent-work\runtime`
 - Optional local-only override: set `ADMINISTRATOR_RUNTIME_DIR` before starting the server
 - PowerShell validation engine: `B:\ohmic\tools\sync\administrator`
+- Tandem envs:
+  - `ADMINISTRATOR_TANDEM_BASE_URL`
+  - `ADMINISTRATOR_TANDEM_SESSION_LABEL`
+  - `ADMINISTRATOR_TANDEM_SESSION_STATE` (`missing`, `idle`, or `attached`)
+  - `ADMINISTRATOR_TANDEM_ACTIVE_TARGET_LABEL`
 
 ## Dev commands
 
@@ -72,6 +77,15 @@ Backend:
 The Vite dev server is configured to bind on `0.0.0.0`, so other devices on the
 same network can use the admin app through this machine's LAN IP while the app
 continues proxying `/api` traffic back to the local server on `5181`.
+
+Example Tandem setup:
+
+```powershell
+$env:ADMINISTRATOR_TANDEM_BASE_URL = 'http://127.0.0.1:8765'
+$env:ADMINISTRATOR_TANDEM_SESSION_LABEL = 'gmail-triage'
+$env:ADMINISTRATOR_TANDEM_SESSION_STATE = 'attached'
+$env:ADMINISTRATOR_TANDEM_ACTIVE_TARGET_LABEL = 'Gmail support inbox'
+```
 
 ## Current routes
 
