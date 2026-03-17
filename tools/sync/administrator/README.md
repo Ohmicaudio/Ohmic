@@ -15,6 +15,7 @@ Current scaffolds:
 - `recent-actions-projection.ps1`
 - `note-projection.ps1`
 - `tag-projection.ps1`
+- `filing-history-projection.ps1`
 - `inactive-intake-projection.ps1`
 - `shell-common.ps1`
 - `aggregation-panel-shell.ps1`
