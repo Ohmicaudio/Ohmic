@@ -35,3 +35,5 @@ runtime floor.
 ## Result
 
 - `docs/roadmap/OHMIC_LIVE_AMPLAB_NETWORK_AND_STATUS_FLOOR_CARRY_FORWARD_RESULT_2026-03-17.md`
+- correction note:
+  `docs/roadmap/OHMIC_DSP_BOARD_MISFLASH_CORRECTION_NOTE_2026-03-17.md`

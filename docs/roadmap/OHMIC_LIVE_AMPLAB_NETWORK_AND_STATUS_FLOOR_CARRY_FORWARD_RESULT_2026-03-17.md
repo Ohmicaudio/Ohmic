@@ -4,6 +4,13 @@ Project: firmware
 
 # Ohmic Live AmpLab Network And Status Floor Carry-Forward Result
 
+## Correction
+
+This note captured a real live validation pass, but the physical board was
+later confirmed to be the DSP-wired board on `COM27`, not an attached AmpLab.
+Read this note together with
+`docs/roadmap/OHMIC_DSP_BOARD_MISFLASH_CORRECTION_NOTE_2026-03-17.md`.
+
 ## Summary
 
 The live AmpLab shared-runtime branch now carries the minimum working LAN/AP and
