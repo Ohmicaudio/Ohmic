@@ -4,9 +4,18 @@ import { useCommandStore } from '@/store/commandStore'
 import { useIntakeStore } from '@/store/intakeStore'
 import { useStatusHistoryStore } from '@/store/statusHistoryStore'
 import { StatusBadge } from '@/components/StatusBadge'
+import { buildStatusHistoryContextNote } from '@/panels/statusHistoryContext'
 
 export function StatusHistoryPanel() {
-  const { recentActions, auditLoading, loadAuditTrail } = useCommandStore()
+  const {
+    recentActions,
+    auditLoading,
+    loadAuditTrail,
+    noteText,
+    setIntakeId,
+    setActionInput,
+    setNoteText,
+  } = useCommandStore()
   const { selectedId, items } = useIntakeStore()
   const {
     items: historyItems,
@@ -30,6 +39,16 @@ export function StatusHistoryPanel() {
   const fallbackHistory = selectedId
     ? recentActions.filter((action) => action.intake_id === selectedId)
     : []
+
+  function primeStatusContext(entry: (typeof historyItems)[number]) {
+    if (!selectedId) {
+      return
+    }
+
+    setIntakeId(selectedId)
+    setActionInput('add_note')
+    setNoteText(buildStatusHistoryContextNote(noteText, entry))
+  }
 
   return (
     <div className="space-y-4">
@@ -93,6 +112,15 @@ export function StatusHistoryPanel() {
                       {entry.transition_reason || 'No transition reason recorded'}
                     </span>
                   </div>
+                </div>
+
+                <div className="pt-1">
+                  <button
+                    onClick={() => primeStatusContext(entry)}
+                    className="rounded border border-ohmic-border px-3 py-1.5 text-xs font-medium text-ohmic-text transition-colors hover:border-ohmic-accent/30"
+                  >
+                    Prime Status Context
+                  </button>
                 </div>
               </div>
             ))}

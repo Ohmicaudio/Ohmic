@@ -16,7 +16,7 @@ This app is currently a Phase 1 plus early Phase 2 scaffold:
 - aggregation bundle panel with optional runtime module support and composer handoff
 - attachment preview panel with optional runtime module support and composer handoff
 - audit summary panel with optional runtime module support and composer handoff
-- per-intake status history panel with optional runtime module support
+- per-intake status history panel with optional runtime module support and composer handoff
 - command composer with PowerShell-backed validation and execute/writeback
 - recent action / audit projection viewer with intake jump-back
 - SSE refresh from runtime projection changes
