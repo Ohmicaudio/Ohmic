@@ -74,6 +74,47 @@ describe('administrator server', () => {
     }
   })
 
+  async function writeActiveQueueFixture(intakeId: string, title: string) {
+    await writeFile(
+      path.join(tempRuntimeDir!, 'administrator_intake_queue.json'),
+      JSON.stringify(
+        {
+          generated_at: '2026-03-17T16:05:00Z',
+          projection_name: 'administrator_intake_queue',
+          staleness: {
+            status: 'fresh',
+            reason: null,
+          },
+          refresh_triggers: ['routing_change'],
+          metadata: {
+            ordering: 'priority_then_received_at_desc',
+            includes_warning_state: true,
+          },
+          count: 1,
+          queue_items: [
+            {
+              intake_id: intakeId,
+              title,
+              intake_kind: 'manual',
+              received_at: '2026-03-17T16:04:00Z',
+              status: 'triaging',
+              routing_target: '',
+              trust_tier: '2',
+              priority_hint: 'high',
+              tags: [],
+              warning_state: 'clean',
+              warning_count: 0,
+              summary_label: title,
+            },
+          ],
+        },
+        null,
+        2
+      ),
+      'utf-8'
+    )
+  }
+
   it('serves health and loaded projections from the runtime root', async () => {
     const { createAdministratorServer } = await importServer()
     const app = createAdministratorServer(0)
@@ -106,44 +147,7 @@ describe('administrator server', () => {
   })
 
   it('serves filing options for an active intake item', async () => {
-    await writeFile(
-      path.join(tempRuntimeDir!, 'administrator_intake_queue.json'),
-      JSON.stringify(
-        {
-          generated_at: '2026-03-17T16:05:00Z',
-          projection_name: 'administrator_intake_queue',
-          staleness: {
-            status: 'fresh',
-            reason: null,
-          },
-          refresh_triggers: ['routing_change'],
-          metadata: {
-            ordering: 'priority_then_received_at_desc',
-            includes_warning_state: true,
-          },
-          count: 1,
-          queue_items: [
-            {
-              intake_id: 'intake-1',
-              title: 'Customer escalation',
-              intake_kind: 'email',
-              received_at: '2026-03-17T16:04:00Z',
-              status: 'triaging',
-              routing_target: '',
-              trust_tier: '2',
-              priority_hint: 'high',
-              tags: [],
-              warning_state: 'clean',
-              warning_count: 0,
-              summary_label: 'Customer escalation',
-            },
-          ],
-        },
-        null,
-        2
-      ),
-      'utf-8'
-    )
+    await writeActiveQueueFixture('intake-1', 'Customer escalation')
 
     const { createAdministratorServer } = await importServer()
     const app = createAdministratorServer(0)
@@ -163,44 +167,7 @@ describe('administrator server', () => {
   })
 
   it('records filing history for an active intake item', async () => {
-    await writeFile(
-      path.join(tempRuntimeDir!, 'administrator_intake_queue.json'),
-      JSON.stringify(
-        {
-          generated_at: '2026-03-17T16:06:00Z',
-          projection_name: 'administrator_intake_queue',
-          staleness: {
-            status: 'fresh',
-            reason: null,
-          },
-          refresh_triggers: ['routing_change'],
-          metadata: {
-            ordering: 'priority_then_received_at_desc',
-            includes_warning_state: true,
-          },
-          count: 1,
-          queue_items: [
-            {
-              intake_id: 'intake-2',
-              title: 'Archive for provider reference',
-              intake_kind: 'manual',
-              received_at: '2026-03-17T16:05:00Z',
-              status: 'triaging',
-              routing_target: '',
-              trust_tier: '2',
-              priority_hint: 'normal',
-              tags: [],
-              warning_state: 'clean',
-              warning_count: 0,
-              summary_label: 'Archive for provider reference',
-            },
-          ],
-        },
-        null,
-        2
-      ),
-      'utf-8'
-    )
+    await writeActiveQueueFixture('intake-2', 'Archive for provider reference')
 
     const { createAdministratorServer } = await importServer()
     const app = createAdministratorServer(0)
@@ -260,5 +227,146 @@ describe('administrator server', () => {
     expect(focus.focus_kind).toBe('intake')
     expect(focus.selected_intake_id).toBe('intake-focus-1')
     expect(focus.source).toBe('administrator_app')
+  })
+
+  it('validates and executes command routes against the live runtime root', async () => {
+    await writeActiveQueueFixture('intake-3', 'Validate and execute target')
+
+    const { createAdministratorServer } = await importServer()
+    const app = createAdministratorServer(0)
+    const baseUrl = await app.start()
+    stopServer = app.stop
+
+    const validateRes = await fetch(`${baseUrl}/api/commands/validate`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        intake_id: 'intake-3',
+        action: 'route_to_orchestrator',
+        queue_target: 'orchestrator',
+        note: 'Validation route smoke',
+      }),
+    })
+
+    expect(validateRes.ok).toBe(true)
+    const validation = (await validateRes.json()) as {
+      result: { validation: { validation_status: string } }
+    }
+    expect(validation.result.validation.validation_status).toBe('accepted')
+
+    const executeRes = await fetch(`${baseUrl}/api/commands/execute`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        intake_id: 'intake-3',
+        action: 'route_to_orchestrator',
+        queue_target: 'orchestrator',
+        note: 'Execute route smoke',
+        tags: ['route-smoke'],
+      }),
+    })
+
+    expect(executeRes.ok).toBe(true)
+    const execute = (await executeRes.json()) as {
+      writeback: { writeback_status: string; queue_item_updated: boolean }
+    }
+    expect(execute.writeback.writeback_status).toBe('accepted')
+    expect(execute.writeback.queue_item_updated).toBe(true)
+  })
+
+  it('reopens an inactive intake item through the server route', async () => {
+    await writeFile(
+      path.join(tempRuntimeDir!, 'administrator_intake_queue.json'),
+      JSON.stringify(
+        {
+          generated_at: '2026-03-17T16:08:00Z',
+          projection_name: 'administrator_intake_queue',
+          staleness: {
+            status: 'fresh',
+            reason: null,
+          },
+          refresh_triggers: ['routing_change'],
+          metadata: {
+            ordering: 'priority_then_received_at_desc',
+            includes_warning_state: true,
+          },
+          count: 0,
+          queue_items: [],
+        },
+        null,
+        2
+      ),
+      'utf-8'
+    )
+
+    await writeFile(
+      path.join(tempRuntimeDir!, 'administrator_inactive_intake_projection.json'),
+      JSON.stringify(
+        {
+          generated_at: '2026-03-17T16:08:01Z',
+          projection_name: 'administrator_inactive_intake_projection',
+          refresh_triggers: ['archive_writeback'],
+          metadata: {
+            ordering: 'inactive_since_desc',
+            default_visibility: 'opt_in_only',
+          },
+          count: 1,
+          inactive_items: [
+            {
+              intake_id: 'inactive-3',
+              title: 'Archived follow-up',
+              inactive_status: 'archived',
+              inactive_since: '2026-03-17T16:00:00Z',
+              last_active_status: 'triaging',
+              reopen_allowed: true,
+              reopen_target_status: 'queued',
+              summary_label: 'Archived after duplicate confirmation',
+            },
+          ],
+        },
+        null,
+        2
+      ),
+      'utf-8'
+    )
+
+    const { createAdministratorServer } = await importServer()
+    const app = createAdministratorServer(0)
+    const baseUrl = await app.start()
+    stopServer = app.stop
+
+    const reopenRes = await fetch(`${baseUrl}/api/inactive/reopen`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        intake_id: 'inactive-3',
+        restored_status: 'queued',
+      }),
+    })
+
+    expect(reopenRes.ok).toBe(true)
+    const reopen = (await reopenRes.json()) as {
+      writeback: { writeback_status: string; queue_item_updated: boolean; inactive_item_removed: boolean }
+    }
+    expect(reopen.writeback.writeback_status).toBe('accepted')
+    expect(reopen.writeback.queue_item_updated).toBe(true)
+    expect(reopen.writeback.inactive_item_removed).toBe(true)
+  })
+
+  it('returns 400 for invalid JSON and missing filing intake id', async () => {
+    const { createAdministratorServer } = await importServer()
+    const app = createAdministratorServer(0)
+    const baseUrl = await app.start()
+    stopServer = app.stop
+
+    const invalidJsonRes = await fetch(`${baseUrl}/api/commands/execute`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: '{bad json',
+    })
+    expect(invalidJsonRes.status).toBe(400)
+
+    const missingQueryRes = await fetch(`${baseUrl}/api/filing/options`)
+    expect(missingQueryRes.status).toBe(400)
   })
 })
