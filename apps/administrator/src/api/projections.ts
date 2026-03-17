@@ -2,6 +2,7 @@ import type {
   AdministratorNoteProjection,
   AdministratorTagAssignmentProjection,
   AggregationPanelProjection,
+  AttachmentPreviewProjection,
   DashboardStatusCards,
   InactiveIntakeProjection,
   IntakeQueueProjection,
@@ -49,6 +50,10 @@ export async function fetchWarningReviewProjection(): Promise<WarningReviewProje
 
 export async function fetchAggregationPanelProjection(): Promise<AggregationPanelProjection> {
   return fetchJson<AggregationPanelProjection>('/projections/administrator_aggregation_panel')
+}
+
+export async function fetchAttachmentPreviewProjection(): Promise<AttachmentPreviewProjection> {
+  return fetchJson<AttachmentPreviewProjection>('/projections/administrator_attachment_preview')
 }
 
 export async function fetchReadyTasks(): Promise<ReadyTasksProjection> {

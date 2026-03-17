@@ -228,6 +228,29 @@ export interface AggregationPanelProjection {
   rows: AggregationPanelItem[]
 }
 
+export interface AttachmentPreviewItem {
+  preview_ref_id: string
+  asset_id: string
+  preview_kind: string
+  availability: string
+  preview_url: string
+  fallback_label: string
+  failure_reason: string
+  review_handoff_action: string | null
+}
+
+export interface AttachmentPreviewProjection {
+  module_id: string
+  generated_at: string
+  row_count: number
+  filter_presets: Array<Record<string, unknown>>
+  empty_state: {
+    title: string
+    body: string
+  }
+  rows: AttachmentPreviewItem[]
+}
+
 // Ready tasks.
 export interface ReadyTask {
   task_id: string

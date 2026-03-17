@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 import { RuntimeIndicator } from '@/components/RuntimeIndicator'
 import { AggregationPanel } from '@/panels/AggregationPanel'
+import { AttachmentPreviewPanel } from '@/panels/AttachmentPreviewPanel'
 import { DashboardPanel } from '@/panels/DashboardPanel'
 import { IntakeQueuePanel } from '@/panels/IntakeQueuePanel'
 import { InactiveIntakePanel } from '@/panels/InactiveIntakePanel'
@@ -11,6 +12,7 @@ import { AuditTrailPanel } from '@/panels/AuditTrailPanel'
 import { WarningReviewPanel } from '@/panels/WarningReviewPanel'
 import { subscribeToUpdates } from '@/api/projections'
 import { useAggregationPanelStore } from '@/store/aggregationPanelStore'
+import { useAttachmentPreviewStore } from '@/store/attachmentPreviewStore'
 import { useDashboardStore } from '@/store/dashboardStore'
 import { useInactiveIntakeStore } from '@/store/inactiveIntakeStore'
 import { useIntakeContextStore } from '@/store/intakeContextStore'
@@ -22,6 +24,7 @@ import { useWarningReviewStore } from '@/store/warningReviewStore'
 export function App() {
   const fetchDashboard = useDashboardStore((s) => s.fetch)
   const fetchAggregationPanel = useAggregationPanelStore((s) => s.fetch)
+  const fetchAttachmentPreview = useAttachmentPreviewStore((s) => s.fetch)
   const fetchIntake = useIntakeStore((s) => s.fetch)
   const fetchInactiveIntake = useInactiveIntakeStore((s) => s.fetch)
   const fetchIntakeContext = useIntakeContextStore((s) => s.fetch)
@@ -37,6 +40,7 @@ export function App() {
     const unsub = subscribeToUpdates((name) => {
       if (name === 'dashboard_status_cards') fetchDashboard()
       if (name === 'administrator_aggregation_panel') fetchAggregationPanel()
+      if (name === 'administrator_attachment_preview') fetchAttachmentPreview()
       if (name === 'administrator_intake_queue') fetchIntake()
       if (name === 'administrator_inactive_intake_projection') fetchInactiveIntake()
       if (name === 'administrator_note_projection') fetchIntakeContext()
@@ -49,6 +53,7 @@ export function App() {
   }, [
     fetchDashboard,
     fetchAggregationPanel,
+    fetchAttachmentPreview,
     fetchHealth,
     fetchInactiveIntake,
     fetchIntake,
@@ -60,11 +65,13 @@ export function App() {
   useEffect(() => {
     fetchHealth()
     fetchAggregationPanel()
+    fetchAttachmentPreview()
     fetchInactiveIntake()
     fetchIntakeContext()
     fetchWarningReview()
   }, [
     fetchAggregationPanel,
+    fetchAttachmentPreview,
     fetchHealth,
     fetchInactiveIntake,
     fetchIntakeContext,
@@ -107,6 +114,7 @@ export function App() {
             <IntakeDetailPanel />
             <StatusHistoryPanel />
             <WarningReviewPanel />
+            <AttachmentPreviewPanel />
             <CommandComposerPanel />
             <AuditTrailPanel />
           </div>
