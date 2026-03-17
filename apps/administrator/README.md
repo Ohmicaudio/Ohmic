@@ -92,7 +92,7 @@ Good to share as a foundation branch for:
 Not yet complete for:
 
 - filing destination migration and replacement flows
-- broader audit-family follow-up mapping
+- richer audit-driven action presets beyond the current safe note/tag defaults
 - attachment preview writeback or external Tandem handoff flows
 - Tandem integration
 - ContextKeep or memory integration

@@ -4,6 +4,10 @@ import { useIntakeStore } from '@/store/intakeStore'
 import { useAuditSummaryStore } from '@/store/auditSummaryStore'
 import { StatusBadge } from '@/components/StatusBadge'
 import type { AdministratorAuditSummaryItem, AuditFilterPreset } from '@/types/intake'
+import {
+  buildAuditFollowUpNote,
+  deriveAuditFollowUpAction,
+} from '@/panels/auditFollowUp'
 
 function filterAuditRows(
   rows: AdministratorAuditSummaryItem[],
@@ -14,31 +18,6 @@ function filterAuditRows(
   }
 
   return rows.filter((row) => preset.included_event_families.includes(row.event_family))
-}
-
-function deriveAuditFollowUpAction(eventFamily: string): string | null {
-  switch (eventFamily) {
-    case 'note':
-      return 'add_note'
-    case 'tag':
-      return 'tag_item'
-    default:
-      return null
-  }
-}
-
-function buildAuditFollowUpNote(existingNote: string, summaryLabel: string): string {
-  const nextLine = `Audit follow-up: ${summaryLabel}`
-
-  if (!existingNote.trim()) {
-    return nextLine
-  }
-
-  if (existingNote.includes(nextLine)) {
-    return existingNote
-  }
-
-  return `${existingNote.trim()}\n${nextLine}`
 }
 
 export function AuditTrailPanel() {
@@ -71,10 +50,31 @@ export function AuditTrailPanel() {
     filterPresets.find((preset) => preset.preset_id === activePresetId) ?? null
   const filteredItems = filterAuditRows(items, activePreset)
 
-  function primeAuditFollowUp(intakeId: string, action: string, summaryLabel: string) {
+  function primeAuditFollowUp(item: AdministratorAuditSummaryItem, action: string) {
+    if (!item.intake_id) {
+      return
+    }
+
+    const nextNote = buildAuditFollowUpNote(noteText, item)
+    setIntakeId(item.intake_id)
+    setActionInput(action)
+    setNoteText(nextNote)
+    select(item.intake_id)
+  }
+
+  function primeRecentActionFollowUp(
+    intakeId: string,
+    action: string,
+    summaryLabel: string
+  ) {
     setIntakeId(intakeId)
     setActionInput(action)
-    setNoteText(buildAuditFollowUpNote(noteText, summaryLabel))
+    setNoteText(buildAuditFollowUpNote(noteText, {
+      event_family: 'status_transition',
+      summary_label: summaryLabel,
+      target_label: '',
+      status_delta: '',
+    }))
     select(intakeId)
   }
 
@@ -167,11 +167,7 @@ export function AuditTrailPanel() {
                   <div className="flex justify-end">
                     <button
                       onClick={() =>
-                        primeAuditFollowUp(
-                          item.intake_id,
-                          deriveAuditFollowUpAction(item.event_family)!,
-                          item.summary_label || item.event_family
-                        )
+                        primeAuditFollowUp(item, deriveAuditFollowUpAction(item.event_family)!)
                       }
                       className="rounded border border-ohmic-border px-2.5 py-1 text-[10px] uppercase tracking-widest text-ohmic-text-dim transition-colors hover:border-ohmic-accent/30 hover:text-ohmic-text"
                     >
@@ -222,7 +218,7 @@ export function AuditTrailPanel() {
                   <div className="flex justify-end">
                     <button
                       onClick={() =>
-                        primeAuditFollowUp(
+                        primeRecentActionFollowUp(
                           action.intake_id,
                           action.action,
                           action.summary_label || action.action
