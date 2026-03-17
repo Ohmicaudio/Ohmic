@@ -16,8 +16,41 @@ function filterAuditRows(
   return rows.filter((row) => preset.included_event_families.includes(row.event_family))
 }
 
+function deriveAuditFollowUpAction(eventFamily: string): string | null {
+  switch (eventFamily) {
+    case 'note':
+      return 'add_note'
+    case 'tag':
+      return 'tag_item'
+    default:
+      return null
+  }
+}
+
+function buildAuditFollowUpNote(existingNote: string, summaryLabel: string): string {
+  const nextLine = `Audit follow-up: ${summaryLabel}`
+
+  if (!existingNote.trim()) {
+    return nextLine
+  }
+
+  if (existingNote.includes(nextLine)) {
+    return existingNote
+  }
+
+  return `${existingNote.trim()}\n${nextLine}`
+}
+
 export function AuditTrailPanel() {
-  const { recentActions, auditLoading, loadAuditTrail } = useCommandStore()
+  const {
+    recentActions,
+    auditLoading,
+    loadAuditTrail,
+    noteText,
+    setIntakeId,
+    setActionInput,
+    setNoteText,
+  } = useCommandStore()
   const { selectedId, select } = useIntakeStore()
   const {
     items,
@@ -37,6 +70,13 @@ export function AuditTrailPanel() {
   const activePreset =
     filterPresets.find((preset) => preset.preset_id === activePresetId) ?? null
   const filteredItems = filterAuditRows(items, activePreset)
+
+  function primeAuditFollowUp(intakeId: string, action: string, summaryLabel: string) {
+    setIntakeId(intakeId)
+    setActionInput(action)
+    setNoteText(buildAuditFollowUpNote(noteText, summaryLabel))
+    select(intakeId)
+  }
 
   return (
     <div className="space-y-4">
@@ -91,37 +131,55 @@ export function AuditTrailPanel() {
         ) : (
           <div className="space-y-1">
             {filteredItems.map((item) => (
-              <button
-                key={item.event_id}
-                onClick={() => item.intake_id && select(item.intake_id)}
-                className={`panel py-2 px-3 w-full text-left flex items-center justify-between gap-3 transition-colors ${
-                  selectedId === item.intake_id
-                    ? 'border-ohmic-accent/50 bg-ohmic-accent/10'
-                    : 'hover:border-ohmic-accent/30'
-                }`}
-              >
-                <div className="space-y-1 min-w-0">
-                  <div className="flex items-center gap-2 min-w-0">
-                    <span className="text-xs font-medium text-ohmic-text truncate">
-                      {item.summary_label || item.event_family}
-                    </span>
-                    {item.event_family ? (
-                      <span className="rounded-full border border-ohmic-border px-2 py-0.5 text-[10px] uppercase tracking-widest text-ohmic-text-dim">
-                        {item.event_family.replace(/_/g, ' ')}
+              <div key={item.event_id} className="panel py-2 px-3 space-y-2">
+                <button
+                  onClick={() => item.intake_id && select(item.intake_id)}
+                  className={`w-full text-left flex items-center justify-between gap-3 transition-colors ${
+                    selectedId === item.intake_id
+                      ? 'border-ohmic-accent/50 bg-ohmic-accent/10'
+                      : 'hover:border-ohmic-accent/30'
+                  }`}
+                >
+                  <div className="space-y-1 min-w-0">
+                    <div className="flex items-center gap-2 min-w-0">
+                      <span className="text-xs font-medium text-ohmic-text truncate">
+                        {item.summary_label || item.event_family}
                       </span>
-                    ) : null}
+                      {item.event_family ? (
+                        <span className="rounded-full border border-ohmic-border px-2 py-0.5 text-[10px] uppercase tracking-widest text-ohmic-text-dim">
+                          {item.event_family.replace(/_/g, ' ')}
+                        </span>
+                      ) : null}
+                    </div>
+                    <div className="flex flex-wrap items-center gap-2 text-[11px] text-ohmic-text-dim">
+                      {item.intake_id ? <span>{item.intake_id}</span> : null}
+                      {item.actor_label ? <span>{item.actor_label}</span> : null}
+                      {item.status_delta ? <span>{item.status_delta}</span> : null}
+                      {item.target_label ? <span>{item.target_label}</span> : null}
+                    </div>
                   </div>
-                  <div className="flex flex-wrap items-center gap-2 text-[11px] text-ohmic-text-dim">
-                    {item.intake_id ? <span>{item.intake_id}</span> : null}
-                    {item.actor_label ? <span>{item.actor_label}</span> : null}
-                    {item.status_delta ? <span>{item.status_delta}</span> : null}
-                    {item.target_label ? <span>{item.target_label}</span> : null}
+                  <span className="text-[10px] text-ohmic-text-dim whitespace-nowrap">
+                    {item.occurred_at ? new Date(item.occurred_at).toLocaleString() : '--'}
+                  </span>
+                </button>
+
+                {item.intake_id && deriveAuditFollowUpAction(item.event_family) ? (
+                  <div className="flex justify-end">
+                    <button
+                      onClick={() =>
+                        primeAuditFollowUp(
+                          item.intake_id,
+                          deriveAuditFollowUpAction(item.event_family)!,
+                          item.summary_label || item.event_family
+                        )
+                      }
+                      className="rounded border border-ohmic-border px-2.5 py-1 text-[10px] uppercase tracking-widest text-ohmic-text-dim transition-colors hover:border-ohmic-accent/30 hover:text-ohmic-text"
+                    >
+                      Prime Follow-up
+                    </button>
                   </div>
-                </div>
-                <span className="text-[10px] text-ohmic-text-dim whitespace-nowrap">
-                  {item.occurred_at ? new Date(item.occurred_at).toLocaleString() : '--'}
-                </span>
-              </button>
+                ) : null}
+              </div>
             ))}
           </div>
         )
@@ -135,30 +193,48 @@ export function AuditTrailPanel() {
         ) : (
           <div className="space-y-1">
             {recentActions.map((action) => (
-              <button
-                key={action.command_id}
-                onClick={() => select(action.intake_id)}
-                className={`panel py-2 px-3 w-full text-left flex items-center justify-between gap-3 transition-colors ${
-                  selectedId === action.intake_id
-                    ? 'border-ohmic-accent/50 bg-ohmic-accent/10'
-                    : 'hover:border-ohmic-accent/30'
-                }`}
-              >
-                <div className="flex items-center gap-3 min-w-0">
-                  <span className="text-xs font-medium text-ohmic-text truncate">
-                    {action.summary_label || action.action}
-                  </span>
-                  <span className="text-xs text-ohmic-text-dim whitespace-nowrap">
-                    {action.intake_id}
-                  </span>
-                </div>
-                <div className="flex items-center gap-3 shrink-0">
-                  <StatusBadge status={action.validation_status} />
-                  <span className="text-[10px] text-ohmic-text-dim whitespace-nowrap">
-                    {action.occurred_at ? new Date(action.occurred_at).toLocaleString() : '--'}
-                  </span>
-                </div>
-              </button>
+              <div key={action.command_id} className="panel py-2 px-3 space-y-2">
+                <button
+                  onClick={() => select(action.intake_id)}
+                  className={`w-full text-left flex items-center justify-between gap-3 transition-colors ${
+                    selectedId === action.intake_id
+                      ? 'border-ohmic-accent/50 bg-ohmic-accent/10'
+                      : 'hover:border-ohmic-accent/30'
+                  }`}
+                >
+                  <div className="flex items-center gap-3 min-w-0">
+                    <span className="text-xs font-medium text-ohmic-text truncate">
+                      {action.summary_label || action.action}
+                    </span>
+                    <span className="text-xs text-ohmic-text-dim whitespace-nowrap">
+                      {action.intake_id}
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-3 shrink-0">
+                    <StatusBadge status={action.validation_status} />
+                    <span className="text-[10px] text-ohmic-text-dim whitespace-nowrap">
+                      {action.occurred_at ? new Date(action.occurred_at).toLocaleString() : '--'}
+                    </span>
+                  </div>
+                </button>
+
+                {action.intake_id && action.action ? (
+                  <div className="flex justify-end">
+                    <button
+                      onClick={() =>
+                        primeAuditFollowUp(
+                          action.intake_id,
+                          action.action,
+                          action.summary_label || action.action
+                        )
+                      }
+                      className="rounded border border-ohmic-border px-2.5 py-1 text-[10px] uppercase tracking-widest text-ohmic-text-dim transition-colors hover:border-ohmic-accent/30 hover:text-ohmic-text"
+                    >
+                      Reuse Action
+                    </button>
+                  </div>
+                ) : null}
+              </div>
             ))}
           </div>
         )

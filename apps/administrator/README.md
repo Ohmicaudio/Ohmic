@@ -15,7 +15,7 @@ This app is currently a Phase 1 plus early Phase 2 scaffold:
 - warning review panel with optional runtime module support
 - aggregation bundle panel with optional runtime module support
 - attachment preview panel with optional runtime module support and composer handoff
-- audit summary panel with optional runtime module support
+- audit summary panel with optional runtime module support and composer handoff
 - per-intake status history panel with optional runtime module support
 - command composer with PowerShell-backed validation and execute/writeback
 - recent action / audit projection viewer with intake jump-back
@@ -92,7 +92,7 @@ Good to share as a foundation branch for:
 Not yet complete for:
 
 - filing destination migration and replacement flows
-- richer audit-summary action handoff
+- broader audit-family follow-up mapping
 - attachment preview writeback or external Tandem handoff flows
 - Tandem integration
 - ContextKeep or memory integration
