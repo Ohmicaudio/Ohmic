@@ -2,6 +2,7 @@ import http from 'http'
 import path from 'path'
 import { fileURLToPath } from 'url'
 import { ProjectionReader } from './projectionReader.js'
+import { writeIntakeFocusSelection } from './focusWriter.js'
 import { getAdministratorRuntimeDir } from './runtimeConfig.js'
 import {
   executeCommand,
@@ -131,6 +132,23 @@ export function createAdministratorServer(port = PORT) {
           const input = JSON.parse(body)
           recordFiling(input)
             .then((result) => sendJson(res, result))
+            .catch((err) => sendJson(res, { error: err.message }, 500))
+        } catch {
+          sendJson(res, { error: 'Invalid JSON body' }, 400)
+        }
+      })
+      return
+    }
+
+    // Focus publication: POST /api/focus/intake
+    if (requestPath === '/api/focus/intake' && req.method === 'POST') {
+      let body = ''
+      req.on('data', (chunk: Buffer) => { body += chunk.toString() })
+      req.on('end', () => {
+        try {
+          const input = JSON.parse(body) as { intake_id?: string | null }
+          writeIntakeFocusSelection(input.intake_id ?? null)
+            .then((selection) => sendJson(res, { selection }))
             .catch((err) => sendJson(res, { error: err.message }, 500))
         } catch {
           sendJson(res, { error: 'Invalid JSON body' }, 400)

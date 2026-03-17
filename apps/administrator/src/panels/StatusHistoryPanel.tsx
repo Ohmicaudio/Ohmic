@@ -1,4 +1,5 @@
 import { useEffect } from 'react'
+import { publishIntakeFocus } from '@/api/focus'
 import { useCommandStore } from '@/store/commandStore'
 import { useIntakeStore } from '@/store/intakeStore'
 import { useStatusHistoryStore } from '@/store/statusHistoryStore'
@@ -19,7 +20,11 @@ export function StatusHistoryPanel() {
     if (recentActions.length === 0) {
       void loadAuditTrail()
     }
-  }, [fetch, recentActions.length, loadAuditTrail])
+  }, [fetch, recentActions.length, loadAuditTrail, selectedId])
+
+  useEffect(() => {
+    void publishIntakeFocus(selectedId || null).catch(() => undefined)
+  }, [selectedId])
 
   const selectedItem = items.find((item) => item.intake_id === selectedId) ?? null
   const fallbackHistory = selectedId

@@ -75,6 +75,7 @@ Backend:
 - `GET /api/commands/options`
 - `GET /api/filing/options?intakeId=...`
 - `POST /api/filing/record`
+- `POST /api/focus/intake`
 - `POST /api/commands/validate`
 - `POST /api/commands/execute`
 - `POST /api/inactive/reopen`
@@ -91,7 +92,7 @@ Good to share as a foundation branch for:
 Not yet complete for:
 
 - filing destination migration and replacement flows
-- richer status-history selection sync and audit-summary action handoff
+- richer audit-summary action handoff
 - attachment preview writeback or external Tandem handoff flows
 - Tandem integration
 - ContextKeep or memory integration

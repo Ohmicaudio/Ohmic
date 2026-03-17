@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import { mkdir, mkdtemp, rm, writeFile } from 'fs/promises'
+import { mkdir, mkdtemp, readFile, rm, writeFile } from 'fs/promises'
 import path from 'path'
 
 const localRuntimeBase = 'B:\\ohmic-local\\runtime\\administrator-tests'
@@ -229,5 +229,36 @@ describe('administrator server', () => {
     expect(filing.writeback.writeback_status).toBe('accepted')
     expect(filing.writeback.filing_destination_id).toBe('customer_archive')
     expect(filing.writeback.filing_history_count).toBe(1)
+  })
+
+  it('publishes the selected intake focus into the runtime root', async () => {
+    const { createAdministratorServer } = await importServer()
+    const app = createAdministratorServer(0)
+    const baseUrl = await app.start()
+    stopServer = app.stop
+
+    const focusRes = await fetch(`${baseUrl}/api/focus/intake`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        intake_id: 'intake-focus-1',
+      }),
+    })
+
+    expect(focusRes.ok).toBe(true)
+
+    const focusRaw = await readFile(
+      path.join(tempRuntimeDir!, 'administrator_focus_selection.json'),
+      'utf-8'
+    )
+    const focus = JSON.parse(focusRaw) as {
+      focus_kind: string
+      selected_intake_id: string | null
+      source: string
+    }
+
+    expect(focus.focus_kind).toBe('intake')
+    expect(focus.selected_intake_id).toBe('intake-focus-1')
+    expect(focus.source).toBe('administrator_app')
   })
 })
