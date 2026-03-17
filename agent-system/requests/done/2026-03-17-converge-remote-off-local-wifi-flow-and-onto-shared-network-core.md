@@ -1,7 +1,9 @@
-Status: ready
+Status: done
 Priority: high
 Date: 2026-03-17
 Project: cyd-remote
+Owner: d
+Claim ID: 20260317T153731Z-a43db6e1
 
 # Converge Remote Off Local Wifi Flow And Onto Shared Network Core
 
@@ -26,3 +28,6 @@ network-core contract once that seam is defined.
 - join/retry/status truth comes from the shared network core
 - handheld-specific code is limited to UI/operator behavior
 
+## Result
+
+- `docs/roadmap/OHMIC_REMOTE_SHARED_NETWORK_CORE_CONVERGENCE_RESULT_2026-03-17.md`
