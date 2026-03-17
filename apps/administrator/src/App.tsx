@@ -5,6 +5,7 @@ import { IntakeQueuePanel } from '@/panels/IntakeQueuePanel'
 import { IntakeDetailPanel } from '@/panels/IntakeDetailPanel'
 import { CommandComposerPanel } from '@/panels/CommandComposerPanel'
 import { AuditTrailPanel } from '@/panels/AuditTrailPanel'
+import { WarningReviewPanel } from '@/panels/WarningReviewPanel'
 import { subscribeToUpdates } from '@/api/projections'
 import { useDashboardStore } from '@/store/dashboardStore'
 import { useIntakeStore } from '@/store/intakeStore'
@@ -59,6 +60,7 @@ export function App() {
 
           <div className="space-y-8">
             <IntakeDetailPanel />
+            <WarningReviewPanel />
             <CommandComposerPanel />
             <AuditTrailPanel />
           </div>
