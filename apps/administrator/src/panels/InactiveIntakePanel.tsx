@@ -7,6 +7,7 @@ import {
 import { useIntakeStore } from '@/store/intakeStore'
 import { useCommandStore } from '@/store/commandStore'
 import { StatusBadge } from '@/components/StatusBadge'
+import { buildInactiveIntakeContextNote } from '@/panels/inactiveIntakeContext'
 
 export function InactiveIntakePanel() {
   const {
@@ -26,6 +27,10 @@ export function InactiveIntakePanel() {
   const fetchActiveIntake = useIntakeStore((s) => s.fetch)
   const selectActiveIntake = useIntakeStore((s) => s.select)
   const loadAuditTrail = useCommandStore((s) => s.loadAuditTrail)
+  const noteText = useCommandStore((s) => s.noteText)
+  const setIntakeId = useCommandStore((s) => s.setIntakeId)
+  const setActionInput = useCommandStore((s) => s.setActionInput)
+  const setNoteText = useCommandStore((s) => s.setNoteText)
 
   useEffect(() => {
     if (items.length === 0 && !loading) {
@@ -48,6 +53,12 @@ export function InactiveIntakePanel() {
 
     await Promise.all([fetch(), fetchActiveIntake(), loadAuditTrail()])
     selectActiveIntake(intakeId)
+  }
+
+  function primeReopenContext(item: (typeof items)[number]) {
+    setIntakeId(item.intake_id)
+    setActionInput('add_note')
+    setNoteText(buildInactiveIntakeContextNote(noteText, item))
   }
 
   return (
@@ -133,7 +144,13 @@ export function InactiveIntakePanel() {
               </div>
 
               {item.reopen_allowed && (
-                <div className="pt-1">
+                <div className="flex flex-wrap gap-2 pt-1">
+                  <button
+                    onClick={() => primeReopenContext(item)}
+                    className="rounded border border-ohmic-border px-3 py-1.5 text-xs font-medium text-ohmic-text transition-colors hover:border-ohmic-accent/30"
+                  >
+                    Prime Reopen Context
+                  </button>
                   <button
                     onClick={() => void handleReopen(item.intake_id, item.reopen_target_status)}
                     disabled={reopeningId === item.intake_id}

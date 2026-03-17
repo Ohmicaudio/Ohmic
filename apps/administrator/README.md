@@ -8,7 +8,7 @@ This app is currently a Phase 1 plus early Phase 2 scaffold:
 
 - dashboard projection viewer
 - intake queue viewer
-- inactive intake browser with reopen action
+- inactive intake browser with reopen action and composer handoff
 - intake detail with note and tag context
 - filing picker with direct filing-record writeback
 - filing history panel with optional runtime module support and composer handoff
