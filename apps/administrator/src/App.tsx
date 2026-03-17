@@ -1,4 +1,5 @@
 import { useEffect } from 'react'
+import { RuntimeIndicator } from '@/components/RuntimeIndicator'
 import { DashboardPanel } from '@/panels/DashboardPanel'
 import { IntakeQueuePanel } from '@/panels/IntakeQueuePanel'
 import { IntakeDetailPanel } from '@/panels/IntakeDetailPanel'
@@ -8,11 +9,15 @@ import { subscribeToUpdates } from '@/api/projections'
 import { useDashboardStore } from '@/store/dashboardStore'
 import { useIntakeStore } from '@/store/intakeStore'
 import { useCommandStore } from '@/store/commandStore'
+import { useServerHealthStore } from '@/store/serverHealthStore'
 
 export function App() {
   const fetchDashboard = useDashboardStore((s) => s.fetch)
   const fetchIntake = useIntakeStore((s) => s.fetch)
   const loadAuditTrail = useCommandStore((s) => s.loadAuditTrail)
+  const fetchHealth = useServerHealthStore((s) => s.fetch)
+  const healthStatus = useServerHealthStore((s) => s.status)
+  const runtimeDir = useServerHealthStore((s) => s.runtimeDir)
 
   useEffect(() => {
     const unsub = subscribeToUpdates((name) => {
@@ -22,6 +27,10 @@ export function App() {
     })
     return unsub
   }, [fetchDashboard, fetchIntake, loadAuditTrail])
+
+  useEffect(() => {
+    fetchHealth()
+  }, [fetchHealth])
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -33,7 +42,10 @@ export function App() {
               Ohmic Administrator
             </h1>
           </div>
-          <div className="text-xs text-ohmic-text-dim">Intake Triage &amp; Routing</div>
+          <div className="flex items-center gap-4">
+            <RuntimeIndicator status={healthStatus} runtimeDir={runtimeDir} />
+            <div className="text-xs text-ohmic-text-dim">Intake Triage &amp; Routing</div>
+          </div>
         </div>
       </header>
 
