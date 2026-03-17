@@ -1,7 +1,11 @@
 import { useEffect } from 'react'
 import { useTandemStore } from '@/store/tandemStore'
+import { useIntakeStore } from '@/store/intakeStore'
+import { buildTandemContextUrl } from '@/panels/tandemContext'
 
 export function TandemPanel() {
+  const items = useIntakeStore((state) => state.items)
+  const selectedId = useIntakeStore((state) => state.selectedId)
   const {
     configured,
     available,
@@ -14,6 +18,8 @@ export function TandemPanel() {
     error,
     fetch,
   } = useTandemStore()
+  const selectedIntake = items.find((item) => item.intake_id === selectedId) ?? null
+  const contextualLaunchUrl = buildTandemContextUrl(launchUrl, selectedIntake)
 
   useEffect(() => {
     void fetch()
@@ -66,7 +72,10 @@ export function TandemPanel() {
               Session label: <span className="text-ohmic-text">{sessionLabel || '--'}</span>
             </div>
             <div>
-              Launch URL: <span className="text-ohmic-text break-all">{launchUrl || '--'}</span>
+              Launch URL:{' '}
+              <span className="text-ohmic-text break-all">
+                {contextualLaunchUrl || '--'}
+              </span>
             </div>
           </div>
 
@@ -75,10 +84,17 @@ export function TandemPanel() {
               'This is the first external-provider seam. Full tab/session handoff will build on this status floor.'}
           </div>
 
-          {launchUrl ? (
+          {selectedIntake ? (
+            <div className="text-[11px] text-ohmic-text-dim">
+              Opening Tandem will carry the current intake context for{' '}
+              <span className="text-ohmic-text">{selectedIntake.intake_id}</span>.
+            </div>
+          ) : null}
+
+          {contextualLaunchUrl ? (
             <div className="pt-1">
               <a
-                href={launchUrl}
+                href={contextualLaunchUrl}
                 target="_blank"
                 rel="noreferrer"
                 className="inline-flex items-center rounded-md border border-ohmic-accent/40 px-3 py-1.5 text-xs font-medium text-ohmic-accent transition-colors hover:border-ohmic-accent hover:bg-ohmic-accent/10"

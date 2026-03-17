@@ -63,10 +63,15 @@ npm run server
 Frontend:
 
 - Vite dev server: `http://localhost:5180`
+- LAN dev access: `http://<this-machine-ip>:5180`
 
 Backend:
 
 - projection / command server: `http://localhost:5181`
+
+The Vite dev server is configured to bind on `0.0.0.0`, so other devices on the
+same network can use the admin app through this machine's LAN IP while the app
+continues proxying `/api` traffic back to the local server on `5181`.
 
 ## Current routes
 

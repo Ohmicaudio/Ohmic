@@ -14,6 +14,7 @@ export default defineConfig({
     testTimeout: 15000,
   },
   server: {
+    host: '0.0.0.0',
     port: 5180,
     proxy: {
       '/api': {
@@ -21,5 +22,9 @@ export default defineConfig({
         changeOrigin: true,
       },
     },
+  },
+  preview: {
+    host: '0.0.0.0',
+    port: 5180,
   },
 })
