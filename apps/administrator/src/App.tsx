@@ -12,6 +12,7 @@ import { StatusHistoryPanel } from '@/panels/StatusHistoryPanel'
 import { CommandComposerPanel } from '@/panels/CommandComposerPanel'
 import { AuditTrailPanel } from '@/panels/AuditTrailPanel'
 import { WarningReviewPanel } from '@/panels/WarningReviewPanel'
+import { TandemPanel } from '@/panels/TandemPanel'
 import { subscribeToUpdates } from '@/api/projections'
 import { useAggregationPanelStore } from '@/store/aggregationPanelStore'
 import { useAttachmentPreviewStore } from '@/store/attachmentPreviewStore'
@@ -138,6 +139,7 @@ export function App() {
             <StatusHistoryPanel />
             <WarningReviewPanel />
             <AttachmentPreviewPanel />
+            <TandemPanel />
             <CommandComposerPanel />
             <AuditTrailPanel />
           </div>

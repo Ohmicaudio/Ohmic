@@ -4,6 +4,7 @@ import { fileURLToPath } from 'url'
 import { ProjectionReader } from './projectionReader.js'
 import { writeIntakeFocusSelection } from './focusWriter.js'
 import { getAdministratorRuntimeDir } from './runtimeConfig.js'
+import { readTandemStatus } from './tandemProxy.js'
 import {
   executeCommand,
   getFilingOptions,
@@ -68,6 +69,11 @@ export function createAdministratorServer(port = PORT) {
           (name) => !loadedProjections.includes(name)
         ),
       })
+      return
+    }
+
+    if (requestPath === '/api/tandem/status') {
+      sendJson(res, readTandemStatus())
       return
     }
 

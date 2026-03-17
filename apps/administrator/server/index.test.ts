@@ -229,6 +229,37 @@ describe('administrator server', () => {
     expect(focus.source).toBe('administrator_app')
   })
 
+  it('serves the Tandem status seam from environment configuration', async () => {
+    process.env.ADMINISTRATOR_TANDEM_BASE_URL = 'http://127.0.0.1:8765'
+    process.env.ADMINISTRATOR_TANDEM_SESSION_LABEL = 'gmail-triage'
+
+    const { createAdministratorServer } = await importServer()
+    const app = createAdministratorServer(0)
+    const baseUrl = await app.start()
+    stopServer = app.stop
+
+    const tandemRes = await fetch(`${baseUrl}/api/tandem/status`)
+    expect(tandemRes.ok).toBe(true)
+    const tandem = (await tandemRes.json()) as {
+      configured: boolean
+      available: boolean
+      base_url: string | null
+      session_label: string | null
+      mode: string
+    }
+
+    expect(tandem).toMatchObject({
+      configured: true,
+      available: false,
+      base_url: 'http://127.0.0.1:8765',
+      session_label: 'gmail-triage',
+      mode: 'configured',
+    })
+
+    delete process.env.ADMINISTRATOR_TANDEM_BASE_URL
+    delete process.env.ADMINISTRATOR_TANDEM_SESSION_LABEL
+  })
+
   it('validates and executes command routes against the live runtime root', async () => {
     await writeActiveQueueFixture('intake-3', 'Validate and execute target')
 

@@ -15,6 +15,7 @@ This app is currently a Phase 1 plus early Phase 2 scaffold:
 - warning review panel with optional runtime module support and composer handoff
 - aggregation bundle panel with optional runtime module support and composer handoff
 - attachment preview panel with optional runtime module support and composer handoff
+- Tandem handoff panel with server-backed configuration status
 - audit summary panel with optional runtime module support and composer handoff
 - per-intake status history panel with optional runtime module support and composer handoff
 - command composer with PowerShell-backed validation and execute/writeback
@@ -79,6 +80,7 @@ Backend:
 - `POST /api/commands/validate`
 - `POST /api/commands/execute`
 - `POST /api/inactive/reopen`
+- `GET /api/tandem/status`
 
 ## Current collaboration posture
 
@@ -93,7 +95,7 @@ Not yet complete for:
 
 - filing destination migration and replacement flows
 - richer audit-driven action presets beyond the current safe note/tag defaults
-- attachment preview writeback or external Tandem handoff flows
-- Tandem integration
+- attachment preview writeback or live Tandem session/tab handoff flows
+- live Tandem session integration beyond the first status seam
 - ContextKeep or memory integration
 - provider connectors
