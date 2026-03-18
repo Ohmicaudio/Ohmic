@@ -78,6 +78,19 @@ instead of forcing consumers back into the hybrid legacy wrapper:
 - `device.output_profile`
 - `device.ui_mode`
 
+The shared core status now also carries the operator-facing connection snapshot
+directly:
+
+- `connection.ap`
+- `connection.sta`
+- `connection.ws`
+- `connection.ble`
+- `connection.can`
+- `connection.http`
+
+That includes live WS client count, selected Wi-Fi profile, join status, and
+basic HTTP operator telemetry without having to read `amplab.data`.
+
 ## Expected profile differences
 
 DSP:
