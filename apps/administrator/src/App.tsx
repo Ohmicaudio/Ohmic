@@ -19,7 +19,7 @@ import { TandemPanel } from '@/panels/TandemPanel'
 import { QueueActivityPanel } from '@/panels/QueueActivityPanel'
 import { WorkspaceActivityPanel } from '@/panels/WorkspaceActivityPanel'
 import { subscribeToUpdates } from '@/api/projections'
-import { publishIntakeFocus } from '@/api/focus'
+import { publishIntakeFocus, publishReadyTaskFocus } from '@/api/focus'
 import { useAggregationPanelStore } from '@/store/aggregationPanelStore'
 import { useAttachmentPreviewStore } from '@/store/attachmentPreviewStore'
 import { useAuditSummaryStore } from '@/store/auditSummaryStore'
@@ -30,6 +30,7 @@ import { useInactiveIntakeStore } from '@/store/inactiveIntakeStore'
 import { useIntakeContextStore } from '@/store/intakeContextStore'
 import { useIntakeStore } from '@/store/intakeStore'
 import { useCommandStore } from '@/store/commandStore'
+import { useQueueActivityStore } from '@/store/queueActivityStore'
 import { useServerHealthStore } from '@/store/serverHealthStore'
 import { useStatusHistoryStore } from '@/store/statusHistoryStore'
 import { useTandemStore } from '@/store/tandemStore'
@@ -37,8 +38,10 @@ import { useWarningReviewStore } from '@/store/warningReviewStore'
 
 export function App() {
   const didAutoSelectIntake = useRef(false)
+  const didAutoFocusQueue = useRef(false)
   const fetchDashboard = useDashboardStore((s) => s.fetch)
   const fetchDeskFocus = useDeskFocusStore((s) => s.fetch)
+  const deskFocusSelection = useDeskFocusStore((s) => s.selection)
   const setDeskFocusProjection = useDeskFocusStore((s) => s.setProjection)
   const fetchAggregationPanel = useAggregationPanelStore((s) => s.fetch)
   const fetchAttachmentPreview = useAttachmentPreviewStore((s) => s.fetch)
@@ -52,6 +55,9 @@ export function App() {
   const selectIntake = useIntakeStore((s) => s.select)
   const fetchInactiveIntake = useInactiveIntakeStore((s) => s.fetch)
   const fetchIntakeContext = useIntakeContextStore((s) => s.fetch)
+  const fetchQueueActivity = useQueueActivityStore((s) => s.fetch)
+  const readyTasks = useQueueActivityStore((s) => s.readyTasks)
+  const queueLoading = useQueueActivityStore((s) => s.loading)
   const fetchStatusHistory = useStatusHistoryStore((s) => s.fetch)
   const fetchWarningReview = useWarningReviewStore((s) => s.fetch)
   const fetchTandem = useTandemStore((s) => s.fetch)
@@ -95,6 +101,8 @@ export function App() {
       if (name === 'administrator_tandem_handshake_state') fetchTandem()
       if (name === 'administrator_warning_review') fetchWarningReview()
       if (name === 'administrator_recent_actions') loadAuditTrail()
+      if (name === 'ready_tasks') fetchQueueActivity()
+      if (name === 'active_claims') fetchQueueActivity()
       fetchHealth()
     })
     return unsub
@@ -124,6 +132,7 @@ export function App() {
     fetchIntake()
     fetchInactiveIntake()
     fetchIntakeContext()
+    fetchQueueActivity()
     loadAuditTrail()
     fetchStatusHistory()
     fetchTandem()
@@ -139,6 +148,7 @@ export function App() {
     fetchIntake,
     fetchInactiveIntake,
     fetchIntakeContext,
+    fetchQueueActivity,
     loadAuditTrail,
     fetchStatusHistory,
     fetchTandem,
@@ -169,11 +179,59 @@ export function App() {
   }, [intakeItems, intakeLooksHistorical, selectIntake, selectedIntakeId])
 
   useEffect(() => {
+    if (!intakeLooksHistorical) {
+      didAutoFocusQueue.current = false
+      return
+    }
+
+    if (selectedIntakeId || deskFocusSelection || queueLoading || readyTasks.length === 0) {
+      return
+    }
+
+    if (didAutoFocusQueue.current) {
+      return
+    }
+
+    let cancelled = false
+    didAutoFocusQueue.current = true
+
+    const publishQueueFocus = async () => {
+      try {
+        const projection = await publishReadyTaskFocus(readyTasks[0])
+        if (!cancelled) {
+          setDeskFocusProjection(projection)
+        }
+      } catch {
+        if (!cancelled) {
+          didAutoFocusQueue.current = false
+        }
+      }
+    }
+
+    void publishQueueFocus()
+
+    return () => {
+      cancelled = true
+    }
+  }, [
+    deskFocusSelection,
+    intakeLooksHistorical,
+    queueLoading,
+    readyTasks,
+    selectedIntakeId,
+    setDeskFocusProjection,
+  ])
+
+  useEffect(() => {
+    if (!selectedIntakeId) {
+      return
+    }
+
     let cancelled = false
 
     const publishFocus = async () => {
       try {
-        const projection = await publishIntakeFocus(selectedIntakeId ?? null)
+        const projection = await publishIntakeFocus(selectedIntakeId)
         if (!cancelled) {
           setDeskFocusProjection(projection)
         }

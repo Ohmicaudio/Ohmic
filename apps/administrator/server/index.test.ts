@@ -493,6 +493,37 @@ describe('administrator server', () => {
     expect(focus.selection?.source).toBe('administrator_app')
   })
 
+  it('clears desk focus when intake focus is posted with no intake id', async () => {
+    const { createAdministratorServer } = await importServer()
+    const app = createAdministratorServer(0)
+    const baseUrl = await app.start()
+    stopServer = app.stop
+
+    const focusRes = await fetch(`${baseUrl}/api/focus/intake`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        intake_id: null,
+      }),
+    })
+
+    expect(focusRes.ok).toBe(true)
+
+    const focusRaw = await readFile(
+      path.join(tempRuntimeDir!, 'administrator_focus_selection.json'),
+      'utf-8'
+    )
+    const focus = JSON.parse(focusRaw) as {
+      projection_name: string
+      selection: null | {
+        focus_kind: string
+      }
+    }
+
+    expect(focus.projection_name).toBe('administrator_focus_selection')
+    expect(focus.selection).toBeNull()
+  })
+
   it('publishes current ready-task focus into the runtime root', async () => {
     const { createAdministratorServer } = await importServer()
     const app = createAdministratorServer(0)

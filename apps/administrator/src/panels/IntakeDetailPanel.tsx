@@ -3,6 +3,7 @@ import { useIntakeStore } from '@/store/intakeStore'
 import { useIntakeContextStore } from '@/store/intakeContextStore'
 import { useAuditSummaryStore } from '@/store/auditSummaryStore'
 import { useDeskFocusStore } from '@/store/deskFocusStore'
+import { useQueueActivityStore } from '@/store/queueActivityStore'
 import { useTandemStore } from '@/store/tandemStore'
 import { StatusBadge } from '@/components/StatusBadge'
 import { PriorityIndicator } from '@/components/PriorityIndicator'
@@ -60,6 +61,13 @@ function EmptyChecklist({
   )
 }
 
+function formatFocusPath(filePath: string): string {
+  const segments = filePath.split(/[\\/]+/)
+  const fileName = segments[segments.length - 1] ?? filePath
+  const parent = segments.length > 1 ? segments[segments.length - 2] : null
+  return parent ? `${parent}/${fileName}` : fileName
+}
+
 export function IntakeDetailPanel() {
   const { items, selectedId } = useIntakeStore()
   const { notes, tagAssignments, loading: contextLoading, fetch: fetchContext } =
@@ -70,6 +78,8 @@ export function IntakeDetailPanel() {
   const auditAttempted = useAuditSummaryStore((state) => state.attempted)
   const fetchAuditSummary = useAuditSummaryStore((state) => state.fetch)
   const focusSelection = useDeskFocusStore((state) => state.selection)
+  const readyTasks = useQueueActivityStore((state) => state.readyTasks)
+  const activeClaims = useQueueActivityStore((state) => state.activeClaims)
   const tandemTargetPresets = useTandemStore((state) => state.targetPresets)
   const setSelectedTandemPreset = useTandemStore((state) => state.setSelectedPreset)
   const setTandemHandoffNote = useTandemStore((state) => state.setHandoffNote)
@@ -89,6 +99,16 @@ export function IntakeDetailPanel() {
   const isFocusedIntake =
     focusSelection?.focus_kind === 'intake' &&
     focusSelection.selected_intake_id === selectedItem?.intake_id
+  const focusedReadyTask =
+    focusSelection?.focus_kind === 'ready_task'
+      ? readyTasks.find((task) => task.task_id === focusSelection.task_id) ?? null
+      : null
+  const focusedClaim =
+    focusSelection?.focus_kind === 'claim'
+      ? activeClaims.find((claim) => claim.claim_id === focusSelection.claim_id) ?? null
+      : null
+  const fallbackReadyTask = focusedReadyTask ?? readyTasks[0] ?? null
+  const fallbackClaim = focusedClaim ?? activeClaims[0] ?? null
 
   useEffect(() => {
     if (selectedId && notes.length === 0 && tagAssignments.length === 0) {
@@ -114,15 +134,74 @@ export function IntakeDetailPanel() {
       </div>
 
       {!selectedItem ? (
-        <EmptyChecklist
-          title="No intake selected yet"
-          body="Pick a queue item to load its routing context, provider timeline, and note history into this lane."
-          items={[
-            'Choose a ready intake from Queue and Runtime.',
-            'Review the intake summary, provider history, and note stream here.',
-            'Then use the Action Rail to hand off or apply the next desk action.',
-          ]}
-        />
+        fallbackReadyTask || fallbackClaim ? (
+          <div className="panel border-ohmic-accent/20 bg-ohmic-bg/80 space-y-4">
+            <div className="space-y-2">
+              <div className="flex items-center gap-2">
+                <span className="rounded border border-ohmic-accent/30 px-2 py-0.5 text-[10px] uppercase tracking-widest text-ohmic-accent">
+                  {focusedReadyTask || focusedClaim
+                    ? focusedReadyTask
+                      ? 'Focused ready task'
+                      : 'Focused active claim'
+                    : fallbackReadyTask
+                      ? 'Top ready task'
+                      : 'Top active claim'}
+                </span>
+              </div>
+              <div className="text-base font-semibold text-ohmic-text">
+                {fallbackReadyTask?.title ??
+                  fallbackClaim?.title ??
+                  focusSelection?.title ??
+                  'Focused queue work'}
+              </div>
+              <div className="text-sm leading-6 text-ohmic-text-dim">
+                Queue truth is currently driving the desk. Intake detail will populate here once a live intake item is selected or fresher intake runtime becomes available.
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 gap-2">
+              {fallbackReadyTask ? (
+                <>
+                  <DetailRow label="Task ID" value={fallbackReadyTask.task_id} />
+                  <DetailRow label="Project" value={fallbackReadyTask.project} />
+                  <DetailRow label="Priority" value={fallbackReadyTask.priority} />
+                  <DetailRow label="Status" value={fallbackReadyTask.status} />
+                  <DetailRow label="Path" value={formatFocusPath(fallbackReadyTask.file_path)} />
+                </>
+              ) : fallbackClaim ? (
+                <>
+                  <DetailRow label="Claim ID" value={fallbackClaim.claim_id} />
+                  <DetailRow label="Owner" value={fallbackClaim.owner} />
+                  <DetailRow label="Status" value={fallbackClaim.status} />
+                  <DetailRow
+                    label="Scope"
+                    value={`${fallbackClaim.paths.length} file${fallbackClaim.paths.length === 1 ? '' : 's'}`}
+                  />
+                  <DetailRow label="Path" value={formatFocusPath(fallbackClaim.file_path)} />
+                </>
+              ) : null}
+            </div>
+
+            <div className="rounded-lg border border-ohmic-border/70 bg-ohmic-surface/70 px-3 py-3 space-y-2">
+              <div className="text-[10px] uppercase tracking-widest text-ohmic-text-dim">
+                Next move
+              </div>
+              <div className="text-sm text-ohmic-text-dim">
+                Use <span className="text-ohmic-text">Desk Focus</span> or the queue cards to lock this work into the desk, then return here once you have a live intake context to route.
+              </div>
+            </div>
+          </div>
+        ) : (
+          <EmptyChecklist
+            title="No intake selected yet"
+            body="Pick a queue item to load its routing context, provider timeline, and note history into this lane."
+            items={[
+              'Choose a ready intake from Queue and Runtime.',
+              'Review the intake summary, provider history, and note stream here.',
+              'Then use the Action Rail to hand off or apply the next desk action.',
+            ]}
+          />
+        )
       ) : (
         <div className="panel space-y-4">
           <div className="space-y-2">

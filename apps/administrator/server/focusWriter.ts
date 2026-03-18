@@ -38,6 +38,10 @@ async function writeFocusProjection(selection: FocusSelection | null): Promise<F
 export async function writeIntakeFocusSelection(
   intakeId: string | null
 ): Promise<FocusProjection> {
+  if (!intakeId) {
+    return writeFocusProjection(null)
+  }
+
   const selection: FocusSelection = {
     focus_kind: 'intake',
     selected_intake_id: intakeId,
