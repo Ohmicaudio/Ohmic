@@ -62,6 +62,12 @@ The hybrid legacy wrapper also carries the same value under:
 - `identity.public_designator`
 - `device.public_designator`
 
+The shared core `identity` block also now carries the lower-level stable fields
+that previously only appeared in the legacy wrapper:
+
+- `device_id`
+- `chip_id`
+
 ## Expected profile differences
 
 DSP:
