@@ -14,6 +14,7 @@ import { CommandComposerPanel } from '@/panels/CommandComposerPanel'
 import { AuditTrailPanel } from '@/panels/AuditTrailPanel'
 import { WarningReviewPanel } from '@/panels/WarningReviewPanel'
 import { TandemPanel } from '@/panels/TandemPanel'
+import { QueueActivityPanel } from '@/panels/QueueActivityPanel'
 import { WorkspaceActivityPanel } from '@/panels/WorkspaceActivityPanel'
 import { subscribeToUpdates } from '@/api/projections'
 import { useAggregationPanelStore } from '@/store/aggregationPanelStore'
@@ -165,6 +166,7 @@ export function App() {
           </div>
         </div>
 
+        <QueueActivityPanel />
         <WorkspaceActivityPanel />
 
         <div className="mt-8">

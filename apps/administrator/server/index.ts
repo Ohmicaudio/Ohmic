@@ -4,6 +4,7 @@ import { fileURLToPath } from 'url'
 import { ProjectionReader } from './projectionReader.js'
 import { writeIntakeFocusSelection } from './focusWriter.js'
 import { getAdministratorRuntimeDir } from './runtimeConfig.js'
+import { readActiveClaimsFromDisk } from './activeClaimsSource.js'
 import { readReadyTasksFromDisk } from './readyTasksSource.js'
 import { readTandemStatus } from './tandemProxy.js'
 import { readWorkspaceActivity } from './workspaceActivitySource.js'
@@ -201,6 +202,12 @@ export function createAdministratorServer(port = PORT) {
       const name = projMatch[1]
       if (name === 'ready_tasks') {
         readReadyTasksFromDisk()
+          .then((data) => sendJson(res, data))
+          .catch((err) => sendJson(res, { error: err.message }, 500))
+        return
+      }
+      if (name === 'active_claims') {
+        readActiveClaimsFromDisk()
           .then((data) => sendJson(res, data))
           .catch((err) => sendJson(res, { error: err.message }, 500))
         return

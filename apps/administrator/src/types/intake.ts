@@ -180,6 +180,20 @@ export interface WorkspaceActivityProjection {
   message: string | null
 }
 
+export interface ActiveClaimItem {
+  claim_id: string
+  title: string
+  owner: string
+  status: string
+  file_path: string
+}
+
+export interface ActiveClaimsProjection {
+  generated_at: string
+  count: number
+  claims: ActiveClaimItem[]
+}
+
 export interface AdministratorNote {
   note_id: string
   intake_id: string

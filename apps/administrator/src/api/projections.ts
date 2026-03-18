@@ -1,5 +1,6 @@
 import type {
   AdministratorAuditSummaryProjection,
+  ActiveClaimsProjection,
   AdministratorNoteProjection,
   AdministratorStatusHistoryProjection,
   AdministratorTagAssignmentProjection,
@@ -81,6 +82,10 @@ export async function fetchStatusHistoryProjection(): Promise<AdministratorStatu
 
 export async function fetchReadyTasks(): Promise<ReadyTasksProjection> {
   return fetchJson<ReadyTasksProjection>('/projections/ready_tasks')
+}
+
+export async function fetchActiveClaims(): Promise<ActiveClaimsProjection> {
+  return fetchJson<ActiveClaimsProjection>('/projections/active_claims')
 }
 
 export async function fetchWorkspaceActivityProjection(): Promise<WorkspaceActivityProjection> {

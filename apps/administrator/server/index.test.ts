@@ -5,6 +5,7 @@ import path from 'path'
 
 const localRuntimeBase = 'B:\\ohmic-local\\runtime\\administrator-tests'
 const localQueueBase = 'B:\\ohmic-local\\runtime\\administrator-ready-tests'
+const localActiveClaimsBase = 'B:\\ohmic-local\\runtime\\administrator-active-tests'
 
 async function importServer() {
   vi.resetModules()
@@ -15,6 +16,7 @@ describe('administrator server', () => {
   let previousRuntimeDir: string | undefined
   let tempRuntimeDir: string | null = null
   let tempReadyQueueDir: string | null = null
+  let tempActiveClaimsDir: string | null = null
   let stopServer: (() => Promise<void>) | null = null
   let tandemProbeServer: http.Server | null = null
 
@@ -22,10 +24,13 @@ describe('administrator server', () => {
     previousRuntimeDir = process.env.ADMINISTRATOR_RUNTIME_DIR
     await mkdir(localRuntimeBase, { recursive: true })
     await mkdir(localQueueBase, { recursive: true })
+    await mkdir(localActiveClaimsBase, { recursive: true })
     tempRuntimeDir = await mkdtemp(path.join(localRuntimeBase, 'server-'))
     tempReadyQueueDir = await mkdtemp(path.join(localQueueBase, 'ready-'))
+    tempActiveClaimsDir = await mkdtemp(path.join(localActiveClaimsBase, 'active-'))
     process.env.ADMINISTRATOR_RUNTIME_DIR = tempRuntimeDir
     process.env.ADMINISTRATOR_READY_QUEUE_DIR = tempReadyQueueDir
+    process.env.ADMINISTRATOR_ACTIVE_JOBS_DIR = tempActiveClaimsDir
 
     await writeFile(
       path.join(tempRuntimeDir, 'dashboard_status_cards.json'),
@@ -84,6 +89,10 @@ describe('administrator server', () => {
       await rm(tempReadyQueueDir, { recursive: true, force: true })
       tempReadyQueueDir = null
     }
+    if (tempActiveClaimsDir) {
+      await rm(tempActiveClaimsDir, { recursive: true, force: true })
+      tempActiveClaimsDir = null
+    }
 
     if (tandemProbeServer) {
       await new Promise<void>((resolve, reject) => {
@@ -102,6 +111,7 @@ describe('administrator server', () => {
     delete process.env.ADMINISTRATOR_TANDEM_TARGET_PRESETS
     delete process.env.ADMINISTRATOR_TANDEM_STATUS_URL
     delete process.env.ADMINISTRATOR_READY_QUEUE_DIR
+    delete process.env.ADMINISTRATOR_ACTIVE_JOBS_DIR
   })
 
   async function writeActiveQueueFixture(intakeId: string, title: string) {
@@ -238,6 +248,39 @@ describe('administrator server', () => {
       hash: expect.any(String),
       summary: expect.any(String),
       committed_at: expect.any(String),
+    })
+  })
+
+  it('serves active claims from the live active-jobs directory', async () => {
+    await writeFile(
+      path.join(tempActiveClaimsDir!, '20260318T080000Z-test-claim.md'),
+      `owner: d\nstatus: active\ntask: dogfood administrator queue truth\n`,
+      'utf-8'
+    )
+
+    const { createAdministratorServer } = await importServer()
+    const app = createAdministratorServer(0)
+    const baseUrl = await app.start()
+    stopServer = app.stop
+
+    const activeRes = await fetch(`${baseUrl}/api/projections/active_claims`)
+    expect(activeRes.ok).toBe(true)
+    const active = (await activeRes.json()) as {
+      count: number
+      claims: Array<{
+        claim_id: string
+        title: string
+        owner: string
+        status: string
+      }>
+    }
+
+    expect(active.count).toBe(1)
+    expect(active.claims[0]).toMatchObject({
+      claim_id: '20260318T080000Z-test-claim',
+      title: 'dogfood administrator queue truth',
+      owner: 'd',
+      status: 'active',
     })
   })
 
