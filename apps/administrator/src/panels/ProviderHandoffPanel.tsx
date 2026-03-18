@@ -1,4 +1,4 @@
-import { useMemo } from 'react'
+import { useMemo, useState } from 'react'
 import { useAuditSummaryStore } from '@/store/auditSummaryStore'
 import { useIntakeStore } from '@/store/intakeStore'
 import { useTandemStore } from '@/store/tandemStore'
@@ -14,6 +14,7 @@ import {
 } from '@/panels/tandemHistory'
 
 export function ProviderHandoffPanel() {
+  const [focusedTargetLabel, setFocusedTargetLabel] = useState<string | null>(null)
   const intakeItems = useIntakeStore((state) => state.items)
   const selectedId = useIntakeStore((state) => state.selectedId)
   const selectIntake = useIntakeStore((state) => state.select)
@@ -34,6 +35,13 @@ export function ProviderHandoffPanel() {
   const providerTargetGroups = useMemo(
     () => groupProviderHandoffsByTarget(auditItems),
     [auditItems]
+  )
+  const visibleRecentHandoffs = useMemo(
+    () =>
+      focusedTargetLabel
+        ? recentHandoffs.filter((item) => item.target_label === focusedTargetLabel)
+        : recentHandoffs,
+    [focusedTargetLabel, recentHandoffs]
   )
   const selectedTandemPreset = useMemo(
     () =>
@@ -125,10 +133,20 @@ export function ProviderHandoffPanel() {
           <div className="text-xs uppercase tracking-wider text-ohmic-text-dim">
             Target runway
           </div>
-          <div className="text-[10px] text-ohmic-text-dim">
-            {providerSummary.latestOccurredAt
-              ? `Last handoff ${new Date(providerSummary.latestOccurredAt).toLocaleString()}`
-              : 'No provider activity yet'}
+          <div className="flex items-center gap-2">
+            {focusedTargetLabel ? (
+              <button
+                onClick={() => setFocusedTargetLabel(null)}
+                className="rounded border border-ohmic-border px-2 py-0.5 text-[10px] uppercase tracking-widest text-ohmic-text-dim transition-colors hover:border-ohmic-accent/30 hover:text-ohmic-text"
+              >
+                Clear focus
+              </button>
+            ) : null}
+            <div className="text-[10px] text-ohmic-text-dim">
+              {providerSummary.latestOccurredAt
+                ? `Last handoff ${new Date(providerSummary.latestOccurredAt).toLocaleString()}`
+                : 'No provider activity yet'}
+            </div>
           </div>
         </div>
         {providerTargetGroups.length === 0 ? (
@@ -140,7 +158,11 @@ export function ProviderHandoffPanel() {
             {providerTargetGroups.map((group) => (
               <div
                 key={group.targetLabel}
-                className="rounded border border-ohmic-border bg-ohmic-bg px-3 py-2 flex items-start justify-between gap-3"
+                className={`rounded border px-3 py-2 flex items-start justify-between gap-3 ${
+                  focusedTargetLabel === group.targetLabel
+                    ? 'border-ohmic-accent/40 bg-ohmic-accent/10'
+                    : 'border-ohmic-border bg-ohmic-bg'
+                }`}
               >
                 <div className="space-y-1 min-w-0">
                   <div className="text-xs text-ohmic-text">{group.targetLabel}</div>
@@ -148,10 +170,18 @@ export function ProviderHandoffPanel() {
                     {group.count} handoff{group.count === 1 ? '' : 's'}
                   </div>
                 </div>
-                <div className="text-[10px] text-ohmic-text-dim whitespace-nowrap">
-                  {group.latestOccurredAt
-                    ? new Date(group.latestOccurredAt).toLocaleString()
-                    : '--'}
+                <div className="space-y-2 text-right">
+                  <div className="text-[10px] text-ohmic-text-dim whitespace-nowrap">
+                    {group.latestOccurredAt
+                      ? new Date(group.latestOccurredAt).toLocaleString()
+                      : '--'}
+                  </div>
+                  <button
+                    onClick={() => setFocusedTargetLabel(group.targetLabel)}
+                    className="rounded border border-ohmic-border px-2 py-0.5 text-[10px] uppercase tracking-widest text-ohmic-text-dim transition-colors hover:border-ohmic-accent/30 hover:text-ohmic-text"
+                  >
+                    Focus target
+                  </button>
                 </div>
               </div>
             ))}
@@ -295,20 +325,27 @@ export function ProviderHandoffPanel() {
       </div>
 
       <div className="panel space-y-3">
-        <div className="text-xs uppercase tracking-wider text-ohmic-text-dim">
-          Recent Provider Activity
+        <div className="flex items-center justify-between gap-3">
+          <div className="text-xs uppercase tracking-wider text-ohmic-text-dim">
+            Recent Provider Activity
+          </div>
+          <div className="text-[10px] text-ohmic-text-dim">
+            {focusedTargetLabel ? `Focused: ${focusedTargetLabel}` : 'All targets'}
+          </div>
         </div>
         {auditLoading && !auditAvailable ? (
           <div className="text-sm text-ohmic-text-dim animate-pulse">
             Loading provider activity...
           </div>
-        ) : recentHandoffs.length === 0 ? (
+        ) : visibleRecentHandoffs.length === 0 ? (
           <div className="text-sm text-ohmic-text-dim">
-            Provider handoffs will appear here after operator launch activity.
+            {focusedTargetLabel
+              ? 'No provider handoffs match the focused target yet.'
+              : 'Provider handoffs will appear here after operator launch activity.'}
           </div>
         ) : (
           <div className="space-y-2">
-            {recentHandoffs.map((item, index) => (
+            {visibleRecentHandoffs.map((item, index) => (
               <div
                 key={item.event_id}
                 className="rounded border border-ohmic-border bg-ohmic-bg px-3 py-2 space-y-1.5"
@@ -335,7 +372,12 @@ export function ProviderHandoffPanel() {
                 ) : null}
                 <div className="flex flex-wrap gap-2 pt-1">
                   <button
-                    onClick={() => loadHandoffContext(item.intake_id || null, index)}
+                    onClick={() =>
+                      loadHandoffContext(
+                        item.intake_id || null,
+                        recentHandoffs.findIndex((candidate) => candidate.event_id === item.event_id)
+                      )
+                    }
                     className="rounded border border-ohmic-border px-2.5 py-1 text-[11px] font-medium text-ohmic-text transition-colors hover:border-ohmic-accent/30"
                   >
                     Load into Tandem desk
