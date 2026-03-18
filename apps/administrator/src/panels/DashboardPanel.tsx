@@ -95,6 +95,10 @@ function formatProjectionCoverage(loaded: number, expected: number): string {
   return `${loaded}/${expected}`
 }
 
+function truncateValue(value: string, maxLength = 48): string {
+  return value.length > maxLength ? `${value.slice(0, maxLength - 1)}…` : value
+}
+
 function getRuntimeStatus(
   status: 'ok' | 'error' | 'unknown',
   missingProjectionCount: number
@@ -159,6 +163,13 @@ export function DashboardPanel() {
     (card) => !['Queue Health', 'Current Action', 'Blockers And Risk', 'Summary'].includes(card.title)
   )
   const nextQueueTask = readyTasks[0] ?? null
+  const deskMode = focusedSelection?.focus_kind
+    ? focusedSelection.focus_kind === 'intake'
+      ? 'intake-led'
+      : 'queue-led'
+    : nextQueueTask
+      ? 'queue-led'
+      : 'idle'
   const currentDeskAction = useMemo(() => {
     if (focusedSelection?.title) {
       return focusedSelection.title
@@ -180,12 +191,17 @@ export function DashboardPanel() {
       : focusedSelection?.focus_kind === 'ready_task'
         ? 'focused_ready_task'
         : focusedSelection?.focus_kind === 'intake'
-          ? 'focused_intake'
+      ? 'focused_intake'
           : activeClaimCount > 0
             ? 'active_claim'
             : nextQueueTask
               ? 'ready'
               : 'idle'
+  const providerNextLabel =
+    nextProviderAction?.targetLabel ||
+    nextProviderAction?.intakeTitle ||
+    nextProviderAction?.intakeId ||
+    '--'
 
   useEffect(() => {
     fetch()
@@ -260,9 +276,60 @@ export function DashboardPanel() {
         <div className="text-xs text-ohmic-text-dim animate-pulse">Loading projections...</div>
       ) : (
         <div className="space-y-4">
+          <div className="rounded-2xl border border-ohmic-accent/20 bg-ohmic-surface/70 px-4 py-3">
+            <div className="grid gap-3 lg:grid-cols-[minmax(0,1.2fr)_repeat(3,minmax(0,0.8fr))]">
+              <div className="space-y-1">
+                <div className="text-[10px] uppercase tracking-[0.2em] text-ohmic-accent">
+                  Operator Header
+                </div>
+                <div className="text-sm text-ohmic-text">
+                  {deskMode === 'intake-led'
+                    ? 'Desk is following intake context.'
+                    : deskMode === 'queue-led'
+                      ? 'Desk is following live queue work.'
+                      : 'Desk is waiting for the next live action.'}
+                </div>
+                <div className="text-[11px] text-ohmic-text-dim">
+                  {truncateValue(currentDeskAction, 80)}
+                </div>
+              </div>
+              <div className="space-y-1">
+                <div className="text-[10px] uppercase tracking-[0.2em] text-ohmic-text-dim">
+                  Mode
+                </div>
+                <div className="text-sm text-ohmic-text">{deskMode}</div>
+                <div className="text-[11px] text-ohmic-text-dim">
+                  Focus {focusedSelection?.focus_kind ?? '--'}
+                </div>
+              </div>
+              <div className="space-y-1">
+                <div className="text-[10px] uppercase tracking-[0.2em] text-ohmic-text-dim">
+                  Next queue task
+                </div>
+                <div className="text-sm text-ohmic-text">
+                  {nextQueueTask ? truncateValue(nextQueueTask.title, 46) : '--'}
+                </div>
+                <div className="text-[11px] text-ohmic-text-dim">
+                  {nextQueueTask?.task_id ?? 'No ready work visible'}
+                </div>
+              </div>
+              <div className="space-y-1">
+                <div className="text-[10px] uppercase tracking-[0.2em] text-ohmic-text-dim">
+                  Next provider item
+                </div>
+                <div className="text-sm text-ohmic-text">
+                  {truncateValue(providerNextLabel, 46)}
+                </div>
+                <div className="text-[11px] text-ohmic-text-dim">
+                  {nextProviderAction?.priority ?? 'No provider follow-up pending'}
+                </div>
+              </div>
+            </div>
+          </div>
+
           <div
             className="grid gap-3"
-            style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(15rem, 1fr))' }}
+            style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(13rem, 1fr))' }}
           >
             <SnapshotCard
               title="Runtime Health"
@@ -290,7 +357,7 @@ export function DashboardPanel() {
               <MetricRow label="Active claims" value={String(activeClaimCount)} />
               <MetricRow
                 label="Next task"
-                value={nextQueueTask ? nextQueueTask.task_id : '--'}
+                value={nextQueueTask ? truncateValue(nextQueueTask.task_id, 28) : '--'}
               />
             </SnapshotCard>
 
@@ -298,8 +365,9 @@ export function DashboardPanel() {
               title="Current Desk Action"
               status={nextQueueTask ? 'healthy' : 'unknown'}
             >
+              <MetricRow label="Mode" value={deskMode} />
               <MetricRow label="Status" value={currentDeskStatus} />
-              <MetricRow label="Current action" value={currentDeskAction} />
+              <MetricRow label="Current" value={truncateValue(currentDeskAction, 30)} />
               <MetricRow
                 label="Focus"
                 value={focusedSelection?.focus_kind ?? (nextQueueTask ? 'queued_task' : '--')}
@@ -310,11 +378,11 @@ export function DashboardPanel() {
               title="Workspace State"
               status={getWorkspaceStatus(dirtyFileCount)}
             >
-              <MetricRow label="Branch" value={branch || '--'} />
+              <MetricRow label="Branch" value={truncateValue(branch || '--', 28)} />
               <MetricRow label="Dirty" value={String(dirtyFileCount)} />
               <MetricRow
                 label="Head"
-                value={headCommit ? headCommit.summary : '--'}
+                value={headCommit ? truncateValue(headCommit.summary, 30) : '--'}
               />
             </SnapshotCard>
 
@@ -323,7 +391,7 @@ export function DashboardPanel() {
               status={providerSummary.staleFollowUpCount > 0 ? 'warning' : 'healthy'}
             >
               <MetricRow label="Unresolved" value={String(providerSummary.unresolvedCount)} />
-              <MetricRow label="Stale" value={String(providerSummary.staleFollowUpCount)} />
+              <MetricRow label="Next" value={truncateValue(providerNextLabel, 26)} />
               <MetricRow label="Attachment reviews" value={String(attachmentReviewCount)} />
             </SnapshotCard>
           </div>

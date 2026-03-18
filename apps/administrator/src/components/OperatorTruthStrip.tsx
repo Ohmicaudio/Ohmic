@@ -1,5 +1,6 @@
 import { useEffect } from 'react'
 import { useDeskFocusStore } from '@/store/deskFocusStore'
+import { useIntakeStore } from '@/store/intakeStore'
 import { useQueueActivityStore } from '@/store/queueActivityStore'
 import { useWorkspaceActivityStore } from '@/store/workspaceActivityStore'
 
@@ -30,10 +31,23 @@ export function OperatorTruthStrip() {
   const focusGeneratedAt = useDeskFocusStore((state) => state.generatedAt)
   const focusSelection = useDeskFocusStore((state) => state.selection)
   const fetchDeskFocus = useDeskFocusStore((state) => state.fetch)
+  const selectedIntakeId = useIntakeStore((state) => state.selectedId)
+  const intakeStaleness = useIntakeStore((state) => state.staleness)
 
   const focusLabel = focusSelection?.focus_kind === 'intake'
     ? focusSelection.selected_intake_id || 'selected intake'
     : focusSelection?.title || '--'
+  const modeLabel = selectedIntakeId
+    ? 'intake-led'
+    : focusSelection?.focus_kind === 'ready_task' || focusSelection?.focus_kind === 'claim'
+      ? 'queue-led'
+      : readyCount > 0
+        ? 'queue-led'
+        : 'idle'
+  const intakeLabel =
+    intakeStaleness === 'stale'
+      ? 'historical'
+      : selectedIntakeId || 'none'
 
   useEffect(() => {
     if (!queueGeneratedAt) {
@@ -56,8 +70,10 @@ export function OperatorTruthStrip() {
 
   return (
     <div className="mt-5 flex flex-wrap gap-2">
+      <TruthPill label="Mode" value={modeLabel} />
       <TruthPill label="Ready" value={String(readyCount)} />
       <TruthPill label="Active claims" value={String(activeClaimCount)} />
+      <TruthPill label="Intake" value={intakeLabel} />
       <TruthPill label="Focus" value={focusLabel} />
       <TruthPill label="Branch" value={branch || '--'} />
       <TruthPill label="Dirty" value={String(dirtyFileCount)} />

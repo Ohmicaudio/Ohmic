@@ -51,6 +51,8 @@ export function DeskFocusPanel() {
     selection?.focus_kind === 'claim'
       ? activeClaims.find((claim) => claim.claim_id === selection.claim_id) ?? null
       : null
+  const implicitReadyTask =
+    !selection && !selectedIntakeId ? readyTasks[0] ?? null : null
 
   async function handleRefocusIntake() {
     setPendingAction('focus')
@@ -145,6 +147,24 @@ export function DeskFocusPanel() {
             </div>
           ) : null}
         </div>
+      ) : implicitReadyTask ? (
+        <div className="space-y-2 text-[12px] text-ohmic-text-dim">
+          <div className="rounded border border-ohmic-warning/30 bg-ohmic-warning/10 px-2.5 py-1 text-[10px] uppercase tracking-widest text-ohmic-warning">
+            Implicit queue priority
+          </div>
+          <div className="text-sm leading-6 text-ohmic-text">{implicitReadyTask.title}</div>
+          <div className="flex flex-wrap gap-x-4 gap-y-1">
+            <div>
+              Task <span className="text-ohmic-text">{implicitReadyTask.task_id}</span>
+            </div>
+            <div>
+              Priority <span className="text-ohmic-text">{implicitReadyTask.priority}</span>
+            </div>
+          </div>
+          <div>
+            Path <span className="text-ohmic-text">{formatFocusPath(implicitReadyTask.file_path)}</span>
+          </div>
+        </div>
       ) : (
         <div className="text-sm text-ohmic-text-dim">
           No explicit desk focus has been published yet.
@@ -171,6 +191,11 @@ export function DeskFocusPanel() {
           >
             {pendingAction === 'claim' ? 'Claiming...' : 'Claim focused task'}
           </button>
+        ) : null}
+        {implicitReadyTask ? (
+          <div className="rounded border border-ohmic-accent/20 px-2.5 py-1 text-[11px] text-ohmic-text-dim">
+            Live queue is currently driving the desk.
+          </div>
         ) : null}
         {focusedClaim ? (
           <button
