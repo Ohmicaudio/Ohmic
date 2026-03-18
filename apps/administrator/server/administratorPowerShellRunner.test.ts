@@ -7,7 +7,7 @@ const localRuntimeBase = 'B:\\ohmic-local\\runtime\\administrator-tests'
 
 async function importRunner() {
   vi.resetModules()
-  return import('./powerShellRunner')
+  return import('./powershellRunner')
 }
 
 describe('powerShellRunner', () => {

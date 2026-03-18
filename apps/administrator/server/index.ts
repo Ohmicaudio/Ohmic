@@ -16,7 +16,7 @@ import {
   reopenInactiveIntake,
   validateCommand,
   getComposerOptions,
-} from './powerShellRunner.js'
+} from './powershellRunner.js'
 
 const PORT = 5181
 
