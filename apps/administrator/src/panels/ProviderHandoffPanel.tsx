@@ -16,7 +16,10 @@ import {
 import {
   buildProviderFollowUpQueue,
   buildProviderHandoffSummary,
+  buildProviderTargetTrendCards,
   groupProviderHandoffsByTarget,
+  type ProviderFollowUpItem,
+  type ProviderFollowUpSortMode,
 } from '@/panels/providerHandoffSummary'
 import {
   selectRecentProviderEvents,
@@ -38,6 +41,14 @@ function formatTargetGroupLabel(teamLabel: string | null, targetKind: string | n
   return 'Unassigned'
 }
 
+function buildFollowUpSelectionKey(item: {
+  intakeId: string
+  occurredAt: string | null
+  attachmentId?: string | null
+}): string {
+  return `${item.intakeId}::${item.occurredAt ?? 'provider'}::${item.attachmentId ?? ''}`
+}
+
 function buildCompletionTemplate(
   item: {
     priority?: 'needs_attachment_review' | 'follow_up_pending'
@@ -51,10 +62,17 @@ function buildCompletionTemplate(
     : null
 
   if (item.priority === 'needs_attachment_review') {
-    return `Attachment review completed for ${item.targetLabel}.`
+    return preset?.default_note
+      ? `Attachment review completed for ${item.targetLabel}. ${preset.default_note}`
+      : `Attachment review completed for ${item.targetLabel}.`
   }
   if (preset?.team_label) {
-    return `${preset.team_label} follow-up completed for ${item.targetLabel}.`
+    return preset?.default_note
+      ? `${preset.team_label} follow-up completed for ${item.targetLabel}. ${preset.default_note}`
+      : `${preset.team_label} follow-up completed for ${item.targetLabel}.`
+  }
+  if (preset?.target_kind) {
+    return `Provider ${preset.target_kind} follow-up completed for ${item.targetLabel}.`
   }
   return `Provider follow-up completed for ${item.targetLabel}.`
 }
@@ -82,6 +100,8 @@ export function ProviderHandoffPanel() {
     'all' | 'needs_attachment_review' | 'follow_up_pending'
   >('all')
   const [followUpScope, setFollowUpScope] = useState<'all' | 'selected'>('all')
+  const [followUpSort, setFollowUpSort] = useState<ProviderFollowUpSortMode>('priority')
+  const [selectedFollowUpKeys, setSelectedFollowUpKeys] = useState<string[]>([])
   const intakeItems = useIntakeStore((state) => state.items)
   const selectedId = useIntakeStore((state) => state.selectedId)
   const selectIntake = useIntakeStore((state) => state.select)
@@ -111,12 +131,16 @@ export function ProviderHandoffPanel() {
   const recentProviderEvents = useMemo(() => selectRecentProviderEvents(auditItems, 8), [auditItems])
   const providerSummary = useMemo(() => buildProviderHandoffSummary(auditItems), [auditItems])
   const providerFollowUpQueue = useMemo(
-    () => buildProviderFollowUpQueue(auditItems, intakeItems),
-    [auditItems, intakeItems]
+    () => buildProviderFollowUpQueue(auditItems, intakeItems, 5, Date.now(), followUpSort),
+    [auditItems, intakeItems, followUpSort]
   )
   const providerTargetGroups = useMemo(
     () => groupProviderHandoffsByTarget(auditItems, tandemActiveTargetLabel, tandemSessionState),
     [auditItems, tandemActiveTargetLabel, tandemSessionState]
+  )
+  const providerTargetTrends = useMemo(
+    () => buildProviderTargetTrendCards(auditItems, 4),
+    [auditItems]
   )
   const visibleProviderFollowUpQueue = useMemo(
     () =>
@@ -169,6 +193,13 @@ export function ProviderHandoffPanel() {
     }
     return generalFollowUpQueue
   }, [attachmentReviewQueue, followUpFilter, generalFollowUpQueue])
+  const selectedFollowUpItems = useMemo(
+    () =>
+      renderedFollowUpQueue.filter((item) =>
+        selectedFollowUpKeys.includes(buildFollowUpSelectionKey(item))
+      ),
+    [renderedFollowUpQueue, selectedFollowUpKeys]
+  )
   const groupedTargetPresets = useMemo(() => {
     const groups = new Map<
       string,
@@ -202,6 +233,19 @@ export function ProviderHandoffPanel() {
 
   async function handleRefresh() {
     await fetchAuditSummary()
+  }
+
+  function toggleFollowUpSelection(item: ProviderFollowUpItem) {
+    const key = buildFollowUpSelectionKey(item)
+    setSelectedFollowUpKeys((current) =>
+      current.includes(key)
+        ? current.filter((candidate) => candidate !== key)
+        : [...current, key]
+    )
+  }
+
+  function clearFollowUpSelection() {
+    setSelectedFollowUpKeys([])
   }
 
   async function handleCompleteFollowUp(item: {
@@ -301,6 +345,53 @@ export function ProviderHandoffPanel() {
     setCommandActionInput(action)
     setCommandNoteText(buildAuditFollowUpNote(commandNoteText, item))
     selectIntake(item.intake_id)
+  }
+
+  function loadProviderItemIntoDesk(item: ProviderFollowUpItem) {
+    if (item.targetPresetId) {
+      setSelectedTandemPreset(item.targetPresetId)
+    }
+    setTandemHandoffNote(
+      item.handoffNote ?? buildCompletionTemplate(item, tandemTargetPresets)
+    )
+    selectIntake(item.intakeId)
+  }
+
+  async function handleBulkComplete() {
+    for (const item of selectedFollowUpItems) {
+      await handleCompleteFollowUp(item)
+    }
+    clearFollowUpSelection()
+  }
+
+  function handleBulkPrime() {
+    for (const item of selectedFollowUpItems) {
+      primeProviderFollowUp({
+        event_id: `${item.intakeId}-${item.occurredAt ?? 'provider-handoff'}`,
+        event_family: 'provider_handoff',
+        intake_id: item.intakeId,
+        summary_label: item.intakeTitle,
+        actor_label: 'provider_workspace',
+        occurred_at: item.occurredAt ?? '',
+        status_delta:
+          item.priority === 'needs_attachment_review'
+            ? 'attachment_review'
+            : 'follow_up_pending',
+        target_label: item.targetLabel,
+        target_preset_id: item.targetPresetId ?? undefined,
+        launch_url: item.launchUrl ?? undefined,
+        attachment_id: item.attachmentId ?? undefined,
+        handoff_note: item.handoffNote ?? undefined,
+      })
+    }
+  }
+
+  function handleBulkLoad() {
+    const first = selectedFollowUpItems[0]
+    if (!first) {
+      return
+    }
+    loadProviderItemIntoDesk(first)
   }
 
   return (
@@ -436,6 +527,58 @@ export function ProviderHandoffPanel() {
       <div className="panel space-y-3">
         <div className="flex items-center justify-between gap-3">
           <div className="text-xs uppercase tracking-wider text-ohmic-text-dim">
+            Target trends
+          </div>
+          <div className="text-[10px] text-ohmic-text-dim">
+            Queue pressure by provider target
+          </div>
+        </div>
+        {providerTargetTrends.length === 0 ? (
+          <div className="text-sm text-ohmic-text-dim">
+            Provider target trends will appear after handoff and follow-up activity.
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 xl:grid-cols-2 gap-2">
+            {providerTargetTrends.map((trend) => (
+              <div
+                key={`trend-${trend.targetLabel}`}
+                className="rounded border border-ohmic-border bg-ohmic-bg px-3 py-2 space-y-1.5"
+              >
+                <div className="flex items-start justify-between gap-3">
+                  <div className="text-xs text-ohmic-text">{trend.targetLabel}</div>
+                  <div
+                    className={`text-[10px] uppercase tracking-widest ${
+                      trend.trend === 'rising'
+                        ? 'text-amber-300'
+                        : trend.trend === 'clearing'
+                          ? 'text-emerald-300'
+                          : 'text-ohmic-accent'
+                    }`}
+                  >
+                    {trend.trendLabel}
+                  </div>
+                </div>
+                <div className="text-[11px] text-ohmic-text-dim">
+                  {trend.unresolvedCount} open
+                  {trend.completedCount > 0 ? ` | ${trend.completedCount} completed` : ''}
+                  {trend.attachmentReviewCount > 0
+                    ? ` | ${trend.attachmentReviewCount} attachments`
+                    : ''}
+                </div>
+                <div className="text-[10px] text-ohmic-text-dim">
+                  {trend.latestOccurredAt
+                    ? `Latest ${new Date(trend.latestOccurredAt).toLocaleString()}`
+                    : 'No recent activity'}
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+
+      <div className="panel space-y-3">
+        <div className="flex items-center justify-between gap-3">
+          <div className="text-xs uppercase tracking-wider text-ohmic-text-dim">
             Provider Follow-up Queue
           </div>
           <div className="flex flex-wrap items-center justify-end gap-2">
@@ -444,6 +587,28 @@ export function ProviderHandoffPanel() {
               ? 'No follow-up queued'
               : `${visibleProviderFollowUpQueue.length} visible item${visibleProviderFollowUpQueue.length === 1 ? '' : 's'}`}
             </div>
+            <button
+              onClick={() =>
+                setFollowUpSort((current) =>
+                  current === 'priority'
+                    ? 'age'
+                    : current === 'age'
+                      ? 'target'
+                      : current === 'target'
+                        ? 'recent'
+                        : 'priority'
+                )
+              }
+              className="rounded border border-ohmic-border px-2 py-0.5 text-[10px] uppercase tracking-widest text-ohmic-text-dim transition-colors hover:border-ohmic-accent/30 hover:text-ohmic-text"
+            >
+              {followUpSort === 'priority'
+                ? 'Sort: priority'
+                : followUpSort === 'age'
+                  ? 'Sort: age'
+                  : followUpSort === 'target'
+                    ? 'Sort: target'
+                    : 'Sort: recent'}
+            </button>
             <button
               onClick={() => setFollowUpScope(followUpScope === 'all' ? 'selected' : 'all')}
               className="rounded border border-ohmic-border px-2 py-0.5 text-[10px] uppercase tracking-widest text-ohmic-text-dim transition-colors hover:border-ohmic-accent/30 hover:text-ohmic-text"
@@ -470,6 +635,39 @@ export function ProviderHandoffPanel() {
             </button>
           </div>
         </div>
+        {selectedFollowUpItems.length > 0 ? (
+          <div className="rounded border border-ohmic-border bg-ohmic-bg px-3 py-2 flex flex-wrap items-center justify-between gap-3">
+            <div className="text-[11px] text-ohmic-text-dim">
+              {selectedFollowUpItems.length} selected for bulk provider action
+            </div>
+            <div className="flex flex-wrap gap-2">
+              <button
+                onClick={handleBulkLoad}
+                className="rounded border border-ohmic-border px-2.5 py-1 text-[11px] font-medium text-ohmic-text transition-colors hover:border-ohmic-accent/30"
+              >
+                Load first into desk
+              </button>
+              <button
+                onClick={handleBulkPrime}
+                className="rounded border border-ohmic-border px-2.5 py-1 text-[11px] font-medium text-ohmic-text transition-colors hover:border-ohmic-accent/30"
+              >
+                Prime selected
+              </button>
+              <button
+                onClick={() => void handleBulkComplete()}
+                className="rounded border border-emerald-400/30 px-2.5 py-1 text-[11px] font-medium text-emerald-300 transition-colors hover:border-emerald-300 hover:bg-emerald-300/10"
+              >
+                Complete selected
+              </button>
+              <button
+                onClick={clearFollowUpSelection}
+                className="rounded border border-ohmic-border px-2.5 py-1 text-[11px] font-medium text-ohmic-text-dim transition-colors hover:border-ohmic-accent/30 hover:text-ohmic-text"
+              >
+                Clear selection
+              </button>
+            </div>
+          </div>
+        ) : null}
         {attachmentReviewQueue.length > 0 ? (
           <div className="rounded border border-amber-300/25 bg-amber-300/5 px-3 py-3 space-y-2">
             <div className="text-[10px] uppercase tracking-widest text-amber-300">
@@ -482,7 +680,7 @@ export function ProviderHandoffPanel() {
                   className="rounded border border-amber-300/20 bg-ohmic-bg px-3 py-2 space-y-1.5"
                 >
                   <div className="flex items-start justify-between gap-3">
-                    <div className="space-y-1 min-w-0">
+                    <div className="space-y-1 min-w-0 flex-1">
                       <div className="text-xs text-ohmic-text">{item.intakeTitle}</div>
                       <div className="text-[11px] text-ohmic-text-dim">
                         {item.targetLabel}
@@ -493,6 +691,14 @@ export function ProviderHandoffPanel() {
                       {item.ageLabel}
                     </div>
                   </div>
+                  <label className="flex items-center gap-2 text-[11px] text-ohmic-text-dim">
+                    <input
+                      type="checkbox"
+                      checked={selectedFollowUpKeys.includes(buildFollowUpSelectionKey(item))}
+                      onChange={() => toggleFollowUpSelection(item)}
+                    />
+                    Select for bulk action
+                  </label>
                   {item.handoffNote ? (
                     <div className="text-[11px] text-ohmic-text-dim whitespace-pre-wrap">
                       {item.handoffNote}
@@ -501,14 +707,7 @@ export function ProviderHandoffPanel() {
                   <div className="flex flex-wrap gap-2 pt-1">
                     <button
                       onClick={() => {
-                        if (item.targetPresetId) {
-                          setSelectedTandemPreset(item.targetPresetId)
-                        }
-                        setTandemHandoffNote(
-                          item.handoffNote ??
-                            buildCompletionTemplate(item, tandemTargetPresets)
-                        )
-                        selectIntake(item.intakeId)
+                        loadProviderItemIntoDesk(item)
                       }}
                       className="rounded border border-ohmic-border px-2.5 py-1 text-[11px] font-medium text-ohmic-text transition-colors hover:border-ohmic-accent/30"
                     >
@@ -546,7 +745,7 @@ export function ProviderHandoffPanel() {
                 className="rounded border border-ohmic-border bg-ohmic-bg px-3 py-2 space-y-1.5"
               >
                 <div className="flex items-start justify-between gap-3">
-                  <div className="space-y-1 min-w-0">
+                  <div className="space-y-1 min-w-0 flex-1">
                     <div className="text-xs text-ohmic-text">{item.intakeTitle}</div>
                     <div className="text-[11px] text-ohmic-text-dim">
                       {item.intakeId}
@@ -575,6 +774,14 @@ export function ProviderHandoffPanel() {
                       {item.occurredAt ? new Date(item.occurredAt).toLocaleString() : '--'}
                     </div>
                   </div>
+                  <label className="flex items-center gap-2 text-[11px] text-ohmic-text-dim">
+                    <input
+                      type="checkbox"
+                      checked={selectedFollowUpKeys.includes(buildFollowUpSelectionKey(item))}
+                      onChange={() => toggleFollowUpSelection(item)}
+                    />
+                    Select
+                  </label>
                 </div>
                 {item.handoffNote ? (
                   <div className="text-[11px] text-ohmic-text-dim whitespace-pre-wrap">
@@ -584,14 +791,7 @@ export function ProviderHandoffPanel() {
                 <div className="flex flex-wrap gap-2 pt-1">
                   <button
                     onClick={() => {
-                      if (item.targetPresetId) {
-                        setSelectedTandemPreset(item.targetPresetId)
-                      }
-                      setTandemHandoffNote(
-                        item.handoffNote ??
-                          buildCompletionTemplate(item, tandemTargetPresets)
-                      )
-                      selectIntake(item.intakeId)
+                      loadProviderItemIntoDesk(item)
                     }}
                     className="rounded border border-ohmic-border px-2.5 py-1 text-[11px] font-medium text-ohmic-text transition-colors hover:border-ohmic-accent/30"
                   >

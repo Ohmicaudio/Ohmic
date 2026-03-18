@@ -3,6 +3,7 @@ import {
   buildProviderFollowUpLookup,
   buildProviderFollowUpQueue,
   buildProviderHandoffSummary,
+  buildProviderTargetTrendCards,
   groupProviderHandoffsByTarget,
 } from '@/panels/providerHandoffSummary'
 
@@ -197,6 +198,50 @@ describe('providerHandoffSummary', () => {
     ])
   })
 
+  it('supports alternate sort modes for the follow-up queue', () => {
+    const queue = buildProviderFollowUpQueue(
+      rows,
+      [
+        {
+          intake_id: 'intake-1',
+          title: 'Provider handoff one',
+          intake_kind: 'manual',
+          received_at: '2026-03-17T09:30:00Z',
+          status: 'triaging',
+          routing_target: '',
+          trust_tier: '2',
+          priority_hint: 'high',
+          tags: [],
+          warning_state: 'clean',
+          warning_count: 0,
+          summary_label: 'Provider handoff one',
+        },
+        {
+          intake_id: 'intake-2',
+          title: 'Attachment needs review',
+          intake_kind: 'manual',
+          received_at: '2026-03-17T10:30:00Z',
+          status: 'triaging',
+          routing_target: '',
+          trust_tier: '2',
+          priority_hint: 'high',
+          tags: [],
+          warning_state: 'clean',
+          warning_count: 0,
+          summary_label: 'Attachment needs review',
+        },
+      ],
+      5,
+      nowMs,
+      'target'
+    )
+
+    expect(queue.map((item) => item.targetLabel)).toEqual([
+      'GitHub issues queue',
+      'Gmail support inbox',
+    ])
+  })
+
   it('builds a provider follow-up lookup for active intake workload badges', () => {
     const lookup = buildProviderFollowUpLookup(
       rows,
@@ -307,5 +352,28 @@ describe('providerHandoffSummary', () => {
         nowMs
       )
     ).toHaveLength(1)
+  })
+
+  it('builds target trend cards from provider activity', () => {
+    expect(buildProviderTargetTrendCards(rows, 2)).toEqual([
+      {
+        targetLabel: 'Gmail support inbox',
+        unresolvedCount: 2,
+        completedCount: 1,
+        attachmentReviewCount: 0,
+        latestOccurredAt: '2026-03-18T09:00:00Z',
+        trend: 'rising',
+        trendLabel: 'Rising load',
+      },
+      {
+        targetLabel: 'GitHub issues queue',
+        unresolvedCount: 1,
+        completedCount: 0,
+        attachmentReviewCount: 1,
+        latestOccurredAt: '2026-03-17T11:00:00Z',
+        trend: 'rising',
+        trendLabel: 'Rising load',
+      },
+    ])
   })
 })

@@ -10,6 +10,7 @@ export interface ProviderHandoffSummary {
 }
 
 export type ProviderFollowUpAgeBand = 'fresh' | 'aging' | 'stale'
+export type ProviderFollowUpSortMode = 'priority' | 'age' | 'target' | 'recent'
 
 export interface ProviderHandoffTargetGroup {
   targetLabel: string
@@ -37,6 +38,16 @@ export interface ProviderFollowUpItem {
   priorityLabel: string
   ageBand: ProviderFollowUpAgeBand
   ageLabel: string
+}
+
+export interface ProviderTargetTrendCard {
+  targetLabel: string
+  unresolvedCount: number
+  completedCount: number
+  attachmentReviewCount: number
+  latestOccurredAt: string | null
+  trend: 'rising' | 'steady' | 'clearing'
+  trendLabel: string
 }
 
 const targetStatusPriority: Record<ProviderHandoffTargetGroup['status'], number> = {
@@ -111,6 +122,38 @@ function selectLatestProviderStateByIntake(
   }
 
   return Array.from(latestByIntake.values())
+}
+
+function compareFollowUpItems(
+  left: ProviderFollowUpItem,
+  right: ProviderFollowUpItem,
+  sortMode: ProviderFollowUpSortMode
+): number {
+  if (sortMode === 'target') {
+    const labelOrder = left.targetLabel.localeCompare(right.targetLabel)
+    if (labelOrder !== 0) {
+      return labelOrder
+    }
+  }
+
+  if (sortMode === 'age') {
+    if (left.ageBand !== right.ageBand) {
+      return ageBandPriority[left.ageBand] - ageBandPriority[right.ageBand]
+    }
+    return toUtcTime(right.occurredAt) - toUtcTime(left.occurredAt)
+  }
+
+  if (sortMode === 'recent') {
+    return toUtcTime(right.occurredAt) - toUtcTime(left.occurredAt)
+  }
+
+  if (left.priority !== right.priority) {
+    return followUpPriorityOrder[left.priority] - followUpPriorityOrder[right.priority]
+  }
+  if (left.ageBand !== right.ageBand) {
+    return ageBandPriority[left.ageBand] - ageBandPriority[right.ageBand]
+  }
+  return toUtcTime(right.occurredAt) - toUtcTime(left.occurredAt)
 }
 
 export function buildProviderHandoffSummary(
@@ -248,7 +291,8 @@ export function buildProviderFollowUpQueue(
   rows: AdministratorAuditSummaryItem[],
   intakeItems: IntakeQueueItem[],
   maxItems = 5,
-  nowMs = Date.now()
+  nowMs = Date.now(),
+  sortMode: ProviderFollowUpSortMode = 'priority'
 ): ProviderFollowUpItem[] {
   const latestProviderRows = selectLatestProviderStateByIntake(rows)
   const intakeTitles = new Map(intakeItems.map((item) => [item.intake_id, item.title]))
@@ -280,13 +324,7 @@ export function buildProviderFollowUpQueue(
       }
     })
     .sort((left, right) => {
-      if (left.priority !== right.priority) {
-        return followUpPriorityOrder[left.priority] - followUpPriorityOrder[right.priority]
-      }
-      if (left.ageBand !== right.ageBand) {
-        return ageBandPriority[left.ageBand] - ageBandPriority[right.ageBand]
-      }
-      return toUtcTime(right.occurredAt) - toUtcTime(left.occurredAt)
+      return compareFollowUpItems(left, right, sortMode)
     })
     .slice(0, maxItems)
 }
@@ -302,4 +340,83 @@ export function buildProviderFollowUpLookup(
       item,
     ])
   )
+}
+
+export function buildProviderTargetTrendCards(
+  rows: AdministratorAuditSummaryItem[],
+  maxItems = 3
+): ProviderTargetTrendCard[] {
+  const grouped = new Map<
+    string,
+    {
+      unresolvedCount: number
+      completedCount: number
+      attachmentReviewCount: number
+      latestOccurredAt: string | null
+    }
+  >()
+
+  for (const row of rows) {
+    if (row.event_family !== 'provider_handoff' && row.event_family !== 'provider_follow_up') {
+      continue
+    }
+
+    const targetLabel = row.target_label?.trim() || 'Unlabeled target'
+    const existing = grouped.get(targetLabel) ?? {
+      unresolvedCount: 0,
+      completedCount: 0,
+      attachmentReviewCount: 0,
+      latestOccurredAt: null,
+    }
+
+    if (row.event_family === 'provider_handoff') {
+      existing.unresolvedCount += 1
+      if (row.status_delta === 'attachment_review') {
+        existing.attachmentReviewCount += 1
+      }
+    } else if (row.status_delta === 'completed') {
+      existing.completedCount += 1
+    }
+
+    if (toUtcTime(row.occurred_at) > toUtcTime(existing.latestOccurredAt)) {
+      existing.latestOccurredAt = row.occurred_at || null
+    }
+
+    grouped.set(targetLabel, existing)
+  }
+
+  return Array.from(grouped.entries())
+    .map(([targetLabel, value]) => {
+      const trend: ProviderTargetTrendCard['trend'] =
+        value.unresolvedCount > value.completedCount
+          ? 'rising'
+          : value.completedCount > 0
+            ? 'clearing'
+            : 'steady'
+
+      return {
+        targetLabel,
+        unresolvedCount: value.unresolvedCount,
+        completedCount: value.completedCount,
+        attachmentReviewCount: value.attachmentReviewCount,
+        latestOccurredAt: value.latestOccurredAt,
+        trend,
+        trendLabel:
+          trend === 'rising'
+            ? 'Rising load'
+            : trend === 'clearing'
+              ? 'Clearing'
+              : 'Steady',
+      }
+    })
+    .sort((left, right) => {
+      if (left.unresolvedCount !== right.unresolvedCount) {
+        return right.unresolvedCount - left.unresolvedCount
+      }
+      if (left.completedCount !== right.completedCount) {
+        return right.completedCount - left.completedCount
+      }
+      return toUtcTime(right.latestOccurredAt) - toUtcTime(left.latestOccurredAt)
+    })
+    .slice(0, maxItems)
 }
