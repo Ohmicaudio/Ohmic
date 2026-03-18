@@ -36,8 +36,20 @@
   .lane-shell {
     @apply rounded-[1.4rem] border border-ohmic-border/70 bg-ohmic-surface/45 p-5 md:p-6 shadow-[0_24px_60px_rgba(2,4,10,0.32)];
   }
+  .lane-shell--queue {
+    @apply border-l-4 border-l-sky-400/60;
+  }
+  .lane-shell--intake {
+    @apply border-l-4 border-l-violet-400/60;
+  }
+  .lane-shell--action {
+    @apply border-l-4 border-l-emerald-400/60 bg-ohmic-surface/55;
+  }
   .lane-kicker {
     @apply text-[10px] font-semibold uppercase tracking-[0.26em] text-ohmic-text-dim;
+  }
+  .lane-title {
+    @apply mt-2 text-lg font-semibold tracking-[0.08em] text-ohmic-text;
   }
   .lane-caption {
     @apply mt-2 text-[13px] text-ohmic-text-dim leading-6;

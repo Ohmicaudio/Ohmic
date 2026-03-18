@@ -159,9 +159,10 @@ export function App() {
           </div>
 
           <div className="grid grid-cols-1 gap-6 xl:grid-cols-[minmax(24rem,1.05fr)_minmax(34rem,1.3fr)_minmax(24rem,0.95fr)]">
-            <div className="lane-shell space-y-5">
+            <div className="lane-shell lane-shell--queue space-y-5">
               <div>
-                <h3 className="lane-kicker">Queue and Runtime</h3>
+                <h3 className="lane-kicker">Desk Feed</h3>
+                <div className="lane-title">Queue and Runtime</div>
                 <div className="lane-caption">
                   Current ready work, live claims, and branch truth for the desk.
                 </div>
@@ -175,9 +176,10 @@ export function App() {
               </div>
             </div>
 
-            <div className="lane-shell space-y-5">
+            <div className="lane-shell lane-shell--intake space-y-5">
               <div>
-                <h3 className="lane-kicker">Selected Intake</h3>
+                <h3 className="lane-kicker">Working Context</h3>
+                <div className="lane-title">Selected Intake</div>
                 <div className="lane-caption">
                   Inspect the active item and work the provider loop without leaving context.
                 </div>
@@ -188,9 +190,10 @@ export function App() {
               </div>
             </div>
 
-            <div className="lane-shell space-y-5 self-start xl:sticky xl:top-24">
+            <div className="lane-shell lane-shell--action space-y-5 self-start xl:sticky xl:top-24">
               <div>
-                <h3 className="lane-kicker">Action Rail</h3>
+                <h3 className="lane-kicker">Live Controls</h3>
+                <div className="lane-title">Action Rail</div>
                 <div className="lane-caption">
                   External handoff and command execution staged together as the live control rail.
                 </div>
@@ -218,7 +221,8 @@ export function App() {
           <div className="grid grid-cols-1 gap-6 2xl:grid-cols-[minmax(30rem,0.95fr)_minmax(34rem,1.05fr)]">
             <div className="lane-shell space-y-5">
               <div>
-                <h3 className="lane-kicker">Filing and Status</h3>
+                <h3 className="lane-kicker">Desk History</h3>
+                <div className="lane-title">Filing and Status</div>
                 <div className="lane-caption">
                   Archive, filing, and state transitions grouped below the main operator loop.
                 </div>
@@ -231,7 +235,8 @@ export function App() {
             </div>
             <div className="lane-shell space-y-5">
               <div>
-                <h3 className="lane-kicker">Review and Audit</h3>
+                <h3 className="lane-kicker">Secondary Review</h3>
+                <div className="lane-title">Review and Audit</div>
                 <div className="lane-caption">
                   Lower-priority review surfaces and the audit trail live together here.
                 </div>
