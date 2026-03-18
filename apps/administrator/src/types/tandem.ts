@@ -25,3 +25,10 @@ export interface AdministratorTandemLaunchIntentRequest {
   attachment_id?: string | null
   handoff_note?: string | null
 }
+
+export interface AdministratorTandemFollowUpCompletionRequest {
+  intake_id: string
+  target_preset_id?: string | null
+  target_label?: string | null
+  completion_note?: string | null
+}

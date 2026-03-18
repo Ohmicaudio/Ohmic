@@ -1,5 +1,8 @@
 import { useMemo, useState } from 'react'
-import { recordTandemLaunchIntent } from '@/api/tandem'
+import {
+  recordProviderFollowUpCompletion,
+  recordTandemLaunchIntent,
+} from '@/api/tandem'
 import { useAuditSummaryStore } from '@/store/auditSummaryStore'
 import { useCommandStore } from '@/store/commandStore'
 import { useIntakeStore } from '@/store/intakeStore'
@@ -22,6 +25,10 @@ import {
 
 export function ProviderHandoffPanel() {
   const [focusedTargetLabel, setFocusedTargetLabel] = useState<string | null>(null)
+  const [followUpFilter, setFollowUpFilter] = useState<
+    'all' | 'needs_attachment_review' | 'follow_up_pending'
+  >('all')
+  const [followUpScope, setFollowUpScope] = useState<'all' | 'selected'>('all')
   const intakeItems = useIntakeStore((state) => state.items)
   const selectedId = useIntakeStore((state) => state.selectedId)
   const selectIntake = useIntakeStore((state) => state.select)
@@ -54,6 +61,22 @@ export function ProviderHandoffPanel() {
     () => groupProviderHandoffsByTarget(auditItems, tandemActiveTargetLabel, tandemSessionState),
     [auditItems, tandemActiveTargetLabel, tandemSessionState]
   )
+  const visibleProviderFollowUpQueue = useMemo(
+    () =>
+      providerFollowUpQueue.filter((item) => {
+        if (focusedTargetLabel && item.targetLabel !== focusedTargetLabel) {
+          return false
+        }
+        if (followUpScope === 'selected' && item.intakeId !== selectedId) {
+          return false
+        }
+        if (followUpFilter !== 'all' && item.priority !== followUpFilter) {
+          return false
+        }
+        return true
+      }),
+    [focusedTargetLabel, followUpFilter, followUpScope, providerFollowUpQueue, selectedId]
+  )
   const visibleRecentHandoffs = useMemo(
     () =>
       focusedTargetLabel
@@ -69,6 +92,25 @@ export function ProviderHandoffPanel() {
 
   async function handleRefresh() {
     await fetchAuditSummary()
+  }
+
+  async function handleCompleteFollowUp(item: {
+    intakeId: string
+    targetPresetId: string | null
+    targetLabel: string
+    handoffNote: string | null
+  }) {
+    try {
+      await recordProviderFollowUpCompletion({
+        intake_id: item.intakeId,
+        target_preset_id: item.targetPresetId,
+        target_label: item.targetLabel,
+        completion_note: item.handoffNote ?? null,
+      })
+      await fetchAuditSummary()
+    } catch {
+      // Keep completion non-blocking for the desk.
+    }
   }
 
   function loadHandoffContext(intakeId: string | null, eventIndex: number) {
@@ -149,7 +191,7 @@ export function ProviderHandoffPanel() {
         </button>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-3">
         <div className="panel">
           <div className="text-[10px] uppercase tracking-wider text-ohmic-text-dim">
             Total handoffs
@@ -174,6 +216,17 @@ export function ProviderHandoffPanel() {
             {providerSummary.uniqueTargetCount}
           </div>
         </div>
+        <div className="panel">
+          <div className="text-[10px] uppercase tracking-wider text-ohmic-text-dim">
+            Unresolved follow-up
+          </div>
+          <div className="mt-2 text-2xl font-semibold text-ohmic-text">
+            {providerSummary.unresolvedCount}
+          </div>
+          <div className="mt-1 text-[11px] text-ohmic-text-dim">
+            {providerSummary.staleFollowUpCount} stale
+          </div>
+        </div>
       </div>
 
       <div className="panel space-y-3">
@@ -181,19 +234,45 @@ export function ProviderHandoffPanel() {
           <div className="text-xs uppercase tracking-wider text-ohmic-text-dim">
             Provider Follow-up Queue
           </div>
-          <div className="text-[10px] text-ohmic-text-dim">
-            {providerFollowUpQueue.length === 0
+          <div className="flex flex-wrap items-center justify-end gap-2">
+            <div className="text-[10px] text-ohmic-text-dim">
+              {visibleProviderFollowUpQueue.length === 0
               ? 'No follow-up queued'
-              : `${providerFollowUpQueue.length} active item${providerFollowUpQueue.length === 1 ? '' : 's'}`}
+              : `${visibleProviderFollowUpQueue.length} visible item${visibleProviderFollowUpQueue.length === 1 ? '' : 's'}`}
+            </div>
+            <button
+              onClick={() => setFollowUpScope(followUpScope === 'all' ? 'selected' : 'all')}
+              className="rounded border border-ohmic-border px-2 py-0.5 text-[10px] uppercase tracking-widest text-ohmic-text-dim transition-colors hover:border-ohmic-accent/30 hover:text-ohmic-text"
+            >
+              {followUpScope === 'selected' ? 'Selected intake only' : 'All intake'}
+            </button>
+            <button
+              onClick={() =>
+                setFollowUpFilter((current) =>
+                  current === 'all'
+                    ? 'needs_attachment_review'
+                    : current === 'needs_attachment_review'
+                      ? 'follow_up_pending'
+                      : 'all'
+                )
+              }
+              className="rounded border border-ohmic-border px-2 py-0.5 text-[10px] uppercase tracking-widest text-ohmic-text-dim transition-colors hover:border-ohmic-accent/30 hover:text-ohmic-text"
+            >
+              {followUpFilter === 'all'
+                ? 'All priorities'
+                : followUpFilter === 'needs_attachment_review'
+                  ? 'Attachment review'
+                  : 'Follow-up pending'}
+            </button>
           </div>
         </div>
-        {providerFollowUpQueue.length === 0 ? (
+        {visibleProviderFollowUpQueue.length === 0 ? (
           <div className="text-sm text-ohmic-text-dim">
             Recent provider handoffs that still need operator review will appear here.
           </div>
         ) : (
           <div className="space-y-2">
-            {providerFollowUpQueue.map((item) => (
+            {visibleProviderFollowUpQueue.map((item) => (
               <div
                 key={`${item.intakeId}-${item.occurredAt ?? 'provider'}`}
                 className="rounded border border-ohmic-border bg-ohmic-bg px-3 py-2 space-y-1.5"
@@ -209,13 +288,20 @@ export function ProviderHandoffPanel() {
                   </div>
                   <div className="space-y-1 text-right">
                     <div
-                      className={`text-[10px] uppercase tracking-widest ${
-                        item.priority === 'needs_attachment_review'
-                          ? 'text-amber-300'
-                          : 'text-ohmic-accent'
-                      }`}
+                      className={`text-[10px] uppercase tracking-widest ${item.priority === 'needs_attachment_review' ? 'text-amber-300' : 'text-ohmic-accent'}`}
                     >
                       {item.priorityLabel}
+                    </div>
+                    <div
+                      className={`text-[10px] uppercase tracking-widest ${
+                        item.ageBand === 'stale'
+                          ? 'text-rose-300'
+                          : item.ageBand === 'aging'
+                            ? 'text-yellow-300'
+                            : 'text-emerald-300'
+                      }`}
+                    >
+                      {item.ageLabel}
                     </div>
                     <div className="text-[10px] text-ohmic-text-dim whitespace-nowrap">
                       {item.occurredAt ? new Date(item.occurredAt).toLocaleString() : '--'}
@@ -263,6 +349,12 @@ export function ProviderHandoffPanel() {
                     className="rounded border border-ohmic-border px-2.5 py-1 text-[11px] font-medium text-ohmic-text transition-colors hover:border-ohmic-accent/30"
                   >
                     Prime follow-up
+                  </button>
+                  <button
+                    onClick={() => void handleCompleteFollowUp(item)}
+                    className="rounded border border-emerald-400/30 px-2.5 py-1 text-[11px] font-medium text-emerald-300 transition-colors hover:border-emerald-300 hover:bg-emerald-300/10"
+                  >
+                    Mark complete
                   </button>
                   {item.launchUrl ? (
                     <a
@@ -321,6 +413,9 @@ export function ProviderHandoffPanel() {
                   <div className="text-xs text-ohmic-text">{group.targetLabel}</div>
                   <div className="text-[11px] text-ohmic-text-dim">
                     {group.count} handoff{group.count === 1 ? '' : 's'}
+                    {group.unresolvedCount > 0
+                      ? ` | ${group.unresolvedCount} open`
+                      : ''}
                   </div>
                 </div>
                 <div className="space-y-2 text-right">
@@ -335,6 +430,19 @@ export function ProviderHandoffPanel() {
                   >
                     {group.statusLabel}
                   </div>
+                  {group.unresolvedCount > 0 ? (
+                    <div
+                      className={`text-[10px] uppercase tracking-widest ${
+                        group.ageBand === 'stale'
+                          ? 'text-rose-300'
+                          : group.ageBand === 'aging'
+                            ? 'text-yellow-300'
+                            : 'text-emerald-300'
+                      }`}
+                    >
+                      {group.ageLabel}
+                    </div>
+                  ) : null}
                   <div className="text-[10px] text-ohmic-text-dim whitespace-nowrap">
                     {group.latestOccurredAt
                       ? new Date(group.latestOccurredAt).toLocaleString()
@@ -482,6 +590,20 @@ export function ProviderHandoffPanel() {
               >
                 Prime follow-up
               </button>
+              <button
+                onClick={() =>
+                  void handleCompleteFollowUp({
+                    intakeId: selectedIntake.intake_id,
+                    targetPresetId: selectedHandoff.target_preset_id ?? null,
+                    targetLabel:
+                      selectedHandoff.target_label || selectedHandoff.summary_label,
+                    handoffNote: selectedHandoff.handoff_note ?? null,
+                  })
+                }
+                className="rounded border border-emerald-400/30 px-2.5 py-1 text-[11px] font-medium text-emerald-300 transition-colors hover:border-emerald-300 hover:bg-emerald-300/10"
+              >
+                Mark complete
+              </button>
               {selectedHandoff.launch_url ? (
                 <a
                   href={selectedHandoff.launch_url}
@@ -560,6 +682,19 @@ export function ProviderHandoffPanel() {
                     className="rounded border border-ohmic-border px-2.5 py-1 text-[11px] font-medium text-ohmic-text transition-colors hover:border-ohmic-accent/30"
                   >
                     Prime follow-up
+                  </button>
+                  <button
+                    onClick={() =>
+                      void handleCompleteFollowUp({
+                        intakeId: item.intake_id,
+                        targetPresetId: item.target_preset_id ?? null,
+                        targetLabel: item.target_label || item.summary_label,
+                        handoffNote: item.handoff_note ?? null,
+                      })
+                    }
+                    className="rounded border border-emerald-400/30 px-2.5 py-1 text-[11px] font-medium text-emerald-300 transition-colors hover:border-emerald-300 hover:bg-emerald-300/10"
+                  >
+                    Mark complete
                   </button>
                   {item.launch_url ? (
                     <a

@@ -342,6 +342,48 @@ describe('administrator server', () => {
     )
   })
 
+  it('records provider follow-up completion into the audit summary', async () => {
+    const { createAdministratorServer } = await importServer()
+    const app = createAdministratorServer(0)
+    const baseUrl = await app.start()
+    stopServer = app.stop
+
+    const completeRes = await fetch(`${baseUrl}/api/tandem/follow-up-complete`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        intake_id: 'intake-provider-1',
+        target_preset_id: 'gmail-support',
+        target_label: 'Gmail support inbox',
+        completion_note: 'Provider confirmed the screenshot and closed the loop.',
+      }),
+    })
+
+    expect(completeRes.ok).toBe(true)
+
+    const auditSummaryRaw = await readFile(
+      path.join(tempRuntimeDir!, 'administrator_audit_summary.json'),
+      'utf-8'
+    )
+    const auditSummary = JSON.parse(auditSummaryRaw) as {
+      rows: Array<{
+        event_family: string
+        intake_id: string
+        target_label: string
+        status_delta: string
+        handoff_note?: string
+      }>
+    }
+
+    expect(auditSummary.rows[0]).toMatchObject({
+      event_family: 'provider_follow_up',
+      intake_id: 'intake-provider-1',
+      target_label: 'Gmail support inbox',
+      status_delta: 'completed',
+      handoff_note: 'Provider confirmed the screenshot and closed the loop.',
+    })
+  })
+
   it('validates and executes command routes against the live runtime root', async () => {
     await writeActiveQueueFixture('intake-3', 'Validate and execute target')
 

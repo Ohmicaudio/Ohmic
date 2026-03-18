@@ -1,4 +1,5 @@
 import type {
+  AdministratorTandemFollowUpCompletionRequest,
   AdministratorTandemLaunchIntentRequest,
   AdministratorTandemStatus,
 } from '@/types/tandem'
@@ -24,5 +25,19 @@ export async function recordTandemLaunchIntent(
 
   if (!res.ok) {
     throw new Error(`Tandem launch intent writeback failed: ${res.status}`)
+  }
+}
+
+export async function recordProviderFollowUpCompletion(
+  input: AdministratorTandemFollowUpCompletionRequest
+): Promise<void> {
+  const res = await fetch(`${API_BASE}/tandem/follow-up-complete`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(input),
+  })
+
+  if (!res.ok) {
+    throw new Error(`Provider follow-up completion writeback failed: ${res.status}`)
   }
 }

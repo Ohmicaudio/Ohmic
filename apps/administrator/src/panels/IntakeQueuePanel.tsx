@@ -1,17 +1,25 @@
-import { useEffect } from 'react'
+import { useEffect, useMemo } from 'react'
 import { useIntakeStore } from '@/store/intakeStore'
+import { useAuditSummaryStore } from '@/store/auditSummaryStore'
 import { StatusBadge } from '@/components/StatusBadge'
 import { PriorityIndicator } from '@/components/PriorityIndicator'
 import { TagChip } from '@/components/TagChip'
 import { FreshnessIndicator } from '@/components/FreshnessIndicator'
 import type { IntakeQueueItem } from '@/types/intake'
+import { buildProviderFollowUpLookup } from '@/panels/providerHandoffSummary'
 
 function IntakeRow({
   item,
+  providerWorkload,
   selected,
   onSelect,
 }: {
   item: IntakeQueueItem
+  providerWorkload?: {
+    priorityLabel: string
+    ageLabel: string
+    targetLabel: string
+  } | null
   selected: boolean
   onSelect: () => void
 }) {
@@ -67,6 +75,17 @@ function IntakeRow({
           Warning: {item.warning_count} warning{item.warning_count !== 1 ? 's' : ''}
         </div>
       )}
+
+      {providerWorkload ? (
+        <div className="flex items-center gap-2 mt-2 text-[11px] text-ohmic-text-dim">
+          <span className="rounded border border-ohmic-accent/30 px-1.5 py-0.5 text-ohmic-accent">
+            Provider
+          </span>
+          <span>{providerWorkload.priorityLabel}</span>
+          <span className="opacity-70">{providerWorkload.ageLabel}</span>
+          <span className="truncate opacity-70">{providerWorkload.targetLabel}</span>
+        </div>
+      ) : null}
     </button>
   )
 }
@@ -83,6 +102,11 @@ export function IntakeQueuePanel() {
     fetch,
     select,
   } = useIntakeStore()
+  const auditItems = useAuditSummaryStore((state) => state.items)
+  const providerLookup = useMemo(
+    () => buildProviderFollowUpLookup(auditItems, items),
+    [auditItems, items]
+  )
 
   useEffect(() => {
     fetch()
@@ -127,6 +151,7 @@ export function IntakeQueuePanel() {
             <IntakeRow
               key={item.intake_id}
               item={item}
+              providerWorkload={providerLookup.get(item.intake_id) ?? null}
               selected={selectedId === item.intake_id}
               onSelect={() =>
                 select(selectedId === item.intake_id ? null : item.intake_id)
