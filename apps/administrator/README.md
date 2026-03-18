@@ -118,3 +118,9 @@ Not yet complete for:
 - live Tandem session integration beyond the first status seam
 - ContextKeep or memory integration
 - provider connectors
+
+## Adjacent ops tools under consideration
+
+- `Postiz` is worth evaluating as a separate outbound social / PR management handoff tool.
+- Treat it as a companion system for campaign scheduling, social publishing, and run-up promotion work, not as a replacement for the administrator desk.
+- The administrator app should keep owning intake, routing, approvals, audit trail, and internal operations even if Postiz is adopted for outbound publishing.
