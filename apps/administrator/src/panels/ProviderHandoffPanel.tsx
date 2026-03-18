@@ -3,6 +3,10 @@ import { useAuditSummaryStore } from '@/store/auditSummaryStore'
 import { useIntakeStore } from '@/store/intakeStore'
 import { useTandemStore } from '@/store/tandemStore'
 import {
+  buildProviderHandoffSummary,
+  groupProviderHandoffsByTarget,
+} from '@/panels/providerHandoffSummary'
+import {
   resolveRecentTandemLaunchSelection,
   selectLatestTandemLaunchForIntake,
   selectRecentTandemLaunches,
@@ -23,6 +27,11 @@ export function ProviderHandoffPanel() {
   const selectedIntake = intakeItems.find((item) => item.intake_id === selectedId) ?? null
   const selectedHandoff = selectLatestTandemLaunchForIntake(auditItems, selectedId)
   const recentHandoffs = useMemo(() => selectRecentTandemLaunches(auditItems, 5), [auditItems])
+  const providerSummary = useMemo(() => buildProviderHandoffSummary(auditItems), [auditItems])
+  const providerTargetGroups = useMemo(
+    () => groupProviderHandoffsByTarget(auditItems),
+    [auditItems]
+  )
 
   async function handleRefresh() {
     await fetchAuditSummary()
@@ -70,6 +79,72 @@ export function ProviderHandoffPanel() {
         >
           refresh
         </button>
+      </div>
+
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+        <div className="panel">
+          <div className="text-[10px] uppercase tracking-wider text-ohmic-text-dim">
+            Total handoffs
+          </div>
+          <div className="mt-2 text-2xl font-semibold text-ohmic-text">
+            {providerSummary.totalCount}
+          </div>
+        </div>
+        <div className="panel">
+          <div className="text-[10px] uppercase tracking-wider text-ohmic-text-dim">
+            Attachment reviews
+          </div>
+          <div className="mt-2 text-2xl font-semibold text-ohmic-text">
+            {providerSummary.attachmentReviewCount}
+          </div>
+        </div>
+        <div className="panel">
+          <div className="text-[10px] uppercase tracking-wider text-ohmic-text-dim">
+            Active targets
+          </div>
+          <div className="mt-2 text-2xl font-semibold text-ohmic-text">
+            {providerSummary.uniqueTargetCount}
+          </div>
+        </div>
+      </div>
+
+      <div className="panel space-y-3">
+        <div className="flex items-center justify-between gap-3">
+          <div className="text-xs uppercase tracking-wider text-ohmic-text-dim">
+            Target runway
+          </div>
+          <div className="text-[10px] text-ohmic-text-dim">
+            {providerSummary.latestOccurredAt
+              ? `Last handoff ${new Date(providerSummary.latestOccurredAt).toLocaleString()}`
+              : 'No provider activity yet'}
+          </div>
+        </div>
+        {providerTargetGroups.length === 0 ? (
+          <div className="text-sm text-ohmic-text-dim">
+            Provider target groups will appear here after handoff activity.
+          </div>
+        ) : (
+          <div className="space-y-2">
+            {providerTargetGroups.map((group) => (
+              <div
+                key={group.targetLabel}
+                className="rounded border border-ohmic-border bg-ohmic-bg px-3 py-2 flex items-start justify-between gap-3"
+              >
+                <div className="space-y-1 min-w-0">
+                  <div className="text-xs text-ohmic-text">{group.targetLabel}</div>
+                  <div className="text-[11px] text-ohmic-text-dim">
+                    {group.count} handoff{group.count === 1 ? '' : 's'}
+                  </div>
+                </div>
+                <div className="text-[10px] text-ohmic-text-dim whitespace-nowrap">
+                  {group.latestOccurredAt
+                    ? new Date(group.latestOccurredAt).toLocaleString()
+                    : '--'}
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
 
       <div className="panel space-y-3">
