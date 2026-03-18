@@ -59,6 +59,9 @@ export function TandemPanel() {
     () => selectRecentTandemLaunches(auditItems),
     [auditItems]
   )
+  const showConnectionDetail =
+    configured || pendingHandshake !== null || selectedPreset !== null || !!baseUrl
+  const showComposerInputs = configured || !!selectedPreset || pendingHandshake !== null
 
   useEffect(() => {
     void fetch()
@@ -211,27 +214,39 @@ export function TandemPanel() {
             </div>
           </div>
 
-          <div className="grid grid-cols-1 gap-1 text-xs text-ohmic-text-dim">
-            <div>
-              Session state: <span className="text-ohmic-text">{sessionState}</span>
-            </div>
-            <div>
-              Active target:{' '}
-              <span className="text-ohmic-text">{activeTargetLabel || '--'}</span>
-            </div>
-            <div>
-              Base URL: <span className="text-ohmic-text">{baseUrl || '--'}</span>
-            </div>
-            <div>
-              Session label: <span className="text-ohmic-text">{sessionLabel || '--'}</span>
-            </div>
-            <div>
-              Launch URL:{' '}
-              <span className="text-ohmic-text break-all">
-                {contextualLaunchUrl || '--'}
+          <div className="flex flex-wrap gap-2 text-[11px] text-ohmic-text-dim">
+            <span className="rounded border border-ohmic-border px-2 py-1">
+              Session <span className="text-ohmic-text">{sessionState}</span>
+            </span>
+            <span className="rounded border border-ohmic-border px-2 py-1">
+              Target <span className="text-ohmic-text">{activeTargetLabel || '--'}</span>
+            </span>
+            {pendingHandshake ? (
+              <span className="rounded border border-amber-300/30 px-2 py-1 text-amber-300">
+                Handshake {pendingHandshake.state}
               </span>
-            </div>
+            ) : null}
           </div>
+
+          {showConnectionDetail ? (
+            <details className="rounded border border-ohmic-border/60 bg-ohmic-bg px-3 py-2 text-xs text-ohmic-text-dim">
+              <summary className="cursor-pointer list-none text-[11px] uppercase tracking-wider text-ohmic-text-dim">
+                Connection detail
+              </summary>
+              <div className="mt-2 grid grid-cols-1 gap-1">
+                <div>
+                  Base URL: <span className="text-ohmic-text">{baseUrl || '--'}</span>
+                </div>
+                <div>
+                  Session label: <span className="text-ohmic-text">{sessionLabel || '--'}</span>
+                </div>
+                <div>
+                  Launch URL:{' '}
+                  <span className="break-all text-ohmic-text">{contextualLaunchUrl || '--'}</span>
+                </div>
+              </div>
+            </details>
+          ) : null}
 
           {targetPresets.length > 0 ? (
             <div className="space-y-2">
@@ -413,108 +428,114 @@ export function TandemPanel() {
             </div>
           ) : null}
 
-          <div className="space-y-1">
-            <label className="block text-xs uppercase tracking-wider text-ohmic-text-dim">
-              Handoff note
-            </label>
-            <textarea
-              value={handoffNote}
-              onChange={(event) => setHandoffNote(event.target.value)}
-              placeholder="Optional context for why this provider handoff is happening..."
-              rows={2}
-              className="w-full bg-ohmic-bg border border-ohmic-border rounded px-3 py-2 text-sm text-ohmic-text placeholder:text-ohmic-muted focus:border-ohmic-accent focus:outline-none transition-colors resize-none"
-            />
-          </div>
-
-          {selectedIntake ? (
-            <div className="text-[11px] text-ohmic-text-dim">
-              Opening Tandem will carry the current intake context for{' '}
-              <span className="text-ohmic-text">{selectedIntake.intake_id}</span>.
-            </div>
-          ) : null}
-
-          {contextualLaunchUrl ? (
-            <div className="pt-1 flex flex-wrap gap-2">
-              <a
-                href={contextualLaunchUrl}
-                target="_blank"
-                rel="noreferrer"
-                onClick={() => {
-                  void handleTandemLaunch()
-                }}
-                className="inline-flex items-center rounded-md border border-ohmic-accent/40 px-3 py-1.5 text-xs font-medium text-ohmic-accent transition-colors hover:border-ohmic-accent hover:bg-ohmic-accent/10"
-              >
-                Open Tandem
-              </a>
-              <div className="rounded border border-ohmic-border px-2.5 py-1.5 text-[11px] text-ohmic-text-dim">
-                Launch carries current intake and selected target context.
+          {showComposerInputs ? (
+            <>
+              <div className="space-y-1">
+                <label className="block text-xs uppercase tracking-wider text-ohmic-text-dim">
+                  Handoff note
+                </label>
+                <textarea
+                  value={handoffNote}
+                  onChange={(event) => setHandoffNote(event.target.value)}
+                  placeholder="Optional context for why this provider handoff is happening..."
+                  rows={2}
+                  className="w-full bg-ohmic-bg border border-ohmic-border rounded px-3 py-2 text-sm text-ohmic-text placeholder:text-ohmic-muted focus:border-ohmic-accent focus:outline-none transition-colors resize-none"
+                />
               </div>
-            </div>
-          ) : null}
 
-          <div className="space-y-2 pt-1">
-            <div className="text-xs uppercase tracking-wider text-ohmic-text-dim">
-              Recent handoffs
-            </div>
-            {recentLaunches.length === 0 ? (
-              <div className="text-[11px] text-ohmic-text-dim">
-                Tandem launch events will appear here after operator handoff activity.
-              </div>
-            ) : (
-              <div className="space-y-2">
-                {recentLaunches.map((item) => (
-                  <div
-                    key={item.event_id}
-                    className="rounded border border-ohmic-border px-3 py-2 text-[11px] text-ohmic-text-dim"
+              {selectedIntake ? (
+                <div className="text-[11px] text-ohmic-text-dim">
+                  Opening Tandem will carry the current intake context for{' '}
+                  <span className="text-ohmic-text">{selectedIntake.intake_id}</span>.
+                </div>
+              ) : null}
+
+              {contextualLaunchUrl ? (
+                <div className="pt-1 flex flex-wrap gap-2">
+                  <a
+                    href={contextualLaunchUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    onClick={() => {
+                      void handleTandemLaunch()
+                    }}
+                    className="inline-flex items-center rounded-md border border-ohmic-accent/40 px-3 py-1.5 text-xs font-medium text-ohmic-accent transition-colors hover:border-ohmic-accent hover:bg-ohmic-accent/10"
                   >
-                    <div className="flex items-start justify-between gap-3">
-                      <div className="space-y-1 min-w-0">
-                        <div className="text-ohmic-text">
-                          {item.target_label || item.summary_label}
-                        </div>
-                        <div className="break-words">
-                          {item.intake_id || 'No intake context'}
-                          {item.status_delta ? ` | ${item.status_delta}` : ''}
-                          {item.attachment_id ? ` | ${item.attachment_id}` : ''}
-                        </div>
-                        {item.handoff_note ? (
-                          <div className="break-words text-[10px]">
-                            {item.handoff_note}
+                    Open Tandem
+                  </a>
+                  <div className="rounded border border-ohmic-border px-2.5 py-1.5 text-[11px] text-ohmic-text-dim">
+                    Launch carries current intake and selected target context.
+                  </div>
+                </div>
+              ) : null}
+            </>
+          ) : null}
+
+          <details className="space-y-2 pt-1">
+            <summary className="cursor-pointer list-none text-xs uppercase tracking-wider text-ohmic-text-dim">
+              Recent handoffs
+            </summary>
+            <div className="pt-2">
+              {recentLaunches.length === 0 ? (
+                <div className="text-[11px] text-ohmic-text-dim">
+                  Tandem launch events will appear here after operator handoff activity.
+                </div>
+              ) : (
+                <div className="space-y-2">
+                  {recentLaunches.map((item) => (
+                    <div
+                      key={item.event_id}
+                      className="rounded border border-ohmic-border px-3 py-2 text-[11px] text-ohmic-text-dim"
+                    >
+                      <div className="flex items-start justify-between gap-3">
+                        <div className="space-y-1 min-w-0">
+                          <div className="text-ohmic-text">
+                            {item.target_label || item.summary_label}
                           </div>
+                          <div className="break-words">
+                            {item.intake_id || 'No intake context'}
+                            {item.status_delta ? ` | ${item.status_delta}` : ''}
+                            {item.attachment_id ? ` | ${item.attachment_id}` : ''}
+                          </div>
+                          {item.handoff_note ? (
+                            <div className="break-words text-[10px]">
+                              {item.handoff_note}
+                            </div>
+                          ) : null}
+                        </div>
+                        <div className="whitespace-nowrap">
+                          {item.occurred_at
+                            ? new Date(item.occurred_at).toLocaleString()
+                            : '--'}
+                        </div>
+                      </div>
+                      <div className="mt-2 flex flex-wrap gap-2">
+                        <button
+                          onClick={() => handleRestoreRecentLaunch(item)}
+                          className="rounded border border-ohmic-border px-2.5 py-1 text-[11px] font-medium text-ohmic-text transition-colors hover:border-ohmic-accent/30"
+                        >
+                          Load into desk
+                        </button>
+                        {item.launch_url ? (
+                          <a
+                            href={item.launch_url}
+                            target="_blank"
+                            rel="noreferrer"
+                            onClick={() => {
+                              handleRestoreRecentLaunch(item)
+                            }}
+                            className="rounded border border-ohmic-accent/40 px-2.5 py-1 text-[11px] font-medium text-ohmic-accent transition-colors hover:border-ohmic-accent hover:bg-ohmic-accent/10"
+                          >
+                            Open recorded launch
+                          </a>
                         ) : null}
                       </div>
-                      <div className="whitespace-nowrap">
-                        {item.occurred_at
-                          ? new Date(item.occurred_at).toLocaleString()
-                          : '--'}
-                      </div>
                     </div>
-                    <div className="mt-2 flex flex-wrap gap-2">
-                      <button
-                        onClick={() => handleRestoreRecentLaunch(item)}
-                        className="rounded border border-ohmic-border px-2.5 py-1 text-[11px] font-medium text-ohmic-text transition-colors hover:border-ohmic-accent/30"
-                      >
-                        Load into desk
-                      </button>
-                      {item.launch_url ? (
-                        <a
-                          href={item.launch_url}
-                          target="_blank"
-                          rel="noreferrer"
-                          onClick={() => {
-                            handleRestoreRecentLaunch(item)
-                          }}
-                          className="rounded border border-ohmic-accent/40 px-2.5 py-1 text-[11px] font-medium text-ohmic-accent transition-colors hover:border-ohmic-accent hover:bg-ohmic-accent/10"
-                        >
-                          Open recorded launch
-                        </a>
-                      ) : null}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          </details>
         </div>
       )}
     </div>
