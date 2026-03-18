@@ -43,6 +43,15 @@ profile-generic values and onto per-device values:
 That prevents multiple boards of the same class from collapsing onto the same
 shared `unit_id`.
 
+Recovery AP naming was also converged onto shared identity-derived public names
+instead of generic profile strings:
+
+- DSP recovery AP: `OHMIC-DSP-D4DB1C-SETUP`
+- AmpLab recovery AP: `OHMIC-AMP-75DC3C-SETUP`
+
+That keeps setup-mode discovery aligned with the public-facing per-device
+designator instead of generic `OHMIC-SETUP` naming.
+
 ## Expected profile differences
 
 DSP:
