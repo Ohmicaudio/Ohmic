@@ -1,19 +1,10 @@
 import { create } from 'zustand'
 import { fetchActiveClaims, fetchReadyTasks } from '@/api/projections'
-import type { ActiveClaimItem } from '@/types/intake'
-
-interface ReadyTaskItem {
-  task_id: string
-  title: string
-  priority: string
-  project: string
-  status: string
-  file_path: string
-}
+import type { ActiveClaimItem, ReadyTask } from '@/types/intake'
 
 interface QueueActivityState {
   generatedAt: string | null
-  readyTasks: ReadyTaskItem[]
+  readyTasks: ReadyTask[]
   readyCount: number
   activeClaims: ActiveClaimItem[]
   activeClaimCount: number

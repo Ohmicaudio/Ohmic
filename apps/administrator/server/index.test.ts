@@ -12,6 +12,25 @@ async function importServer() {
   return import('./index')
 }
 
+vi.mock('./queueActions.js', () => ({
+  claimReadyTask: vi.fn(async (input: { task_id: string; owner?: string | null }) => ({
+    writeback: {
+      writeback_status: 'accepted',
+      claim_id: 'mock-claim-id',
+      task_id: input.task_id,
+      owner: input.owner ?? 'd',
+      claim_file_path: 'B:\\ohmic\\agent-system\\jobs\\active\\mock-claim-id.md',
+    },
+  })),
+  completeClaim: vi.fn(async (input: { claim_id: string }) => ({
+    writeback: {
+      writeback_status: 'accepted',
+      claim_id: input.claim_id,
+      completed_claim_path: `B:\\ohmic\\agent-system\\jobs\\completed\\${input.claim_id}.md`,
+    },
+  })),
+}))
+
 describe('administrator server', () => {
   let previousRuntimeDir: string | undefined
   let tempRuntimeDir: string | null = null
@@ -281,6 +300,68 @@ describe('administrator server', () => {
       title: 'dogfood administrator queue truth',
       owner: 'd',
       status: 'active',
+      paths: [],
+    })
+  })
+
+  it('claims a ready task through the queue route', async () => {
+    const { createAdministratorServer } = await importServer()
+    const app = createAdministratorServer(0)
+    const baseUrl = await app.start()
+    stopServer = app.stop
+
+    const claimRes = await fetch(`${baseUrl}/api/queue/claim`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        task_id: '2026-03-18-fix-provider-desk-truth',
+        title: 'Fix provider desk truth',
+        project: 'administrator',
+        file_path: 'B:\\ohmic\\agent-system\\requests\\ready\\2026-03-18-fix-provider-desk-truth.md',
+      }),
+    })
+
+    expect(claimRes.ok).toBe(true)
+    const claim = (await claimRes.json()) as {
+      writeback: {
+        writeback_status: string
+        claim_id: string
+        task_id: string
+      }
+    }
+
+    expect(claim.writeback).toMatchObject({
+      writeback_status: 'accepted',
+      claim_id: 'mock-claim-id',
+      task_id: '2026-03-18-fix-provider-desk-truth',
+    })
+  })
+
+  it('completes an active claim through the queue route', async () => {
+    const { createAdministratorServer } = await importServer()
+    const app = createAdministratorServer(0)
+    const baseUrl = await app.start()
+    stopServer = app.stop
+
+    const completeRes = await fetch(`${baseUrl}/api/queue/complete-claim`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        claim_id: 'mock-claim-id',
+      }),
+    })
+
+    expect(completeRes.ok).toBe(true)
+    const complete = (await completeRes.json()) as {
+      writeback: {
+        writeback_status: string
+        claim_id: string
+      }
+    }
+
+    expect(complete.writeback).toMatchObject({
+      writeback_status: 'accepted',
+      claim_id: 'mock-claim-id',
     })
   })
 

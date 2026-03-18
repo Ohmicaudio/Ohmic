@@ -45,6 +45,7 @@ describe('queueActivityStore', () => {
           title: 'dogfood administrator queue truth',
           owner: 'd',
           status: 'active',
+          paths: ['B:\\ohmic\\agent-system\\requests\\ready\\task-1.md'],
           file_path: 'B:\\ohmic\\agent-system\\jobs\\active\\claim-1.md',
         },
       ],

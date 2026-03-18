@@ -5,6 +5,7 @@ import { ProjectionReader } from './projectionReader.js'
 import { writeIntakeFocusSelection } from './focusWriter.js'
 import { getAdministratorRuntimeDir } from './runtimeConfig.js'
 import { readActiveClaimsFromDisk } from './activeClaimsSource.js'
+import { claimReadyTask, completeClaim } from './queueActions.js'
 import { readReadyTasksFromDisk } from './readyTasksSource.js'
 import { readTandemStatus } from './tandemProxy.js'
 import { readWorkspaceActivity } from './workspaceActivitySource.js'
@@ -170,6 +171,46 @@ export function createAdministratorServer(port = PORT) {
             return
           }
           recordProviderFollowUpReopen(input)
+            .then((result) => sendJson(res, result))
+            .catch((err) => sendJson(res, { error: err.message }, 500))
+        } catch {
+          sendJson(res, { error: 'Invalid JSON body' }, 400)
+        }
+      })
+      return
+    }
+
+    if (requestPath === '/api/queue/claim' && req.method === 'POST') {
+      let body = ''
+      req.on('data', (chunk: Buffer) => { body += chunk.toString() })
+      req.on('end', () => {
+        try {
+          const input = JSON.parse(body)
+          if (!input?.task_id || !input?.title || !input?.project || !input?.file_path) {
+            sendJson(res, { error: 'Missing task_id, title, project, or file_path in request body' }, 400)
+            return
+          }
+          claimReadyTask(input)
+            .then((result) => sendJson(res, result))
+            .catch((err) => sendJson(res, { error: err.message }, 500))
+        } catch {
+          sendJson(res, { error: 'Invalid JSON body' }, 400)
+        }
+      })
+      return
+    }
+
+    if (requestPath === '/api/queue/complete-claim' && req.method === 'POST') {
+      let body = ''
+      req.on('data', (chunk: Buffer) => { body += chunk.toString() })
+      req.on('end', () => {
+        try {
+          const input = JSON.parse(body)
+          if (!input?.claim_id) {
+            sendJson(res, { error: 'Missing claim_id in request body' }, 400)
+            return
+          }
+          completeClaim(input)
             .then((result) => sendJson(res, result))
             .catch((err) => sendJson(res, { error: err.message }, 500))
         } catch {

@@ -12,6 +12,7 @@ export interface ActiveClaimsProjection {
     title: string
     owner: string
     status: string
+    paths: string[]
     file_path: string
   }>
 }
@@ -43,12 +44,14 @@ export async function readActiveClaimsFromDisk(
       const titleMatch = body.match(/^task:\s*(.+)$/im)
       const ownerMatch = body.match(/^owner:\s*(.+)$/im)
       const statusMatch = body.match(/^status:\s*(.+)$/im)
+      const paths = Array.from(body.matchAll(/^- (.+)$/gim)).map((match) => match[1].trim())
 
       return {
         claim_id: fileName.replace(/\.md$/i, ''),
         title: titleMatch?.[1]?.trim() || buildTitleFromFileName(fileName),
         owner: ownerMatch?.[1]?.trim() || '--',
         status: statusMatch?.[1]?.trim() || 'active',
+        paths,
         file_path: filePath,
       }
     })

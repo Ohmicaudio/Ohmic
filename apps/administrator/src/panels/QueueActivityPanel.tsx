@@ -1,5 +1,7 @@
-import { useEffect } from 'react'
+import { useEffect, useMemo, useState } from 'react'
+import { claimQueueTask, completeQueueClaim } from '@/api/queue'
 import { useQueueActivityStore } from '@/store/queueActivityStore'
+import { useWorkspaceActivityStore } from '@/store/workspaceActivityStore'
 
 function getPriorityBadge(priority: string): string {
   switch (priority) {
@@ -13,6 +15,8 @@ function getPriorityBadge(priority: string): string {
 }
 
 export function QueueActivityPanel() {
+  const [pendingTaskId, setPendingTaskId] = useState<string | null>(null)
+  const [pendingClaimId, setPendingClaimId] = useState<string | null>(null)
   const {
     generatedAt,
     readyTasks,
@@ -23,6 +27,7 @@ export function QueueActivityPanel() {
     error,
     fetch,
   } = useQueueActivityStore()
+  const refreshWorkspaceActivity = useWorkspaceActivityStore((state) => state.fetch)
 
   useEffect(() => {
     void fetch()
@@ -32,6 +37,36 @@ export function QueueActivityPanel() {
 
     return () => window.clearInterval(timer)
   }, [fetch])
+
+  const claimByTaskPath = useMemo(() => {
+    const lookup = new Map<string, (typeof activeClaims)[number]>()
+    for (const claim of activeClaims) {
+      for (const claimPath of claim.paths) {
+        lookup.set(claimPath.toLowerCase(), claim)
+      }
+    }
+    return lookup
+  }, [activeClaims])
+
+  async function handleClaimTask(task: (typeof readyTasks)[number]) {
+    setPendingTaskId(task.task_id)
+    try {
+      await claimQueueTask(task)
+      await Promise.all([fetch(), refreshWorkspaceActivity()])
+    } finally {
+      setPendingTaskId(null)
+    }
+  }
+
+  async function handleCompleteClaim(claimId: string) {
+    setPendingClaimId(claimId)
+    try {
+      await completeQueueClaim(claimId)
+      await Promise.all([fetch(), refreshWorkspaceActivity()])
+    } finally {
+      setPendingClaimId(null)
+    }
+  }
 
   return (
     <div className="space-y-4 mt-8">
@@ -85,7 +120,11 @@ export function QueueActivityPanel() {
                     key={task.task_id}
                     className="rounded border border-ohmic-border bg-ohmic-bg px-3 py-2 space-y-1.5"
                   >
-                    <div className="flex items-start justify-between gap-3">
+                    {(() => {
+                      const matchingClaim = claimByTaskPath.get(task.file_path.toLowerCase()) ?? null
+                      return (
+                        <>
+                          <div className="flex items-start justify-between gap-3">
                       <div className="space-y-1 min-w-0">
                         <div className="text-sm text-ohmic-text">{task.title}</div>
                         <div className="text-[11px] text-ohmic-text-dim">
@@ -95,10 +134,28 @@ export function QueueActivityPanel() {
                       <span className={`rounded-full px-2 py-0.5 text-[10px] uppercase tracking-widest ${getPriorityBadge(task.priority)}`}>
                         {task.priority}
                       </span>
-                    </div>
-                    <div className="text-[11px] text-ohmic-text-dim break-all">
-                      {task.file_path}
-                    </div>
+                          </div>
+                          <div className="text-[11px] text-ohmic-text-dim break-all">
+                            {task.file_path}
+                          </div>
+                          <div className="flex flex-wrap gap-2 pt-1">
+                            {matchingClaim ? (
+                              <div className="rounded border border-emerald-300/30 px-2.5 py-1 text-[11px] text-emerald-300">
+                                Claimed by {matchingClaim.owner}
+                              </div>
+                            ) : (
+                              <button
+                                onClick={() => void handleClaimTask(task)}
+                                disabled={pendingTaskId === task.task_id}
+                                className="rounded border border-ohmic-accent/40 px-2.5 py-1 text-[11px] font-medium text-ohmic-accent transition-colors hover:border-ohmic-accent hover:bg-ohmic-accent/10 disabled:opacity-50"
+                              >
+                                {pendingTaskId === task.task_id ? 'Claiming...' : 'Claim task'}
+                              </button>
+                            )}
+                          </div>
+                        </>
+                      )
+                    })()}
                   </div>
                 ))}
               </div>
@@ -135,6 +192,20 @@ export function QueueActivityPanel() {
                     </div>
                     <div className="text-[11px] text-ohmic-text-dim break-all">
                       {claim.file_path}
+                    </div>
+                    {claim.paths.length > 0 ? (
+                      <div className="text-[11px] text-ohmic-text-dim break-all">
+                        Scope: {claim.paths.join(' | ')}
+                      </div>
+                    ) : null}
+                    <div className="flex flex-wrap gap-2 pt-1">
+                      <button
+                        onClick={() => void handleCompleteClaim(claim.claim_id)}
+                        disabled={pendingClaimId === claim.claim_id}
+                        className="rounded border border-emerald-300/30 px-2.5 py-1 text-[11px] font-medium text-emerald-300 transition-colors hover:border-emerald-300 hover:bg-emerald-300/10 disabled:opacity-50"
+                      >
+                        {pendingClaimId === claim.claim_id ? 'Completing...' : 'Complete claim'}
+                      </button>
                     </div>
                   </div>
                 ))}

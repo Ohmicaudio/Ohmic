@@ -185,6 +185,7 @@ export interface ActiveClaimItem {
   title: string
   owner: string
   status: string
+  paths: string[]
   file_path: string
 }
 
@@ -444,6 +445,24 @@ export interface ReadyTasksProjection {
   generated_at: string
   count: number
   tasks: ReadyTask[]
+}
+
+export interface ClaimReadyTaskResponse {
+  writeback: {
+    writeback_status: 'accepted'
+    claim_id: string
+    task_id: string
+    owner: string
+    claim_file_path: string
+  }
+}
+
+export interface CompleteClaimResponse {
+  writeback: {
+    writeback_status: 'accepted'
+    claim_id: string
+    completed_claim_path: string
+  }
 }
 
 // Commands.
