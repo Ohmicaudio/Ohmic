@@ -50,6 +50,7 @@ export function IntakeDetailPanel() {
     ? resolveRecentTandemLaunchSelection(latestTandemLaunch, tandemTargetPresets, items)
     : null
   const providerTimeline = selectProviderEventsForIntake(auditItems, selectedId)
+  const providerNotes = providerTimeline.filter((event) => event.handoff_note?.trim())
 
   useEffect(() => {
     if (selectedId && notes.length === 0 && tagAssignments.length === 0) {
@@ -244,6 +245,50 @@ export function IntakeDetailPanel() {
                         {event.handoff_note}
                       </div>
                     ) : null}
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
+          <div className="space-y-2">
+            <div className="text-xs uppercase tracking-wider text-ohmic-text-dim">
+              Provider Notes
+            </div>
+            {auditLoading && providerNotes.length === 0 ? (
+              <div className="text-xs text-ohmic-text-dim animate-pulse">
+                Loading provider notes...
+              </div>
+            ) : providerNotes.length === 0 ? (
+              <div className="text-xs text-ohmic-text-dim">
+                No provider-specific notes have been recorded for this intake yet.
+              </div>
+            ) : (
+              <div className="space-y-2">
+                {providerNotes.map((event) => (
+                  <div
+                    key={`${event.event_id}-provider-note`}
+                    className="rounded border border-ohmic-border bg-ohmic-bg px-3 py-2 space-y-1.5"
+                  >
+                    <div className="flex items-start justify-between gap-3">
+                      <div className="space-y-1 min-w-0">
+                        <div className="text-xs font-medium text-ohmic-text">
+                          {event.target_label || event.summary_label}
+                        </div>
+                        <div className="text-[11px] text-ohmic-text-dim">
+                          {event.status_delta || event.event_family}
+                          {event.attachment_id ? ` | ${event.attachment_id}` : ''}
+                        </div>
+                      </div>
+                      <div className="text-[10px] text-ohmic-text-dim whitespace-nowrap">
+                        {event.occurred_at
+                          ? new Date(event.occurred_at).toLocaleString()
+                          : '--'}
+                      </div>
+                    </div>
+                    <div className="text-xs text-ohmic-text-dim whitespace-pre-wrap">
+                      {event.handoff_note}
+                    </div>
                   </div>
                 ))}
               </div>

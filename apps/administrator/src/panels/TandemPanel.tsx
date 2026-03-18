@@ -17,6 +17,8 @@ export function TandemPanel() {
     configured,
     available,
     mode,
+    statusSource,
+    probeState,
     sessionState,
     baseUrl,
     sessionLabel,
@@ -25,6 +27,7 @@ export function TandemPanel() {
     selectedPresetId,
     handoffNote,
     launchUrl,
+    probeMessage,
     message,
     loading,
     error,
@@ -113,17 +116,39 @@ export function TandemPanel() {
             <div className="text-sm font-medium text-ohmic-text">
               {configured ? 'Tandem configured' : 'Tandem not configured'}
             </div>
-            <span
-              className={`rounded-full px-2 py-0.5 text-[10px] uppercase tracking-widest ${
-                available
-                  ? 'bg-ohmic-success/15 text-ohmic-success'
-                  : configured
-                    ? 'bg-ohmic-warning/15 text-ohmic-warning'
+            <div className="flex flex-wrap items-center gap-2">
+              <span
+                className={`rounded-full px-2 py-0.5 text-[10px] uppercase tracking-widest ${
+                  available
+                    ? 'bg-ohmic-success/15 text-ohmic-success'
+                    : configured
+                      ? 'bg-ohmic-warning/15 text-ohmic-warning'
+                      : 'bg-ohmic-border text-ohmic-text-dim'
+                }`}
+              >
+                {available ? 'available' : mode}
+              </span>
+              <span
+                className={`rounded-full px-2 py-0.5 text-[10px] uppercase tracking-widest ${
+                  statusSource === 'probe'
+                    ? 'bg-emerald-300/15 text-emerald-300'
                     : 'bg-ohmic-border text-ohmic-text-dim'
-              }`}
-            >
-              {available ? 'available' : mode}
-            </span>
+                }`}
+              >
+                {statusSource === 'probe' ? 'live probe' : 'env floor'}
+              </span>
+              <span
+                className={`rounded-full px-2 py-0.5 text-[10px] uppercase tracking-widest ${
+                  probeState === 'reachable'
+                    ? 'bg-emerald-300/15 text-emerald-300'
+                    : probeState === 'error'
+                      ? 'bg-amber-300/15 text-amber-300'
+                      : 'bg-ohmic-border text-ohmic-text-dim'
+                }`}
+              >
+                {probeState}
+              </span>
+            </div>
           </div>
 
           <div className="grid grid-cols-1 gap-1 text-xs text-ohmic-text-dim">
@@ -212,7 +237,8 @@ export function TandemPanel() {
           ) : null}
 
           <div className="text-xs text-ohmic-text-dim">
-            {message ||
+            {probeMessage ||
+              message ||
               'This is the first external-provider seam. Full tab/session handoff will build on this status floor.'}
           </div>
 

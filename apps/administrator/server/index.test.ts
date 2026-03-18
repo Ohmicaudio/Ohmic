@@ -1,5 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { mkdir, mkdtemp, readFile, rm, writeFile } from 'fs/promises'
+import http from 'http'
 import path from 'path'
 
 const localRuntimeBase = 'B:\\ohmic-local\\runtime\\administrator-tests'
@@ -13,6 +14,7 @@ describe('administrator server', () => {
   let previousRuntimeDir: string | undefined
   let tempRuntimeDir: string | null = null
   let stopServer: (() => Promise<void>) | null = null
+  let tandemProbeServer: http.Server | null = null
 
   beforeEach(async () => {
     previousRuntimeDir = process.env.ADMINISTRATOR_RUNTIME_DIR
@@ -72,6 +74,23 @@ describe('administrator server', () => {
       await rm(tempRuntimeDir, { recursive: true, force: true })
       tempRuntimeDir = null
     }
+
+    if (tandemProbeServer) {
+      await new Promise<void>((resolve, reject) => {
+        tandemProbeServer?.close((error) => {
+          if (error) reject(error)
+          else resolve()
+        })
+      })
+      tandemProbeServer = null
+    }
+
+    delete process.env.ADMINISTRATOR_TANDEM_BASE_URL
+    delete process.env.ADMINISTRATOR_TANDEM_SESSION_LABEL
+    delete process.env.ADMINISTRATOR_TANDEM_SESSION_STATE
+    delete process.env.ADMINISTRATOR_TANDEM_ACTIVE_TARGET_LABEL
+    delete process.env.ADMINISTRATOR_TANDEM_TARGET_PRESETS
+    delete process.env.ADMINISTRATOR_TANDEM_STATUS_URL
   })
 
   async function writeActiveQueueFixture(intakeId: string, title: string) {
@@ -263,6 +282,8 @@ describe('administrator server', () => {
     expect(tandem).toMatchObject({
       configured: true,
       available: true,
+      status_source: 'env',
+      probe_state: 'unavailable',
       session_state: 'attached',
       base_url: 'http://127.0.0.1:8765',
       session_label: 'gmail-triage',
@@ -288,12 +309,65 @@ describe('administrator server', () => {
         default_note: 'Confirm issue routing and required evidence.',
       },
     ])
+  })
 
-    delete process.env.ADMINISTRATOR_TANDEM_BASE_URL
-    delete process.env.ADMINISTRATOR_TANDEM_SESSION_LABEL
-    delete process.env.ADMINISTRATOR_TANDEM_SESSION_STATE
-    delete process.env.ADMINISTRATOR_TANDEM_ACTIVE_TARGET_LABEL
-    delete process.env.ADMINISTRATOR_TANDEM_TARGET_PRESETS
+  it('prefers a live Tandem probe when a status URL is configured', async () => {
+    process.env.ADMINISTRATOR_TANDEM_BASE_URL = 'http://127.0.0.1:8765'
+    process.env.ADMINISTRATOR_TANDEM_SESSION_LABEL = 'gmail-triage'
+    process.env.ADMINISTRATOR_TANDEM_SESSION_STATE = 'idle'
+    process.env.ADMINISTRATOR_TANDEM_ACTIVE_TARGET_LABEL = 'Old env target'
+
+    tandemProbeServer = http.createServer((req, res) => {
+      if (req.url === '/status') {
+        res.writeHead(200, { 'Content-Type': 'application/json' })
+        res.end(
+          JSON.stringify({
+            session_state: 'attached',
+            active_target_label: 'Live Gmail support inbox',
+            available: true,
+            message: 'Live Tandem status reached the inbox target.',
+          })
+        )
+        return
+      }
+
+      res.writeHead(404)
+      res.end()
+    })
+
+    const probeBaseUrl = await new Promise<string>((resolve) => {
+      tandemProbeServer!.listen(0, () => {
+        const address = tandemProbeServer!.address() as { port: number }
+        resolve(`http://127.0.0.1:${address.port}/status`)
+      })
+    })
+
+    process.env.ADMINISTRATOR_TANDEM_STATUS_URL = probeBaseUrl
+
+    const { createAdministratorServer } = await importServer()
+    const app = createAdministratorServer(0)
+    const baseUrl = await app.start()
+    stopServer = app.stop
+
+    const tandemRes = await fetch(`${baseUrl}/api/tandem/status`)
+    expect(tandemRes.ok).toBe(true)
+    const tandem = (await tandemRes.json()) as {
+      status_source: string
+      probe_state: string
+      session_state: string
+      active_target_label: string | null
+      available: boolean
+      probe_message?: string | null
+    }
+
+    expect(tandem).toMatchObject({
+      status_source: 'probe',
+      probe_state: 'reachable',
+      session_state: 'attached',
+      active_target_label: 'Live Gmail support inbox',
+      available: true,
+      probe_message: 'Live Tandem status reached the inbox target.',
+    })
   })
 
   it('records tandem launch intent into the audit summary', async () => {

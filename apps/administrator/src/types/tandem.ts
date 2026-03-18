@@ -11,12 +11,15 @@ export interface AdministratorTandemStatus {
   configured: boolean
   available: boolean
   mode: 'unconfigured' | 'configured'
+  status_source: 'env' | 'probe'
+  probe_state: 'unavailable' | 'reachable' | 'error'
   session_state: 'missing' | 'idle' | 'attached'
   base_url: string | null
   session_label: string | null
   active_target_label: string | null
   target_presets: AdministratorTandemTargetPreset[]
   launch_url: string | null
+  probe_message?: string | null
   message: string
 }
 

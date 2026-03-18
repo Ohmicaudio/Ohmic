@@ -10,6 +10,7 @@ import { useAuditSummaryStore } from '@/store/auditSummaryStore'
 import { useTandemStore } from '@/store/tandemStore'
 import { StatusBadge } from '@/components/StatusBadge'
 import { buildInactiveIntakeContextNote } from '@/panels/inactiveIntakeContext'
+import { buildProviderFollowUpLookup } from '@/panels/providerHandoffSummary'
 import {
   resolveRecentTandemLaunchSelection,
   selectLatestTandemLaunchForIntake,
@@ -63,6 +64,7 @@ export function InactiveIntakePanel() {
   const filteredItems = items.filter((item) =>
     activePreset.included_statuses.includes(item.inactive_status)
   )
+  const providerFollowUpLookup = buildProviderFollowUpLookup(auditItems, [])
 
   async function handleReopen(intakeId: string, restoredStatus: string) {
     const response = await reopen(intakeId, restoredStatus || 'queued')
@@ -155,6 +157,41 @@ export function InactiveIntakePanel() {
                 </div>
                 <StatusBadge status={item.inactive_status || 'inactive'} />
               </div>
+
+              {(() => {
+                const providerFollowUp = providerFollowUpLookup.get(item.intake_id)
+                if (!providerFollowUp) {
+                  return null
+                }
+
+                return (
+                  <div className="flex flex-wrap gap-2">
+                    <span
+                      className={`rounded-full px-2 py-0.5 text-[10px] uppercase tracking-widest ${
+                        providerFollowUp.priority === 'needs_attachment_review'
+                          ? 'bg-amber-300/15 text-amber-300'
+                          : 'bg-ohmic-accent/15 text-ohmic-accent'
+                      }`}
+                    >
+                      {providerFollowUp.priorityLabel}
+                    </span>
+                    <span
+                      className={`rounded-full px-2 py-0.5 text-[10px] uppercase tracking-widest ${
+                        providerFollowUp.ageBand === 'stale'
+                          ? 'bg-rose-300/15 text-rose-300'
+                          : providerFollowUp.ageBand === 'aging'
+                            ? 'bg-yellow-300/15 text-yellow-300'
+                            : 'bg-emerald-300/15 text-emerald-300'
+                      }`}
+                    >
+                      {providerFollowUp.ageLabel}
+                    </span>
+                    <span className="rounded-full bg-ohmic-bg px-2 py-0.5 text-[10px] uppercase tracking-widest text-ohmic-text-dim">
+                      Provider workload
+                    </span>
+                  </div>
+                )
+              })()}
 
               {item.summary_label && (
                 <div className="text-xs text-ohmic-text-dim">{item.summary_label}</div>

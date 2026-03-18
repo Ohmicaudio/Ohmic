@@ -25,6 +25,19 @@ import {
   selectRecentTandemLaunches,
 } from '@/panels/tandemHistory'
 
+function formatTargetGroupLabel(teamLabel: string | null, targetKind: string | null): string {
+  if (teamLabel && targetKind) {
+    return `${teamLabel} | ${targetKind}`
+  }
+  if (teamLabel) {
+    return teamLabel
+  }
+  if (targetKind) {
+    return targetKind
+  }
+  return 'Unassigned'
+}
+
 function buildCompletionTemplate(
   item: {
     priority?: 'needs_attachment_review' | 'follow_up_pending'
@@ -83,6 +96,9 @@ export function ProviderHandoffPanel() {
   const tandemTargetPresets = useTandemStore((state) => state.targetPresets)
   const selectedTandemPresetId = useTandemStore((state) => state.selectedPresetId)
   const tandemSessionState = useTandemStore((state) => state.sessionState)
+  const tandemStatusSource = useTandemStore((state) => state.statusSource)
+  const tandemProbeState = useTandemStore((state) => state.probeState)
+  const tandemProbeMessage = useTandemStore((state) => state.probeMessage)
   const tandemActiveTargetLabel = useTandemStore((state) => state.activeTargetLabel)
   const tandemLaunchUrl = useTandemStore((state) => state.launchUrl)
   const tandemHandoffNote = useTandemStore((state) => state.handoffNote)
@@ -130,6 +146,59 @@ export function ProviderHandoffPanel() {
       tandemTargetPresets.find((preset) => preset.preset_id === selectedTandemPresetId) ?? null,
     [selectedTandemPresetId, tandemTargetPresets]
   )
+  const attachmentReviewQueue = useMemo(
+    () =>
+      visibleProviderFollowUpQueue.filter(
+        (item) => item.priority === 'needs_attachment_review'
+      ),
+    [visibleProviderFollowUpQueue]
+  )
+  const generalFollowUpQueue = useMemo(
+    () =>
+      visibleProviderFollowUpQueue.filter(
+        (item) => item.priority !== 'needs_attachment_review'
+      ),
+    [visibleProviderFollowUpQueue]
+  )
+  const renderedFollowUpQueue = useMemo(() => {
+    if (followUpFilter === 'needs_attachment_review') {
+      return attachmentReviewQueue
+    }
+    if (followUpFilter === 'follow_up_pending') {
+      return generalFollowUpQueue
+    }
+    return generalFollowUpQueue
+  }, [attachmentReviewQueue, followUpFilter, generalFollowUpQueue])
+  const groupedTargetPresets = useMemo(() => {
+    const groups = new Map<
+      string,
+      {
+        groupLabel: string
+        presets: typeof tandemTargetPresets
+      }
+    >()
+
+    for (const preset of tandemTargetPresets) {
+      const groupLabel = formatTargetGroupLabel(
+        preset.team_label ?? null,
+        preset.target_kind ?? null
+      )
+      const existing = groups.get(groupLabel)
+      if (existing) {
+        existing.presets.push(preset)
+      } else {
+        groups.set(groupLabel, { groupLabel, presets: [preset] })
+      }
+    }
+
+    return Array.from(groups.values()).sort((left, right) =>
+      left.groupLabel.localeCompare(right.groupLabel)
+    )
+  }, [tandemTargetPresets])
+  const selectedTargetAttached =
+    selectedTandemPreset?.target_label === tandemActiveTargetLabel &&
+    tandemSessionState === 'attached'
+  const selectedTargetLaunchReady = Boolean(selectedTandemPreset && tandemLaunchUrl)
 
   async function handleRefresh() {
     await fetchAuditSummary()
@@ -253,6 +322,79 @@ export function ProviderHandoffPanel() {
         </button>
       </div>
 
+      <div className="panel space-y-2">
+        <div className="flex items-center justify-between gap-3">
+          <div className="text-xs uppercase tracking-wider text-ohmic-text-dim">
+            Provider Session Truth
+          </div>
+          <div className="flex flex-wrap items-center gap-2 text-[10px] uppercase tracking-widest">
+            <span
+              className={`rounded-full px-2 py-0.5 ${
+                tandemStatusSource === 'probe'
+                  ? 'bg-emerald-300/15 text-emerald-300'
+                  : 'bg-ohmic-border text-ohmic-text-dim'
+              }`}
+            >
+              {tandemStatusSource === 'probe' ? 'Live probe' : 'Env floor'}
+            </span>
+            <span
+              className={`rounded-full px-2 py-0.5 ${
+                tandemProbeState === 'reachable'
+                  ? 'bg-emerald-300/15 text-emerald-300'
+                  : tandemProbeState === 'error'
+                    ? 'bg-amber-300/15 text-amber-300'
+                    : 'bg-ohmic-border text-ohmic-text-dim'
+              }`}
+            >
+              {tandemProbeState}
+            </span>
+            <span
+              className={`rounded-full px-2 py-0.5 ${
+                tandemSessionState === 'attached'
+                  ? 'bg-emerald-300/15 text-emerald-300'
+                  : tandemSessionState === 'idle'
+                    ? 'bg-amber-300/15 text-amber-300'
+                    : 'bg-ohmic-border text-ohmic-text-dim'
+              }`}
+            >
+              {tandemSessionState}
+            </span>
+          </div>
+        </div>
+        <div className="text-xs text-ohmic-text-dim">
+          {tandemProbeMessage || 'Tandem session truth is still configuration-backed.'}
+        </div>
+        {selectedTandemPreset ? (
+          <div className="flex flex-wrap gap-2">
+            <span
+              className={`rounded-full px-2 py-0.5 text-[10px] uppercase tracking-widest ${
+                selectedTargetAttached
+                  ? 'bg-emerald-300/15 text-emerald-300'
+                  : selectedTargetLaunchReady
+                    ? 'bg-ohmic-accent/15 text-ohmic-accent'
+                    : 'bg-amber-300/15 text-amber-300'
+              }`}
+            >
+              {selectedTargetAttached
+                ? 'Selected target attached'
+                : selectedTargetLaunchReady
+                  ? 'Selected target ready'
+                  : 'Selected target not ready'}
+            </span>
+            {selectedTandemPreset.team_label ? (
+              <span className="rounded-full bg-ohmic-bg px-2 py-0.5 text-[10px] uppercase tracking-widest text-ohmic-text-dim">
+                {selectedTandemPreset.team_label}
+              </span>
+            ) : null}
+            {selectedTandemPreset.target_kind ? (
+              <span className="rounded-full bg-ohmic-bg px-2 py-0.5 text-[10px] uppercase tracking-widest text-ohmic-text-dim">
+                {selectedTandemPreset.target_kind}
+              </span>
+            ) : null}
+          </div>
+        ) : null}
+      </div>
+
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-3">
         <div className="panel">
           <div className="text-[10px] uppercase tracking-wider text-ohmic-text-dim">
@@ -328,13 +470,77 @@ export function ProviderHandoffPanel() {
             </button>
           </div>
         </div>
+        {attachmentReviewQueue.length > 0 ? (
+          <div className="rounded border border-amber-300/25 bg-amber-300/5 px-3 py-3 space-y-2">
+            <div className="text-[10px] uppercase tracking-widest text-amber-300">
+              Attachment review lane
+            </div>
+            <div className="space-y-2">
+              {attachmentReviewQueue.map((item) => (
+                <div
+                  key={`${item.intakeId}-${item.attachmentId ?? 'attachment-review'}`}
+                  className="rounded border border-amber-300/20 bg-ohmic-bg px-3 py-2 space-y-1.5"
+                >
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="space-y-1 min-w-0">
+                      <div className="text-xs text-ohmic-text">{item.intakeTitle}</div>
+                      <div className="text-[11px] text-ohmic-text-dim">
+                        {item.targetLabel}
+                        {item.attachmentId ? ` | ${item.attachmentId}` : ''}
+                      </div>
+                    </div>
+                    <div className="text-[10px] uppercase tracking-widest text-amber-300">
+                      {item.ageLabel}
+                    </div>
+                  </div>
+                  {item.handoffNote ? (
+                    <div className="text-[11px] text-ohmic-text-dim whitespace-pre-wrap">
+                      {item.handoffNote}
+                    </div>
+                  ) : null}
+                  <div className="flex flex-wrap gap-2 pt-1">
+                    <button
+                      onClick={() => {
+                        if (item.targetPresetId) {
+                          setSelectedTandemPreset(item.targetPresetId)
+                        }
+                        setTandemHandoffNote(
+                          item.handoffNote ??
+                            buildCompletionTemplate(item, tandemTargetPresets)
+                        )
+                        selectIntake(item.intakeId)
+                      }}
+                      className="rounded border border-ohmic-border px-2.5 py-1 text-[11px] font-medium text-ohmic-text transition-colors hover:border-ohmic-accent/30"
+                    >
+                      Load into Tandem desk
+                    </button>
+                    {item.launchUrl ? (
+                      <a
+                        href={item.launchUrl}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="rounded border border-ohmic-accent/40 px-2.5 py-1 text-[11px] font-medium text-ohmic-accent transition-colors hover:border-ohmic-accent hover:bg-ohmic-accent/10"
+                      >
+                        Open recorded launch
+                      </a>
+                    ) : null}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        ) : null}
         {visibleProviderFollowUpQueue.length === 0 ? (
           <div className="text-sm text-ohmic-text-dim">
             Recent provider handoffs that still need operator review will appear here.
           </div>
+        ) : renderedFollowUpQueue.length === 0 ? (
+          <div className="text-sm text-ohmic-text-dim">
+            No general provider follow-up items match the current filter.
+          </div>
         ) : (
           <div className="space-y-2">
-            {visibleProviderFollowUpQueue.map((item) => (
+            {renderedFollowUpQueue.map((item) => (
               <div
                 key={`${item.intakeId}-${item.occurredAt ?? 'provider'}`}
                 className="rounded border border-ohmic-border bg-ohmic-bg px-3 py-2 space-y-1.5"
@@ -482,6 +688,11 @@ export function ProviderHandoffPanel() {
                       ? ` | ${group.unresolvedCount} open`
                       : ''}
                   </div>
+                  {group.oldestOutstandingAt ? (
+                    <div className="text-[10px] text-ohmic-text-dim">
+                      Oldest open {new Date(group.oldestOutstandingAt).toLocaleString()}
+                    </div>
+                  ) : null}
                 </div>
                 <div className="space-y-2 text-right">
                   <div
@@ -542,82 +753,101 @@ export function ProviderHandoffPanel() {
             Add Tandem target presets to start provider-target launch work from this desk.
           </div>
         ) : (
-          <div className="space-y-2">
-            {tandemTargetPresets.map((preset) => {
-              const contextualLaunchUrl = buildTandemContextUrl(
-                tandemLaunchUrl,
-                selectedIntake,
-                preset
-              )
-
-              return (
-                <div
-                  key={preset.preset_id}
-                  className={`rounded border px-3 py-2 space-y-2 ${
-                    preset.preset_id === selectedTandemPresetId
-                      ? 'border-ohmic-accent/40 bg-ohmic-accent/10'
-                      : 'border-ohmic-border bg-ohmic-bg'
-                  }`}
-                >
-                  <div className="flex items-start justify-between gap-3">
-                    <div className="space-y-1 min-w-0">
-                      <div className="text-xs text-ohmic-text">{preset.display_label}</div>
-                      <div className="text-[11px] text-ohmic-text-dim break-words">
-                        {preset.target_label}
-                      </div>
-                      <div className="text-[10px] text-ohmic-text-dim">
-                        {preset.team_label || 'Unassigned'}
-                        {preset.target_kind ? ` | ${preset.target_kind}` : ''}
-                      </div>
-                      {preset.default_note ? (
-                        <div className="text-[10px] text-ohmic-text-dim whitespace-pre-wrap">
-                          {preset.default_note}
-                        </div>
-                      ) : null}
-                    </div>
-                    {preset.preset_id === selectedTandemPresetId ? (
-                      <span className="rounded-full border border-ohmic-accent/40 px-2 py-0.5 text-[10px] uppercase tracking-widest text-ohmic-accent">
-                        active
-                      </span>
-                    ) : null}
-                  </div>
-                  <div className="flex flex-wrap gap-2">
-                    <button
-                      onClick={() => loadProviderTarget(preset.preset_id)}
-                      className="rounded border border-ohmic-border px-2.5 py-1 text-[11px] font-medium text-ohmic-text transition-colors hover:border-ohmic-accent/30"
-                    >
-                      Load target
-                    </button>
-                    {preset.default_note ? (
-                      <button
-                        onClick={() => setTandemHandoffNote(preset.default_note ?? '')}
-                        className="rounded border border-ohmic-border px-2.5 py-1 text-[11px] font-medium text-ohmic-text transition-colors hover:border-ohmic-accent/30"
-                      >
-                        Use default note
-                      </button>
-                    ) : null}
-                    {contextualLaunchUrl ? (
-                      <a
-                        href={contextualLaunchUrl}
-                        target="_blank"
-                        rel="noreferrer"
-                        onClick={() => {
-                          loadProviderTarget(preset.preset_id)
-                          void handleProviderLaunch(contextualLaunchUrl, preset)
-                        }}
-                        className="rounded border border-ohmic-accent/40 px-2.5 py-1 text-[11px] font-medium text-ohmic-accent transition-colors hover:border-ohmic-accent hover:bg-ohmic-accent/10"
-                      >
-                        Open in Tandem
-                      </a>
-                    ) : (
-                      <div className="rounded border border-ohmic-warning/30 px-2.5 py-1 text-[11px] text-ohmic-warning">
-                        Launch not ready
-                      </div>
-                    )}
-                  </div>
+          <div className="space-y-3">
+            {groupedTargetPresets.map((group) => (
+              <div key={group.groupLabel} className="space-y-2">
+                <div className="text-[10px] uppercase tracking-widest text-ohmic-text-dim">
+                  {group.groupLabel}
                 </div>
-              )
-            })}
+                <div className="space-y-2">
+                  {group.presets.map((preset) => {
+                    const contextualLaunchUrl = buildTandemContextUrl(
+                      tandemLaunchUrl,
+                      selectedIntake,
+                      preset
+                    )
+                    const presetAttached =
+                      tandemSessionState === 'attached' &&
+                      tandemActiveTargetLabel === preset.target_label
+
+                    return (
+                      <div
+                        key={preset.preset_id}
+                        className={`rounded border px-3 py-2 space-y-2 ${
+                          preset.preset_id === selectedTandemPresetId
+                            ? 'border-ohmic-accent/40 bg-ohmic-accent/10'
+                            : 'border-ohmic-border bg-ohmic-bg'
+                        }`}
+                      >
+                        <div className="flex items-start justify-between gap-3">
+                          <div className="space-y-1 min-w-0">
+                            <div className="text-xs text-ohmic-text">{preset.display_label}</div>
+                            <div className="text-[11px] text-ohmic-text-dim break-words">
+                              {preset.target_label}
+                            </div>
+                            <div className="text-[10px] text-ohmic-text-dim">
+                              {preset.team_label || 'Unassigned'}
+                              {preset.target_kind ? ` | ${preset.target_kind}` : ''}
+                            </div>
+                            {preset.default_note ? (
+                              <div className="text-[10px] text-ohmic-text-dim whitespace-pre-wrap">
+                                {preset.default_note}
+                              </div>
+                            ) : null}
+                          </div>
+                          <div className="flex flex-col items-end gap-1">
+                            {preset.preset_id === selectedTandemPresetId ? (
+                              <span className="rounded-full border border-ohmic-accent/40 px-2 py-0.5 text-[10px] uppercase tracking-widest text-ohmic-accent">
+                                active
+                              </span>
+                            ) : null}
+                            {presetAttached ? (
+                              <span className="rounded-full bg-emerald-300/15 px-2 py-0.5 text-[10px] uppercase tracking-widest text-emerald-300">
+                                attached
+                              </span>
+                            ) : null}
+                          </div>
+                        </div>
+                        <div className="flex flex-wrap gap-2">
+                          <button
+                            onClick={() => loadProviderTarget(preset.preset_id)}
+                            className="rounded border border-ohmic-border px-2.5 py-1 text-[11px] font-medium text-ohmic-text transition-colors hover:border-ohmic-accent/30"
+                          >
+                            Load target
+                          </button>
+                          {preset.default_note ? (
+                            <button
+                              onClick={() => setTandemHandoffNote(preset.default_note ?? '')}
+                              className="rounded border border-ohmic-border px-2.5 py-1 text-[11px] font-medium text-ohmic-text transition-colors hover:border-ohmic-accent/30"
+                            >
+                              Use default note
+                            </button>
+                          ) : null}
+                          {contextualLaunchUrl ? (
+                            <a
+                              href={contextualLaunchUrl}
+                              target="_blank"
+                              rel="noreferrer"
+                              onClick={() => {
+                                loadProviderTarget(preset.preset_id)
+                                void handleProviderLaunch(contextualLaunchUrl, preset)
+                              }}
+                              className="rounded border border-ohmic-accent/40 px-2.5 py-1 text-[11px] font-medium text-ohmic-accent transition-colors hover:border-ohmic-accent hover:bg-ohmic-accent/10"
+                            >
+                              Open in Tandem
+                            </a>
+                          ) : (
+                            <div className="rounded border border-ohmic-warning/30 px-2.5 py-1 text-[11px] text-ohmic-warning">
+                              Launch not ready
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    )
+                  })}
+                </div>
+              </div>
+            ))}
           </div>
         )}
       </div>

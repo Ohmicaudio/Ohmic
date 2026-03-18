@@ -76,7 +76,9 @@ export function createAdministratorServer(port = PORT) {
     }
 
     if (requestPath === '/api/tandem/status') {
-      sendJson(res, readTandemStatus())
+      readTandemStatus()
+        .then((status) => sendJson(res, status))
+        .catch((err) => sendJson(res, { error: err.message }, 500))
       return
     }
 

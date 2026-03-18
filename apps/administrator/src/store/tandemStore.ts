@@ -6,6 +6,8 @@ interface TandemState {
   configured: boolean
   available: boolean
   mode: 'unconfigured' | 'configured'
+  statusSource: 'env' | 'probe'
+  probeState: 'unavailable' | 'reachable' | 'error'
   sessionState: 'missing' | 'idle' | 'attached'
   baseUrl: string | null
   sessionLabel: string | null
@@ -14,6 +16,7 @@ interface TandemState {
   selectedPresetId: string
   handoffNote: string
   launchUrl: string | null
+  probeMessage: string | null
   message: string | null
   loading: boolean
   error: string | null
@@ -26,6 +29,8 @@ export const useTandemStore = create<TandemState>((set) => ({
   configured: false,
   available: false,
   mode: 'unconfigured',
+  statusSource: 'env',
+  probeState: 'unavailable',
   sessionState: 'missing',
   baseUrl: null,
   sessionLabel: null,
@@ -34,6 +39,7 @@ export const useTandemStore = create<TandemState>((set) => ({
   selectedPresetId: '',
   handoffNote: '',
   launchUrl: null,
+  probeMessage: null,
   message: null,
   loading: false,
   error: null,
@@ -54,6 +60,8 @@ export const useTandemStore = create<TandemState>((set) => ({
         configured: data.configured,
         available: data.available,
         mode: data.mode,
+        statusSource: data.status_source,
+        probeState: data.probe_state,
         sessionState: data.session_state,
         baseUrl: data.base_url,
         sessionLabel: data.session_label,
@@ -61,6 +69,7 @@ export const useTandemStore = create<TandemState>((set) => ({
         targetPresets: data.target_presets,
         selectedPresetId: nextSelectedPresetId,
         launchUrl: data.launch_url,
+        probeMessage: data.probe_message ?? null,
         message: data.message,
         loading: false,
         error: null,

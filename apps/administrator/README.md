@@ -35,6 +35,7 @@ It is now a usable intake triage foundation, but it is not yet a full operator d
   - `ADMINISTRATOR_TANDEM_SESSION_LABEL`
   - `ADMINISTRATOR_TANDEM_SESSION_STATE` (`missing`, `idle`, or `attached`)
   - `ADMINISTRATOR_TANDEM_ACTIVE_TARGET_LABEL`
+  - `ADMINISTRATOR_TANDEM_STATUS_URL` (optional live JSON probe that can override env-only session truth)
 
 ## Dev commands
 
@@ -86,6 +87,16 @@ $env:ADMINISTRATOR_TANDEM_SESSION_LABEL = 'gmail-triage'
 $env:ADMINISTRATOR_TANDEM_SESSION_STATE = 'attached'
 $env:ADMINISTRATOR_TANDEM_ACTIVE_TARGET_LABEL = 'Gmail support inbox'
 ```
+
+Optional live Tandem probe:
+
+```powershell
+$env:ADMINISTRATOR_TANDEM_STATUS_URL = 'http://127.0.0.1:8765/status'
+```
+
+If the probe responds with JSON fields like `session_state`, `active_target_label`,
+`available`, or `message`, the administrator desk will prefer that live truth over
+the static env session state.
 
 ## Current routes
 
