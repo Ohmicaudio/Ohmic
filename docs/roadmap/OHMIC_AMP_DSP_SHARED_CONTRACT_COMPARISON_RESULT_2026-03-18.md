@@ -68,6 +68,16 @@ that previously only appeared in the legacy wrapper:
 - `device_id`
 - `chip_id`
 
+The shared core status now also carries basic device/profile posture directly,
+instead of forcing consumers back into the hybrid legacy wrapper:
+
+- `runtime.transport_mode`
+- `device.public_designator`
+- `device.name`
+- `device.input_profile`
+- `device.output_profile`
+- `device.ui_mode`
+
 ## Expected profile differences
 
 DSP:
