@@ -10,6 +10,9 @@ export interface TandemStatusResponse {
     preset_id: string
     display_label: string
     target_label: string
+    target_kind?: string | null
+    team_label?: string | null
+    default_note?: string | null
   }>
   launch_url: string | null
   message: string
@@ -47,6 +50,9 @@ function readTargetPresets(): Array<{
   preset_id: string
   display_label: string
   target_label: string
+  target_kind?: string | null
+  team_label?: string | null
+  default_note?: string | null
 }> {
   const raw = readOptionalEnv('ADMINISTRATOR_TANDEM_TARGET_PRESETS')
   if (!raw) {
@@ -58,11 +64,16 @@ function readTargetPresets(): Array<{
     .map((entry) => entry.trim())
     .filter(Boolean)
     .map((entry, index) => {
-      const [presetId, displayLabel, targetLabel] = entry.split(';').map((part) => part?.trim() ?? '')
+      const [presetId, displayLabel, targetLabel, targetKind, teamLabel, defaultNote] = entry
+        .split(';')
+        .map((part) => part?.trim() ?? '')
       return {
         preset_id: presetId || `preset-${index + 1}`,
         display_label: displayLabel || targetLabel || `Preset ${index + 1}`,
         target_label: targetLabel || displayLabel || `target-${index + 1}`,
+        target_kind: targetKind || null,
+        team_label: teamLabel || null,
+        default_note: defaultNote || null,
       }
     })
 }

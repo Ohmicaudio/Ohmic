@@ -235,7 +235,7 @@ describe('administrator server', () => {
     process.env.ADMINISTRATOR_TANDEM_SESSION_STATE = 'attached'
     process.env.ADMINISTRATOR_TANDEM_ACTIVE_TARGET_LABEL = 'Gmail support inbox'
     process.env.ADMINISTRATOR_TANDEM_TARGET_PRESETS =
-      'gmail-support;Gmail Support;Gmail support inbox|github-bugs;GitHub Bugs;GitHub issues queue'
+      'gmail-support;Gmail Support;Gmail support inbox;email;Support;Ask provider to verify attachment context.|github-bugs;GitHub Bugs;GitHub issues queue;issue;Engineering;Confirm issue routing and required evidence.'
 
     const { createAdministratorServer } = await importServer()
     const app = createAdministratorServer(0)
@@ -270,16 +270,22 @@ describe('administrator server', () => {
       launch_url: 'http://127.0.0.1:8765/?sessionLabel=gmail-triage',
       mode: 'configured',
     })
-    expect(tandem.target_presets).toEqual([
+    expect(tandem.target_presets).toMatchObject([
       {
         preset_id: 'gmail-support',
         display_label: 'Gmail Support',
         target_label: 'Gmail support inbox',
+        target_kind: 'email',
+        team_label: 'Support',
+        default_note: 'Ask provider to verify attachment context.',
       },
       {
         preset_id: 'github-bugs',
         display_label: 'GitHub Bugs',
         target_label: 'GitHub issues queue',
+        target_kind: 'issue',
+        team_label: 'Engineering',
+        default_note: 'Confirm issue routing and required evidence.',
       },
     ])
 

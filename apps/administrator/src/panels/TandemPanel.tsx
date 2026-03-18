@@ -176,9 +176,38 @@ export function TandemPanel() {
                   >
                     <span className="text-ohmic-text">{preset.display_label}</span>
                     <span>{' -> '}{preset.target_label}</span>
+                    {preset.team_label ? <span>{` | ${preset.team_label}`}</span> : null}
+                    {preset.target_kind ? <span>{` | ${preset.target_kind}`}</span> : null}
                   </div>
                 ))}
               </div>
+              {selectedPreset ? (
+                <div className="rounded border border-ohmic-border bg-ohmic-bg px-3 py-2 space-y-2 text-[11px] text-ohmic-text-dim">
+                  <div className="flex items-center justify-between gap-3">
+                    <div className="text-ohmic-text">
+                      {selectedPreset.display_label}
+                    </div>
+                    <div className="text-[10px] uppercase tracking-widest text-ohmic-text-dim">
+                      {selectedPreset.team_label || 'Unassigned'}
+                    </div>
+                  </div>
+                  <div>
+                    {selectedPreset.target_label}
+                    {selectedPreset.target_kind ? ` | ${selectedPreset.target_kind}` : ''}
+                  </div>
+                  {selectedPreset.default_note ? (
+                    <div className="space-y-2">
+                      <div className="whitespace-pre-wrap">{selectedPreset.default_note}</div>
+                      <button
+                        onClick={() => setHandoffNote(selectedPreset.default_note ?? '')}
+                        className="rounded border border-ohmic-border px-2.5 py-1 text-[11px] font-medium text-ohmic-text transition-colors hover:border-ohmic-accent/30"
+                      >
+                        Use target default note
+                      </button>
+                    </div>
+                  ) : null}
+                </div>
+              ) : null}
             </div>
           ) : null}
 
@@ -186,6 +215,16 @@ export function TandemPanel() {
             {message ||
               'This is the first external-provider seam. Full tab/session handoff will build on this status floor.'}
           </div>
+
+          {!configured || !selectedPreset || !contextualLaunchUrl ? (
+            <div className="rounded border border-ohmic-warning/30 bg-ohmic-warning/10 px-3 py-2 text-[11px] text-ohmic-warning">
+              {!configured
+                ? 'Tandem launch is not ready until the base URL is configured.'
+                : !selectedPreset
+                  ? 'Choose a provider target preset before launch.'
+                  : 'Launch URL is not ready yet for the selected provider target.'}
+            </div>
+          ) : null}
 
           <div className="space-y-1">
             <label className="block text-xs uppercase tracking-wider text-ohmic-text-dim">

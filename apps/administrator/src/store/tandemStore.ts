@@ -1,4 +1,5 @@
 import { create } from 'zustand'
+import type { AdministratorTandemTargetPreset } from '@/types/tandem'
 import { fetchTandemStatus } from '@/api/tandem'
 
 interface TandemState {
@@ -9,11 +10,7 @@ interface TandemState {
   baseUrl: string | null
   sessionLabel: string | null
   activeTargetLabel: string | null
-  targetPresets: Array<{
-    preset_id: string
-    display_label: string
-    target_label: string
-  }>
+  targetPresets: AdministratorTandemTargetPreset[]
   selectedPresetId: string
   handoffNote: string
   launchUrl: string | null

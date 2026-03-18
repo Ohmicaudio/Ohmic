@@ -2,6 +2,9 @@ export interface AdministratorTandemTargetPreset {
   preset_id: string
   display_label: string
   target_label: string
+  target_kind?: string | null
+  team_label?: string | null
+  default_note?: string | null
 }
 
 export interface AdministratorTandemStatus {

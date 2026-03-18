@@ -500,6 +500,15 @@ export function ProviderHandoffPanel() {
                       <div className="text-[11px] text-ohmic-text-dim break-words">
                         {preset.target_label}
                       </div>
+                      <div className="text-[10px] text-ohmic-text-dim">
+                        {preset.team_label || 'Unassigned'}
+                        {preset.target_kind ? ` | ${preset.target_kind}` : ''}
+                      </div>
+                      {preset.default_note ? (
+                        <div className="text-[10px] text-ohmic-text-dim whitespace-pre-wrap">
+                          {preset.default_note}
+                        </div>
+                      ) : null}
                     </div>
                     {preset.preset_id === selectedTandemPresetId ? (
                       <span className="rounded-full border border-ohmic-accent/40 px-2 py-0.5 text-[10px] uppercase tracking-widest text-ohmic-accent">
@@ -514,6 +523,14 @@ export function ProviderHandoffPanel() {
                     >
                       Load target
                     </button>
+                    {preset.default_note ? (
+                      <button
+                        onClick={() => setTandemHandoffNote(preset.default_note ?? '')}
+                        className="rounded border border-ohmic-border px-2.5 py-1 text-[11px] font-medium text-ohmic-text transition-colors hover:border-ohmic-accent/30"
+                      >
+                        Use default note
+                      </button>
+                    ) : null}
                     {contextualLaunchUrl ? (
                       <a
                         href={contextualLaunchUrl}
@@ -527,7 +544,11 @@ export function ProviderHandoffPanel() {
                       >
                         Open in Tandem
                       </a>
-                    ) : null}
+                    ) : (
+                      <div className="rounded border border-ohmic-warning/30 px-2.5 py-1 text-[11px] text-ohmic-warning">
+                        Launch not ready
+                      </div>
+                    )}
                   </div>
                 </div>
               )
