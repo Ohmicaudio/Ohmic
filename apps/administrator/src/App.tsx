@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useMemo, useRef } from 'react'
 import { RuntimeIndicator } from '@/components/RuntimeIndicator'
 import { OperatorTruthStrip } from '@/components/OperatorTruthStrip'
 import { AggregationPanel } from '@/panels/AggregationPanel'
@@ -46,6 +46,8 @@ export function App() {
   const fetchFilingHistory = useFilingHistoryStore((s) => s.fetch)
   const fetchIntake = useIntakeStore((s) => s.fetch)
   const intakeItems = useIntakeStore((s) => s.items)
+  const intakeGeneratedAt = useIntakeStore((s) => s.generatedAt)
+  const intakeStaleness = useIntakeStore((s) => s.staleness)
   const selectedIntakeId = useIntakeStore((s) => s.selectedId)
   const selectIntake = useIntakeStore((s) => s.select)
   const fetchInactiveIntake = useInactiveIntakeStore((s) => s.fetch)
@@ -60,6 +62,21 @@ export function App() {
   const runtimeDir = useServerHealthStore((s) => s.runtimeDir)
   const loadedProjectionCount = useServerHealthStore((s) => s.loadedProjections.length)
   const expectedProjectionCount = useServerHealthStore((s) => s.expectedProjections.length)
+  const intakeProjectionAgeHours = useMemo(() => {
+    if (!intakeGeneratedAt) {
+      return null
+    }
+
+    const ageMs = Date.now() - new Date(intakeGeneratedAt).getTime()
+    if (Number.isNaN(ageMs) || ageMs < 0) {
+      return null
+    }
+
+    return ageMs / (1000 * 60 * 60)
+  }, [intakeGeneratedAt])
+  const intakeLooksHistorical =
+    intakeStaleness === 'stale' ||
+    (intakeProjectionAgeHours !== null && intakeProjectionAgeHours >= 8)
 
   useEffect(() => {
     const unsub = subscribeToUpdates((name) => {
@@ -133,6 +150,10 @@ export function App() {
       return
     }
 
+    if (intakeLooksHistorical) {
+      return
+    }
+
     const hasSelectedIntake = selectedIntakeId
       ? intakeItems.some((item) => item.intake_id === selectedIntakeId)
       : false
@@ -145,7 +166,7 @@ export function App() {
       selectIntake(intakeItems[0].intake_id)
       didAutoSelectIntake.current = true
     }
-  }, [intakeItems, selectIntake, selectedIntakeId])
+  }, [intakeItems, intakeLooksHistorical, selectIntake, selectedIntakeId])
 
   useEffect(() => {
     let cancelled = false
@@ -223,13 +244,20 @@ export function App() {
                 <h3 className="lane-kicker">Desk Feed</h3>
                 <div className="lane-title">Queue and Runtime</div>
                 <div className="lane-caption">
-                  Current ready work, live claims, and branch truth for the desk.
+                  {intakeLooksHistorical
+                    ? 'Live ready work first. Historical intake context stays available below without pretending to be fresh operator activity.'
+                    : 'Current ready work, live claims, and branch truth for the desk.'}
                 </div>
               </div>
               <div className="space-y-6">
-                <IntakeQueuePanel />
                 <QueueActivityPanel />
                 <WorkspaceActivityPanel />
+                {intakeLooksHistorical ? (
+                  <div className="rounded-xl border border-ohmic-warning/30 bg-ohmic-warning/10 px-4 py-3 text-sm text-ohmic-warning">
+                    Intake queue is being treated as historical context right now, so live queue work stays at the top of the desk until intake runtime freshness improves.
+                  </div>
+                ) : null}
+                <IntakeQueuePanel />
                 <InactiveIntakePanel />
                 <AggregationPanel />
               </div>
