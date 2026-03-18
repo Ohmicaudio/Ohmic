@@ -4,6 +4,7 @@ import http from 'http'
 import path from 'path'
 
 const localRuntimeBase = 'B:\\ohmic-local\\runtime\\administrator-tests'
+const localQueueBase = 'B:\\ohmic-local\\runtime\\administrator-ready-tests'
 
 async function importServer() {
   vi.resetModules()
@@ -13,14 +14,18 @@ async function importServer() {
 describe('administrator server', () => {
   let previousRuntimeDir: string | undefined
   let tempRuntimeDir: string | null = null
+  let tempReadyQueueDir: string | null = null
   let stopServer: (() => Promise<void>) | null = null
   let tandemProbeServer: http.Server | null = null
 
   beforeEach(async () => {
     previousRuntimeDir = process.env.ADMINISTRATOR_RUNTIME_DIR
     await mkdir(localRuntimeBase, { recursive: true })
+    await mkdir(localQueueBase, { recursive: true })
     tempRuntimeDir = await mkdtemp(path.join(localRuntimeBase, 'server-'))
+    tempReadyQueueDir = await mkdtemp(path.join(localQueueBase, 'ready-'))
     process.env.ADMINISTRATOR_RUNTIME_DIR = tempRuntimeDir
+    process.env.ADMINISTRATOR_READY_QUEUE_DIR = tempReadyQueueDir
 
     await writeFile(
       path.join(tempRuntimeDir, 'dashboard_status_cards.json'),
@@ -75,6 +80,11 @@ describe('administrator server', () => {
       tempRuntimeDir = null
     }
 
+    if (tempReadyQueueDir) {
+      await rm(tempReadyQueueDir, { recursive: true, force: true })
+      tempReadyQueueDir = null
+    }
+
     if (tandemProbeServer) {
       await new Promise<void>((resolve, reject) => {
         tandemProbeServer?.close((error) => {
@@ -91,6 +101,7 @@ describe('administrator server', () => {
     delete process.env.ADMINISTRATOR_TANDEM_ACTIVE_TARGET_LABEL
     delete process.env.ADMINISTRATOR_TANDEM_TARGET_PRESETS
     delete process.env.ADMINISTRATOR_TANDEM_STATUS_URL
+    delete process.env.ADMINISTRATOR_READY_QUEUE_DIR
   })
 
   async function writeActiveQueueFixture(intakeId: string, title: string) {
@@ -163,6 +174,41 @@ describe('administrator server', () => {
     }
 
     expect(projection.cards[0].card_id).toBe('summary')
+  })
+
+  it('serves ready tasks from the live queue directory instead of stale runtime cache', async () => {
+    await writeFile(
+      path.join(tempReadyQueueDir!, '2026-03-18-fix-provider-desk-truth.md'),
+      `scope: task\nstatus: ready\npriority: high\nproject: administrator\n\n# Fix provider desk truth\n`,
+      'utf-8'
+    )
+
+    const { createAdministratorServer } = await importServer()
+    const app = createAdministratorServer(0)
+    const baseUrl = await app.start()
+    stopServer = app.stop
+
+    const readyRes = await fetch(`${baseUrl}/api/projections/ready_tasks`)
+    expect(readyRes.ok).toBe(true)
+    const ready = (await readyRes.json()) as {
+      count: number
+      tasks: Array<{
+        task_id: string
+        title: string
+        priority: string
+        project: string
+        status: string
+      }>
+    }
+
+    expect(ready.count).toBe(1)
+    expect(ready.tasks[0]).toMatchObject({
+      task_id: '2026-03-18-fix-provider-desk-truth',
+      title: 'Fix provider desk truth',
+      priority: 'high',
+      project: 'administrator',
+      status: 'ready',
+    })
   })
 
   it('serves filing options for an active intake item', async () => {

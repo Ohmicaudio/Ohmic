@@ -198,6 +198,7 @@ export function ProviderHandoffPanel() {
   const auditItems = useAuditSummaryStore((state) => state.items)
   const auditAvailable = useAuditSummaryStore((state) => state.available)
   const auditLoading = useAuditSummaryStore((state) => state.loading)
+  const auditAttempted = useAuditSummaryStore((state) => state.attempted)
   const fetchAuditSummary = useAuditSummaryStore((state) => state.fetch)
   const commandNoteText = useCommandStore((state) => state.noteText)
   const setCommandIntakeId = useCommandStore((state) => state.setIntakeId)
@@ -359,6 +360,7 @@ export function ProviderHandoffPanel() {
   const selectedContextualLaunchUrl = selectedTandemPreset
     ? buildTandemContextUrl(tandemLaunchUrl, selectedIntake, selectedTandemPreset)
     : null
+  const providerRuntimeUnavailable = auditAttempted && !auditAvailable
 
   useEffect(() => {
     previousSummaryRef.current = {
@@ -1889,9 +1891,13 @@ export function ProviderHandoffPanel() {
             {focusedTargetLabel ? `Focused: ${focusedTargetLabel}` : 'All targets'}
           </div>
         </div>
-        {auditLoading && !auditAvailable ? (
+        {auditLoading && !auditAvailable && !providerRuntimeUnavailable ? (
           <div className="text-sm text-ohmic-text-dim animate-pulse">
             Loading provider activity...
+          </div>
+        ) : providerRuntimeUnavailable ? (
+          <div className="text-sm text-ohmic-text-dim">
+            Provider activity runtime is unavailable right now.
           </div>
         ) : visibleRecentHandoffs.length === 0 ? (
           <div className="text-sm text-ohmic-text-dim">

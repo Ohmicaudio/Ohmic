@@ -84,23 +84,29 @@ export function App() {
 
   useEffect(() => {
     fetchHealth()
+    fetchDashboard()
     fetchAggregationPanel()
     fetchAttachmentPreview()
     fetchAuditSummary()
     fetchFilingHistory()
+    fetchIntake()
     fetchInactiveIntake()
     fetchIntakeContext()
+    loadAuditTrail()
     fetchStatusHistory()
     fetchTandem()
     fetchWarningReview()
   }, [
+    fetchDashboard,
     fetchAggregationPanel,
     fetchAttachmentPreview,
     fetchAuditSummary,
     fetchFilingHistory,
     fetchHealth,
+    fetchIntake,
     fetchInactiveIntake,
     fetchIntakeContext,
+    loadAuditTrail,
     fetchStatusHistory,
     fetchTandem,
     fetchWarningReview,
@@ -140,13 +146,20 @@ export function App() {
 
           <div className="space-y-8">
             <IntakeDetailPanel />
+            <TandemPanel />
+            <CommandComposerPanel />
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 xl:grid-cols-2 gap-6 mt-8">
+          <div className="space-y-6">
             <FilingPickerPanel />
             <FilingHistoryPanel />
             <StatusHistoryPanel />
+          </div>
+          <div className="space-y-6">
             <WarningReviewPanel />
             <AttachmentPreviewPanel />
-            <TandemPanel />
-            <CommandComposerPanel />
             <AuditTrailPanel />
           </div>
         </div>

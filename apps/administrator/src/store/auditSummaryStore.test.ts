@@ -17,6 +17,7 @@ describe('auditSummaryStore', () => {
       loading: false,
       error: null,
       available: false,
+      attempted: false,
     })
   })
 
@@ -72,6 +73,7 @@ describe('auditSummaryStore', () => {
       error: null,
       activePresetId: 'status_changes',
       generatedAt: '2026-03-17T19:10:00Z',
+      attempted: true,
     })
     expect(useAuditSummaryStore.getState().items).toHaveLength(1)
     expect(useAuditSummaryStore.getState().filterPresets).toHaveLength(2)
@@ -91,6 +93,7 @@ describe('auditSummaryStore', () => {
       items: [],
       filterPresets: [],
       activePresetId: 'all_activity',
+      attempted: true,
     })
   })
 })

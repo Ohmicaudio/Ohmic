@@ -34,6 +34,7 @@ export function IntakeDetailPanel() {
   const auditItems = useAuditSummaryStore((state) => state.items)
   const auditAvailable = useAuditSummaryStore((state) => state.available)
   const auditLoading = useAuditSummaryStore((state) => state.loading)
+  const auditAttempted = useAuditSummaryStore((state) => state.attempted)
   const fetchAuditSummary = useAuditSummaryStore((state) => state.fetch)
   const tandemTargetPresets = useTandemStore((state) => state.targetPresets)
   const setSelectedTandemPreset = useTandemStore((state) => state.setSelectedPreset)
@@ -59,10 +60,12 @@ export function IntakeDetailPanel() {
   }, [selectedId, notes.length, tagAssignments.length, fetchContext])
 
   useEffect(() => {
-    if (selectedId && !auditAvailable && !auditLoading) {
+    if (selectedId && !auditAvailable && !auditLoading && !auditAttempted) {
       void fetchAuditSummary()
     }
-  }, [selectedId, auditAvailable, auditLoading, fetchAuditSummary])
+  }, [selectedId, auditAttempted, auditAvailable, auditLoading, fetchAuditSummary])
+
+  const providerRuntimeUnavailable = auditAttempted && !auditAvailable
 
   return (
     <div className="space-y-4">
@@ -140,9 +143,13 @@ export function IntakeDetailPanel() {
             <div className="text-xs uppercase tracking-wider text-ohmic-text-dim">
               Provider Handoff
             </div>
-            {auditLoading && !latestTandemLaunch ? (
+            {auditLoading && !latestTandemLaunch && !providerRuntimeUnavailable ? (
               <div className="text-xs text-ohmic-text-dim animate-pulse">
                 Loading provider handoff context...
+              </div>
+            ) : providerRuntimeUnavailable && !latestTandemLaunch ? (
+              <div className="text-xs text-ohmic-text-dim">
+                Provider handoff runtime is unavailable right now.
               </div>
             ) : !latestTandemLaunch ? (
               <div className="text-xs text-ohmic-text-dim">
@@ -208,9 +215,13 @@ export function IntakeDetailPanel() {
             <div className="text-xs uppercase tracking-wider text-ohmic-text-dim">
               Provider Timeline
             </div>
-            {auditLoading && providerTimeline.length === 0 ? (
+            {auditLoading && providerTimeline.length === 0 && !providerRuntimeUnavailable ? (
               <div className="text-xs text-ohmic-text-dim animate-pulse">
                 Loading provider timeline...
+              </div>
+            ) : providerRuntimeUnavailable && providerTimeline.length === 0 ? (
+              <div className="text-xs text-ohmic-text-dim">
+                Provider timeline runtime is unavailable right now.
               </div>
             ) : providerTimeline.length === 0 ? (
               <div className="text-xs text-ohmic-text-dim">
@@ -255,9 +266,13 @@ export function IntakeDetailPanel() {
             <div className="text-xs uppercase tracking-wider text-ohmic-text-dim">
               Provider Notes
             </div>
-            {auditLoading && providerNotes.length === 0 ? (
+            {auditLoading && providerNotes.length === 0 && !providerRuntimeUnavailable ? (
               <div className="text-xs text-ohmic-text-dim animate-pulse">
                 Loading provider notes...
+              </div>
+            ) : providerRuntimeUnavailable && providerNotes.length === 0 ? (
+              <div className="text-xs text-ohmic-text-dim">
+                Provider note runtime is unavailable right now.
               </div>
             ) : providerNotes.length === 0 ? (
               <div className="text-xs text-ohmic-text-dim">

@@ -4,6 +4,7 @@ import { fileURLToPath } from 'url'
 import { ProjectionReader } from './projectionReader.js'
 import { writeIntakeFocusSelection } from './focusWriter.js'
 import { getAdministratorRuntimeDir } from './runtimeConfig.js'
+import { readReadyTasksFromDisk } from './readyTasksSource.js'
 import { readTandemStatus } from './tandemProxy.js'
 import {
   executeCommand,
@@ -197,6 +198,12 @@ export function createAdministratorServer(port = PORT) {
     const projMatch = requestPath.match(/^\/api\/projections\/([a-z_]+)$/)
     if (projMatch) {
       const name = projMatch[1]
+      if (name === 'ready_tasks') {
+        readReadyTasksFromDisk()
+          .then((data) => sendJson(res, data))
+          .catch((err) => sendJson(res, { error: err.message }, 500))
+        return
+      }
       const data = reader.get(name)
       if (data) {
         sendJson(res, data)

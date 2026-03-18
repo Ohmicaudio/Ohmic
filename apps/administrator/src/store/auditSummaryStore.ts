@@ -13,6 +13,7 @@ interface AuditSummaryState {
   loading: boolean
   error: string | null
   available: boolean
+  attempted: boolean
   setActivePreset: (presetId: string) => void
   fetch: () => Promise<void>
 }
@@ -25,6 +26,7 @@ export const useAuditSummaryStore = create<AuditSummaryState>((set) => ({
   loading: false,
   error: null,
   available: false,
+  attempted: false,
 
   setActivePreset: (presetId) => set({ activePresetId: presetId }),
 
@@ -45,6 +47,7 @@ export const useAuditSummaryStore = create<AuditSummaryState>((set) => ({
         loading: false,
         error: null,
         available: true,
+        attempted: true,
       })
     } catch (err) {
       const message = err instanceof Error ? err.message : 'Failed to load audit summary'
@@ -58,6 +61,7 @@ export const useAuditSummaryStore = create<AuditSummaryState>((set) => ({
         loading: false,
         error: isMissingProjection ? null : message,
         available: !isMissingProjection,
+        attempted: true,
       })
     }
   },

@@ -44,6 +44,7 @@ export function DashboardPanel() {
   const { cards, generatedAt, staleness, loading, error, fetch } = useDashboardStore()
   const auditItems = useAuditSummaryStore((state) => state.items)
   const auditAvailable = useAuditSummaryStore((state) => state.available)
+  const auditAttempted = useAuditSummaryStore((state) => state.attempted)
   const fetchAuditSummary = useAuditSummaryStore((state) => state.fetch)
   const intakeItems = useIntakeStore((state) => state.items)
   const providerSummary = buildProviderHandoffSummary(auditItems)
@@ -64,10 +65,10 @@ export function DashboardPanel() {
   }, [fetch])
 
   useEffect(() => {
-    if (!auditAvailable) {
+    if (!auditAvailable && !auditAttempted) {
       void fetchAuditSummary()
     }
-  }, [auditAvailable, fetchAuditSummary])
+  }, [auditAttempted, auditAvailable, fetchAuditSummary])
 
   return (
     <div className="space-y-4">

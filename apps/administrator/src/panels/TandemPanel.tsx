@@ -43,6 +43,7 @@ export function TandemPanel() {
   const auditItems = useAuditSummaryStore((state) => state.items)
   const auditAvailable = useAuditSummaryStore((state) => state.available)
   const auditLoading = useAuditSummaryStore((state) => state.loading)
+  const auditAttempted = useAuditSummaryStore((state) => state.attempted)
   const refreshAuditSummary = useAuditSummaryStore((state) => state.fetch)
   const selectedIntake = items.find((item) => item.intake_id === selectedId) ?? null
   const selectedPreset = useMemo(
@@ -64,10 +65,10 @@ export function TandemPanel() {
   }, [fetch])
 
   useEffect(() => {
-    if (!auditAvailable && !auditLoading) {
+    if (!auditAvailable && !auditLoading && !auditAttempted) {
       void refreshAuditSummary()
     }
-  }, [auditAvailable, auditLoading, refreshAuditSummary])
+  }, [auditAttempted, auditAvailable, auditLoading, refreshAuditSummary])
 
   async function handleTandemLaunch() {
     if (!contextualLaunchUrl) {

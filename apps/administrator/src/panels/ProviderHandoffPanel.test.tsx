@@ -54,6 +54,7 @@ const auditState = {
     },
   ],
   available: true,
+  attempted: true,
   loading: false,
   fetch: vi.fn(),
 }

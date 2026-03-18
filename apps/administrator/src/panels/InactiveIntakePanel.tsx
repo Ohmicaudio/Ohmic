@@ -41,6 +41,7 @@ export function InactiveIntakePanel() {
   const auditItems = useAuditSummaryStore((s) => s.items)
   const auditAvailable = useAuditSummaryStore((s) => s.available)
   const auditLoading = useAuditSummaryStore((s) => s.loading)
+  const auditAttempted = useAuditSummaryStore((s) => s.attempted)
   const fetchAuditSummary = useAuditSummaryStore((s) => s.fetch)
   const tandemTargetPresets = useTandemStore((s) => s.targetPresets)
   const setSelectedTandemPreset = useTandemStore((s) => s.setSelectedPreset)
@@ -53,10 +54,10 @@ export function InactiveIntakePanel() {
   }, [items.length, loading, fetch])
 
   useEffect(() => {
-    if (items.length > 0 && !auditAvailable && !auditLoading) {
+    if (items.length > 0 && !auditAvailable && !auditLoading && !auditAttempted) {
       void fetchAuditSummary()
     }
-  }, [items.length, auditAvailable, auditLoading, fetchAuditSummary])
+  }, [items.length, auditAttempted, auditAvailable, auditLoading, fetchAuditSummary])
 
   const activePreset =
     filterPresets.find((preset) => preset.preset_id === activeFilter) ??
