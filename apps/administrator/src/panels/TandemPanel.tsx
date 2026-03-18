@@ -378,12 +378,38 @@ export function TandemPanel() {
           ) : null}
 
           {!configured || !selectedPreset || !contextualLaunchUrl ? (
-            <div className="rounded border border-ohmic-warning/30 bg-ohmic-warning/10 px-3 py-2 text-[11px] text-ohmic-warning">
-              {!configured
-                ? 'Tandem launch is not ready until the base URL is configured.'
-                : !selectedPreset
-                  ? 'Choose a provider target preset before launch.'
-                  : 'Launch URL is not ready yet for the selected provider target.'}
+            <div className="rounded border border-ohmic-warning/30 bg-ohmic-warning/10 px-3 py-3 text-[11px] text-ohmic-warning space-y-2">
+              <div className="font-medium text-[11px] uppercase tracking-widest">
+                Provider handoff is not launch-ready
+              </div>
+              <div>
+                {!configured
+                  ? 'Tandem launch is not ready until the base URL is configured.'
+                  : !selectedPreset
+                    ? 'Choose a provider target preset before launch.'
+                    : 'Launch URL is not ready yet for the selected provider target.'}
+              </div>
+              <div className="space-y-1 text-ohmic-text-dim">
+                {!configured ? (
+                  <>
+                    <div>1. Set `ADMINISTRATOR_TANDEM_BASE_URL`.</div>
+                    <div>2. Add at least one target preset for the provider you want to open.</div>
+                    <div>3. Return here to prepare a handoff note and launch.</div>
+                  </>
+                ) : !selectedPreset ? (
+                  <>
+                    <div>1. Pick the provider target you want to enter.</div>
+                    <div>2. Add a handoff note if the provider needs context.</div>
+                    <div>3. Launch Tandem from this rail once the target is selected.</div>
+                  </>
+                ) : (
+                  <>
+                    <div>1. Confirm the selected target preset is healthy.</div>
+                    <div>2. Refresh the Tandem status seam.</div>
+                    <div>3. Launch again once the launch URL resolves for this target.</div>
+                  </>
+                )}
+              </div>
             </div>
           ) : null}
 

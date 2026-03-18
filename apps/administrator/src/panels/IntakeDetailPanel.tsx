@@ -27,6 +27,38 @@ function DetailRow({
   )
 }
 
+function EmptyChecklist({
+  title,
+  body,
+  items,
+}: {
+  title: string
+  body: string
+  items: string[]
+}) {
+  return (
+    <div className="panel border-ohmic-border/80 bg-ohmic-bg/70 py-5">
+      <div className="space-y-2">
+        <div className="text-sm font-medium text-ohmic-text">{title}</div>
+        <div className="text-sm leading-6 text-ohmic-text-dim">{body}</div>
+      </div>
+      <div className="mt-4 space-y-2">
+        {items.map((item, index) => (
+          <div
+            key={`${index}-${item}`}
+            className="flex items-start gap-3 rounded-lg border border-ohmic-border/70 bg-ohmic-surface/70 px-3 py-2"
+          >
+            <div className="mt-0.5 rounded-full bg-ohmic-accent/15 px-2 py-0.5 text-[10px] uppercase tracking-widest text-ohmic-accent">
+              {index + 1}
+            </div>
+            <div className="text-sm text-ohmic-text-dim">{item}</div>
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}
+
 export function IntakeDetailPanel() {
   const { items, selectedId } = useIntakeStore()
   const { notes, tagAssignments, loading: contextLoading, fetch: fetchContext } =
@@ -77,9 +109,15 @@ export function IntakeDetailPanel() {
       </div>
 
       {!selectedItem ? (
-        <div className="panel text-sm text-ohmic-text-dim py-6">
-          Select an intake item from the queue to inspect its routing context.
-        </div>
+        <EmptyChecklist
+          title="No intake selected yet"
+          body="Pick a queue item to load its routing context, provider timeline, and note history into this lane."
+          items={[
+            'Choose a ready intake from Queue and Runtime.',
+            'Review the intake summary, provider history, and note stream here.',
+            'Then use the Action Rail to hand off or apply the next desk action.',
+          ]}
+        />
       ) : (
         <div className="panel space-y-4">
           <div className="space-y-2">
