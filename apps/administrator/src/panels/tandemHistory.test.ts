@@ -1,5 +1,9 @@
 import { describe, expect, it } from 'vitest'
-import { selectRecentTandemLaunches, resolveRecentTandemLaunchSelection } from '@/panels/tandemHistory'
+import {
+  resolveRecentTandemLaunchSelection,
+  selectLatestTandemLaunchForIntake,
+  selectRecentTandemLaunches,
+} from '@/panels/tandemHistory'
 
 describe('selectRecentTandemLaunches', () => {
   it('returns only provider handoff events', () => {
@@ -58,6 +62,51 @@ describe('selectRecentTandemLaunches', () => {
     }))
 
     expect(selectRecentTandemLaunches(rows, 2)).toEqual(rows.slice(0, 2))
+  })
+
+  it('returns the latest handoff row for the selected intake', () => {
+    const rows = [
+      {
+        event_id: 'evt-1',
+        event_family: 'provider_handoff',
+        intake_id: 'intake-1',
+        summary_label: 'Opened Tandem handoff',
+        actor_label: 'operator:d',
+        occurred_at: '2026-03-17T20:00:00Z',
+        status_delta: '',
+        target_label: 'Old target',
+        target_preset_id: 'old-target',
+        launch_url: 'http://127.0.0.1:8765/?targetPreset=old-target',
+      },
+      {
+        event_id: 'evt-2',
+        event_family: 'provider_handoff',
+        intake_id: 'intake-2',
+        summary_label: 'Opened Tandem handoff',
+        actor_label: 'operator:d',
+        occurred_at: '2026-03-17T20:01:00Z',
+        status_delta: '',
+        target_label: 'Other target',
+        target_preset_id: 'other-target',
+        launch_url: 'http://127.0.0.1:8765/?targetPreset=other-target',
+      },
+      {
+        event_id: 'evt-3',
+        event_family: 'provider_handoff',
+        intake_id: 'intake-1',
+        summary_label: 'Opened Tandem handoff',
+        actor_label: 'operator:d',
+        occurred_at: '2026-03-17T20:02:00Z',
+        status_delta: 'attachment_review',
+        target_label: 'Newest target',
+        target_preset_id: 'new-target',
+        launch_url: 'http://127.0.0.1:8765/?targetPreset=new-target',
+      },
+    ]
+
+    expect(selectLatestTandemLaunchForIntake(rows, 'intake-1')).toEqual(rows[2])
+    expect(selectLatestTandemLaunchForIntake(rows, 'missing-intake')).toBeNull()
+    expect(selectLatestTandemLaunchForIntake(rows, null)).toBeNull()
   })
 
   it('restores selection using the exact preset id and active intake', () => {

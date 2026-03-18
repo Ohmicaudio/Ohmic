@@ -10,6 +10,25 @@ export function selectRecentTandemLaunches(
     .slice(0, maxItems)
 }
 
+export function selectLatestTandemLaunchForIntake(
+  rows: AdministratorAuditSummaryItem[],
+  intakeId: string | null
+): AdministratorAuditSummaryItem | null {
+  if (!intakeId) {
+    return null
+  }
+
+  return rows
+    .filter((row) => row.event_family === 'provider_handoff' && row.intake_id === intakeId)
+    .sort((left, right) => {
+      const leftTime = Date.parse(left.occurred_at || '')
+      const rightTime = Date.parse(right.occurred_at || '')
+      const safeLeft = Number.isFinite(leftTime) ? leftTime : 0
+      const safeRight = Number.isFinite(rightTime) ? rightTime : 0
+      return safeRight - safeLeft
+    })[0] ?? null
+}
+
 export function resolveRecentTandemLaunchSelection(
   row: AdministratorAuditSummaryItem,
   targetPresets: AdministratorTandemTargetPreset[],
