@@ -4,6 +4,7 @@ import { OperatorTruthStrip } from '@/components/OperatorTruthStrip'
 import { AggregationPanel } from '@/panels/AggregationPanel'
 import { AttachmentPreviewPanel } from '@/panels/AttachmentPreviewPanel'
 import { DashboardPanel } from '@/panels/DashboardPanel'
+import { DeskFocusPanel } from '@/panels/DeskFocusPanel'
 import { IntakeQueuePanel } from '@/panels/IntakeQueuePanel'
 import { InactiveIntakePanel } from '@/panels/InactiveIntakePanel'
 import { IntakeDetailPanel } from '@/panels/IntakeDetailPanel'
@@ -243,6 +244,7 @@ export function App() {
                 </div>
               </div>
               <div className="space-y-6">
+                <DeskFocusPanel />
                 <IntakeDetailPanel />
                 <ProviderHandoffPanel />
               </div>
