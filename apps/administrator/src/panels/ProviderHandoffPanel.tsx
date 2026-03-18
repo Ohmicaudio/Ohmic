@@ -1,9 +1,14 @@
 import { useMemo, useState } from 'react'
 import { recordTandemLaunchIntent } from '@/api/tandem'
 import { useAuditSummaryStore } from '@/store/auditSummaryStore'
+import { useCommandStore } from '@/store/commandStore'
 import { useIntakeStore } from '@/store/intakeStore'
 import { useTandemStore } from '@/store/tandemStore'
 import { buildTandemContextUrl } from '@/panels/tandemContext'
+import {
+  buildAuditFollowUpNote,
+  deriveAuditFollowUpAction,
+} from '@/panels/auditFollowUp'
 import {
   buildProviderHandoffSummary,
   groupProviderHandoffsByTarget,
@@ -23,6 +28,10 @@ export function ProviderHandoffPanel() {
   const auditAvailable = useAuditSummaryStore((state) => state.available)
   const auditLoading = useAuditSummaryStore((state) => state.loading)
   const fetchAuditSummary = useAuditSummaryStore((state) => state.fetch)
+  const commandNoteText = useCommandStore((state) => state.noteText)
+  const setCommandIntakeId = useCommandStore((state) => state.setIntakeId)
+  const setCommandActionInput = useCommandStore((state) => state.setActionInput)
+  const setCommandNoteText = useCommandStore((state) => state.setNoteText)
   const tandemTargetPresets = useTandemStore((state) => state.targetPresets)
   const selectedTandemPresetId = useTandemStore((state) => state.selectedPresetId)
   const tandemLaunchUrl = useTandemStore((state) => state.launchUrl)
@@ -100,6 +109,18 @@ export function ProviderHandoffPanel() {
     } catch {
       // Keep provider launch non-blocking even if audit writeback fails.
     }
+  }
+
+  function primeProviderFollowUp(item: (typeof recentHandoffs)[number]) {
+    if (!item.intake_id) {
+      return
+    }
+
+    const action = deriveAuditFollowUpAction(item.event_family) ?? 'add_note'
+    setCommandIntakeId(item.intake_id)
+    setCommandActionInput(action)
+    setCommandNoteText(buildAuditFollowUpNote(commandNoteText, item))
+    selectIntake(item.intake_id)
   }
 
   return (
@@ -332,6 +353,12 @@ export function ProviderHandoffPanel() {
               >
                 Load into Tandem desk
               </button>
+              <button
+                onClick={() => primeProviderFollowUp(selectedHandoff)}
+                className="rounded border border-ohmic-border px-2.5 py-1 text-[11px] font-medium text-ohmic-text transition-colors hover:border-ohmic-accent/30"
+              >
+                Prime follow-up
+              </button>
               {selectedHandoff.launch_url ? (
                 <a
                   href={selectedHandoff.launch_url}
@@ -404,6 +431,12 @@ export function ProviderHandoffPanel() {
                     className="rounded border border-ohmic-border px-2.5 py-1 text-[11px] font-medium text-ohmic-text transition-colors hover:border-ohmic-accent/30"
                   >
                     Load into Tandem desk
+                  </button>
+                  <button
+                    onClick={() => primeProviderFollowUp(item)}
+                    className="rounded border border-ohmic-border px-2.5 py-1 text-[11px] font-medium text-ohmic-text transition-colors hover:border-ohmic-accent/30"
+                  >
+                    Prime follow-up
                   </button>
                   {item.launch_url ? (
                     <a
