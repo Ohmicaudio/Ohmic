@@ -1,5 +1,8 @@
 import { useEffect, useMemo } from 'react'
-import { recordTandemLaunchIntent } from '@/api/tandem'
+import {
+  recordTandemHandshakeResolution,
+  recordTandemLaunchIntent,
+} from '@/api/tandem'
 import { useTandemStore } from '@/store/tandemStore'
 import { useIntakeStore } from '@/store/intakeStore'
 import { buildTandemContextUrl } from '@/panels/tandemContext'
@@ -82,6 +85,30 @@ export function TandemPanel() {
       await refreshAuditSummary()
     } catch {
       // Keep the handoff non-blocking even if audit writeback fails.
+    }
+  }
+
+  async function handleResolveHandshake(state: 'attached' | 'failed' | 'cleared') {
+    if (!pendingHandshake) {
+      return
+    }
+
+    try {
+      await recordTandemHandshakeResolution({
+        state,
+        event_id: pendingHandshake.event_id,
+        intake_id: pendingHandshake.intake_id,
+        target_preset_id: pendingHandshake.target_preset_id,
+        target_label: pendingHandshake.target_label,
+        resolution_note:
+          state === 'cleared'
+            ? 'Operator cleared the handshake state from the Tandem desk.'
+            : handoffNote.trim() || pendingHandshake.handshake_note || null,
+      })
+      await refreshAuditSummary()
+      await fetch()
+    } catch {
+      // Keep handshake resolution non-blocking for the desk.
     }
   }
 
@@ -274,9 +301,23 @@ export function TandemPanel() {
           </div>
 
           {pendingHandshake ? (
-            <div className="rounded border border-amber-300/30 bg-amber-300/10 px-3 py-2 space-y-2 text-[11px] text-amber-300">
+            <div
+              className={`rounded border px-3 py-2 space-y-2 text-[11px] ${
+                pendingHandshake.state === 'attached'
+                  ? 'border-emerald-300/30 bg-emerald-300/10 text-emerald-300'
+                  : pendingHandshake.state === 'failed'
+                    ? 'border-rose-300/30 bg-rose-300/10 text-rose-300'
+                    : 'border-amber-300/30 bg-amber-300/10 text-amber-300'
+              }`}
+            >
               <div className="flex items-center justify-between gap-3">
-                <div className="uppercase tracking-widest">Pending handshake</div>
+                <div className="uppercase tracking-widest">
+                  {pendingHandshake.state === 'attached'
+                    ? 'Attached handshake'
+                    : pendingHandshake.state === 'failed'
+                      ? 'Failed handshake'
+                      : 'Pending handshake'}
+                </div>
                 <div className="text-[10px] whitespace-nowrap">
                   {new Date(pendingHandshake.occurred_at).toLocaleString()}
                 </div>
@@ -293,9 +334,31 @@ export function TandemPanel() {
               <div className="flex flex-wrap gap-2">
                 <button
                   onClick={handleResumePendingHandshake}
-                  className="rounded border border-amber-300/30 px-2.5 py-1 text-[11px] font-medium text-amber-300 transition-colors hover:border-amber-300 hover:bg-amber-300/10"
+                  className="rounded border border-current/30 px-2.5 py-1 text-[11px] font-medium transition-colors hover:border-current hover:bg-black/10"
                 >
                   Resume handshake
+                </button>
+                {pendingHandshake.state !== 'attached' ? (
+                  <button
+                    onClick={() => void handleResolveHandshake('attached')}
+                    className="rounded border border-emerald-300/30 px-2.5 py-1 text-[11px] font-medium text-emerald-300 transition-colors hover:border-emerald-300 hover:bg-emerald-300/10"
+                  >
+                    Mark attached
+                  </button>
+                ) : null}
+                {pendingHandshake.state !== 'failed' ? (
+                  <button
+                    onClick={() => void handleResolveHandshake('failed')}
+                    className="rounded border border-rose-300/30 px-2.5 py-1 text-[11px] font-medium text-rose-300 transition-colors hover:border-rose-300 hover:bg-rose-300/10"
+                  >
+                    Mark failed
+                  </button>
+                ) : null}
+                <button
+                  onClick={() => void handleResolveHandshake('cleared')}
+                  className="rounded border border-ohmic-border px-2.5 py-1 text-[11px] font-medium text-ohmic-text-dim transition-colors hover:border-ohmic-accent/30 hover:text-ohmic-text"
+                >
+                  Clear state
                 </button>
               </div>
             </div>

@@ -43,6 +43,15 @@ interface RecordTandemTargetHandshakeInput {
   handshake_note?: string | null
 }
 
+interface RecordTandemHandshakeResolutionInput {
+  state: 'attached' | 'failed' | 'cleared'
+  event_id?: string | null
+  intake_id?: string | null
+  target_preset_id?: string | null
+  target_label?: string | null
+  resolution_note?: string | null
+}
+
 interface RecordProviderFollowUpCompletionInput {
   intake_id: string
   target_preset_id?: string | null
@@ -188,6 +197,16 @@ interface RecordTandemTargetHandshakeResponse {
   }
 }
 
+interface RecordTandemHandshakeResolutionResponse {
+  writeback: {
+    writeback_status: 'accepted'
+    event_id: string
+    intake_id: string | null
+    target_label: string | null
+    audit_summary_count: number
+  }
+}
+
 interface TandemHandshakeStateRecord {
   generated_at: string
   projection_name: 'administrator_tandem_handshake_state'
@@ -198,7 +217,7 @@ interface TandemHandshakeStateRecord {
     target_label: string | null
     handshake_note: string | null
     occurred_at: string
-    state: 'pending'
+    state: 'pending' | 'attached' | 'failed'
   } | null
 }
 
@@ -972,6 +991,88 @@ export async function recordTandemTargetHandshake(
     occurred_at: occurredAt,
     state: 'pending',
   })
+  return result
+}
+
+export async function recordTandemHandshakeResolution(
+  input: RecordTandemHandshakeResolutionInput
+): Promise<RecordTandemHandshakeResolutionResponse> {
+  const runtimeDir = escapePowerShellString(RUNTIME_DIR)
+  const occurredAt = new Date().toISOString()
+  const eventId = `tandem_handshake_resolution_${Date.now()}`
+  const intakeId = escapePowerShellString(input.intake_id ?? '')
+  const targetPresetId = escapePowerShellString(input.target_preset_id ?? '')
+  const targetLabel = escapePowerShellString(input.target_label ?? '')
+  const resolutionNote = escapePowerShellString(input.resolution_note ?? '')
+  const resolutionState = input.state
+  const statusDelta =
+    resolutionState === 'attached'
+      ? 'handshake_attached'
+      : resolutionState === 'failed'
+        ? 'handshake_failed'
+        : 'handshake_cleared'
+  const summaryLabel =
+    resolutionState === 'attached'
+      ? 'Attached Tandem handshake'
+      : resolutionState === 'failed'
+        ? 'Failed Tandem handshake'
+        : 'Cleared Tandem handshake'
+
+  const psScript = `
+    Set-StrictMode -Version Latest
+    $ErrorActionPreference = 'Stop'
+
+    . '${commonScript}'
+    . '${auditSummaryProjectionScript}'
+
+    $runtimeDir = '${runtimeDir}'
+    $auditEventsPath = Join-Path $runtimeDir 'administrator_audit_events.jsonl'
+
+    $event = [pscustomobject]@{
+      event_id = '${eventId}'
+      event_type = 'administrator.tandem.handshake_resolution'
+      event_family = 'provider_handoff'
+      intake_id = '${intakeId}'
+      summary_label = '${summaryLabel}'
+      actor_label = 'operator:d'
+      occurred_at = '${escapePowerShellString(occurredAt)}'
+      status_delta = '${statusDelta}'
+      target_label = if ([string]::IsNullOrWhiteSpace('${targetLabel}')) { if ([string]::IsNullOrWhiteSpace('${targetPresetId}')) { '' } else { '${targetPresetId}' } } else { '${targetLabel}' }
+      target_preset_id = '${targetPresetId}'
+      handoff_note = '${resolutionNote}'
+    }
+
+    Append-JsonLine -PathText $auditEventsPath -Value $event
+    $auditEvents = @(Read-JsonLines -PathText $auditEventsPath)
+    $projection = Write-AdministratorAuditSummaryProjection -AuditEvents $auditEvents -RuntimeDir $runtimeDir
+
+    [pscustomobject]@{
+      writeback = [pscustomobject]@{
+        writeback_status = 'accepted'
+        event_id = '${eventId}'
+        intake_id = if ([string]::IsNullOrWhiteSpace('${intakeId}')) { $null } else { '${intakeId}' }
+        target_label = if ([string]::IsNullOrWhiteSpace('${targetLabel}')) { if ([string]::IsNullOrWhiteSpace('${targetPresetId}')) { $null } else { '${targetPresetId}' } } else { '${targetLabel}' }
+        audit_summary_count = @($projection.rows).Count
+      }
+    } | ConvertTo-Json -Depth 10 -Compress
+  `
+
+  const result = (await runPowerShell(psScript)) as RecordTandemHandshakeResolutionResponse
+
+  if (input.state === 'cleared') {
+    await writePendingTandemHandshake(null)
+  } else {
+    await writePendingTandemHandshake({
+      event_id: input.event_id ?? result.writeback.event_id,
+      intake_id: input.intake_id ?? null,
+      target_preset_id: input.target_preset_id ?? null,
+      target_label: input.target_label ?? null,
+      handshake_note: input.resolution_note ?? null,
+      occurred_at: occurredAt,
+      state: input.state,
+    })
+  }
+
   return result
 }
 

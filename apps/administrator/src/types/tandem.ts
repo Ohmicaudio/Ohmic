@@ -13,14 +13,14 @@ export interface AdministratorTandemTargetHealth {
   message?: string | null
 }
 
-export interface AdministratorTandemPendingHandshake {
+export interface AdministratorTandemHandshakeState {
   event_id: string
   intake_id: string | null
   target_preset_id: string | null
   target_label: string | null
   handshake_note?: string | null
   occurred_at: string
-  state: 'pending'
+  state: 'pending' | 'attached' | 'failed'
 }
 
 export interface AdministratorTandemStatus {
@@ -35,7 +35,7 @@ export interface AdministratorTandemStatus {
   active_target_label: string | null
   target_presets: AdministratorTandemTargetPreset[]
   target_health: AdministratorTandemTargetHealth[]
-  pending_handshake: AdministratorTandemPendingHandshake | null
+  pending_handshake: AdministratorTandemHandshakeState | null
   launch_url: string | null
   probe_message?: string | null
   message: string
@@ -55,6 +55,15 @@ export interface AdministratorTandemTargetHandshakeRequest {
   target_preset_id?: string | null
   target_label?: string | null
   handshake_note?: string | null
+}
+
+export interface AdministratorTandemHandshakeResolutionRequest {
+  state: 'attached' | 'failed' | 'cleared'
+  event_id?: string | null
+  intake_id?: string | null
+  target_preset_id?: string | null
+  target_label?: string | null
+  resolution_note?: string | null
 }
 
 export interface AdministratorTandemFollowUpCompletionRequest {

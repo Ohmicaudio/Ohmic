@@ -127,6 +127,7 @@ vi.mock('@/api/commands', () => ({
 vi.mock('@/api/tandem', () => ({
   recordProviderFollowUpCompletion: vi.fn(),
   recordProviderFollowUpReopen: vi.fn(),
+  recordTandemHandshakeResolution: vi.fn(),
   recordTandemLaunchIntent: vi.fn(),
   recordTandemTargetHandshake: vi.fn(),
 }))
@@ -143,6 +144,9 @@ describe('ProviderHandoffPanel', () => {
     expect(markup).toContain('Prepare handshake')
     expect(markup).toContain('Pending handshake')
     expect(markup).toContain('Resume handshake')
+    expect(markup).toContain('Mark attached')
+    expect(markup).toContain('Mark failed')
+    expect(markup).toContain('Clear state')
     expect(markup).toContain('Export history')
     expect(markup).toContain('Gmail Support')
     expect(markup).toContain('Selected target attached')

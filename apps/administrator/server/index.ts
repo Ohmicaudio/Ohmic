@@ -11,6 +11,7 @@ import {
   recordFiling,
   recordProviderFollowUpCompletion,
   recordProviderFollowUpReopen,
+  recordTandemHandshakeResolution,
   recordTandemLaunchIntent,
   recordTandemTargetHandshake,
   reopenInactiveIntake,
@@ -106,6 +107,26 @@ export function createAdministratorServer(port = PORT) {
         try {
           const input = JSON.parse(body)
           recordTandemTargetHandshake(input)
+            .then((result) => sendJson(res, result))
+            .catch((err) => sendJson(res, { error: err.message }, 500))
+        } catch {
+          sendJson(res, { error: 'Invalid JSON body' }, 400)
+        }
+      })
+      return
+    }
+
+    if (requestPath === '/api/tandem/handshake-resolution' && req.method === 'POST') {
+      let body = ''
+      req.on('data', (chunk: Buffer) => { body += chunk.toString() })
+      req.on('end', () => {
+        try {
+          const input = JSON.parse(body)
+          if (!input?.state || !['attached', 'failed', 'cleared'].includes(input.state)) {
+            sendJson(res, { error: 'Missing valid state in request body' }, 400)
+            return
+          }
+          recordTandemHandshakeResolution(input)
             .then((result) => sendJson(res, result))
             .catch((err) => sendJson(res, { error: err.message }, 500))
         } catch {

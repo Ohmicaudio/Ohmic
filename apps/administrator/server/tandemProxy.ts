@@ -32,7 +32,7 @@ export interface TandemStatusResponse {
     target_label: string | null
     handshake_note?: string | null
     occurred_at: string
-    state: 'pending'
+    state: 'pending' | 'attached' | 'failed'
   } | null
   launch_url: string | null
   probe_message?: string | null
@@ -90,7 +90,13 @@ async function readPendingHandshake(): Promise<TandemStatusResponse['pending_han
       } | null
     }
     const handshake = parsed.handshake
-    if (!handshake?.event_id || !handshake?.occurred_at || handshake.state !== 'pending') {
+    if (
+      !handshake?.event_id ||
+      !handshake?.occurred_at ||
+      (handshake.state !== 'pending' &&
+        handshake.state !== 'attached' &&
+        handshake.state !== 'failed')
+    ) {
       return null
     }
 
@@ -101,7 +107,7 @@ async function readPendingHandshake(): Promise<TandemStatusResponse['pending_han
       target_label: handshake.target_label ?? null,
       handshake_note: handshake.handshake_note ?? null,
       occurred_at: handshake.occurred_at,
-      state: 'pending',
+      state: handshake.state,
     }
   } catch {
     return null

@@ -1,6 +1,7 @@
 import type {
   AdministratorTandemFollowUpCompletionRequest,
   AdministratorTandemFollowUpReopenRequest,
+  AdministratorTandemHandshakeResolutionRequest,
   AdministratorTandemLaunchIntentRequest,
   AdministratorTandemStatus,
   AdministratorTandemTargetHandshakeRequest,
@@ -69,5 +70,19 @@ export async function recordTandemTargetHandshake(
 
   if (!res.ok) {
     throw new Error(`Tandem target handshake failed: ${res.status}`)
+  }
+}
+
+export async function recordTandemHandshakeResolution(
+  input: AdministratorTandemHandshakeResolutionRequest
+): Promise<void> {
+  const res = await fetch(`${API_BASE}/tandem/handshake-resolution`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(input),
+  })
+
+  if (!res.ok) {
+    throw new Error(`Tandem handshake resolution failed: ${res.status}`)
   }
 }

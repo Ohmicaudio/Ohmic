@@ -567,6 +567,79 @@ describe('administrator server', () => {
     })
   })
 
+  it('resolves tandem handshake state and can clear it', async () => {
+    const { createAdministratorServer } = await importServer()
+    const app = createAdministratorServer(0)
+    const baseUrl = await app.start()
+    stopServer = app.stop
+
+    const handshakeRes = await fetch(`${baseUrl}/api/tandem/handshake-target`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        intake_id: 'intake-handshake-2',
+        target_preset_id: 'gmail-support',
+        target_label: 'Gmail support inbox',
+        handshake_note: 'Prepare provider session before launch.',
+      }),
+    })
+
+    expect(handshakeRes.ok).toBe(true)
+
+    const attachedRes = await fetch(`${baseUrl}/api/tandem/handshake-resolution`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        state: 'attached',
+        event_id: 'handoff-resolution-attached',
+        intake_id: 'intake-handshake-2',
+        target_preset_id: 'gmail-support',
+        target_label: 'Gmail support inbox',
+        resolution_note: 'Handshake attached to the live provider session.',
+      }),
+    })
+
+    expect(attachedRes.ok).toBe(true)
+
+    const attachedStatusRes = await fetch(`${baseUrl}/api/tandem/status`)
+    expect(attachedStatusRes.ok).toBe(true)
+    const attachedStatus = (await attachedStatusRes.json()) as {
+      pending_handshake: {
+        state: string
+        handshake_note: string | null
+      } | null
+    }
+
+    expect(attachedStatus.pending_handshake).toMatchObject({
+      state: 'attached',
+      handshake_note: 'Handshake attached to the live provider session.',
+    })
+
+    const clearRes = await fetch(`${baseUrl}/api/tandem/handshake-resolution`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        state: 'cleared',
+        intake_id: 'intake-handshake-2',
+        target_preset_id: 'gmail-support',
+        target_label: 'Gmail support inbox',
+        resolution_note: 'Operator cleared the handshake state.',
+      }),
+    })
+
+    expect(clearRes.ok).toBe(true)
+
+    const clearedStatusRes = await fetch(`${baseUrl}/api/tandem/status`)
+    expect(clearedStatusRes.ok).toBe(true)
+    const clearedStatus = (await clearedStatusRes.json()) as {
+      pending_handshake: null | {
+        state: string
+      }
+    }
+
+    expect(clearedStatus.pending_handshake).toBeNull()
+  })
+
   it('records provider follow-up completion into the audit summary', async () => {
     const { createAdministratorServer } = await importServer()
     const app = createAdministratorServer(0)
@@ -813,6 +886,28 @@ describe('administrator server', () => {
       body: '{bad json',
     })
     expect(invalidHandshakeJsonRes.status).toBe(400)
+
+    const invalidHandshakeResolutionJsonRes = await fetch(
+      `${baseUrl}/api/tandem/handshake-resolution`,
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: '{bad json',
+      }
+    )
+    expect(invalidHandshakeResolutionJsonRes.status).toBe(400)
+
+    const invalidHandshakeResolutionStateRes = await fetch(
+      `${baseUrl}/api/tandem/handshake-resolution`,
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          state: 'mystery',
+        }),
+      }
+    )
+    expect(invalidHandshakeResolutionStateRes.status).toBe(400)
 
     const missingReopenIntakeRes = await fetch(`${baseUrl}/api/tandem/follow-up-reopen`, {
       method: 'POST',

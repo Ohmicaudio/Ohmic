@@ -145,11 +145,14 @@ export function App() {
             <StatusHistoryPanel />
             <WarningReviewPanel />
             <AttachmentPreviewPanel />
-            <ProviderHandoffPanel />
             <TandemPanel />
             <CommandComposerPanel />
             <AuditTrailPanel />
           </div>
+        </div>
+
+        <div className="mt-8">
+          <ProviderHandoffPanel />
         </div>
       </main>
 

@@ -3,6 +3,7 @@ import { executeCommand } from '@/api/commands'
 import {
   recordProviderFollowUpCompletion,
   recordProviderFollowUpReopen,
+  recordTandemHandshakeResolution,
   recordTandemLaunchIntent,
   recordTandemTargetHandshake,
 } from '@/api/tandem'
@@ -478,6 +479,29 @@ export function ProviderHandoffPanel() {
     setTandemHandoffNote(tandemPendingHandshake.handshake_note ?? '')
   }
 
+  async function handleResolvePendingHandshake(state: 'attached' | 'failed' | 'cleared') {
+    if (!tandemPendingHandshake) {
+      return
+    }
+
+    try {
+      await recordTandemHandshakeResolution({
+        state,
+        event_id: tandemPendingHandshake.event_id,
+        intake_id: tandemPendingHandshake.intake_id,
+        target_preset_id: tandemPendingHandshake.target_preset_id,
+        target_label: tandemPendingHandshake.target_label,
+        resolution_note:
+          state === 'cleared'
+            ? 'Operator cleared the handshake state from the provider workspace.'
+            : tandemHandoffNote.trim() || tandemPendingHandshake.handshake_note || null,
+      })
+      await fetchAuditSummary()
+    } catch {
+      // Keep handshake resolution non-blocking for the desk.
+    }
+  }
+
   async function handleProviderLaunch(
     launchUrl: string,
     preset: { preset_id: string; target_label: string }
@@ -792,9 +816,23 @@ export function ProviderHandoffPanel() {
           </div>
         ) : null}
         {tandemPendingHandshake ? (
-          <div className="rounded border border-amber-300/30 bg-amber-300/10 px-3 py-2 space-y-2 text-[11px] text-amber-300">
+          <div
+            className={`rounded border px-3 py-2 space-y-2 text-[11px] ${
+              tandemPendingHandshake.state === 'attached'
+                ? 'border-emerald-300/30 bg-emerald-300/10 text-emerald-300'
+                : tandemPendingHandshake.state === 'failed'
+                  ? 'border-rose-300/30 bg-rose-300/10 text-rose-300'
+                  : 'border-amber-300/30 bg-amber-300/10 text-amber-300'
+            }`}
+          >
             <div className="flex items-center justify-between gap-3">
-              <div className="uppercase tracking-widest">Pending handshake</div>
+              <div className="uppercase tracking-widest">
+                {tandemPendingHandshake.state === 'attached'
+                  ? 'Attached handshake'
+                  : tandemPendingHandshake.state === 'failed'
+                    ? 'Failed handshake'
+                    : 'Pending handshake'}
+              </div>
               <div className="text-[10px] whitespace-nowrap">
                 {new Date(tandemPendingHandshake.occurred_at).toLocaleString()}
               </div>
@@ -815,9 +853,31 @@ export function ProviderHandoffPanel() {
             <div className="flex flex-wrap gap-2">
               <button
                 onClick={handleResumePendingHandshake}
-                className="rounded border border-amber-300/30 px-2.5 py-1 text-[11px] font-medium text-amber-300 transition-colors hover:border-amber-300 hover:bg-amber-300/10"
+                className="rounded border border-current/30 px-2.5 py-1 text-[11px] font-medium transition-colors hover:border-current hover:bg-black/10"
               >
                 Resume handshake
+              </button>
+              {tandemPendingHandshake.state !== 'attached' ? (
+                <button
+                  onClick={() => void handleResolvePendingHandshake('attached')}
+                  className="rounded border border-emerald-300/30 px-2.5 py-1 text-[11px] font-medium text-emerald-300 transition-colors hover:border-emerald-300 hover:bg-emerald-300/10"
+                >
+                  Mark attached
+                </button>
+              ) : null}
+              {tandemPendingHandshake.state !== 'failed' ? (
+                <button
+                  onClick={() => void handleResolvePendingHandshake('failed')}
+                  className="rounded border border-rose-300/30 px-2.5 py-1 text-[11px] font-medium text-rose-300 transition-colors hover:border-rose-300 hover:bg-rose-300/10"
+                >
+                  Mark failed
+                </button>
+              ) : null}
+              <button
+                onClick={() => void handleResolvePendingHandshake('cleared')}
+                className="rounded border border-ohmic-border px-2.5 py-1 text-[11px] font-medium text-ohmic-text-dim transition-colors hover:border-ohmic-accent/30 hover:text-ohmic-text"
+              >
+                Clear state
               </button>
             </div>
           </div>

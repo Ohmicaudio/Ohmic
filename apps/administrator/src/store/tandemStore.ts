@@ -1,6 +1,6 @@
 import { create } from 'zustand'
 import type {
-  AdministratorTandemPendingHandshake,
+  AdministratorTandemHandshakeState,
   AdministratorTandemTargetHealth,
   AdministratorTandemTargetPreset,
 } from '@/types/tandem'
@@ -18,7 +18,7 @@ interface TandemState {
   activeTargetLabel: string | null
   targetPresets: AdministratorTandemTargetPreset[]
   targetHealth: AdministratorTandemTargetHealth[]
-  pendingHandshake: AdministratorTandemPendingHandshake | null
+  pendingHandshake: AdministratorTandemHandshakeState | null
   selectedPresetId: string
   handoffNote: string
   launchUrl: string | null
