@@ -30,6 +30,8 @@ function getPriorityBadge(priority: string): string {
 export function QueueActivityPanel() {
   const [pendingTaskId, setPendingTaskId] = useState<string | null>(null)
   const [pendingClaimId, setPendingClaimId] = useState<string | null>(null)
+  const [showAllReadyTasks, setShowAllReadyTasks] = useState(false)
+  const [showAllActiveClaims, setShowAllActiveClaims] = useState(false)
   const {
     generatedAt,
     readyTasks,
@@ -62,6 +64,8 @@ export function QueueActivityPanel() {
     }
     return lookup
   }, [activeClaims])
+  const visibleReadyTasks = showAllReadyTasks ? readyTasks : readyTasks.slice(0, 4)
+  const visibleActiveClaims = showAllActiveClaims ? activeClaims : activeClaims.slice(0, 3)
 
   async function handleClaimTask(task: (typeof readyTasks)[number]) {
     setPendingTaskId(task.task_id)
@@ -135,7 +139,7 @@ export function QueueActivityPanel() {
               </span>
             </div>
             <div className="text-[11px] text-ohmic-text-dim">
-              Showing the first {Math.min(readyTasks.length, 8)} items from the live ready queue.
+              Showing {visibleReadyTasks.length} of {readyTasks.length} ready items from the live queue.
             </div>
             {readyTasks.length === 0 ? (
               <div className="text-sm text-ohmic-text-dim">
@@ -143,7 +147,7 @@ export function QueueActivityPanel() {
               </div>
             ) : (
               <div className="space-y-2">
-                {readyTasks.slice(0, 8).map((task) => (
+                {visibleReadyTasks.map((task) => (
                   <div
                     key={task.task_id}
                     className="rounded-xl border border-ohmic-border bg-ohmic-bg px-3 py-3 space-y-2"
@@ -218,6 +222,16 @@ export function QueueActivityPanel() {
                     })()}
                   </div>
                 ))}
+                {readyTasks.length > 4 ? (
+                  <button
+                    onClick={() => setShowAllReadyTasks((current) => !current)}
+                    className="rounded border border-ohmic-border px-3 py-2 text-[11px] font-medium text-ohmic-text transition-colors hover:border-ohmic-accent/30"
+                  >
+                    {showAllReadyTasks
+                      ? 'Show fewer ready tasks'
+                      : `Show ${readyTasks.length - visibleReadyTasks.length} more ready tasks`}
+                  </button>
+                ) : null}
               </div>
             )}
           </div>
@@ -240,7 +254,7 @@ export function QueueActivityPanel() {
               </div>
             ) : (
               <div className="space-y-2">
-                {activeClaims.slice(0, 8).map((claim) => (
+                {visibleActiveClaims.map((claim) => (
                   <div
                     key={claim.claim_id}
                     className="rounded-xl border border-ohmic-border bg-ohmic-bg px-3 py-3 space-y-2"
@@ -307,6 +321,16 @@ export function QueueActivityPanel() {
                     })()}
                   </div>
                 ))}
+                {activeClaims.length > 3 ? (
+                  <button
+                    onClick={() => setShowAllActiveClaims((current) => !current)}
+                    className="rounded border border-ohmic-border px-3 py-2 text-[11px] font-medium text-ohmic-text transition-colors hover:border-ohmic-accent/30"
+                  >
+                    {showAllActiveClaims
+                      ? 'Show fewer active claims'
+                      : `Show ${activeClaims.length - visibleActiveClaims.length} more active claims`}
+                  </button>
+                ) : null}
               </div>
             )}
           </div>

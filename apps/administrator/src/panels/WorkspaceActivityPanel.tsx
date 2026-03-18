@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useWorkspaceActivityStore } from '@/store/workspaceActivityStore'
 
 function formatCommitHash(hash: string): string {
@@ -6,6 +6,8 @@ function formatCommitHash(hash: string): string {
 }
 
 export function WorkspaceActivityPanel() {
+  const [showAllRecentCommits, setShowAllRecentCommits] = useState(false)
+  const [showAllDirtyFiles, setShowAllDirtyFiles] = useState(false)
   const {
     generatedAt,
     workspaceDir,
@@ -30,6 +32,9 @@ export function WorkspaceActivityPanel() {
 
     return () => window.clearInterval(timer)
   }, [fetch])
+
+  const visibleRecentCommits = showAllRecentCommits ? recentCommits : recentCommits.slice(0, 3)
+  const visibleDirtyFiles = showAllDirtyFiles ? dirtyFiles : dirtyFiles.slice(0, 4)
 
   return (
     <div className="space-y-4">
@@ -73,10 +78,35 @@ export function WorkspaceActivityPanel() {
                 {status}
               </span>
             </div>
-            <div className="space-y-2 text-xs text-ohmic-text-dim">
-              <div>
-                Branch: <span className="text-ohmic-text">{branch || '--'}</span>
+            <div className="grid gap-2 sm:grid-cols-2 xl:grid-cols-4">
+              <div className="rounded-xl border border-ohmic-border bg-ohmic-bg px-3 py-2">
+                <div className="text-[10px] uppercase tracking-wider text-ohmic-text-dim">
+                  Branch
+                </div>
+                <div className="mt-1 text-sm text-ohmic-text break-all">{branch || '--'}</div>
               </div>
+              <div className="rounded-xl border border-ohmic-border bg-ohmic-bg px-3 py-2">
+                <div className="text-[10px] uppercase tracking-wider text-ohmic-text-dim">
+                  Head
+                </div>
+                <div className="mt-1 text-sm text-ohmic-text">
+                  {headCommit ? formatCommitHash(headCommit.hash) : '--'}
+                </div>
+              </div>
+              <div className="rounded-xl border border-ohmic-border bg-ohmic-bg px-3 py-2">
+                <div className="text-[10px] uppercase tracking-wider text-ohmic-text-dim">
+                  Recent commits
+                </div>
+                <div className="mt-1 text-sm text-ohmic-text">{recentCommits.length}</div>
+              </div>
+              <div className="rounded-xl border border-ohmic-border bg-ohmic-bg px-3 py-2">
+                <div className="text-[10px] uppercase tracking-wider text-ohmic-text-dim">
+                  Dirty files
+                </div>
+                <div className="mt-1 text-sm text-ohmic-text">{dirtyFileCount}</div>
+              </div>
+            </div>
+            <div className="space-y-2 text-xs text-ohmic-text-dim">
               <div>
                 Workspace: <span className="text-ohmic-text break-all">{workspaceDir || '--'}</span>
               </div>
@@ -85,9 +115,6 @@ export function WorkspaceActivityPanel() {
                 <span className="text-ohmic-text">
                   {generatedAt ? new Date(generatedAt).toLocaleString() : '--'}
                 </span>
-              </div>
-              <div>
-                Dirty files: <span className="text-ohmic-text">{dirtyFileCount}</span>
               </div>
             </div>
             {message ? (
@@ -111,8 +138,20 @@ export function WorkspaceActivityPanel() {
 
           <div className="grid grid-cols-1 gap-4 2xl:grid-cols-2">
             <div className="panel space-y-3">
-              <div className="text-xs uppercase tracking-wider text-ohmic-text-dim">
-                Recent Commits
+              <div className="flex items-center justify-between gap-3">
+                <div className="text-xs uppercase tracking-wider text-ohmic-text-dim">
+                  Recent Commits
+                </div>
+                {recentCommits.length > 3 ? (
+                  <button
+                    onClick={() => setShowAllRecentCommits((current) => !current)}
+                    className="text-[11px] text-ohmic-text-dim transition-colors hover:text-ohmic-text"
+                  >
+                    {showAllRecentCommits
+                      ? 'Show fewer'
+                      : `Show ${recentCommits.length - visibleRecentCommits.length} more`}
+                  </button>
+                ) : null}
               </div>
               {recentCommits.length === 0 ? (
                 <div className="text-sm text-ohmic-text-dim">
@@ -120,7 +159,7 @@ export function WorkspaceActivityPanel() {
                 </div>
               ) : (
                 <div className="space-y-2">
-                  {recentCommits.slice(0, 4).map((commit) => (
+                  {visibleRecentCommits.map((commit) => (
                     <div
                       key={`${commit.hash}-${commit.committed_at}`}
                       className="rounded-xl border border-ohmic-border bg-ohmic-bg px-3 py-3 space-y-1.5"
@@ -137,8 +176,20 @@ export function WorkspaceActivityPanel() {
             </div>
 
             <div className="panel space-y-3">
-              <div className="text-xs uppercase tracking-wider text-ohmic-text-dim">
-                Working Changes
+              <div className="flex items-center justify-between gap-3">
+                <div className="text-xs uppercase tracking-wider text-ohmic-text-dim">
+                  Working Changes
+                </div>
+                {dirtyFiles.length > 4 ? (
+                  <button
+                    onClick={() => setShowAllDirtyFiles((current) => !current)}
+                    className="text-[11px] text-ohmic-text-dim transition-colors hover:text-ohmic-text"
+                  >
+                    {showAllDirtyFiles
+                      ? 'Show fewer'
+                      : `Show ${dirtyFiles.length - visibleDirtyFiles.length} more`}
+                  </button>
+                ) : null}
               </div>
               {dirtyFiles.length === 0 ? (
                 <div className="text-sm text-ohmic-text-dim">
@@ -146,7 +197,7 @@ export function WorkspaceActivityPanel() {
                 </div>
               ) : (
                 <div className="space-y-2">
-                  {dirtyFiles.slice(0, 6).map((file) => (
+                  {visibleDirtyFiles.map((file) => (
                     <div
                       key={`${file.status}-${file.path}`}
                       className="rounded-xl border border-ohmic-border bg-ohmic-bg px-3 py-3 flex items-start justify-between gap-3"
@@ -157,11 +208,6 @@ export function WorkspaceActivityPanel() {
                       </span>
                     </div>
                   ))}
-                  {dirtyFiles.length > 6 ? (
-                    <div className="text-[11px] text-ohmic-text-dim">
-                      +{dirtyFiles.length - 6} more file changes
-                    </div>
-                  ) : null}
                 </div>
               )}
             </div>
