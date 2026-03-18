@@ -33,4 +33,13 @@
   .panel-header {
     @apply text-sm font-semibold uppercase tracking-wider text-ohmic-text-dim mb-3;
   }
+  .lane-shell {
+    @apply rounded-2xl border border-ohmic-border/70 bg-ohmic-surface/35 p-4 md:p-5;
+  }
+  .lane-kicker {
+    @apply text-[10px] font-semibold uppercase tracking-[0.28em] text-ohmic-text-dim;
+  }
+  .lane-caption {
+    @apply mt-1 text-sm text-ohmic-text-dim leading-relaxed;
+  }
 }

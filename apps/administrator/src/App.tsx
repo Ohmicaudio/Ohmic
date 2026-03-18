@@ -159,22 +159,46 @@ export function App() {
           </div>
 
           <div className="grid grid-cols-1 xl:grid-cols-12 gap-6">
-            <div className="space-y-6 xl:col-span-4">
-              <QueueActivityPanel />
-              <WorkspaceActivityPanel />
-              <IntakeQueuePanel />
-              <InactiveIntakePanel />
-              <AggregationPanel />
+            <div className="lane-shell space-y-5 xl:col-span-4">
+              <div>
+                <h3 className="lane-kicker">Queue and Runtime</h3>
+                <div className="lane-caption">
+                  Current ready work, live claims, and branch truth for the desk.
+                </div>
+              </div>
+              <div className="space-y-6">
+                <QueueActivityPanel />
+                <WorkspaceActivityPanel />
+                <IntakeQueuePanel />
+                <InactiveIntakePanel />
+                <AggregationPanel />
+              </div>
             </div>
 
-            <div className="space-y-6 xl:col-span-5">
-              <IntakeDetailPanel />
-              <ProviderHandoffPanel />
+            <div className="lane-shell space-y-5 xl:col-span-5">
+              <div>
+                <h3 className="lane-kicker">Selected Intake</h3>
+                <div className="lane-caption">
+                  Inspect the active item and work the provider loop without leaving context.
+                </div>
+              </div>
+              <div className="space-y-6">
+                <IntakeDetailPanel />
+                <ProviderHandoffPanel />
+              </div>
             </div>
 
-            <div className="space-y-6 xl:col-span-3 xl:sticky xl:top-24 self-start">
-              <TandemPanel />
-              <CommandComposerPanel />
+            <div className="lane-shell space-y-5 xl:col-span-3 xl:sticky xl:top-24 self-start">
+              <div>
+                <h3 className="lane-kicker">Action Rail</h3>
+                <div className="lane-caption">
+                  External handoff and command execution stacked together as the live control rail.
+                </div>
+              </div>
+              <div className="space-y-6">
+                <TandemPanel />
+                <CommandComposerPanel />
+              </div>
             </div>
           </div>
         </section>
@@ -192,15 +216,31 @@ export function App() {
           </div>
 
           <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
-            <div className="space-y-6">
-              <FilingPickerPanel />
-              <FilingHistoryPanel />
-              <StatusHistoryPanel />
+            <div className="lane-shell space-y-5">
+              <div>
+                <h3 className="lane-kicker">Filing and Status</h3>
+                <div className="lane-caption">
+                  Archive, filing, and state transitions grouped below the main operator loop.
+                </div>
+              </div>
+              <div className="space-y-6">
+                <FilingPickerPanel />
+                <FilingHistoryPanel />
+                <StatusHistoryPanel />
+              </div>
             </div>
-            <div className="space-y-6">
-              <WarningReviewPanel />
-              <AttachmentPreviewPanel />
-              <AuditTrailPanel />
+            <div className="lane-shell space-y-5">
+              <div>
+                <h3 className="lane-kicker">Review and Audit</h3>
+                <div className="lane-caption">
+                  Lower-priority review surfaces and the audit trail live together here.
+                </div>
+              </div>
+              <div className="space-y-6">
+                <WarningReviewPanel />
+                <AttachmentPreviewPanel />
+                <AuditTrailPanel />
+              </div>
             </div>
           </div>
         </section>
