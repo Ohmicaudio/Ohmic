@@ -4,6 +4,7 @@ import { useTandemStore } from '@/store/tandemStore'
 import { useIntakeStore } from '@/store/intakeStore'
 import { buildTandemContextUrl } from '@/panels/tandemContext'
 import { useAuditSummaryStore } from '@/store/auditSummaryStore'
+import { selectRecentTandemLaunches } from '@/panels/tandemHistory'
 
 export function TandemPanel() {
   const items = useIntakeStore((state) => state.items)
@@ -23,6 +24,9 @@ export function TandemPanel() {
     error,
     fetch,
   } = useTandemStore()
+  const auditItems = useAuditSummaryStore((state) => state.items)
+  const auditAvailable = useAuditSummaryStore((state) => state.available)
+  const auditLoading = useAuditSummaryStore((state) => state.loading)
   const refreshAuditSummary = useAuditSummaryStore((state) => state.fetch)
   const [selectedPresetId, setSelectedPresetId] = useState<string>('')
   const selectedIntake = items.find((item) => item.intake_id === selectedId) ?? null
@@ -31,10 +35,20 @@ export function TandemPanel() {
     [selectedPresetId, targetPresets]
   )
   const contextualLaunchUrl = buildTandemContextUrl(launchUrl, selectedIntake, selectedPreset)
+  const recentLaunches = useMemo(
+    () => selectRecentTandemLaunches(auditItems),
+    [auditItems]
+  )
 
   useEffect(() => {
     void fetch()
   }, [fetch])
+
+  useEffect(() => {
+    if (!auditAvailable && !auditLoading) {
+      void refreshAuditSummary()
+    }
+  }, [auditAvailable, auditLoading, refreshAuditSummary])
 
   useEffect(() => {
     if (!targetPresets.length) {
@@ -189,6 +203,43 @@ export function TandemPanel() {
               </a>
             </div>
           ) : null}
+
+          <div className="space-y-2 pt-1">
+            <div className="text-xs uppercase tracking-wider text-ohmic-text-dim">
+              Recent handoffs
+            </div>
+            {recentLaunches.length === 0 ? (
+              <div className="text-[11px] text-ohmic-text-dim">
+                Tandem launch events will appear here after operator handoff activity.
+              </div>
+            ) : (
+              <div className="space-y-2">
+                {recentLaunches.map((item) => (
+                  <div
+                    key={item.event_id}
+                    className="rounded border border-ohmic-border px-3 py-2 text-[11px] text-ohmic-text-dim"
+                  >
+                    <div className="flex items-start justify-between gap-3">
+                      <div className="space-y-1 min-w-0">
+                        <div className="text-ohmic-text">
+                          {item.target_label || item.summary_label}
+                        </div>
+                        <div className="break-words">
+                          {item.intake_id || 'No intake context'}
+                          {item.status_delta ? ` | ${item.status_delta}` : ''}
+                        </div>
+                      </div>
+                      <div className="whitespace-nowrap">
+                        {item.occurred_at
+                          ? new Date(item.occurred_at).toLocaleString()
+                          : '--'}
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
         </div>
       )}
     </div>
