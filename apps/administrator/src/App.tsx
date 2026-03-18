@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef } from 'react'
+import { useEffect, useMemo, useRef, type ReactNode } from 'react'
 import { RuntimeIndicator } from '@/components/RuntimeIndicator'
 import { OperatorTruthStrip } from '@/components/OperatorTruthStrip'
 import { AggregationPanel } from '@/panels/AggregationPanel'
@@ -35,6 +35,38 @@ import { useServerHealthStore } from '@/store/serverHealthStore'
 import { useStatusHistoryStore } from '@/store/statusHistoryStore'
 import { useTandemStore } from '@/store/tandemStore'
 import { useWarningReviewStore } from '@/store/warningReviewStore'
+
+function SecondaryLaneSection({
+  title,
+  summary,
+  children,
+  defaultOpen = false,
+}: {
+  title: string
+  summary: string
+  children: ReactNode
+  defaultOpen?: boolean
+}) {
+  return (
+    <details
+      open={defaultOpen}
+      className="rounded-2xl border border-ohmic-border bg-ohmic-surface/70 px-4 py-3"
+    >
+      <summary className="cursor-pointer list-none">
+        <div className="flex items-start justify-between gap-3">
+          <div className="space-y-1">
+            <div className="text-xs uppercase tracking-widest text-ohmic-accent">{title}</div>
+            <div className="text-[11px] leading-5 text-ohmic-text-dim">{summary}</div>
+          </div>
+          <div className="text-[10px] uppercase tracking-widest text-ohmic-text-dim">
+            Expand
+          </div>
+        </div>
+      </summary>
+      <div className="mt-4">{children}</div>
+    </details>
+  )
+}
 
 export function App() {
   const didAutoSelectIntake = useRef(false)
@@ -375,8 +407,18 @@ export function App() {
               </div>
               <div className="space-y-6">
                 <FilingPickerPanel />
-                <FilingHistoryPanel />
-                <StatusHistoryPanel />
+                <SecondaryLaneSection
+                  title="Filing History"
+                  summary="Past filing destinations and archive context for the selected intake."
+                >
+                  <FilingHistoryPanel />
+                </SecondaryLaneSection>
+                <SecondaryLaneSection
+                  title="Status History"
+                  summary="Command and status transitions for the selected intake."
+                >
+                  <StatusHistoryPanel />
+                </SecondaryLaneSection>
               </div>
             </div>
             <div className="lane-shell space-y-5">
@@ -388,9 +430,25 @@ export function App() {
                 </div>
               </div>
               <div className="space-y-6">
-                <WarningReviewPanel />
-                <AttachmentPreviewPanel />
-                <AuditTrailPanel />
+                <SecondaryLaneSection
+                  title="Warning Review"
+                  summary="Flagged review items and recommended actions."
+                >
+                  <WarningReviewPanel />
+                </SecondaryLaneSection>
+                <SecondaryLaneSection
+                  title="Attachment Preview"
+                  summary="Attachment review surfaces and provider handoff launch points."
+                >
+                  <AttachmentPreviewPanel />
+                </SecondaryLaneSection>
+                <SecondaryLaneSection
+                  title="Audit Trail"
+                  summary="Recent desk history, provider handoffs, and follow-up reuse."
+                  defaultOpen
+                >
+                  <AuditTrailPanel />
+                </SecondaryLaneSection>
               </div>
             </div>
           </div>
