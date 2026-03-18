@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useIntakeStore } from '@/store/intakeStore'
 import { useAuditSummaryStore } from '@/store/auditSummaryStore'
 import { StatusBadge } from '@/components/StatusBadge'
@@ -91,6 +91,7 @@ function IntakeRow({
 }
 
 export function IntakeQueuePanel() {
+  const [providerFilter, setProviderFilter] = useState<'all' | 'needs_provider_follow_up'>('all')
   const {
     items,
     count,
@@ -107,6 +108,15 @@ export function IntakeQueuePanel() {
     () => buildProviderFollowUpLookup(auditItems, items),
     [auditItems, items]
   )
+  const visibleItems = useMemo(
+    () =>
+      items.filter((item) =>
+        providerFilter === 'needs_provider_follow_up'
+          ? providerLookup.has(item.intake_id)
+          : true
+      ),
+    [items, providerFilter, providerLookup]
+  )
 
   useEffect(() => {
     fetch()
@@ -122,6 +132,16 @@ export function IntakeQueuePanel() {
           )}
         </h2>
         <div className="flex items-center gap-3">
+          <button
+            onClick={() =>
+              setProviderFilter((current) =>
+                current === 'all' ? 'needs_provider_follow_up' : 'all'
+              )
+            }
+            className="text-xs text-ohmic-text-dim hover:text-ohmic-text transition-colors"
+          >
+            {providerFilter === 'all' ? 'all intake' : 'provider follow-up'}
+          </button>
           <FreshnessIndicator generatedAt={generatedAt} staleness={staleness} />
           <button
             onClick={fetch}
@@ -139,15 +159,17 @@ export function IntakeQueuePanel() {
         </div>
       )}
 
-      {loading && items.length === 0 ? (
+      {loading && visibleItems.length === 0 ? (
         <div className="text-ohmic-text-dim text-xs animate-pulse">Loading intake queue...</div>
-      ) : items.length === 0 ? (
+      ) : visibleItems.length === 0 ? (
         <div className="panel text-center text-ohmic-text-dim text-sm py-8">
-          Queue empty
+          {providerFilter === 'needs_provider_follow_up'
+            ? 'No intake items currently need provider follow-up'
+            : 'Queue empty'}
         </div>
       ) : (
         <div className="space-y-2">
-          {items.map((item) => (
+          {visibleItems.map((item) => (
             <IntakeRow
               key={item.intake_id}
               item={item}

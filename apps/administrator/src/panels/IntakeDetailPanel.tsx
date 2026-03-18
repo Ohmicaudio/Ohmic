@@ -8,6 +8,7 @@ import { PriorityIndicator } from '@/components/PriorityIndicator'
 import { TagChip } from '@/components/TagChip'
 import {
   resolveRecentTandemLaunchSelection,
+  selectProviderEventsForIntake,
   selectLatestTandemLaunchForIntake,
 } from '@/panels/tandemHistory'
 
@@ -48,6 +49,7 @@ export function IntakeDetailPanel() {
   const latestTandemSelection = latestTandemLaunch
     ? resolveRecentTandemLaunchSelection(latestTandemLaunch, tandemTargetPresets, items)
     : null
+  const providerTimeline = selectProviderEventsForIntake(auditItems, selectedId)
 
   useEffect(() => {
     if (selectedId && notes.length === 0 && tagAssignments.length === 0) {
@@ -197,6 +199,53 @@ export function IntakeDetailPanel() {
                     ) : null}
                   </div>
                 ) : null}
+              </div>
+            )}
+          </div>
+
+          <div className="space-y-2">
+            <div className="text-xs uppercase tracking-wider text-ohmic-text-dim">
+              Provider Timeline
+            </div>
+            {auditLoading && providerTimeline.length === 0 ? (
+              <div className="text-xs text-ohmic-text-dim animate-pulse">
+                Loading provider timeline...
+              </div>
+            ) : providerTimeline.length === 0 ? (
+              <div className="text-xs text-ohmic-text-dim">
+                No provider history has been recorded for this intake yet.
+              </div>
+            ) : (
+              <div className="space-y-2">
+                {providerTimeline.map((event) => (
+                  <div
+                    key={event.event_id}
+                    className="rounded border border-ohmic-border bg-ohmic-bg px-3 py-2 space-y-1.5"
+                  >
+                    <div className="flex items-start justify-between gap-3">
+                      <div className="space-y-1 min-w-0">
+                        <div className="text-xs font-medium text-ohmic-text">
+                          {event.summary_label}
+                        </div>
+                        <div className="text-[11px] text-ohmic-text-dim">
+                          {event.target_label || '--'}
+                          {event.status_delta ? ` | ${event.status_delta}` : ''}
+                          {event.attachment_id ? ` | ${event.attachment_id}` : ''}
+                        </div>
+                      </div>
+                      <div className="text-[10px] text-ohmic-text-dim whitespace-nowrap">
+                        {event.occurred_at
+                          ? new Date(event.occurred_at).toLocaleString()
+                          : '--'}
+                      </div>
+                    </div>
+                    {event.handoff_note ? (
+                      <div className="text-xs text-ohmic-text-dim whitespace-pre-wrap">
+                        {event.handoff_note}
+                      </div>
+                    ) : null}
+                  </div>
+                ))}
               </div>
             )}
           </div>

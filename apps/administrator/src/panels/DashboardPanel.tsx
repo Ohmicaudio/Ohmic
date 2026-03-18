@@ -1,8 +1,10 @@
 import { useEffect } from 'react'
 import { useDashboardStore } from '@/store/dashboardStore'
+import { useAuditSummaryStore } from '@/store/auditSummaryStore'
 import { StatusBadge } from '@/components/StatusBadge'
 import { FreshnessIndicator } from '@/components/FreshnessIndicator'
 import type { StatusCard } from '@/types/intake'
+import { buildProviderHandoffSummary } from '@/panels/providerHandoffSummary'
 
 function CardView({ card }: { card: StatusCard }) {
   const emphasisBorder =
@@ -36,10 +38,20 @@ function CardView({ card }: { card: StatusCard }) {
 
 export function DashboardPanel() {
   const { cards, generatedAt, staleness, loading, error, fetch } = useDashboardStore()
+  const auditItems = useAuditSummaryStore((state) => state.items)
+  const auditAvailable = useAuditSummaryStore((state) => state.available)
+  const fetchAuditSummary = useAuditSummaryStore((state) => state.fetch)
+  const providerSummary = buildProviderHandoffSummary(auditItems)
 
   useEffect(() => {
     fetch()
   }, [fetch])
+
+  useEffect(() => {
+    if (!auditAvailable) {
+      void fetchAuditSummary()
+    }
+  }, [auditAvailable, fetchAuditSummary])
 
   return (
     <div className="space-y-4">
@@ -69,6 +81,40 @@ export function DashboardPanel() {
         <div className="text-ohmic-text-dim text-xs animate-pulse">Loading projections...</div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+          <div className="panel border-ohmic-accent/20">
+            <div className="flex items-center justify-between mb-3">
+              <h3 className="panel-header mb-0">Provider Follow-up</h3>
+              <StatusBadge
+                status={providerSummary.staleFollowUpCount > 0 ? 'warning' : 'healthy'}
+              />
+            </div>
+            <div className="space-y-2">
+              <div className="flex items-start justify-between gap-4">
+                <span className="text-xs text-ohmic-text-dim whitespace-nowrap">
+                  Unresolved
+                </span>
+                <span className="text-xs text-ohmic-text text-right break-all max-w-[65%]">
+                  {providerSummary.unresolvedCount}
+                </span>
+              </div>
+              <div className="flex items-start justify-between gap-4">
+                <span className="text-xs text-ohmic-text-dim whitespace-nowrap">
+                  Stale
+                </span>
+                <span className="text-xs text-ohmic-text text-right break-all max-w-[65%]">
+                  {providerSummary.staleFollowUpCount}
+                </span>
+              </div>
+              <div className="flex items-start justify-between gap-4">
+                <span className="text-xs text-ohmic-text-dim whitespace-nowrap">
+                  Attachment reviews
+                </span>
+                <span className="text-xs text-ohmic-text text-right break-all max-w-[65%]">
+                  {providerSummary.attachmentReviewCount}
+                </span>
+              </div>
+            </div>
+          </div>
           {cards.map((card) => (
             <CardView key={card.card_id} card={card} />
           ))}
