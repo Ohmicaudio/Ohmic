@@ -8,6 +8,7 @@ import { InactiveIntakePanel } from '@/panels/InactiveIntakePanel'
 import { IntakeDetailPanel } from '@/panels/IntakeDetailPanel'
 import { FilingPickerPanel } from '@/panels/FilingPickerPanel'
 import { FilingHistoryPanel } from '@/panels/FilingHistoryPanel'
+import { ProviderHandoffPanel } from '@/panels/ProviderHandoffPanel'
 import { StatusHistoryPanel } from '@/panels/StatusHistoryPanel'
 import { CommandComposerPanel } from '@/panels/CommandComposerPanel'
 import { AuditTrailPanel } from '@/panels/AuditTrailPanel'
@@ -139,6 +140,7 @@ export function App() {
             <StatusHistoryPanel />
             <WarningReviewPanel />
             <AttachmentPreviewPanel />
+            <ProviderHandoffPanel />
             <TandemPanel />
             <CommandComposerPanel />
             <AuditTrailPanel />
