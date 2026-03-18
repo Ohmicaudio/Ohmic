@@ -10,6 +10,7 @@ import {
   deriveAuditFollowUpAction,
 } from '@/panels/auditFollowUp'
 import {
+  buildProviderFollowUpQueue,
   buildProviderHandoffSummary,
   groupProviderHandoffsByTarget,
 } from '@/panels/providerHandoffSummary'
@@ -34,6 +35,8 @@ export function ProviderHandoffPanel() {
   const setCommandNoteText = useCommandStore((state) => state.setNoteText)
   const tandemTargetPresets = useTandemStore((state) => state.targetPresets)
   const selectedTandemPresetId = useTandemStore((state) => state.selectedPresetId)
+  const tandemSessionState = useTandemStore((state) => state.sessionState)
+  const tandemActiveTargetLabel = useTandemStore((state) => state.activeTargetLabel)
   const tandemLaunchUrl = useTandemStore((state) => state.launchUrl)
   const tandemHandoffNote = useTandemStore((state) => state.handoffNote)
   const setSelectedTandemPreset = useTandemStore((state) => state.setSelectedPreset)
@@ -43,9 +46,13 @@ export function ProviderHandoffPanel() {
   const selectedHandoff = selectLatestTandemLaunchForIntake(auditItems, selectedId)
   const recentHandoffs = useMemo(() => selectRecentTandemLaunches(auditItems, 5), [auditItems])
   const providerSummary = useMemo(() => buildProviderHandoffSummary(auditItems), [auditItems])
+  const providerFollowUpQueue = useMemo(
+    () => buildProviderFollowUpQueue(auditItems, intakeItems),
+    [auditItems, intakeItems]
+  )
   const providerTargetGroups = useMemo(
-    () => groupProviderHandoffsByTarget(auditItems),
-    [auditItems]
+    () => groupProviderHandoffsByTarget(auditItems, tandemActiveTargetLabel, tandemSessionState),
+    [auditItems, tandemActiveTargetLabel, tandemSessionState]
   )
   const visibleRecentHandoffs = useMemo(
     () =>
@@ -172,6 +179,111 @@ export function ProviderHandoffPanel() {
       <div className="panel space-y-3">
         <div className="flex items-center justify-between gap-3">
           <div className="text-xs uppercase tracking-wider text-ohmic-text-dim">
+            Provider Follow-up Queue
+          </div>
+          <div className="text-[10px] text-ohmic-text-dim">
+            {providerFollowUpQueue.length === 0
+              ? 'No follow-up queued'
+              : `${providerFollowUpQueue.length} active item${providerFollowUpQueue.length === 1 ? '' : 's'}`}
+          </div>
+        </div>
+        {providerFollowUpQueue.length === 0 ? (
+          <div className="text-sm text-ohmic-text-dim">
+            Recent provider handoffs that still need operator review will appear here.
+          </div>
+        ) : (
+          <div className="space-y-2">
+            {providerFollowUpQueue.map((item) => (
+              <div
+                key={`${item.intakeId}-${item.occurredAt ?? 'provider'}`}
+                className="rounded border border-ohmic-border bg-ohmic-bg px-3 py-2 space-y-1.5"
+              >
+                <div className="flex items-start justify-between gap-3">
+                  <div className="space-y-1 min-w-0">
+                    <div className="text-xs text-ohmic-text">{item.intakeTitle}</div>
+                    <div className="text-[11px] text-ohmic-text-dim">
+                      {item.intakeId}
+                      {` | ${item.targetLabel}`}
+                      {item.attachmentId ? ` | ${item.attachmentId}` : ''}
+                    </div>
+                  </div>
+                  <div className="space-y-1 text-right">
+                    <div
+                      className={`text-[10px] uppercase tracking-widest ${
+                        item.priority === 'needs_attachment_review'
+                          ? 'text-amber-300'
+                          : 'text-ohmic-accent'
+                      }`}
+                    >
+                      {item.priorityLabel}
+                    </div>
+                    <div className="text-[10px] text-ohmic-text-dim whitespace-nowrap">
+                      {item.occurredAt ? new Date(item.occurredAt).toLocaleString() : '--'}
+                    </div>
+                  </div>
+                </div>
+                {item.handoffNote ? (
+                  <div className="text-[11px] text-ohmic-text-dim whitespace-pre-wrap">
+                    {item.handoffNote}
+                  </div>
+                ) : null}
+                <div className="flex flex-wrap gap-2 pt-1">
+                  <button
+                    onClick={() => {
+                      if (item.targetPresetId) {
+                        setSelectedTandemPreset(item.targetPresetId)
+                      }
+                      setTandemHandoffNote(item.handoffNote ?? '')
+                      selectIntake(item.intakeId)
+                    }}
+                    className="rounded border border-ohmic-border px-2.5 py-1 text-[11px] font-medium text-ohmic-text transition-colors hover:border-ohmic-accent/30"
+                  >
+                    Load into Tandem desk
+                  </button>
+                  <button
+                    onClick={() =>
+                      primeProviderFollowUp({
+                        event_id: `${item.intakeId}-${item.occurredAt ?? 'provider-handoff'}`,
+                        event_family: 'provider_handoff',
+                        intake_id: item.intakeId,
+                        summary_label: item.intakeTitle,
+                        actor_label: 'provider_workspace',
+                        occurred_at: item.occurredAt ?? '',
+                        status_delta:
+                          item.priority === 'needs_attachment_review'
+                            ? 'attachment_review'
+                            : 'follow_up_pending',
+                        target_label: item.targetLabel,
+                        target_preset_id: item.targetPresetId ?? undefined,
+                        launch_url: item.launchUrl ?? undefined,
+                        attachment_id: item.attachmentId ?? undefined,
+                        handoff_note: item.handoffNote ?? undefined,
+                      })
+                    }
+                    className="rounded border border-ohmic-border px-2.5 py-1 text-[11px] font-medium text-ohmic-text transition-colors hover:border-ohmic-accent/30"
+                  >
+                    Prime follow-up
+                  </button>
+                  {item.launchUrl ? (
+                    <a
+                      href={item.launchUrl}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="rounded border border-ohmic-accent/40 px-2.5 py-1 text-[11px] font-medium text-ohmic-accent transition-colors hover:border-ohmic-accent hover:bg-ohmic-accent/10"
+                    >
+                      Open recorded launch
+                    </a>
+                  ) : null}
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+
+      <div className="panel space-y-3">
+        <div className="flex items-center justify-between gap-3">
+          <div className="text-xs uppercase tracking-wider text-ohmic-text-dim">
             Target runway
           </div>
           <div className="flex items-center gap-2">
@@ -212,6 +324,17 @@ export function ProviderHandoffPanel() {
                   </div>
                 </div>
                 <div className="space-y-2 text-right">
+                  <div
+                    className={`text-[10px] uppercase tracking-widest ${
+                      group.status === 'attention'
+                        ? 'text-amber-300'
+                        : group.status === 'attached'
+                          ? 'text-emerald-300'
+                          : 'text-ohmic-accent'
+                    }`}
+                  >
+                    {group.statusLabel}
+                  </div>
                   <div className="text-[10px] text-ohmic-text-dim whitespace-nowrap">
                     {group.latestOccurredAt
                       ? new Date(group.latestOccurredAt).toLocaleString()

@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import {
+  buildProviderFollowUpQueue,
   buildProviderHandoffSummary,
   groupProviderHandoffsByTarget,
 } from '@/panels/providerHandoffSummary'
@@ -70,16 +71,108 @@ describe('providerHandoffSummary', () => {
   })
 
   it('groups provider handoffs by target label', () => {
-    expect(groupProviderHandoffsByTarget(rows)).toEqual([
-      {
-        targetLabel: 'Gmail support inbox',
-        count: 2,
-        latestOccurredAt: '2026-03-17T12:00:00Z',
-      },
+    expect(groupProviderHandoffsByTarget(rows, 'Gmail support inbox', 'attached')).toEqual([
       {
         targetLabel: 'GitHub issues queue',
         count: 1,
         latestOccurredAt: '2026-03-17T11:00:00Z',
+        status: 'attention',
+        statusLabel: 'Needs follow-up',
+        requiresFollowUp: true,
+      },
+      {
+        targetLabel: 'Gmail support inbox',
+        count: 2,
+        latestOccurredAt: '2026-03-17T12:00:00Z',
+        status: 'attached',
+        statusLabel: 'Attached',
+        requiresFollowUp: false,
+      },
+    ])
+  })
+
+  it('builds a provider follow-up queue ordered by priority and recency', () => {
+    expect(
+      buildProviderFollowUpQueue(rows, [
+        {
+          intake_id: 'intake-1',
+          title: 'Provider handoff one',
+          intake_kind: 'manual',
+          received_at: '2026-03-17T09:30:00Z',
+          status: 'triaging',
+          routing_target: '',
+          trust_tier: '2',
+          priority_hint: 'high',
+          tags: [],
+          warning_state: 'clean',
+          warning_count: 0,
+          summary_label: 'Provider handoff one',
+        },
+        {
+          intake_id: 'intake-2',
+          title: 'Attachment needs review',
+          intake_kind: 'manual',
+          received_at: '2026-03-17T10:30:00Z',
+          status: 'triaging',
+          routing_target: '',
+          trust_tier: '2',
+          priority_hint: 'high',
+          tags: [],
+          warning_state: 'clean',
+          warning_count: 0,
+          summary_label: 'Attachment needs review',
+        },
+        {
+          intake_id: 'intake-3',
+          title: 'Provider handoff three',
+          intake_kind: 'manual',
+          received_at: '2026-03-17T11:30:00Z',
+          status: 'triaging',
+          routing_target: '',
+          trust_tier: '2',
+          priority_hint: 'high',
+          tags: [],
+          warning_state: 'clean',
+          warning_count: 0,
+          summary_label: 'Provider handoff three',
+        },
+      ])
+    ).toEqual([
+      {
+        intakeId: 'intake-2',
+        intakeTitle: 'Attachment needs review',
+        targetLabel: 'GitHub issues queue',
+        targetPresetId: 'github-bugs',
+        occurredAt: '2026-03-17T11:00:00Z',
+        launchUrl: 'http://127.0.0.1:8765/?targetPreset=github-bugs',
+        attachmentId: 'asset-7',
+        handoffNote: 'Need screenshot review.',
+        priority: 'needs_attachment_review',
+        priorityLabel: 'Needs attachment review',
+      },
+      {
+        intakeId: 'intake-3',
+        intakeTitle: 'Provider handoff three',
+        targetLabel: 'Gmail support inbox',
+        targetPresetId: 'gmail-support',
+        occurredAt: '2026-03-17T12:00:00Z',
+        launchUrl: 'http://127.0.0.1:8765/?targetPreset=gmail-support',
+        attachmentId: null,
+        handoffNote: 'Need provider reply.',
+        priority: 'follow_up_pending',
+        priorityLabel: 'Follow-up pending',
+      },
+      {
+        intakeId: 'intake-1',
+        intakeTitle: 'Provider handoff one',
+        targetLabel: 'Gmail support inbox',
+        targetPresetId: 'gmail-support',
+        occurredAt: '2026-03-17T10:00:00Z',
+        launchUrl: 'http://127.0.0.1:8765/?targetPreset=gmail-support',
+        attachmentId: null,
+        handoffNote: '',
+        priority: 'follow_up_pending',
+        priorityLabel: 'Follow-up pending',
       },
     ])
   })
