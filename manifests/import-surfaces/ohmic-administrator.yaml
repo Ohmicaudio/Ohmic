@@ -1,0 +1,44 @@
+name: ohmic-administrator
+source_repo: /mnt/b/ohmic/apps/administrator
+target_repo: Ohmicaudio/ohmic-administrator
+mode: extraction-bootstrap
+
+keep:
+  - apps/admin-web/
+  - services/admin-api/
+  - packages/contracts/
+  - legacy/powershell-administrator/
+  - docs/
+  - package.json
+  - package-lock.json
+  - pnpm-workspace.yaml
+  - tsconfig.json
+  - README.md
+
+seed_from_current:
+  - /mnt/b/ohmic/apps/administrator/src/
+  - /mnt/b/ohmic/apps/administrator/server/
+  - /mnt/b/ohmic/apps/administrator/public/
+  - /mnt/b/ohmic/apps/administrator/index.html
+  - /mnt/b/ohmic/apps/administrator/package.json
+  - /mnt/b/ohmic/apps/administrator/package-lock.json
+  - /mnt/b/ohmic/apps/administrator/tsconfig.json
+  - /mnt/b/ohmic/apps/administrator/vite.config.ts
+  - /mnt/b/ohmic/apps/administrator/postcss.config.js
+  - /mnt/b/ohmic/apps/administrator/tailwind.config.js
+  - /mnt/b/ohmic/tools/sync/administrator/
+
+exclude:
+  - node_modules/
+  - dist/
+  - .claude/
+  - coverage/
+  - .vite/
+  - .playwright/
+  - .env
+  - .env.local
+
+stability_rules:
+  preserve_projection_names: true
+  preserve_route_names: true
+  preserve_powershell_bridge: true

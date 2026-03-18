@@ -89,3 +89,17 @@ repos:
       - pcb-layout
       - bringup
       - manufacturing
+
+  - name: ohmic-administrator
+    kind: operator-desk
+    visibility: private
+    preserve_history: true
+    source_local_path: /mnt/b/ohmic/repos/ohmic-administrator
+    mirror_local_path: /mnt/b/ohmic/repos/ohmic-administrator
+    import_surface_manifest: /mnt/b/ohmic/manifests/import-surfaces/ohmic-administrator.yaml
+    purpose:
+      - operator-desk
+      - intake-routing
+      - provider-handoff
+      - administrator-runtime
+      - queue-operations
