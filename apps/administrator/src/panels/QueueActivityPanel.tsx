@@ -10,6 +10,10 @@ function formatTaskPath(filePath: string): string {
   return parent ? `${parent}/${fileName}` : fileName
 }
 
+function formatTaskDisplayTitle(title: string): string {
+  return title.replace(/\bVs\b/g, 'vs')
+}
+
 function getPriorityBadge(priority: string): string {
   switch (priority) {
     case 'critical':
@@ -136,10 +140,24 @@ export function QueueActivityPanel() {
                         <>
                           <div className="flex items-start justify-between gap-3">
                             <div className="min-w-0 space-y-1">
-                              <div className="text-[10px] uppercase tracking-[0.2em] text-ohmic-text-dim">
+                              <div
+                                className="truncate text-[10px] uppercase tracking-[0.2em] text-ohmic-text-dim"
+                                title={task.file_path}
+                              >
                                 {formatTaskPath(task.file_path)}
                               </div>
-                              <div className="text-[15px] leading-6 text-ohmic-text">{task.title}</div>
+                              <div
+                                className="text-[15px] leading-6 text-ohmic-text"
+                                style={{
+                                  display: '-webkit-box',
+                                  WebkitLineClamp: 2,
+                                  WebkitBoxOrient: 'vertical',
+                                  overflow: 'hidden',
+                                }}
+                                title={task.title}
+                              >
+                                {formatTaskDisplayTitle(task.title)}
+                              </div>
                               <div className="text-[11px] text-ohmic-text-dim">
                                 {task.project} | {task.status}
                               </div>
@@ -200,10 +218,24 @@ export function QueueActivityPanel() {
                   >
                     <div className="flex items-start justify-between gap-3">
                       <div className="space-y-1 min-w-0">
-                        <div className="text-[10px] uppercase tracking-[0.2em] text-ohmic-text-dim">
+                        <div
+                          className="truncate text-[10px] uppercase tracking-[0.2em] text-ohmic-text-dim"
+                          title={claim.file_path}
+                        >
                           {formatTaskPath(claim.file_path)}
                         </div>
-                        <div className="text-[15px] leading-6 text-ohmic-text">{claim.title}</div>
+                        <div
+                          className="text-[15px] leading-6 text-ohmic-text"
+                          style={{
+                            display: '-webkit-box',
+                            WebkitLineClamp: 2,
+                            WebkitBoxOrient: 'vertical',
+                            overflow: 'hidden',
+                          }}
+                          title={claim.title}
+                        >
+                          {formatTaskDisplayTitle(claim.title)}
+                        </div>
                         <div className="text-[11px] text-ohmic-text-dim">
                           owner {claim.owner} | {claim.status}
                         </div>
