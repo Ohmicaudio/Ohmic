@@ -74,8 +74,11 @@ instead of forcing consumers back into the hybrid legacy wrapper:
 - `runtime.transport_mode`
 - `device.public_designator`
 - `device.name`
+- `device.role`
 - `device.input_profile`
 - `device.output_profile`
+- `device.input_enabled`
+- `device.output_enabled`
 - `device.ui_mode`
 
 The shared core status now also carries the operator-facing connection snapshot
