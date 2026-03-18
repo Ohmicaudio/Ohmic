@@ -8,6 +8,19 @@ import { FreshnessIndicator } from '@/components/FreshnessIndicator'
 import type { IntakeQueueItem } from '@/types/intake'
 import { buildProviderFollowUpLookup } from '@/panels/providerHandoffSummary'
 
+function getProjectionAgeHours(generatedAt: string | null): number | null {
+  if (!generatedAt) {
+    return null
+  }
+
+  const ageMs = Date.now() - new Date(generatedAt).getTime()
+  if (Number.isNaN(ageMs) || ageMs < 0) {
+    return null
+  }
+
+  return ageMs / (1000 * 60 * 60)
+}
+
 function IntakeRow({
   item,
   providerWorkload,
@@ -117,6 +130,9 @@ export function IntakeQueuePanel() {
       ),
     [items, providerFilter, providerLookup]
   )
+  const projectionAgeHours = useMemo(() => getProjectionAgeHours(generatedAt), [generatedAt])
+  const showHistoricalProjectionWarning =
+    staleness === 'stale' || (projectionAgeHours !== null && projectionAgeHours >= 8)
 
   useEffect(() => {
     fetch()
@@ -158,6 +174,15 @@ export function IntakeQueuePanel() {
           {error}
         </div>
       )}
+
+      {showHistoricalProjectionWarning ? (
+        <div className="panel border-ohmic-warning/40 bg-ohmic-warning/5 text-xs text-ohmic-warning">
+          Intake projection is reading as historical runtime data
+          {projectionAgeHours !== null
+            ? ` (${Math.floor(projectionAgeHours)}h old)`
+            : ''}. Treat the intake list as queue context, not confirmed live operator activity.
+        </div>
+      ) : null}
 
       {loading && visibleItems.length === 0 ? (
         <div className="text-ohmic-text-dim text-xs animate-pulse">Loading intake queue...</div>
