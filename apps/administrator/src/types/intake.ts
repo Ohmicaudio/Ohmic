@@ -447,6 +447,23 @@ export interface ReadyTasksProjection {
   tasks: ReadyTask[]
 }
 
+export interface AdministratorDeskFocusSelection {
+  focus_kind: 'intake' | 'ready_task' | 'claim'
+  selected_intake_id: string | null
+  task_id: string | null
+  claim_id: string | null
+  title: string | null
+  file_path: string | null
+  updated_at: string
+  source: 'administrator_app'
+}
+
+export interface AdministratorDeskFocusProjection {
+  projection_name: 'administrator_focus_selection'
+  generated_at: string
+  selection: AdministratorDeskFocusSelection | null
+}
+
 export interface ClaimReadyTaskResponse {
   writeback: {
     writeback_status: 'accepted'

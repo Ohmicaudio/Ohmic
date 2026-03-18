@@ -1,6 +1,8 @@
 import { useEffect, useMemo, useState } from 'react'
 import { claimQueueTask, completeQueueClaim } from '@/api/queue'
+import { publishClaimFocus, publishReadyTaskFocus } from '@/api/focus'
 import { useQueueActivityStore } from '@/store/queueActivityStore'
+import { useDeskFocusStore } from '@/store/deskFocusStore'
 import { useWorkspaceActivityStore } from '@/store/workspaceActivityStore'
 
 function formatTaskPath(filePath: string): string {
@@ -38,6 +40,8 @@ export function QueueActivityPanel() {
     error,
     fetch,
   } = useQueueActivityStore()
+  const focusedSelection = useDeskFocusStore((state) => state.selection)
+  const setDeskFocusProjection = useDeskFocusStore((state) => state.setProjection)
   const refreshWorkspaceActivity = useWorkspaceActivityStore((state) => state.fetch)
 
   useEffect(() => {
@@ -77,6 +81,16 @@ export function QueueActivityPanel() {
     } finally {
       setPendingClaimId(null)
     }
+  }
+
+  async function handleFocusReadyTask(task: (typeof readyTasks)[number]) {
+    const projection = await publishReadyTaskFocus(task)
+    setDeskFocusProjection(projection)
+  }
+
+  async function handleFocusClaim(claim: (typeof activeClaims)[number]) {
+    const projection = await publishClaimFocus(claim)
+    setDeskFocusProjection(projection)
   }
 
   return (
@@ -136,6 +150,9 @@ export function QueueActivityPanel() {
                   >
                     {(() => {
                       const matchingClaim = claimByTaskPath.get(task.file_path.toLowerCase()) ?? null
+                      const isFocusedTask =
+                        focusedSelection?.focus_kind === 'ready_task' &&
+                        focusedSelection.task_id === task.task_id
                       return (
                         <>
                           <div className="flex items-start justify-between gap-3">
@@ -170,6 +187,18 @@ export function QueueActivityPanel() {
                             {task.task_id}
                           </div>
                           <div className="flex flex-wrap gap-2 pt-1">
+                            {isFocusedTask ? (
+                              <div className="rounded border border-emerald-300/30 px-2.5 py-1 text-[11px] text-emerald-300">
+                                Current desk action
+                              </div>
+                            ) : (
+                              <button
+                                onClick={() => void handleFocusReadyTask(task)}
+                                className="rounded border border-ohmic-border px-2.5 py-1 text-[11px] font-medium text-ohmic-text transition-colors hover:border-ohmic-accent/30"
+                              >
+                                Use in desk
+                              </button>
+                            )}
                             {matchingClaim ? (
                               <div className="rounded border border-emerald-300/30 px-2.5 py-1 text-[11px] text-emerald-300">
                                 Claimed by {matchingClaim.owner}
@@ -216,6 +245,12 @@ export function QueueActivityPanel() {
                     key={claim.claim_id}
                     className="rounded-xl border border-ohmic-border bg-ohmic-bg px-3 py-3 space-y-2"
                   >
+                    {(() => {
+                      const isFocusedClaim =
+                        focusedSelection?.focus_kind === 'claim' &&
+                        focusedSelection.claim_id === claim.claim_id
+                      return (
+                        <>
                     <div className="flex items-start justify-between gap-3">
                       <div className="space-y-1 min-w-0">
                         <div
@@ -247,6 +282,18 @@ export function QueueActivityPanel() {
                       </div>
                     ) : null}
                     <div className="flex flex-wrap gap-2 pt-1">
+                      {isFocusedClaim ? (
+                        <div className="rounded border border-emerald-300/30 px-2.5 py-1 text-[11px] text-emerald-300">
+                          Current desk action
+                        </div>
+                      ) : (
+                        <button
+                          onClick={() => void handleFocusClaim(claim)}
+                          className="rounded border border-ohmic-border px-2.5 py-1 text-[11px] font-medium text-ohmic-text transition-colors hover:border-ohmic-accent/30"
+                        >
+                          Use in desk
+                        </button>
+                      )}
                       <button
                         onClick={() => void handleCompleteClaim(claim.claim_id)}
                         disabled={pendingClaimId === claim.claim_id}
@@ -255,6 +302,9 @@ export function QueueActivityPanel() {
                         {pendingClaimId === claim.claim_id ? 'Completing...' : 'Complete claim'}
                       </button>
                     </div>
+                        </>
+                      )
+                    })()}
                   </div>
                 ))}
               </div>

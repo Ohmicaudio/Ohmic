@@ -18,10 +18,12 @@ import { TandemPanel } from '@/panels/TandemPanel'
 import { QueueActivityPanel } from '@/panels/QueueActivityPanel'
 import { WorkspaceActivityPanel } from '@/panels/WorkspaceActivityPanel'
 import { subscribeToUpdates } from '@/api/projections'
+import { publishIntakeFocus } from '@/api/focus'
 import { useAggregationPanelStore } from '@/store/aggregationPanelStore'
 import { useAttachmentPreviewStore } from '@/store/attachmentPreviewStore'
 import { useAuditSummaryStore } from '@/store/auditSummaryStore'
 import { useDashboardStore } from '@/store/dashboardStore'
+import { useDeskFocusStore } from '@/store/deskFocusStore'
 import { useFilingHistoryStore } from '@/store/filingHistoryStore'
 import { useInactiveIntakeStore } from '@/store/inactiveIntakeStore'
 import { useIntakeContextStore } from '@/store/intakeContextStore'
@@ -35,6 +37,8 @@ import { useWarningReviewStore } from '@/store/warningReviewStore'
 export function App() {
   const didAutoSelectIntake = useRef(false)
   const fetchDashboard = useDashboardStore((s) => s.fetch)
+  const fetchDeskFocus = useDeskFocusStore((s) => s.fetch)
+  const setDeskFocusProjection = useDeskFocusStore((s) => s.setProjection)
   const fetchAggregationPanel = useAggregationPanelStore((s) => s.fetch)
   const fetchAttachmentPreview = useAttachmentPreviewStore((s) => s.fetch)
   const fetchAuditSummary = useAuditSummaryStore((s) => s.fetch)
@@ -62,6 +66,7 @@ export function App() {
       if (name === 'administrator_attachment_preview') fetchAttachmentPreview()
       if (name === 'administrator_audit_summary') fetchAuditSummary()
       if (name === 'administrator_filing_history_projection') fetchFilingHistory()
+      if (name === 'administrator_focus_selection') fetchDeskFocus()
       if (name === 'administrator_intake_queue') fetchIntake()
       if (name === 'administrator_inactive_intake') fetchInactiveIntake()
       if (name === 'administrator_inactive_intake_projection') fetchInactiveIntake()
@@ -92,6 +97,7 @@ export function App() {
   useEffect(() => {
     fetchHealth()
     fetchDashboard()
+    fetchDeskFocus()
     fetchAggregationPanel()
     fetchAttachmentPreview()
     fetchAuditSummary()
@@ -105,6 +111,7 @@ export function App() {
     fetchWarningReview()
   }, [
     fetchDashboard,
+    fetchDeskFocus,
     fetchAggregationPanel,
     fetchAttachmentPreview,
     fetchAuditSummary,
@@ -137,6 +144,29 @@ export function App() {
       didAutoSelectIntake.current = true
     }
   }, [intakeItems, selectIntake, selectedIntakeId])
+
+  useEffect(() => {
+    let cancelled = false
+
+    const publishFocus = async () => {
+      try {
+        const projection = await publishIntakeFocus(selectedIntakeId ?? null)
+        if (!cancelled) {
+          setDeskFocusProjection(projection)
+        }
+      } catch {
+        if (!cancelled) {
+          void fetchDeskFocus()
+        }
+      }
+    }
+
+    void publishFocus()
+
+    return () => {
+      cancelled = true
+    }
+  }, [fetchDeskFocus, selectedIntakeId, setDeskFocusProjection])
 
   return (
     <div className="min-h-screen flex flex-col">

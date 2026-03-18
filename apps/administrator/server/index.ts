@@ -2,7 +2,7 @@ import http from 'http'
 import path from 'path'
 import { fileURLToPath } from 'url'
 import { ProjectionReader } from './projectionReader.js'
-import { writeIntakeFocusSelection } from './focusWriter.js'
+import { writeCurrentActionFocusSelection, writeIntakeFocusSelection } from './focusWriter.js'
 import { getAdministratorRuntimeDir } from './runtimeConfig.js'
 import { readActiveClaimsFromDisk } from './activeClaimsSource.js'
 import { claimReadyTask, completeClaim } from './queueActions.js'
@@ -321,7 +321,49 @@ export function createAdministratorServer(port = PORT) {
         try {
           const input = JSON.parse(body) as { intake_id?: string | null }
           writeIntakeFocusSelection(input.intake_id ?? null)
-            .then((selection) => sendJson(res, { selection }))
+            .then((projection) => sendJson(res, projection))
+            .catch((err) => sendJson(res, { error: err.message }, 500))
+        } catch {
+          sendJson(res, { error: 'Invalid JSON body' }, 400)
+        }
+      })
+      return
+    }
+
+    if (requestPath === '/api/focus/current-action' && req.method === 'POST') {
+      let body = ''
+      req.on('data', (chunk: Buffer) => { body += chunk.toString() })
+      req.on('end', () => {
+        try {
+          const input = JSON.parse(body) as {
+            focus_kind?: 'ready_task' | 'claim'
+            task_id?: string | null
+            claim_id?: string | null
+            title?: string | null
+            file_path?: string | null
+          }
+
+          if (input.focus_kind !== 'ready_task' && input.focus_kind !== 'claim') {
+            sendJson(res, { error: 'focus_kind must be ready_task or claim' }, 400)
+            return
+          }
+          if (input.focus_kind === 'ready_task' && !input.task_id) {
+            sendJson(res, { error: 'Missing task_id for ready_task focus' }, 400)
+            return
+          }
+          if (input.focus_kind === 'claim' && !input.claim_id) {
+            sendJson(res, { error: 'Missing claim_id for claim focus' }, 400)
+            return
+          }
+
+          writeCurrentActionFocusSelection({
+            focus_kind: input.focus_kind,
+            task_id: input.task_id,
+            claim_id: input.claim_id,
+            title: input.title,
+            file_path: input.file_path,
+          })
+            .then((projection) => sendJson(res, projection))
             .catch((err) => sendJson(res, { error: err.message }, 500))
         } catch {
           sendJson(res, { error: 'Invalid JSON body' }, 400)

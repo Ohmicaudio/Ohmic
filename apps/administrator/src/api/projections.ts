@@ -7,6 +7,7 @@ import type {
   AggregationPanelProjection,
   AttachmentPreviewProjection,
   DashboardStatusCards,
+  AdministratorDeskFocusProjection,
   FilingHistoryProjection,
   InactiveIntakeShellProjection,
   InactiveIntakeProjection,
@@ -90,6 +91,10 @@ export async function fetchActiveClaims(): Promise<ActiveClaimsProjection> {
 
 export async function fetchWorkspaceActivityProjection(): Promise<WorkspaceActivityProjection> {
   return fetchJson<WorkspaceActivityProjection>('/projections/administrator_workspace_activity')
+}
+
+export async function fetchAdministratorFocusProjection(): Promise<AdministratorDeskFocusProjection> {
+  return fetchJson<AdministratorDeskFocusProjection>('/projections/administrator_focus_selection')
 }
 
 // SSE stream for live updates.

@@ -133,6 +133,12 @@ export function buildProjectionFallback(name: string): ProjectionFallback | null
         },
         rows: [],
       }
+    case 'administrator_focus_selection':
+      return {
+        projection_name: 'administrator_focus_selection',
+        generated_at: buildGeneratedAt(),
+        selection: null,
+      }
     default:
       return null
   }

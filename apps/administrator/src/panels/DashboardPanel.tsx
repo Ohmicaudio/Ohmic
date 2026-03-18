@@ -5,6 +5,7 @@ import { useIntakeStore } from '@/store/intakeStore'
 import { useQueueActivityStore } from '@/store/queueActivityStore'
 import { useServerHealthStore } from '@/store/serverHealthStore'
 import { useWorkspaceActivityStore } from '@/store/workspaceActivityStore'
+import { useDeskFocusStore } from '@/store/deskFocusStore'
 import { StatusBadge } from '@/components/StatusBadge'
 import { FreshnessIndicator } from '@/components/FreshnessIndicator'
 import type { StatusCard } from '@/types/intake'
@@ -132,6 +133,9 @@ export function DashboardPanel() {
   const headCommit = useWorkspaceActivityStore((state) => state.headCommit)
   const dirtyFileCount = useWorkspaceActivityStore((state) => state.dirtyFileCount)
   const workspaceGeneratedAt = useWorkspaceActivityStore((state) => state.generatedAt)
+  const fetchDeskFocus = useDeskFocusStore((state) => state.fetch)
+  const focusedSelection = useDeskFocusStore((state) => state.selection)
+  const focusGeneratedAt = useDeskFocusStore((state) => state.generatedAt)
   const fetchHealth = useServerHealthStore((state) => state.fetch)
   const runtimeStatus = useServerHealthStore((state) => state.status)
   const loadedProjections = useServerHealthStore((state) => state.loadedProjections)
@@ -156,6 +160,12 @@ export function DashboardPanel() {
   )
   const nextQueueTask = readyTasks[0] ?? null
   const currentDeskAction = useMemo(() => {
+    if (focusedSelection?.title) {
+      return focusedSelection.title
+    }
+    if (focusedSelection?.focus_kind === 'intake' && focusedSelection.selected_intake_id) {
+      return `Focused intake ${focusedSelection.selected_intake_id}`
+    }
     if (activeClaimCount > 0) {
       return 'Claim in progress'
     }
@@ -163,8 +173,19 @@ export function DashboardPanel() {
       return nextQueueTask.title
     }
     return 'No ready work visible'
-  }, [activeClaimCount, nextQueueTask])
-  const currentDeskStatus = activeClaimCount > 0 ? 'active_claim' : nextQueueTask ? 'ready' : 'idle'
+  }, [activeClaimCount, focusedSelection, nextQueueTask])
+  const currentDeskStatus =
+    focusedSelection?.focus_kind === 'claim'
+      ? 'focused_claim'
+      : focusedSelection?.focus_kind === 'ready_task'
+        ? 'focused_ready_task'
+        : focusedSelection?.focus_kind === 'intake'
+          ? 'focused_intake'
+          : activeClaimCount > 0
+            ? 'active_claim'
+            : nextQueueTask
+              ? 'ready'
+              : 'idle'
 
   useEffect(() => {
     fetch()
@@ -183,13 +204,18 @@ export function DashboardPanel() {
     if (!workspaceGeneratedAt) {
       void fetchWorkspaceActivity()
     }
+    if (!focusGeneratedAt) {
+      void fetchDeskFocus()
+    }
     if (loadedProjections.length === 0 && !healthLoading) {
       void fetchHealth()
     }
   }, [
+    fetchDeskFocus,
     fetchHealth,
     fetchQueueActivity,
     fetchWorkspaceActivity,
+    focusGeneratedAt,
     healthLoading,
     loadedProjections.length,
     queueGeneratedAt,
@@ -275,8 +301,8 @@ export function DashboardPanel() {
               <MetricRow label="Status" value={currentDeskStatus} />
               <MetricRow label="Current action" value={currentDeskAction} />
               <MetricRow
-                label="Priority"
-                value={nextQueueTask ? nextQueueTask.priority : '--'}
+                label="Focus"
+                value={focusedSelection?.focus_kind ?? (nextQueueTask ? 'queued_task' : '--')}
               />
             </SnapshotCard>
 

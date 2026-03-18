@@ -479,14 +479,58 @@ describe('administrator server', () => {
       'utf-8'
     )
     const focus = JSON.parse(focusRaw) as {
-      focus_kind: string
-      selected_intake_id: string | null
-      source: string
+      projection_name: string
+      selection: {
+        focus_kind: string
+        selected_intake_id: string | null
+        source: string
+      } | null
     }
 
-    expect(focus.focus_kind).toBe('intake')
-    expect(focus.selected_intake_id).toBe('intake-focus-1')
-    expect(focus.source).toBe('administrator_app')
+    expect(focus.projection_name).toBe('administrator_focus_selection')
+    expect(focus.selection?.focus_kind).toBe('intake')
+    expect(focus.selection?.selected_intake_id).toBe('intake-focus-1')
+    expect(focus.selection?.source).toBe('administrator_app')
+  })
+
+  it('publishes current ready-task focus into the runtime root', async () => {
+    const { createAdministratorServer } = await importServer()
+    const app = createAdministratorServer(0)
+    const baseUrl = await app.start()
+    stopServer = app.stop
+
+    const focusRes = await fetch(`${baseUrl}/api/focus/current-action`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        focus_kind: 'ready_task',
+        task_id: '2026-03-18-fix-provider-desk-truth',
+        title: 'Fix provider desk truth',
+        file_path: 'B:\\ohmic\\agent-system\\requests\\ready\\2026-03-18-fix-provider-desk-truth.md',
+      }),
+    })
+
+    expect(focusRes.ok).toBe(true)
+
+    const focusRaw = await readFile(
+      path.join(tempRuntimeDir!, 'administrator_focus_selection.json'),
+      'utf-8'
+    )
+    const focus = JSON.parse(focusRaw) as {
+      selection: {
+        focus_kind: string
+        task_id: string | null
+        title: string | null
+        file_path: string | null
+      } | null
+    }
+
+    expect(focus.selection).toMatchObject({
+      focus_kind: 'ready_task',
+      task_id: '2026-03-18-fix-provider-desk-truth',
+      title: 'Fix provider desk truth',
+      file_path: 'B:\\ohmic\\agent-system\\requests\\ready\\2026-03-18-fix-provider-desk-truth.md',
+    })
   })
 
   it('serves the Tandem status seam from environment configuration', async () => {
@@ -1158,6 +1202,15 @@ describe('administrator server', () => {
       }),
     })
     expect(missingReopenIntakeRes.status).toBe(400)
+
+    const missingFocusTaskRes = await fetch(`${baseUrl}/api/focus/current-action`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        focus_kind: 'ready_task',
+      }),
+    })
+    expect(missingFocusTaskRes.status).toBe(400)
   })
 
   it('ignores malformed tandem probe target health rows', async () => {
