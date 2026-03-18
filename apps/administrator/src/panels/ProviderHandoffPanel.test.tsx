@@ -89,6 +89,15 @@ const tandemState = {
       message: 'Inbox session attached.',
     },
   ],
+  pendingHandshake: {
+    event_id: 'handshake-1',
+    intake_id: 'intake-1',
+    target_preset_id: 'gmail-support',
+    target_label: 'Gmail support inbox',
+    handshake_note: 'Prepare provider session before launch.',
+    occurred_at: '2026-03-18T10:30:00Z',
+    state: 'pending',
+  },
   launchUrl: 'http://127.0.0.1:8765/?sessionLabel=gmail-triage',
   handoffNote: 'Ask provider to verify attachment context.',
   setSelectedPreset: vi.fn(),
@@ -132,6 +141,8 @@ describe('ProviderHandoffPanel', () => {
     expect(markup).toContain('Operator Loop')
     expect(markup).toContain('Provider Notes and Recovery')
     expect(markup).toContain('Prepare handshake')
+    expect(markup).toContain('Pending handshake')
+    expect(markup).toContain('Resume handshake')
     expect(markup).toContain('Export history')
     expect(markup).toContain('Gmail Support')
     expect(markup).toContain('Selected target attached')

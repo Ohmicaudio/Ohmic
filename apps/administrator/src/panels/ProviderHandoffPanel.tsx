@@ -210,6 +210,7 @@ export function ProviderHandoffPanel() {
   const tandemProbeMessage = useTandemStore((state) => state.probeMessage)
   const tandemActiveTargetLabel = useTandemStore((state) => state.activeTargetLabel)
   const tandemTargetHealth = useTandemStore((state) => state.targetHealth)
+  const tandemPendingHandshake = useTandemStore((state) => state.pendingHandshake)
   const tandemLaunchUrl = useTandemStore((state) => state.launchUrl)
   const tandemHandoffNote = useTandemStore((state) => state.handoffNote)
   const setSelectedTandemPreset = useTandemStore((state) => state.setSelectedPreset)
@@ -461,6 +462,20 @@ export function ProviderHandoffPanel() {
 
   function loadProviderTarget(presetId: string) {
     setSelectedTandemPreset(presetId)
+  }
+
+  function handleResumePendingHandshake() {
+    if (!tandemPendingHandshake) {
+      return
+    }
+
+    if (tandemPendingHandshake.target_preset_id) {
+      setSelectedTandemPreset(tandemPendingHandshake.target_preset_id)
+    }
+    if (tandemPendingHandshake.intake_id) {
+      selectIntake(tandemPendingHandshake.intake_id)
+    }
+    setTandemHandoffNote(tandemPendingHandshake.handshake_note ?? '')
   }
 
   async function handleProviderLaunch(
@@ -774,6 +789,37 @@ export function ProviderHandoffPanel() {
             Attached session target is {tandemActiveTargetLabel}, but the desk is pointed at{' '}
             {selectedTandemPreset?.target_label}. Load the attached target or switch the provider
             session before you continue.
+          </div>
+        ) : null}
+        {tandemPendingHandshake ? (
+          <div className="rounded border border-amber-300/30 bg-amber-300/10 px-3 py-2 space-y-2 text-[11px] text-amber-300">
+            <div className="flex items-center justify-between gap-3">
+              <div className="uppercase tracking-widest">Pending handshake</div>
+              <div className="text-[10px] whitespace-nowrap">
+                {new Date(tandemPendingHandshake.occurred_at).toLocaleString()}
+              </div>
+            </div>
+            <div>
+              {tandemPendingHandshake.target_label ||
+                tandemPendingHandshake.target_preset_id ||
+                'Unlabeled target'}
+              {tandemPendingHandshake.intake_id
+                ? ` | ${tandemPendingHandshake.intake_id}`
+                : ''}
+            </div>
+            {tandemPendingHandshake.handshake_note ? (
+              <div className="whitespace-pre-wrap text-ohmic-text-dim">
+                {tandemPendingHandshake.handshake_note}
+              </div>
+            ) : null}
+            <div className="flex flex-wrap gap-2">
+              <button
+                onClick={handleResumePendingHandshake}
+                className="rounded border border-amber-300/30 px-2.5 py-1 text-[11px] font-medium text-amber-300 transition-colors hover:border-amber-300 hover:bg-amber-300/10"
+              >
+                Resume handshake
+              </button>
+            </div>
           </div>
         ) : null}
         {selectedTandemPreset ? (
