@@ -111,6 +111,46 @@ the static env session state.
 - `POST /api/commands/execute`
 - `POST /api/inactive/reopen`
 - `GET /api/tandem/status`
+- `POST /api/tandem/launch-intent`
+- `POST /api/tandem/handshake-target`
+- `POST /api/tandem/follow-up-complete`
+- `POST /api/tandem/follow-up-reopen`
+
+## Tandem probe contract
+
+If `ADMINISTRATOR_TANDEM_STATUS_URL` is set, the administrator server will try to
+read a live JSON status document and prefer it over the static env session floor.
+
+Accepted top-level fields:
+
+- `session_state` or `sessionState`
+  - `missing`
+  - `idle`
+  - `attached`
+- `active_target_label` or `activeTargetLabel`
+- `available`
+- `message`
+- `target_health` or `targetHealth`
+
+Accepted `target_health` item shape:
+
+```json
+{
+  "target_label": "Gmail support inbox",
+  "status": "attached",
+  "message": "Inbox session attached."
+}
+```
+
+Accepted target health statuses:
+
+- `ready`
+- `attention`
+- `attached`
+- `error`
+
+Any malformed or incomplete target-health rows are ignored instead of crashing the
+desk. Unknown status values are downgraded to `unknown`.
 
 ## Current collaboration posture
 

@@ -276,7 +276,8 @@ export function IntakeDetailPanel() {
                           {event.target_label || event.summary_label}
                         </div>
                         <div className="text-[11px] text-ohmic-text-dim">
-                          {event.status_delta || event.event_family}
+                          {event.actor_label || 'operator'}
+                          {` | ${event.status_delta || event.event_family}`}
                           {event.attachment_id ? ` | ${event.attachment_id}` : ''}
                         </div>
                       </div>

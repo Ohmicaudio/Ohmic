@@ -1,10 +1,14 @@
 import { useEffect } from 'react'
 import { useDashboardStore } from '@/store/dashboardStore'
 import { useAuditSummaryStore } from '@/store/auditSummaryStore'
+import { useIntakeStore } from '@/store/intakeStore'
 import { StatusBadge } from '@/components/StatusBadge'
 import { FreshnessIndicator } from '@/components/FreshnessIndicator'
 import type { StatusCard } from '@/types/intake'
-import { buildProviderHandoffSummary } from '@/panels/providerHandoffSummary'
+import {
+  buildProviderFollowUpQueue,
+  buildProviderHandoffSummary,
+} from '@/panels/providerHandoffSummary'
 
 function CardView({ card }: { card: StatusCard }) {
   const emphasisBorder =
@@ -41,7 +45,19 @@ export function DashboardPanel() {
   const auditItems = useAuditSummaryStore((state) => state.items)
   const auditAvailable = useAuditSummaryStore((state) => state.available)
   const fetchAuditSummary = useAuditSummaryStore((state) => state.fetch)
+  const intakeItems = useIntakeStore((state) => state.items)
   const providerSummary = buildProviderHandoffSummary(auditItems)
+  const providerQueue = buildProviderFollowUpQueue(
+    auditItems,
+    intakeItems,
+    25,
+    Date.now(),
+    'priority'
+  )
+  const nextProviderAction = providerQueue[0] ?? null
+  const attachmentReviewCount = providerQueue.filter(
+    (item) => item.priority === 'needs_attachment_review'
+  ).length
 
   useEffect(() => {
     fetch()
@@ -83,6 +99,32 @@ export function DashboardPanel() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
           <div className="panel border-ohmic-accent/20">
             <div className="flex items-center justify-between mb-3">
+              <h3 className="panel-header mb-0">Next Best Action</h3>
+              <StatusBadge status={nextProviderAction ? 'warning' : 'healthy'} />
+            </div>
+            {nextProviderAction ? (
+              <div className="space-y-2">
+                <div className="text-xs text-ohmic-text">
+                  {nextProviderAction.intakeTitle}
+                </div>
+                <div className="text-xs text-ohmic-text-dim">
+                  {nextProviderAction.priorityLabel} | {nextProviderAction.targetLabel}
+                </div>
+                <div className="text-xs text-ohmic-text-dim">
+                  {nextProviderAction.ageLabel} |{' '}
+                  {nextProviderAction.occurredAt
+                    ? new Date(nextProviderAction.occurredAt).toLocaleString()
+                    : '--'}
+                </div>
+              </div>
+            ) : (
+              <div className="text-xs text-ohmic-text-dim">
+                No provider action is waiting right now.
+              </div>
+            )}
+          </div>
+          <div className="panel border-ohmic-accent/20">
+            <div className="flex items-center justify-between mb-3">
               <h3 className="panel-header mb-0">Provider Follow-up</h3>
               <StatusBadge
                 status={providerSummary.staleFollowUpCount > 0 ? 'warning' : 'healthy'}
@@ -111,6 +153,31 @@ export function DashboardPanel() {
                 </span>
                 <span className="text-xs text-ohmic-text text-right break-all max-w-[65%]">
                   {providerSummary.attachmentReviewCount}
+                </span>
+              </div>
+            </div>
+          </div>
+          <div className="panel border-ohmic-accent/20">
+            <div className="flex items-center justify-between mb-3">
+              <h3 className="panel-header mb-0">Attachment Review</h3>
+              <StatusBadge status={attachmentReviewCount > 0 ? 'warning' : 'healthy'} />
+            </div>
+            <div className="space-y-2">
+              <div className="flex items-start justify-between gap-4">
+                <span className="text-xs text-ohmic-text-dim whitespace-nowrap">
+                  Pending reviews
+                </span>
+                <span className="text-xs text-ohmic-text text-right break-all max-w-[65%]">
+                  {attachmentReviewCount}
+                </span>
+              </div>
+              <div className="flex items-start justify-between gap-4">
+                <span className="text-xs text-ohmic-text-dim whitespace-nowrap">
+                  Next target
+                </span>
+                <span className="text-xs text-ohmic-text text-right break-all max-w-[65%]">
+                  {providerQueue.find((item) => item.priority === 'needs_attachment_review')
+                    ?.targetLabel ?? '--'}
                 </span>
               </div>
             </div>

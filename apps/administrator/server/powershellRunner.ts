@@ -36,6 +36,13 @@ interface RecordTandemLaunchIntentInput {
   handoff_note?: string | null
 }
 
+interface RecordTandemTargetHandshakeInput {
+  intake_id?: string | null
+  target_preset_id?: string | null
+  target_label?: string | null
+  handshake_note?: string | null
+}
+
 interface RecordProviderFollowUpCompletionInput {
   intake_id: string
   target_preset_id?: string | null
@@ -166,6 +173,16 @@ interface RecordProviderFollowUpReopenResponse {
     writeback_status: 'accepted'
     event_id: string
     intake_id: string
+    target_label: string | null
+    audit_summary_count: number
+  }
+}
+
+interface RecordTandemTargetHandshakeResponse {
+  writeback: {
+    writeback_status: 'accepted'
+    event_id: string
+    intake_id: string | null
     target_label: string | null
     audit_summary_count: number
   }
@@ -861,6 +878,59 @@ export async function recordTandemLaunchIntent(
   `
 
   return runPowerShell(psScript) as Promise<RecordTandemLaunchIntentResponse>
+}
+
+export async function recordTandemTargetHandshake(
+  input: RecordTandemTargetHandshakeInput
+): Promise<RecordTandemTargetHandshakeResponse> {
+  const runtimeDir = escapePowerShellString(RUNTIME_DIR)
+  const occurredAt = new Date().toISOString()
+  const eventId = `tandem_handshake_${Date.now()}`
+  const intakeId = escapePowerShellString(input.intake_id ?? '')
+  const targetPresetId = escapePowerShellString(input.target_preset_id ?? '')
+  const targetLabel = escapePowerShellString(input.target_label ?? '')
+  const handshakeNote = escapePowerShellString(input.handshake_note ?? '')
+
+  const psScript = `
+    Set-StrictMode -Version Latest
+    $ErrorActionPreference = 'Stop'
+
+    . '${commonScript}'
+    . '${auditSummaryProjectionScript}'
+
+    $runtimeDir = '${runtimeDir}'
+    $auditEventsPath = Join-Path $runtimeDir 'administrator_audit_events.jsonl'
+
+    $event = [pscustomobject]@{
+      event_id = '${eventId}'
+      event_type = 'administrator.tandem.target_handshake'
+      event_family = 'provider_handoff'
+      intake_id = '${intakeId}'
+      summary_label = 'Prepared Tandem target handshake'
+      actor_label = 'operator:d'
+      occurred_at = '${escapePowerShellString(occurredAt)}'
+      status_delta = 'handshake_pending'
+      target_label = if ([string]::IsNullOrWhiteSpace('${targetLabel}')) { if ([string]::IsNullOrWhiteSpace('${targetPresetId}')) { '' } else { '${targetPresetId}' } } else { '${targetLabel}' }
+      target_preset_id = '${targetPresetId}'
+      handoff_note = '${handshakeNote}'
+    }
+
+    Append-JsonLine -PathText $auditEventsPath -Value $event
+    $auditEvents = @(Read-JsonLines -PathText $auditEventsPath)
+    $projection = Write-AdministratorAuditSummaryProjection -AuditEvents $auditEvents -RuntimeDir $runtimeDir
+
+    [pscustomobject]@{
+      writeback = [pscustomobject]@{
+        writeback_status = 'accepted'
+        event_id = '${eventId}'
+        intake_id = if ([string]::IsNullOrWhiteSpace('${intakeId}')) { $null } else { '${intakeId}' }
+        target_label = if ([string]::IsNullOrWhiteSpace('${targetLabel}')) { if ([string]::IsNullOrWhiteSpace('${targetPresetId}')) { $null } else { '${targetPresetId}' } } else { '${targetLabel}' }
+        audit_summary_count = @($projection.rows).Count
+      }
+    } | ConvertTo-Json -Depth 10 -Compress
+  `
+
+  return runPowerShell(psScript) as Promise<RecordTandemTargetHandshakeResponse>
 }
 
 export async function recordProviderFollowUpCompletion(

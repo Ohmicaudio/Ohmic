@@ -1,8 +1,10 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
+import { executeCommand } from '@/api/commands'
 import {
   recordProviderFollowUpCompletion,
   recordProviderFollowUpReopen,
   recordTandemLaunchIntent,
+  recordTandemTargetHandshake,
 } from '@/api/tandem'
 import { useAuditSummaryStore } from '@/store/auditSummaryStore'
 import { useCommandStore } from '@/store/commandStore'
@@ -78,6 +80,29 @@ function buildCompletionTemplate(
   return `Provider follow-up completed for ${item.targetLabel}.`
 }
 
+function buildCompletionReasonPresets(
+  targetKind: string | null | undefined,
+  targetLabel: string
+): string[] {
+  switch (targetKind) {
+    case 'email':
+      return [
+        `Provider confirmed email review for ${targetLabel}.`,
+        `Inbox triage completed for ${targetLabel}.`,
+      ]
+    case 'issue':
+      return [
+        `Issue review completed for ${targetLabel}.`,
+        `Provider confirmed evidence and routing for ${targetLabel}.`,
+      ]
+    default:
+      return [
+        `Provider follow-up completed for ${targetLabel}.`,
+        `Operator closed the provider loop for ${targetLabel}.`,
+      ]
+  }
+}
+
 function buildReopenTemplate(
   item: {
     targetLabel: string
@@ -95,6 +120,63 @@ function buildReopenTemplate(
   return `Reopened provider follow-up for ${item.targetLabel}.`
 }
 
+function buildReopenReasonPresets(
+  targetKind: string | null | undefined,
+  targetLabel: string
+): string[] {
+  switch (targetKind) {
+    case 'email':
+      return [
+        `Reopen ${targetLabel} for another inbox pass.`,
+        `Need provider clarification in ${targetLabel}.`,
+      ]
+    case 'issue':
+      return [
+        `Reopen ${targetLabel} pending issue clarification.`,
+        `Need more evidence before closing ${targetLabel}.`,
+      ]
+    default:
+      return [
+        `Reopened provider follow-up for ${targetLabel}.`,
+        `Need another provider pass for ${targetLabel}.`,
+      ]
+  }
+}
+
+function shouldIgnoreKeyboardShortcut(target: EventTarget | null): boolean {
+  if (!(target instanceof HTMLElement)) {
+    return false
+  }
+
+  const tagName = target.tagName.toLowerCase()
+  return (
+    tagName === 'input' ||
+    tagName === 'textarea' ||
+    tagName === 'select' ||
+    target.isContentEditable
+  )
+}
+
+function formatSlaTimer(value: string | null): string {
+  if (!value) {
+    return 'SLA unknown'
+  }
+
+  const parsed = Date.parse(value)
+  if (!Number.isFinite(parsed)) {
+    return 'SLA unknown'
+  }
+
+  const hoursOpen = Math.max(0, Math.floor((Date.now() - parsed) / (1000 * 60 * 60)))
+  if (hoursOpen >= 24) {
+    return `${hoursOpen}h open - overdue`
+  }
+  if (hoursOpen >= 4) {
+    return `${hoursOpen}h open - attention`
+  }
+  return `${hoursOpen}h open - within SLA`
+}
+
 export function ProviderHandoffPanel() {
   const [focusedTargetLabel, setFocusedTargetLabel] = useState<string | null>(null)
   const [followUpFilter, setFollowUpFilter] = useState<
@@ -103,6 +185,12 @@ export function ProviderHandoffPanel() {
   const [followUpScope, setFollowUpScope] = useState<'all' | 'selected'>('all')
   const [followUpSort, setFollowUpSort] = useState<ProviderFollowUpSortMode>('priority')
   const [selectedFollowUpKeys, setSelectedFollowUpKeys] = useState<string[]>([])
+  const [selectedCompletedEventIds, setSelectedCompletedEventIds] = useState<string[]>([])
+  const [providerNoteDraft, setProviderNoteDraft] = useState('')
+  const previousSummaryRef = useRef<{
+    unresolvedCount: number
+    staleFollowUpCount: number
+  } | null>(null)
   const intakeItems = useIntakeStore((state) => state.items)
   const selectedId = useIntakeStore((state) => state.selectedId)
   const selectIntake = useIntakeStore((state) => state.select)
@@ -132,6 +220,16 @@ export function ProviderHandoffPanel() {
   const recentHandoffs = useMemo(() => selectRecentTandemLaunches(auditItems, 5), [auditItems])
   const recentProviderEvents = useMemo(() => selectRecentProviderEvents(auditItems, 8), [auditItems])
   const providerSummary = useMemo(() => buildProviderHandoffSummary(auditItems), [auditItems])
+  const providerSummaryDelta = useMemo(() => {
+    if (!previousSummaryRef.current) {
+      return { unresolved: 0, stale: 0 }
+    }
+
+    return {
+      unresolved: providerSummary.unresolvedCount - previousSummaryRef.current.unresolvedCount,
+      stale: providerSummary.staleFollowUpCount - previousSummaryRef.current.staleFollowUpCount,
+    }
+  }, [providerSummary])
   const providerFollowUpQueue = useMemo(
     () => buildProviderFollowUpQueue(auditItems, intakeItems, 5, Date.now(), followUpSort),
     [auditItems, intakeItems, followUpSort]
@@ -181,6 +279,13 @@ export function ProviderHandoffPanel() {
     [auditItems, selectedId]
   )
   const selectedLatestProviderEvent = selectedProviderEvents[0] ?? null
+  const recentCompletedProviderEvents = useMemo(
+    () =>
+      selectRecentProviderEvents(auditItems, 20).filter(
+        (item) => item.event_family === 'provider_follow_up'
+      ),
+    [auditItems]
+  )
   const attachmentReviewQueue = useMemo(
     () =>
       visibleProviderFollowUpQueue.filter(
@@ -241,6 +346,24 @@ export function ProviderHandoffPanel() {
     selectedTandemPreset?.target_label === tandemActiveTargetLabel &&
     tandemSessionState === 'attached'
   const selectedTargetLaunchReady = Boolean(selectedTandemPreset && tandemLaunchUrl)
+  const selectedTargetHealth = selectedTandemPreset
+    ? targetHealthMap.get(selectedTandemPreset.target_label)
+    : null
+  const selectedTargetMismatch =
+    tandemSessionState === 'attached' &&
+    Boolean(selectedTandemPreset?.target_label) &&
+    Boolean(tandemActiveTargetLabel) &&
+    selectedTandemPreset?.target_label !== tandemActiveTargetLabel
+  const selectedContextualLaunchUrl = selectedTandemPreset
+    ? buildTandemContextUrl(tandemLaunchUrl, selectedIntake, selectedTandemPreset)
+    : null
+
+  useEffect(() => {
+    previousSummaryRef.current = {
+      unresolvedCount: providerSummary.unresolvedCount,
+      staleFollowUpCount: providerSummary.staleFollowUpCount,
+    }
+  }, [providerSummary])
 
   async function handleRefresh() {
     await fetchAuditSummary()
@@ -257,6 +380,18 @@ export function ProviderHandoffPanel() {
 
   function clearFollowUpSelection() {
     setSelectedFollowUpKeys([])
+  }
+
+  function toggleCompletedSelection(eventId: string) {
+    setSelectedCompletedEventIds((current) =>
+      current.includes(eventId)
+        ? current.filter((candidate) => candidate !== eventId)
+        : [...current, eventId]
+    )
+  }
+
+  function clearCompletedSelection() {
+    setSelectedCompletedEventIds([])
   }
 
   async function handleCompleteFollowUp(item: {
@@ -405,6 +540,155 @@ export function ProviderHandoffPanel() {
     loadProviderItemIntoDesk(first)
   }
 
+  async function handleBulkReassignToSelectedTarget() {
+    if (!selectedTandemPreset) {
+      return
+    }
+
+    for (const item of selectedFollowUpItems) {
+      const intakeItem = intakeItems.find((candidate) => candidate.intake_id === item.intakeId) ?? null
+      const contextualLaunchUrl = buildTandemContextUrl(
+        tandemLaunchUrl,
+        intakeItem,
+        selectedTandemPreset
+      )
+
+      if (!contextualLaunchUrl) {
+        continue
+      }
+
+      await recordTandemLaunchIntent({
+        intake_id: item.intakeId,
+        target_preset_id: selectedTandemPreset.preset_id,
+        target_label: selectedTandemPreset.target_label,
+        launch_url: contextualLaunchUrl,
+        attachment_id: item.attachmentId,
+        handoff_note:
+          tandemHandoffNote.trim() ||
+          item.handoffNote ||
+          selectedTandemPreset.default_note ||
+          null,
+      })
+    }
+
+    clearFollowUpSelection()
+    await fetchAuditSummary()
+  }
+
+  async function handleBulkReopenCompleted() {
+    const selectedEvents = recentCompletedProviderEvents.filter((item) =>
+      selectedCompletedEventIds.includes(item.event_id)
+    )
+
+    for (const item of selectedEvents) {
+      if (!item.intake_id) {
+        continue
+      }
+
+      await handleReopenFollowUp({
+        intakeId: item.intake_id,
+        targetPresetId: item.target_preset_id ?? null,
+        targetLabel: item.target_label || item.summary_label,
+      })
+    }
+
+    clearCompletedSelection()
+  }
+
+  async function handleCreateProviderNote() {
+    if (!selectedId || !providerNoteDraft.trim()) {
+      return
+    }
+
+    try {
+      await executeCommand({
+        intake_id: selectedId,
+        action: 'add_note',
+        note: providerNoteDraft.trim(),
+      })
+      setProviderNoteDraft('')
+      await fetchAuditSummary()
+    } catch {
+      // Keep provider note creation non-blocking for the desk.
+    }
+  }
+
+  function exportProviderActivity() {
+    const payload = JSON.stringify(
+      {
+        exported_at: new Date().toISOString(),
+        selected_intake_id: selectedId,
+        focused_target_label: focusedTargetLabel,
+        events: selectRecentProviderEvents(auditItems, 250),
+      },
+      null,
+      2
+    )
+
+    const blob = new Blob([payload], { type: 'application/json' })
+    const url = URL.createObjectURL(blob)
+    const link = document.createElement('a')
+    link.href = url
+    link.download = `provider-handoff-audit-${new Date().toISOString().slice(0, 10)}.json`
+    link.click()
+    URL.revokeObjectURL(url)
+  }
+
+  async function handleTargetHandshake(
+    preset: { preset_id: string; target_label: string; default_note?: string | null },
+    noteOverride?: string | null
+  ) {
+    try {
+      await recordTandemTargetHandshake({
+        intake_id: selectedIntake?.intake_id ?? null,
+        target_preset_id: preset.preset_id,
+        target_label: preset.target_label,
+        handshake_note:
+          noteOverride?.trim() ||
+          tandemHandoffNote.trim() ||
+          preset.default_note ||
+          null,
+      })
+      await fetchAuditSummary()
+    } catch {
+      // Keep target handshake non-blocking for the desk.
+    }
+  }
+
+  useEffect(() => {
+    function handleKeyboardShortcut(event: KeyboardEvent) {
+      if (!event.ctrlKey || !event.shiftKey || shouldIgnoreKeyboardShortcut(event.target)) {
+        return
+      }
+
+      const key = event.key.toLowerCase()
+      if (key === 'l' && selectedFollowUpItems.length > 0) {
+        event.preventDefault()
+        handleBulkLoad()
+      } else if (key === 'p' && selectedFollowUpItems.length > 0) {
+        event.preventDefault()
+        handleBulkPrime()
+      } else if (key === 'enter' && selectedFollowUpItems.length > 0) {
+        event.preventDefault()
+        void handleBulkComplete()
+      } else if (key === 'r' && selectedCompletedEventIds.length > 0) {
+        event.preventDefault()
+        void handleBulkReopenCompleted()
+      } else if (key === 'n' && selectedId && providerNoteDraft.trim()) {
+        event.preventDefault()
+        void handleCreateProviderNote()
+      }
+    }
+
+    window.addEventListener('keydown', handleKeyboardShortcut)
+    return () => window.removeEventListener('keydown', handleKeyboardShortcut)
+  }, [
+    providerNoteDraft,
+    selectedCompletedEventIds,
+    selectedFollowUpItems,
+    selectedId,
+  ])
+
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
@@ -416,12 +700,20 @@ export function ProviderHandoffPanel() {
             Centralized outbound provider context and recent Tandem activity.
           </div>
         </div>
-        <button
-          onClick={() => void handleRefresh()}
-          className="text-xs text-ohmic-text-dim hover:text-ohmic-text transition-colors"
-        >
-          refresh
-        </button>
+        <div className="flex items-center gap-2">
+          <button
+            onClick={exportProviderActivity}
+            className="rounded border border-ohmic-border px-2 py-1 text-[10px] uppercase tracking-widest text-ohmic-text-dim transition-colors hover:border-ohmic-accent/30 hover:text-ohmic-text"
+          >
+            Export history
+          </button>
+          <button
+            onClick={() => void handleRefresh()}
+            className="text-xs text-ohmic-text-dim hover:text-ohmic-text transition-colors"
+          >
+            refresh
+          </button>
+        </div>
       </div>
 
       <div className="panel space-y-2">
@@ -466,6 +758,24 @@ export function ProviderHandoffPanel() {
         <div className="text-xs text-ohmic-text-dim">
           {tandemProbeMessage || 'Tandem session truth is still configuration-backed.'}
         </div>
+        {selectedTargetHealth?.status === 'error' ? (
+          <div className="rounded border border-rose-300/30 bg-rose-300/10 px-3 py-2 text-[11px] text-rose-300">
+            {selectedTargetHealth.message ||
+              'Selected target health is failing. Use env truth carefully and re-check Tandem before launching.'}
+          </div>
+        ) : selectedTargetHealth?.status === 'attention' ? (
+          <div className="rounded border border-amber-300/30 bg-amber-300/10 px-3 py-2 text-[11px] text-amber-300">
+            {selectedTargetHealth.message ||
+              'Selected target needs attention before the next provider pass.'}
+          </div>
+        ) : null}
+        {selectedTargetMismatch ? (
+          <div className="rounded border border-amber-300/30 bg-amber-300/10 px-3 py-2 text-[11px] text-amber-300">
+            Attached session target is {tandemActiveTargetLabel}, but the desk is pointed at{' '}
+            {selectedTandemPreset?.target_label}. Load the attached target or switch the provider
+            session before you continue.
+          </div>
+        ) : null}
         {selectedTandemPreset ? (
           <div className="flex flex-wrap gap-2">
             <span
@@ -618,10 +928,16 @@ export function ProviderHandoffPanel() {
             {providerSummary.unresolvedCount}
           </div>
           <div className="mt-1 text-[11px] text-ohmic-text-dim">
+            {providerSummaryDelta.unresolved !== 0
+              ? `${providerSummaryDelta.unresolved > 0 ? '+' : ''}${providerSummaryDelta.unresolved} since last refresh | `
+              : ''}
             {providerSummary.staleFollowUpCount} stale
+            {providerSummaryDelta.stale !== 0
+              ? ` (${providerSummaryDelta.stale > 0 ? '+' : ''}${providerSummaryDelta.stale} since last refresh)`
+              : ''}
           </div>
-        </div>
-      </div>
+            </div>
+          </div>
 
       <div className="panel space-y-3">
         <div className="flex items-center justify-between gap-3">
@@ -664,6 +980,11 @@ export function ProviderHandoffPanel() {
                     ? ` | ${trend.attachmentReviewCount} attachments`
                     : ''}
                 </div>
+                {trend.unresolvedCount >= 3 ? (
+                  <div className="text-[10px] uppercase tracking-widest text-rose-300">
+                    Target overload warning
+                  </div>
+                ) : null}
                 <div className="text-[10px] text-ohmic-text-dim">
                   {trend.latestOccurredAt
                     ? `Latest ${new Date(trend.latestOccurredAt).toLocaleString()}`
@@ -759,6 +1080,13 @@ export function ProviderHandoffPanel() {
                 Complete selected
               </button>
               <button
+                onClick={() => void handleBulkReassignToSelectedTarget()}
+                disabled={!selectedTandemPreset}
+                className="rounded border border-ohmic-accent/40 px-2.5 py-1 text-[11px] font-medium text-ohmic-accent transition-colors hover:border-ohmic-accent hover:bg-ohmic-accent/10 disabled:opacity-50"
+              >
+                Reassign to current target
+              </button>
+              <button
                 onClick={clearFollowUpSelection}
                 className="rounded border border-ohmic-border px-2.5 py-1 text-[11px] font-medium text-ohmic-text-dim transition-colors hover:border-ohmic-accent/30 hover:text-ohmic-text"
               >
@@ -767,6 +1095,10 @@ export function ProviderHandoffPanel() {
             </div>
           </div>
         ) : null}
+        <div className="text-[10px] text-ohmic-text-dim">
+          Shortcuts: Ctrl+Shift+L load, Ctrl+Shift+P prime, Ctrl+Shift+Enter complete,
+          Ctrl+Shift+R reopen completed, Ctrl+Shift+N save provider note.
+        </div>
         {attachmentReviewQueue.length > 0 ? (
           <div className="rounded border border-amber-300/25 bg-amber-300/5 px-3 py-3 space-y-2">
             <div className="text-[10px] uppercase tracking-widest text-amber-300">
@@ -787,7 +1119,7 @@ export function ProviderHandoffPanel() {
                       </div>
                     </div>
                     <div className="text-[10px] uppercase tracking-widest text-amber-300">
-                      {item.ageLabel}
+                      {formatSlaTimer(item.occurredAt)}
                     </div>
                   </div>
                   <label className="flex items-center gap-2 text-[11px] text-ohmic-text-dim">
@@ -867,7 +1199,7 @@ export function ProviderHandoffPanel() {
                             : 'text-emerald-300'
                       }`}
                     >
-                      {item.ageLabel}
+                      {formatSlaTimer(item.occurredAt)}
                     </div>
                     <div className="text-[10px] text-ohmic-text-dim whitespace-nowrap">
                       {item.occurredAt ? new Date(item.occurredAt).toLocaleString() : '--'}
@@ -1015,7 +1347,7 @@ export function ProviderHandoffPanel() {
                             : 'text-emerald-300'
                       }`}
                     >
-                      {group.ageLabel}
+                      {formatSlaTimer(group.oldestOutstandingAt ?? group.latestOccurredAt)}
                     </div>
                   ) : null}
                   <div className="text-[10px] text-ohmic-text-dim whitespace-nowrap">
@@ -1133,6 +1465,15 @@ export function ProviderHandoffPanel() {
                           >
                             Load target
                           </button>
+                          <button
+                            onClick={() => {
+                              loadProviderTarget(preset.preset_id)
+                              void handleTargetHandshake(preset)
+                            }}
+                            className="rounded border border-amber-400/30 px-2.5 py-1 text-[11px] font-medium text-amber-300 transition-colors hover:border-amber-300 hover:bg-amber-300/10"
+                          >
+                            Prepare handshake
+                          </button>
                           {preset.default_note ? (
                             <button
                               onClick={() => setTandemHandoffNote(preset.default_note ?? '')}
@@ -1211,6 +1552,34 @@ export function ProviderHandoffPanel() {
                 {selectedHandoff.handoff_note}
               </div>
             ) : null}
+            {selectedTandemPreset ? (
+              <div className="flex flex-wrap gap-2">
+                {buildCompletionReasonPresets(
+                  selectedTandemPreset.target_kind,
+                  selectedTandemPreset.target_label
+                ).map((reason) => (
+                  <button
+                    key={`selected-complete-${reason}`}
+                    onClick={() => setTandemHandoffNote(reason)}
+                    className="rounded border border-ohmic-border px-2 py-0.5 text-[10px] text-ohmic-text-dim transition-colors hover:border-ohmic-accent/30 hover:text-ohmic-text"
+                  >
+                    Completion note
+                  </button>
+                ))}
+                {buildReopenReasonPresets(
+                  selectedTandemPreset.target_kind,
+                  selectedTandemPreset.target_label
+                ).map((reason) => (
+                  <button
+                    key={`selected-reopen-${reason}`}
+                    onClick={() => setTandemHandoffNote(reason)}
+                    className="rounded border border-ohmic-border px-2 py-0.5 text-[10px] text-ohmic-text-dim transition-colors hover:border-ohmic-accent/30 hover:text-ohmic-text"
+                  >
+                    Reopen note
+                  </button>
+                ))}
+              </div>
+            ) : null}
             <div className="flex flex-wrap gap-2 pt-1">
               <button
                 onClick={() => loadHandoffContext(selectedIntake.intake_id, -1)}
@@ -1231,13 +1600,35 @@ export function ProviderHandoffPanel() {
                     targetPresetId: selectedHandoff.target_preset_id ?? null,
                     targetLabel:
                       selectedHandoff.target_label || selectedHandoff.summary_label,
-                    handoffNote: selectedHandoff.handoff_note ?? null,
+                    handoffNote:
+                      tandemHandoffNote.trim() ||
+                      selectedHandoff.handoff_note ||
+                      null,
                   })
                 }
                 className="rounded border border-emerald-400/30 px-2.5 py-1 text-[11px] font-medium text-emerald-300 transition-colors hover:border-emerald-300 hover:bg-emerald-300/10"
               >
                 Mark complete
               </button>
+              {selectedTandemPreset ? (
+                <button
+                  onClick={() => void handleTargetHandshake(selectedTandemPreset, tandemHandoffNote)}
+                  className="rounded border border-amber-400/30 px-2.5 py-1 text-[11px] font-medium text-amber-300 transition-colors hover:border-amber-300 hover:bg-amber-300/10"
+                >
+                  Prepare handshake
+                </button>
+              ) : null}
+              {selectedContextualLaunchUrl && selectedTandemPreset ? (
+                <a
+                  href={selectedContextualLaunchUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  onClick={() => void handleProviderLaunch(selectedContextualLaunchUrl, selectedTandemPreset)}
+                  className="rounded border border-ohmic-accent/40 px-2.5 py-1 text-[11px] font-medium text-ohmic-accent transition-colors hover:border-ohmic-accent hover:bg-ohmic-accent/10"
+                >
+                  Open selected target
+                </a>
+              ) : null}
               {selectedHandoff.launch_url ? (
                 <a
                   href={selectedHandoff.launch_url}
@@ -1249,6 +1640,136 @@ export function ProviderHandoffPanel() {
                 </a>
               ) : null}
             </div>
+          </div>
+        )}
+      </div>
+
+      <div className="panel space-y-3">
+        <div className="flex items-center justify-between gap-3">
+          <div className="text-xs uppercase tracking-wider text-ohmic-text-dim">
+            Provider Notes and Recovery
+          </div>
+          <div className="text-[10px] text-ohmic-text-dim">
+            Desk notes, export, and completed follow-up recovery
+          </div>
+        </div>
+        <div className="space-y-2">
+          <textarea
+            value={providerNoteDraft}
+            onChange={(event) => setProviderNoteDraft(event.target.value)}
+            placeholder={
+              selectedId
+                ? 'Add a provider-specific note for the selected intake...'
+                : 'Select an intake to add a provider-specific note.'
+            }
+            disabled={!selectedId}
+            className="min-h-24 w-full rounded border border-ohmic-border bg-ohmic-bg px-3 py-2 text-sm text-ohmic-text outline-none transition-colors placeholder:text-ohmic-text-dim focus:border-ohmic-accent/40 disabled:opacity-50"
+          />
+          <div className="flex flex-wrap gap-2">
+            <button
+              onClick={() => void handleCreateProviderNote()}
+              disabled={!selectedId || !providerNoteDraft.trim()}
+              className="rounded border border-ohmic-accent/40 px-2.5 py-1 text-[11px] font-medium text-ohmic-accent transition-colors hover:border-ohmic-accent hover:bg-ohmic-accent/10 disabled:opacity-50"
+            >
+              Save provider note
+            </button>
+            <button
+              onClick={exportProviderActivity}
+              className="rounded border border-ohmic-border px-2.5 py-1 text-[11px] font-medium text-ohmic-text transition-colors hover:border-ohmic-accent/30"
+            >
+              Export provider activity
+            </button>
+          </div>
+        </div>
+        {recentCompletedProviderEvents.length === 0 ? (
+          <div className="text-sm text-ohmic-text-dim">
+            Completed provider follow-ups will appear here for recovery.
+          </div>
+        ) : (
+          <div className="space-y-2">
+            {selectedCompletedEventIds.length > 0 ? (
+              <div className="rounded border border-ohmic-border bg-ohmic-bg px-3 py-2 flex flex-wrap items-center justify-between gap-3">
+                <div className="text-[11px] text-ohmic-text-dim">
+                  {selectedCompletedEventIds.length} completed follow-up item
+                  {selectedCompletedEventIds.length === 1 ? '' : 's'} selected
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  <button
+                    onClick={() => void handleBulkReopenCompleted()}
+                    className="rounded border border-amber-400/30 px-2.5 py-1 text-[11px] font-medium text-amber-300 transition-colors hover:border-amber-300 hover:bg-amber-300/10"
+                  >
+                    Reopen selected
+                  </button>
+                  <button
+                    onClick={clearCompletedSelection}
+                    className="rounded border border-ohmic-border px-2.5 py-1 text-[11px] font-medium text-ohmic-text-dim transition-colors hover:border-ohmic-accent/30 hover:text-ohmic-text"
+                  >
+                    Clear selection
+                  </button>
+                </div>
+              </div>
+            ) : null}
+            {recentCompletedProviderEvents.slice(0, 6).map((item) => (
+              <div
+                key={`completed-${item.event_id}`}
+                className="rounded border border-ohmic-border bg-ohmic-bg px-3 py-2 space-y-1.5"
+              >
+                <div className="flex items-start justify-between gap-3">
+                  <div className="space-y-1 min-w-0">
+                    <div className="text-xs text-ohmic-text">
+                      {item.target_label || item.summary_label}
+                    </div>
+                    <div className="text-[11px] text-ohmic-text-dim">
+                      {item.intake_id || 'No intake context'}
+                      {item.status_delta ? ` | ${item.status_delta}` : ''}
+                    </div>
+                  </div>
+                  <label className="flex items-center gap-2 text-[11px] text-ohmic-text-dim">
+                    <input
+                      type="checkbox"
+                      checked={selectedCompletedEventIds.includes(item.event_id)}
+                      onChange={() => toggleCompletedSelection(item.event_id)}
+                    />
+                    Select
+                  </label>
+                </div>
+                {item.handoff_note ? (
+                  <div className="text-[11px] text-ohmic-text-dim whitespace-pre-wrap">
+                    {item.handoff_note}
+                  </div>
+                ) : null}
+                <div className="flex flex-wrap gap-2">
+                  <button
+                    onClick={() =>
+                      item.intake_id
+                        ? void handleReopenFollowUp({
+                            intakeId: item.intake_id,
+                            targetPresetId: item.target_preset_id ?? null,
+                            targetLabel: item.target_label || item.summary_label,
+                          })
+                        : undefined
+                    }
+                    className="rounded border border-amber-400/30 px-2.5 py-1 text-[11px] font-medium text-amber-300 transition-colors hover:border-amber-300 hover:bg-amber-300/10"
+                  >
+                    Reopen follow-up
+                  </button>
+                  {selectedTandemPreset && item.target_label
+                    ? buildReopenReasonPresets(
+                        selectedTandemPreset.target_kind,
+                        item.target_label
+                      ).map((reason) => (
+                        <button
+                          key={`${item.event_id}-${reason}`}
+                          onClick={() => setTandemHandoffNote(reason)}
+                          className="rounded border border-ohmic-border px-2 py-0.5 text-[10px] text-ohmic-text-dim transition-colors hover:border-ohmic-accent/30 hover:text-ohmic-text"
+                        >
+                          Reopen note
+                        </button>
+                      ))
+                    : null}
+                </div>
+              </div>
+            ))}
           </div>
         )}
       </div>

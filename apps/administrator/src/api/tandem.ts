@@ -3,6 +3,7 @@ import type {
   AdministratorTandemFollowUpReopenRequest,
   AdministratorTandemLaunchIntentRequest,
   AdministratorTandemStatus,
+  AdministratorTandemTargetHandshakeRequest,
 } from '@/types/tandem'
 
 const API_BASE = '/api'
@@ -54,5 +55,19 @@ export async function recordProviderFollowUpReopen(
 
   if (!res.ok) {
     throw new Error(`Provider follow-up reopen writeback failed: ${res.status}`)
+  }
+}
+
+export async function recordTandemTargetHandshake(
+  input: AdministratorTandemTargetHandshakeRequest
+): Promise<void> {
+  const res = await fetch(`${API_BASE}/tandem/handshake-target`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(input),
+  })
+
+  if (!res.ok) {
+    throw new Error(`Tandem target handshake failed: ${res.status}`)
   }
 }

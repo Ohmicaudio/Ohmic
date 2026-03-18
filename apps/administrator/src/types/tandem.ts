@@ -39,6 +39,13 @@ export interface AdministratorTandemLaunchIntentRequest {
   handoff_note?: string | null
 }
 
+export interface AdministratorTandemTargetHandshakeRequest {
+  intake_id?: string | null
+  target_preset_id?: string | null
+  target_label?: string | null
+  handshake_note?: string | null
+}
+
 export interface AdministratorTandemFollowUpCompletionRequest {
   intake_id: string
   target_preset_id?: string | null

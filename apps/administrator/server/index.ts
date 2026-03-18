@@ -12,6 +12,7 @@ import {
   recordProviderFollowUpCompletion,
   recordProviderFollowUpReopen,
   recordTandemLaunchIntent,
+  recordTandemTargetHandshake,
   reopenInactiveIntake,
   validateCommand,
   getComposerOptions,
@@ -89,6 +90,22 @@ export function createAdministratorServer(port = PORT) {
         try {
           const input = JSON.parse(body)
           recordTandemLaunchIntent(input)
+            .then((result) => sendJson(res, result))
+            .catch((err) => sendJson(res, { error: err.message }, 500))
+        } catch {
+          sendJson(res, { error: 'Invalid JSON body' }, 400)
+        }
+      })
+      return
+    }
+
+    if (requestPath === '/api/tandem/handshake-target' && req.method === 'POST') {
+      let body = ''
+      req.on('data', (chunk: Buffer) => { body += chunk.toString() })
+      req.on('end', () => {
+        try {
+          const input = JSON.parse(body)
+          recordTandemTargetHandshake(input)
             .then((result) => sendJson(res, result))
             .catch((err) => sendJson(res, { error: err.message }, 500))
         } catch {

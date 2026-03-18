@@ -447,6 +447,48 @@ describe('administrator server', () => {
     )
   })
 
+  it('records tandem target handshake into the audit summary', async () => {
+    const { createAdministratorServer } = await importServer()
+    const app = createAdministratorServer(0)
+    const baseUrl = await app.start()
+    stopServer = app.stop
+
+    const handshakeRes = await fetch(`${baseUrl}/api/tandem/handshake-target`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        intake_id: 'intake-handshake-1',
+        target_preset_id: 'gmail-support',
+        target_label: 'Gmail support inbox',
+        handshake_note: 'Prepare provider session before the next launch.',
+      }),
+    })
+
+    expect(handshakeRes.ok).toBe(true)
+
+    const auditSummaryRaw = await readFile(
+      path.join(tempRuntimeDir!, 'administrator_audit_summary.json'),
+      'utf-8'
+    )
+    const auditSummary = JSON.parse(auditSummaryRaw) as {
+      rows: Array<{
+        event_family: string
+        intake_id: string
+        target_label: string
+        status_delta: string
+        handoff_note?: string
+      }>
+    }
+
+    expect(auditSummary.rows[0]).toMatchObject({
+      event_family: 'provider_handoff',
+      intake_id: 'intake-handshake-1',
+      target_label: 'Gmail support inbox',
+      status_delta: 'handshake_pending',
+      handoff_note: 'Prepare provider session before the next launch.',
+    })
+  })
+
   it('records provider follow-up completion into the audit summary', async () => {
     const { createAdministratorServer } = await importServer()
     const app = createAdministratorServer(0)
@@ -574,7 +616,7 @@ describe('administrator server', () => {
     }
     expect(execute.writeback.writeback_status).toBe('accepted')
     expect(execute.writeback.queue_item_updated).toBe(true)
-  })
+  }, 30000)
 
   it('reopens an inactive intake item through the server route', async () => {
     await writeFile(
@@ -653,7 +695,7 @@ describe('administrator server', () => {
     expect(reopen.writeback.writeback_status).toBe('accepted')
     expect(reopen.writeback.queue_item_updated).toBe(true)
     expect(reopen.writeback.inactive_item_removed).toBe(true)
-  })
+  }, 30000)
 
   it('returns 400 for invalid JSON and missing required provider fields', async () => {
     const { createAdministratorServer } = await importServer()
@@ -687,6 +729,13 @@ describe('administrator server', () => {
     })
     expect(invalidReopenJsonRes.status).toBe(400)
 
+    const invalidHandshakeJsonRes = await fetch(`${baseUrl}/api/tandem/handshake-target`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: '{bad json',
+    })
+    expect(invalidHandshakeJsonRes.status).toBe(400)
+
     const missingReopenIntakeRes = await fetch(`${baseUrl}/api/tandem/follow-up-reopen`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -695,5 +744,78 @@ describe('administrator server', () => {
       }),
     })
     expect(missingReopenIntakeRes.status).toBe(400)
+  })
+
+  it('ignores malformed tandem probe target health rows', async () => {
+    process.env.ADMINISTRATOR_TANDEM_BASE_URL = 'http://127.0.0.1:8765'
+
+    tandemProbeServer = http.createServer((req, res) => {
+      if (req.url === '/status') {
+        res.writeHead(200, { 'Content-Type': 'application/json' })
+        res.end(
+          JSON.stringify({
+            session_state: 'attached',
+            active_target_label: 'Live Gmail support inbox',
+            available: true,
+            target_health: [
+              {
+                target_label: 'Live Gmail support inbox',
+                status: 'attached',
+                message: 'Inbox session attached.',
+              },
+              {
+                target_label: '',
+                status: 'ready',
+              },
+              {
+                targetLabel: 'Broken target',
+                status: 'mystery',
+              },
+              'bad-row',
+            ],
+          })
+        )
+        return
+      }
+
+      res.writeHead(404)
+      res.end()
+    })
+
+    const probeBaseUrl = await new Promise<string>((resolve) => {
+      tandemProbeServer!.listen(0, () => {
+        const address = tandemProbeServer!.address() as { port: number }
+        resolve(`http://127.0.0.1:${address.port}/status`)
+      })
+    })
+
+    process.env.ADMINISTRATOR_TANDEM_STATUS_URL = probeBaseUrl
+
+    const { createAdministratorServer } = await importServer()
+    const app = createAdministratorServer(0)
+    const baseUrl = await app.start()
+    stopServer = app.stop
+
+    const tandemRes = await fetch(`${baseUrl}/api/tandem/status`)
+    expect(tandemRes.ok).toBe(true)
+    const tandem = (await tandemRes.json()) as {
+      target_health: Array<{
+        target_label: string
+        status: string
+      }>
+    }
+
+    expect(tandem.target_health).toEqual([
+      {
+        target_label: 'Live Gmail support inbox',
+        status: 'attached',
+        message: 'Inbox session attached.',
+      },
+      {
+        target_label: 'Broken target',
+        status: 'unknown',
+        message: null,
+      },
+    ])
   })
 })
