@@ -1,0 +1,41 @@
+Date: 2026-03-18
+Status: ready
+Project: ohmic-audio-labs
+
+# Ohmic BLE Setup Auth And OTA Runway Wave
+
+## Why
+
+BLE discovery, pairing, trust, and first-time setup never became one canonical
+device workflow. OTA also has no proper home yet. It should not be built as a
+special updater side path.
+
+The next correct runway is:
+
+- BLE setup/auth first
+- shared network/bootstrap truth second
+- OTA capability immediately after on the same trust/authority floor
+
+## Target
+
+- define BLE discovery and pairing truth
+- define pre-trust vs post-trust device identity exposure
+- define BLE operator authority and auth mapping to LAN/web surfaces
+- define Wi-Fi/bootstrap handoff over BLE and recovery paths
+- stage OTA as a capability over that trusted shared command model
+
+## Rules
+
+- command-first and surface-agnostic
+- no one-off mobile-only pairing logic
+- no OTA flow that invents a separate authority model
+- public designator is operator-facing identity
+- stronger canonical identity and trust state live underneath it
+
+## Child Requests
+
+- `2026-03-18-run-ble-setup-auth-and-ota-runway-wave.md`
+- `2026-03-18-define-ble-pairing-trust-and-authority-floor.md`
+- `2026-03-18-extract-shared-amplab-ble-contract-and-transport-foundation.md`
+- `2026-03-18-define-ble-bootstrap-and-recovery-network-handoff.md`
+- `2026-03-18-stage-ota-capability-over-shared-trust-and-command-contract.md`
