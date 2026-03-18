@@ -1,7 +1,9 @@
+import { recordTandemLaunchIntent } from '@/api/tandem'
 import { useAttachmentPreviewStore } from '@/store/attachmentPreviewStore'
 import { useCommandStore } from '@/store/commandStore'
 import { useIntakeStore } from '@/store/intakeStore'
 import { useTandemStore } from '@/store/tandemStore'
+import { useAuditSummaryStore } from '@/store/auditSummaryStore'
 import { StatusBadge } from '@/components/StatusBadge'
 import { buildAttachmentPreviewContextNote } from '@/panels/attachmentPreviewContext'
 import { buildTandemAttachmentReviewUrl } from '@/panels/tandemContext'
@@ -12,6 +14,7 @@ export function AttachmentPreviewPanel() {
   const intakeItems = useIntakeStore((s) => s.items)
   const tandemLaunchUrl = useTandemStore((s) => s.launchUrl)
   const tandemTargetPresets = useTandemStore((s) => s.targetPresets)
+  const refreshAuditSummary = useAuditSummaryStore((state) => state.fetch)
   const { noteText, setIntakeId, setActionInput, setNoteText } = useCommandStore()
   const selectedIntake =
     intakeItems.find((item) => item.intake_id === selectedIntakeId) ?? null
@@ -25,6 +28,32 @@ export function AttachmentPreviewPanel() {
     setIntakeId(selectedIntakeId)
     setActionInput(action)
     setNoteText(buildAttachmentPreviewContextNote(noteText, item))
+  }
+
+  async function handleTandemAttachmentLaunch(item: (typeof items)[number]) {
+    const launchUrl = buildTandemAttachmentReviewUrl(
+      tandemLaunchUrl,
+      selectedIntake,
+      item,
+      defaultPreset
+    )
+
+    if (!launchUrl) {
+      return
+    }
+
+    try {
+      await recordTandemLaunchIntent({
+        intake_id: selectedIntake?.intake_id ?? null,
+        target_preset_id: defaultPreset?.preset_id ?? null,
+        target_label: defaultPreset?.target_label ?? null,
+        launch_url: launchUrl,
+        attachment_id: item.asset_id,
+      })
+      await refreshAuditSummary()
+    } catch {
+      // Keep the handoff non-blocking even if audit writeback fails.
+    }
   }
 
   return (
@@ -115,6 +144,9 @@ export function AttachmentPreviewPanel() {
                         )!}
                         target="_blank"
                         rel="noreferrer"
+                        onClick={() => {
+                          void handleTandemAttachmentLaunch(item)
+                        }}
                         className="rounded border border-ohmic-accent/40 px-3 py-1.5 text-xs font-medium text-ohmic-accent transition-colors hover:border-ohmic-accent hover:bg-ohmic-accent/10"
                       >
                         Open in Tandem

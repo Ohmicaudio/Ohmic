@@ -395,4 +395,46 @@ describe('powerShellRunner', () => {
       target_label: 'Customer Archive',
     })
   })
+
+  it('records tandem launch intent into the audit summary runtime', async () => {
+    previousRuntimeDir = process.env.ADMINISTRATOR_RUNTIME_DIR
+
+    await mkdir(localRuntimeBase, { recursive: true })
+    tempRuntimeDir = await mkdtemp(path.join(localRuntimeBase, 'tandem-'))
+    process.env.ADMINISTRATOR_RUNTIME_DIR = tempRuntimeDir
+
+    const { recordTandemLaunchIntent } = await importRunner()
+
+    const result = await recordTandemLaunchIntent({
+      intake_id: 'tandem-intake-1',
+      target_preset_id: 'gmail-support',
+      target_label: 'Gmail support inbox',
+      launch_url: 'http://127.0.0.1:8765/?sessionLabel=gmail-triage',
+      attachment_id: 'asset-88',
+    })
+
+    expect(result).toMatchObject({
+      writeback: {
+        writeback_status: 'accepted',
+        intake_id: 'tandem-intake-1',
+        target_label: 'Gmail support inbox',
+        audit_summary_count: 1,
+      },
+    })
+
+    const auditSummaryRaw = await readFile(
+      path.join(tempRuntimeDir, 'administrator_audit_summary.json'),
+      'utf-8'
+    )
+    const auditSummary = JSON.parse(auditSummaryRaw) as {
+      rows: Array<{ event_family: string; intake_id: string; target_label: string; status_delta: string }>
+    }
+
+    expect(auditSummary.rows[0]).toMatchObject({
+      event_family: 'provider_handoff',
+      intake_id: 'tandem-intake-1',
+      target_label: 'Gmail support inbox',
+      status_delta: 'attachment_review',
+    })
+  })
 })

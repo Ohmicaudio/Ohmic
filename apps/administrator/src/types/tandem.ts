@@ -16,3 +16,11 @@ export interface AdministratorTandemStatus {
   launch_url: string | null
   message: string
 }
+
+export interface AdministratorTandemLaunchIntentRequest {
+  intake_id?: string | null
+  target_preset_id?: string | null
+  target_label?: string | null
+  launch_url?: string | null
+  attachment_id?: string | null
+}

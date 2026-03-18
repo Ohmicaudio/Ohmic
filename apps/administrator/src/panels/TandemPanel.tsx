@@ -1,7 +1,9 @@
 import { useEffect, useMemo, useState } from 'react'
+import { recordTandemLaunchIntent } from '@/api/tandem'
 import { useTandemStore } from '@/store/tandemStore'
 import { useIntakeStore } from '@/store/intakeStore'
 import { buildTandemContextUrl } from '@/panels/tandemContext'
+import { useAuditSummaryStore } from '@/store/auditSummaryStore'
 
 export function TandemPanel() {
   const items = useIntakeStore((state) => state.items)
@@ -21,6 +23,7 @@ export function TandemPanel() {
     error,
     fetch,
   } = useTandemStore()
+  const refreshAuditSummary = useAuditSummaryStore((state) => state.fetch)
   const [selectedPresetId, setSelectedPresetId] = useState<string>('')
   const selectedIntake = items.find((item) => item.intake_id === selectedId) ?? null
   const selectedPreset = useMemo(
@@ -45,6 +48,24 @@ export function TandemPanel() {
       setSelectedPresetId(targetPresets[0]?.preset_id ?? '')
     }
   }, [selectedPresetId, targetPresets])
+
+  async function handleTandemLaunch() {
+    if (!contextualLaunchUrl) {
+      return
+    }
+
+    try {
+      await recordTandemLaunchIntent({
+        intake_id: selectedIntake?.intake_id ?? null,
+        target_preset_id: selectedPreset?.preset_id ?? null,
+        target_label: selectedPreset?.target_label ?? activeTargetLabel ?? null,
+        launch_url: contextualLaunchUrl,
+      })
+      await refreshAuditSummary()
+    } catch {
+      // Keep the handoff non-blocking even if audit writeback fails.
+    }
+  }
 
   return (
     <div className="space-y-4">
@@ -159,6 +180,9 @@ export function TandemPanel() {
                 href={contextualLaunchUrl}
                 target="_blank"
                 rel="noreferrer"
+                onClick={() => {
+                  void handleTandemLaunch()
+                }}
                 className="inline-flex items-center rounded-md border border-ohmic-accent/40 px-3 py-1.5 text-xs font-medium text-ohmic-accent transition-colors hover:border-ohmic-accent hover:bg-ohmic-accent/10"
               >
                 Open Tandem

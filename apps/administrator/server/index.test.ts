@@ -290,6 +290,47 @@ describe('administrator server', () => {
     delete process.env.ADMINISTRATOR_TANDEM_TARGET_PRESETS
   })
 
+  it('records tandem launch intent into the audit summary', async () => {
+    const { createAdministratorServer } = await importServer()
+    const app = createAdministratorServer(0)
+    const baseUrl = await app.start()
+    stopServer = app.stop
+
+    const tandemRes = await fetch(`${baseUrl}/api/tandem/launch-intent`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        intake_id: 'intake-tandem-1',
+        target_preset_id: 'gmail-support',
+        target_label: 'Gmail support inbox',
+        launch_url: 'http://127.0.0.1:8765/?sessionLabel=gmail-triage',
+        attachment_id: 'asset-77',
+      }),
+    })
+
+    expect(tandemRes.ok).toBe(true)
+
+    const auditSummaryRaw = await readFile(
+      path.join(tempRuntimeDir!, 'administrator_audit_summary.json'),
+      'utf-8'
+    )
+    const auditSummary = JSON.parse(auditSummaryRaw) as {
+      rows: Array<{
+        event_family: string
+        intake_id: string
+        target_label: string
+        status_delta: string
+      }>
+    }
+
+    expect(auditSummary.rows[0]).toMatchObject({
+      event_family: 'provider_handoff',
+      intake_id: 'intake-tandem-1',
+      target_label: 'Gmail support inbox',
+      status_delta: 'attachment_review',
+    })
+  })
+
   it('validates and executes command routes against the live runtime root', async () => {
     await writeActiveQueueFixture('intake-3', 'Validate and execute target')
 

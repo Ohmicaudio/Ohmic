@@ -9,6 +9,7 @@ import {
   executeCommand,
   getFilingOptions,
   recordFiling,
+  recordTandemLaunchIntent,
   reopenInactiveIntake,
   validateCommand,
   getComposerOptions,
@@ -74,6 +75,22 @@ export function createAdministratorServer(port = PORT) {
 
     if (requestPath === '/api/tandem/status') {
       sendJson(res, readTandemStatus())
+      return
+    }
+
+    if (requestPath === '/api/tandem/launch-intent' && req.method === 'POST') {
+      let body = ''
+      req.on('data', (chunk: Buffer) => { body += chunk.toString() })
+      req.on('end', () => {
+        try {
+          const input = JSON.parse(body)
+          recordTandemLaunchIntent(input)
+            .then((result) => sendJson(res, result))
+            .catch((err) => sendJson(res, { error: err.message }, 500))
+        } catch {
+          sendJson(res, { error: 'Invalid JSON body' }, 400)
+        }
+      })
       return
     }
 
