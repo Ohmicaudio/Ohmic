@@ -401,6 +401,28 @@ describe('administrator server', () => {
     const baseUrl = await app.start()
     stopServer = app.stop
 
+    await writeFile(
+      path.join(tempRuntimeDir!, 'administrator_tandem_handshake_state.json'),
+      JSON.stringify(
+        {
+          generated_at: '2026-03-18T10:01:00Z',
+          projection_name: 'administrator_tandem_handshake_state',
+          handshake: {
+            event_id: 'handshake-seeded',
+            intake_id: 'intake-tandem-1',
+            target_preset_id: 'gmail-support',
+            target_label: 'Gmail support inbox',
+            handshake_note: 'Prepare provider session before launch.',
+            occurred_at: '2026-03-18T10:00:00Z',
+            state: 'pending',
+          },
+        },
+        null,
+        2
+      ),
+      'utf-8'
+    )
+
     const tandemRes = await fetch(`${baseUrl}/api/tandem/launch-intent`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -445,6 +467,18 @@ describe('administrator server', () => {
     expect(auditSummary.filter_presets.map((preset) => preset.preset_id)).toContain(
       'provider_handoffs'
     )
+
+    const handshakeStateRaw = await readFile(
+      path.join(tempRuntimeDir!, 'administrator_tandem_handshake_state.json'),
+      'utf-8'
+    )
+    const handshakeState = JSON.parse(handshakeStateRaw) as {
+      handshake: null | {
+        event_id: string
+      }
+    }
+
+    expect(handshakeState.handshake).toBeNull()
   })
 
   it('records tandem target handshake into the audit summary', async () => {
@@ -486,6 +520,50 @@ describe('administrator server', () => {
       target_label: 'Gmail support inbox',
       status_delta: 'handshake_pending',
       handoff_note: 'Prepare provider session before the next launch.',
+    })
+
+    const handshakeStateRaw = await readFile(
+      path.join(tempRuntimeDir!, 'administrator_tandem_handshake_state.json'),
+      'utf-8'
+    )
+    const handshakeState = JSON.parse(handshakeStateRaw) as {
+      handshake: {
+        event_id: string
+        intake_id: string | null
+        target_preset_id: string | null
+        target_label: string | null
+        handshake_note: string | null
+        state: string
+      } | null
+    }
+
+    expect(handshakeState.handshake).toMatchObject({
+      intake_id: 'intake-handshake-1',
+      target_preset_id: 'gmail-support',
+      target_label: 'Gmail support inbox',
+      handshake_note: 'Prepare provider session before the next launch.',
+      state: 'pending',
+    })
+
+    const tandemStatusRes = await fetch(`${baseUrl}/api/tandem/status`)
+    expect(tandemStatusRes.ok).toBe(true)
+    const tandemStatus = (await tandemStatusRes.json()) as {
+      pending_handshake: {
+        event_id: string
+        intake_id: string | null
+        target_preset_id: string | null
+        target_label: string | null
+        handshake_note: string | null
+        state: string
+      } | null
+    }
+
+    expect(tandemStatus.pending_handshake).toMatchObject({
+      intake_id: 'intake-handshake-1',
+      target_preset_id: 'gmail-support',
+      target_label: 'Gmail support inbox',
+      handshake_note: 'Prepare provider session before the next launch.',
+      state: 'pending',
     })
   })
 

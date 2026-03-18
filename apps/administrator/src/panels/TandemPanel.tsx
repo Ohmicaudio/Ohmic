@@ -25,6 +25,7 @@ export function TandemPanel() {
     activeTargetLabel,
     targetPresets,
     targetHealth,
+    pendingHandshake,
     selectedPresetId,
     handoffNote,
     launchUrl,
@@ -93,6 +94,20 @@ export function TandemPanel() {
       selectIntake(selection.intakeId)
     }
     setHandoffNote(selection.handoffNote)
+  }
+
+  function handleResumePendingHandshake() {
+    if (!pendingHandshake) {
+      return
+    }
+
+    if (pendingHandshake.target_preset_id) {
+      setSelectedPreset(pendingHandshake.target_preset_id)
+    }
+    if (pendingHandshake.intake_id) {
+      selectIntake(pendingHandshake.intake_id)
+    }
+    setHandoffNote(pendingHandshake.handshake_note ?? '')
   }
 
   return (
@@ -257,6 +272,34 @@ export function TandemPanel() {
               message ||
               'This is the first external-provider seam. Full tab/session handoff will build on this status floor.'}
           </div>
+
+          {pendingHandshake ? (
+            <div className="rounded border border-amber-300/30 bg-amber-300/10 px-3 py-2 space-y-2 text-[11px] text-amber-300">
+              <div className="flex items-center justify-between gap-3">
+                <div className="uppercase tracking-widest">Pending handshake</div>
+                <div className="text-[10px] whitespace-nowrap">
+                  {new Date(pendingHandshake.occurred_at).toLocaleString()}
+                </div>
+              </div>
+              <div>
+                {pendingHandshake.target_label || pendingHandshake.target_preset_id || 'Unlabeled target'}
+                {pendingHandshake.intake_id ? ` | ${pendingHandshake.intake_id}` : ''}
+              </div>
+              {pendingHandshake.handshake_note ? (
+                <div className="whitespace-pre-wrap text-ohmic-text-dim">
+                  {pendingHandshake.handshake_note}
+                </div>
+              ) : null}
+              <div className="flex flex-wrap gap-2">
+                <button
+                  onClick={handleResumePendingHandshake}
+                  className="rounded border border-amber-300/30 px-2.5 py-1 text-[11px] font-medium text-amber-300 transition-colors hover:border-amber-300 hover:bg-amber-300/10"
+                >
+                  Resume handshake
+                </button>
+              </div>
+            </div>
+          ) : null}
 
           {!configured || !selectedPreset || !contextualLaunchUrl ? (
             <div className="rounded border border-ohmic-warning/30 bg-ohmic-warning/10 px-3 py-2 text-[11px] text-ohmic-warning">

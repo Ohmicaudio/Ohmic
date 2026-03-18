@@ -19,6 +19,7 @@ const PROJECTION_FILES = [
   'administrator_filing_history_projection.json',
   'administrator_audit_summary.json',
   'administrator_status_history.json',
+  'administrator_tandem_handshake_state.json',
   'ready_tasks.json',
 ]
 

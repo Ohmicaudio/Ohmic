@@ -188,6 +188,20 @@ interface RecordTandemTargetHandshakeResponse {
   }
 }
 
+interface TandemHandshakeStateRecord {
+  generated_at: string
+  projection_name: 'administrator_tandem_handshake_state'
+  handshake: {
+    event_id: string
+    intake_id: string | null
+    target_preset_id: string | null
+    target_label: string | null
+    handshake_note: string | null
+    occurred_at: string
+    state: 'pending'
+  } | null
+}
+
 interface IntakeQueueItem {
   intake_id: string
   title: string
@@ -213,6 +227,22 @@ const filingHistoryProjectionScript = asPowerShellPath('filing-history-projectio
 const filingPickerReadScript = asPowerShellPath('filing-picker-read.ps1')
 const filingWritebackScript = asPowerShellPath('filing-writeback.ps1')
 const commonScript = asPowerShellPath('common.ps1')
+const tandemHandshakeStatePath = path.join(
+  RUNTIME_DIR,
+  'administrator_tandem_handshake_state.json'
+)
+
+async function writePendingTandemHandshake(
+  handshake: TandemHandshakeStateRecord['handshake']
+): Promise<void> {
+  const payload: TandemHandshakeStateRecord = {
+    generated_at: new Date().toISOString(),
+    projection_name: 'administrator_tandem_handshake_state',
+    handshake,
+  }
+
+  await writeFile(tandemHandshakeStatePath, `${JSON.stringify(payload, null, 2)}\n`, 'utf-8')
+}
 
 function asPowerShellPath(fileName: string): string {
   return path.join(ADMIN_SCRIPTS_DIR, fileName).replace(/\\/g, '\\\\')
@@ -877,7 +907,9 @@ export async function recordTandemLaunchIntent(
     } | ConvertTo-Json -Depth 10 -Compress
   `
 
-  return runPowerShell(psScript) as Promise<RecordTandemLaunchIntentResponse>
+  const result = (await runPowerShell(psScript)) as RecordTandemLaunchIntentResponse
+  await writePendingTandemHandshake(null)
+  return result
 }
 
 export async function recordTandemTargetHandshake(
@@ -930,7 +962,17 @@ export async function recordTandemTargetHandshake(
     } | ConvertTo-Json -Depth 10 -Compress
   `
 
-  return runPowerShell(psScript) as Promise<RecordTandemTargetHandshakeResponse>
+  const result = (await runPowerShell(psScript)) as RecordTandemTargetHandshakeResponse
+  await writePendingTandemHandshake({
+    event_id: result.writeback.event_id,
+    intake_id: input.intake_id ?? null,
+    target_preset_id: input.target_preset_id ?? null,
+    target_label: input.target_label ?? null,
+    handshake_note: input.handshake_note ?? null,
+    occurred_at: occurredAt,
+    state: 'pending',
+  })
+  return result
 }
 
 export async function recordProviderFollowUpCompletion(

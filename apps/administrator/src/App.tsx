@@ -26,6 +26,7 @@ import { useIntakeStore } from '@/store/intakeStore'
 import { useCommandStore } from '@/store/commandStore'
 import { useServerHealthStore } from '@/store/serverHealthStore'
 import { useStatusHistoryStore } from '@/store/statusHistoryStore'
+import { useTandemStore } from '@/store/tandemStore'
 import { useWarningReviewStore } from '@/store/warningReviewStore'
 
 export function App() {
@@ -39,6 +40,7 @@ export function App() {
   const fetchIntakeContext = useIntakeContextStore((s) => s.fetch)
   const fetchStatusHistory = useStatusHistoryStore((s) => s.fetch)
   const fetchWarningReview = useWarningReviewStore((s) => s.fetch)
+  const fetchTandem = useTandemStore((s) => s.fetch)
   const loadAuditTrail = useCommandStore((s) => s.loadAuditTrail)
   const fetchHealth = useServerHealthStore((s) => s.fetch)
   const healthStatus = useServerHealthStore((s) => s.status)
@@ -59,6 +61,7 @@ export function App() {
       if (name === 'administrator_note_projection') fetchIntakeContext()
       if (name === 'administrator_tag_assignment_projection') fetchIntakeContext()
       if (name === 'administrator_status_history') fetchStatusHistory()
+      if (name === 'administrator_tandem_handshake_state') fetchTandem()
       if (name === 'administrator_warning_review') fetchWarningReview()
       if (name === 'administrator_recent_actions') loadAuditTrail()
       fetchHealth()
@@ -88,6 +91,7 @@ export function App() {
     fetchInactiveIntake()
     fetchIntakeContext()
     fetchStatusHistory()
+    fetchTandem()
     fetchWarningReview()
   }, [
     fetchAggregationPanel,
@@ -98,6 +102,7 @@ export function App() {
     fetchInactiveIntake,
     fetchIntakeContext,
     fetchStatusHistory,
+    fetchTandem,
     fetchWarningReview,
   ])
 

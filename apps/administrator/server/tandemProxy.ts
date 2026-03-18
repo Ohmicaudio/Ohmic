@@ -1,3 +1,7 @@
+import { readFile } from 'fs/promises'
+import path from 'path'
+import { getAdministratorRuntimeDir } from './runtimeConfig.js'
+
 export interface TandemStatusResponse {
   configured: boolean
   available: boolean
@@ -21,10 +25,21 @@ export interface TandemStatusResponse {
     status: 'unknown' | 'ready' | 'attention' | 'attached' | 'error'
     message?: string | null
   }>
+  pending_handshake: {
+    event_id: string
+    intake_id: string | null
+    target_preset_id: string | null
+    target_label: string | null
+    handshake_note?: string | null
+    occurred_at: string
+    state: 'pending'
+  } | null
   launch_url: string | null
   probe_message?: string | null
   message: string
 }
+
+const RUNTIME_DIR = getAdministratorRuntimeDir()
 
 function readOptionalEnv(name: string): string | null {
   const value = process.env[name]?.trim()
@@ -56,6 +71,41 @@ function readSessionState(): 'missing' | 'idle' | 'attached' {
 
 function readProbeUrl(): string | null {
   return readOptionalEnv('ADMINISTRATOR_TANDEM_STATUS_URL')
+}
+
+async function readPendingHandshake(): Promise<TandemStatusResponse['pending_handshake']> {
+  const filePath = path.join(RUNTIME_DIR, 'administrator_tandem_handshake_state.json')
+
+  try {
+    const raw = await readFile(filePath, 'utf-8')
+    const parsed = JSON.parse(raw) as {
+      handshake?: {
+        event_id?: string
+        intake_id?: string | null
+        target_preset_id?: string | null
+        target_label?: string | null
+        handshake_note?: string | null
+        occurred_at?: string
+        state?: string
+      } | null
+    }
+    const handshake = parsed.handshake
+    if (!handshake?.event_id || !handshake?.occurred_at || handshake.state !== 'pending') {
+      return null
+    }
+
+    return {
+      event_id: handshake.event_id,
+      intake_id: handshake.intake_id ?? null,
+      target_preset_id: handshake.target_preset_id ?? null,
+      target_label: handshake.target_label ?? null,
+      handshake_note: handshake.handshake_note ?? null,
+      occurred_at: handshake.occurred_at,
+      state: 'pending',
+    }
+  } catch {
+    return null
+  }
 }
 
 function coerceSessionState(value: unknown): 'missing' | 'idle' | 'attached' | null {
@@ -237,6 +287,7 @@ export async function readTandemStatus(): Promise<TandemStatusResponse> {
   const envSessionState = readSessionState()
   const envActiveTargetLabel = readOptionalEnv('ADMINISTRATOR_TANDEM_ACTIVE_TARGET_LABEL')
   const targetPresets = readTargetPresets()
+  const pendingHandshake = await readPendingHandshake()
   const configured = Boolean(baseUrl)
 
   if (!configured) {
@@ -252,6 +303,7 @@ export async function readTandemStatus(): Promise<TandemStatusResponse> {
       active_target_label: null,
       target_presets: targetPresets,
       target_health: [],
+      pending_handshake: pendingHandshake,
       launch_url: null,
       probe_message: probeUrl
         ? 'Tandem probe is configured but the base URL is not set.'
@@ -297,6 +349,7 @@ export async function readTandemStatus(): Promise<TandemStatusResponse> {
     active_target_label: activeTargetLabel,
     target_presets: targetPresets,
     target_health: targetHealth,
+    pending_handshake: pendingHandshake,
     launch_url: launchUrl,
     probe_message: probeMessage,
     message:

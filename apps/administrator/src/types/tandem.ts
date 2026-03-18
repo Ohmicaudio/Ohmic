@@ -13,6 +13,16 @@ export interface AdministratorTandemTargetHealth {
   message?: string | null
 }
 
+export interface AdministratorTandemPendingHandshake {
+  event_id: string
+  intake_id: string | null
+  target_preset_id: string | null
+  target_label: string | null
+  handshake_note?: string | null
+  occurred_at: string
+  state: 'pending'
+}
+
 export interface AdministratorTandemStatus {
   configured: boolean
   available: boolean
@@ -25,6 +35,7 @@ export interface AdministratorTandemStatus {
   active_target_label: string | null
   target_presets: AdministratorTandemTargetPreset[]
   target_health: AdministratorTandemTargetHealth[]
+  pending_handshake: AdministratorTandemPendingHandshake | null
   launch_url: string | null
   probe_message?: string | null
   message: string
