@@ -70,10 +70,10 @@ export function DashboardPanel() {
     (item) => item.priority === 'needs_attachment_review'
   ).length
   const featuredCards = cards.filter((card) =>
-    ['Queue Health', 'Current Action', 'Blockers And Risk'].includes(card.title)
+    ['Queue Health', 'Current Action'].includes(card.title)
   )
   const secondaryCards = cards.filter(
-    (card) => !['Queue Health', 'Current Action', 'Blockers And Risk'].includes(card.title)
+    (card) => !['Queue Health', 'Current Action'].includes(card.title)
   )
 
   useEffect(() => {
