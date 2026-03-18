@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { publishClaimFocus, publishIntakeFocus } from '@/api/focus'
-import { claimQueueTask, completeQueueClaim } from '@/api/queue'
+import { claimQueueTask, completeQueueClaim, releaseQueueClaim } from '@/api/queue'
 import { useDeskFocusStore } from '@/store/deskFocusStore'
 import { useIntakeStore } from '@/store/intakeStore'
 import { useQueueActivityStore } from '@/store/queueActivityStore'
@@ -31,7 +31,7 @@ function getFocusLabel(focusKind: 'intake' | 'ready_task' | 'claim' | null): str
 }
 
 export function DeskFocusPanel() {
-  const [pendingAction, setPendingAction] = useState<'claim' | 'complete' | 'focus' | null>(null)
+  const [pendingAction, setPendingAction] = useState<'claim' | 'complete' | 'release' | 'focus' | null>(null)
   const selection = useDeskFocusStore((state) => state.selection)
   const generatedAt = useDeskFocusStore((state) => state.generatedAt)
   const setProjection = useDeskFocusStore((state) => state.setProjection)
@@ -95,6 +95,22 @@ export function DeskFocusPanel() {
     setPendingAction('complete')
     try {
       await completeQueueClaim(focusedClaim.claim_id)
+      await Promise.all([fetchQueueActivity(), refreshWorkspaceActivity()])
+      const projection = await publishIntakeFocus(selectedIntakeId ?? null)
+      setProjection(projection)
+    } finally {
+      setPendingAction(null)
+    }
+  }
+
+  async function handleReleaseFocusedClaim() {
+    if (!focusedClaim) {
+      return
+    }
+
+    setPendingAction('release')
+    try {
+      await releaseQueueClaim(focusedClaim.claim_id)
       await Promise.all([fetchQueueActivity(), refreshWorkspaceActivity()])
       const projection = await publishIntakeFocus(selectedIntakeId ?? null)
       setProjection(projection)
@@ -198,13 +214,22 @@ export function DeskFocusPanel() {
           </div>
         ) : null}
         {focusedClaim ? (
-          <button
-            onClick={() => void handleCompleteFocusedClaim()}
-            disabled={pendingAction !== null}
-            className="rounded border border-emerald-300/30 px-2.5 py-1 text-[11px] font-medium text-emerald-300 transition-colors hover:border-emerald-300 hover:bg-emerald-300/10 disabled:opacity-50"
-          >
-            {pendingAction === 'complete' ? 'Completing...' : 'Complete focused claim'}
-          </button>
+          <>
+            <button
+              onClick={() => void handleCompleteFocusedClaim()}
+              disabled={pendingAction !== null}
+              className="rounded border border-emerald-300/30 px-2.5 py-1 text-[11px] font-medium text-emerald-300 transition-colors hover:border-emerald-300 hover:bg-emerald-300/10 disabled:opacity-50"
+            >
+              {pendingAction === 'complete' ? 'Completing...' : 'Complete focused claim'}
+            </button>
+            <button
+              onClick={() => void handleReleaseFocusedClaim()}
+              disabled={pendingAction !== null}
+              className="rounded border border-amber-300/30 px-2.5 py-1 text-[11px] font-medium text-amber-300 transition-colors hover:border-amber-300 hover:bg-amber-300/10 disabled:opacity-50"
+            >
+              {pendingAction === 'release' ? 'Releasing...' : 'Release focused claim'}
+            </button>
+          </>
         ) : null}
         {selectedIntake ? (
           <div className="rounded border border-ohmic-accent/20 px-2.5 py-1 text-[11px] text-ohmic-text-dim">

@@ -1,6 +1,7 @@
 import type {
   ClaimReadyTaskResponse,
   CompleteClaimResponse,
+  ReleaseClaimResponse,
   ReadyTask,
 } from '@/types/intake'
 
@@ -28,6 +29,12 @@ export async function claimQueueTask(task: ReadyTask): Promise<ClaimReadyTaskRes
 
 export async function completeQueueClaim(claimId: string): Promise<CompleteClaimResponse> {
   return postJson<CompleteClaimResponse>('/queue/complete-claim', {
+    claim_id: claimId,
+  })
+}
+
+export async function releaseQueueClaim(claimId: string): Promise<ReleaseClaimResponse> {
+  return postJson<ReleaseClaimResponse>('/queue/release-claim', {
     claim_id: claimId,
   })
 }

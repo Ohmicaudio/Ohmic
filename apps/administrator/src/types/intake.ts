@@ -156,6 +156,14 @@ export interface ReopenInactiveIntakeResponse {
   updated_intake?: Record<string, unknown>
 }
 
+export interface ReleaseClaimResponse {
+  writeback: {
+    writeback_status: 'accepted'
+    claim_id: string
+    released_claim_path: string
+  }
+}
+
 export interface WorkspaceCommitActivity {
   hash: string
   summary: string

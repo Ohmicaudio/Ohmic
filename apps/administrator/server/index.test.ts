@@ -29,6 +29,13 @@ vi.mock('./queueActions.js', () => ({
       completed_claim_path: `B:\\ohmic\\agent-system\\jobs\\completed\\${input.claim_id}.md`,
     },
   })),
+  releaseClaim: vi.fn(async (input: { claim_id: string }) => ({
+    writeback: {
+      writeback_status: 'accepted',
+      claim_id: input.claim_id,
+      released_claim_path: `B:\\ohmic\\agent-system\\jobs\\completed\\${input.claim_id}.md`,
+    },
+  })),
 }))
 
 describe('administrator server', () => {
@@ -401,6 +408,34 @@ describe('administrator server', () => {
     }
 
     expect(complete.writeback).toMatchObject({
+      writeback_status: 'accepted',
+      claim_id: 'mock-claim-id',
+    })
+  })
+
+  it('releases an active claim through the queue route', async () => {
+    const { createAdministratorServer } = await importServer()
+    const app = createAdministratorServer(0)
+    const baseUrl = await app.start()
+    stopServer = app.stop
+
+    const releaseRes = await fetch(`${baseUrl}/api/queue/release-claim`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        claim_id: 'mock-claim-id',
+      }),
+    })
+
+    expect(releaseRes.ok).toBe(true)
+    const release = (await releaseRes.json()) as {
+      writeback: {
+        writeback_status: string
+        claim_id: string
+      }
+    }
+
+    expect(release.writeback).toMatchObject({
       writeback_status: 'accepted',
       claim_id: 'mock-claim-id',
     })
@@ -1242,6 +1277,13 @@ describe('administrator server', () => {
       }),
     })
     expect(missingFocusTaskRes.status).toBe(400)
+
+    const missingReleaseClaimRes = await fetch(`${baseUrl}/api/queue/release-claim`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({}),
+    })
+    expect(missingReleaseClaimRes.status).toBe(400)
   })
 
   it('ignores malformed tandem probe target health rows', async () => {

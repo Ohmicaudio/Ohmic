@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
-import { claimQueueTask, completeQueueClaim } from '@/api/queue'
+import { claimQueueTask, completeQueueClaim, releaseQueueClaim } from '@/api/queue'
 import { publishClaimFocus, publishReadyTaskFocus } from '@/api/focus'
 import { useQueueActivityStore } from '@/store/queueActivityStore'
 import { useDeskFocusStore } from '@/store/deskFocusStore'
@@ -30,6 +30,7 @@ function getPriorityBadge(priority: string): string {
 export function QueueActivityPanel() {
   const [pendingTaskId, setPendingTaskId] = useState<string | null>(null)
   const [pendingClaimId, setPendingClaimId] = useState<string | null>(null)
+  const [pendingReleasedClaimId, setPendingReleasedClaimId] = useState<string | null>(null)
   const [showAllReadyTasks, setShowAllReadyTasks] = useState(false)
   const [showAllActiveClaims, setShowAllActiveClaims] = useState(false)
   const {
@@ -84,6 +85,16 @@ export function QueueActivityPanel() {
       await Promise.all([fetch(), refreshWorkspaceActivity()])
     } finally {
       setPendingClaimId(null)
+    }
+  }
+
+  async function handleReleaseClaim(claimId: string) {
+    setPendingReleasedClaimId(claimId)
+    try {
+      await releaseQueueClaim(claimId)
+      await Promise.all([fetch(), refreshWorkspaceActivity()])
+    } finally {
+      setPendingReleasedClaimId(null)
     }
   }
 
@@ -310,10 +321,23 @@ export function QueueActivityPanel() {
                       )}
                       <button
                         onClick={() => void handleCompleteClaim(claim.claim_id)}
-                        disabled={pendingClaimId === claim.claim_id}
+                        disabled={
+                          pendingClaimId === claim.claim_id ||
+                          pendingReleasedClaimId === claim.claim_id
+                        }
                         className="rounded border border-emerald-300/30 px-2.5 py-1 text-[11px] font-medium text-emerald-300 transition-colors hover:border-emerald-300 hover:bg-emerald-300/10 disabled:opacity-50"
                       >
                         {pendingClaimId === claim.claim_id ? 'Completing...' : 'Complete claim'}
+                      </button>
+                      <button
+                        onClick={() => void handleReleaseClaim(claim.claim_id)}
+                        disabled={
+                          pendingClaimId === claim.claim_id ||
+                          pendingReleasedClaimId === claim.claim_id
+                        }
+                        className="rounded border border-amber-300/30 px-2.5 py-1 text-[11px] font-medium text-amber-300 transition-colors hover:border-amber-300 hover:bg-amber-300/10 disabled:opacity-50"
+                      >
+                        {pendingReleasedClaimId === claim.claim_id ? 'Releasing...' : 'Release claim'}
                       </button>
                     </div>
                         </>

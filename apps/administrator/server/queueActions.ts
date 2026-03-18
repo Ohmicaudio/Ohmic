@@ -16,6 +16,10 @@ interface CompleteClaimInput {
   claim_id: string
 }
 
+interface ReleaseClaimInput {
+  claim_id: string
+}
+
 export interface ClaimReadyTaskResponse {
   writeback: {
     writeback_status: 'accepted'
@@ -31,6 +35,14 @@ export interface CompleteClaimResponse {
     writeback_status: 'accepted'
     claim_id: string
     completed_claim_path: string
+  }
+}
+
+export interface ReleaseClaimResponse {
+  writeback: {
+    writeback_status: 'accepted'
+    claim_id: string
+    released_claim_path: string
   }
 }
 
@@ -71,6 +83,23 @@ function parseCompleteResult(stdout: string): { claimId: string; filePath: strin
 
   if (!claimId || !filePath) {
     throw new Error(`Failed to parse completed claim result: ${stdout}`)
+  }
+
+  return { claimId, filePath }
+}
+
+function parseReleaseResult(stdout: string): { claimId: string; filePath: string } {
+  const lines = stdout
+    .split(/\r?\n/)
+    .map((line) => line.trim())
+    .filter(Boolean)
+
+  const releasedLine = lines.find((line) => line.startsWith('Released claim '))
+  const claimId = releasedLine?.replace('Released claim ', '').trim()
+  const filePath = lines[lines.length - 1]
+
+  if (!claimId || !filePath) {
+    throw new Error(`Failed to parse released claim result: ${stdout}`)
   }
 
   return { claimId, filePath }
@@ -147,6 +176,39 @@ export async function completeClaim(
       writeback_status: 'accepted',
       claim_id: result.claimId,
       completed_claim_path: result.filePath,
+    },
+  }
+}
+
+export async function releaseClaim(
+  input: ReleaseClaimInput
+): Promise<ReleaseClaimResponse> {
+  const { stdout } = await execFileAsync(
+    'powershell.exe',
+    [
+      '-NoProfile',
+      '-NonInteractive',
+      '-ExecutionPolicy',
+      'Bypass',
+      '-File',
+      agentClaimScript,
+      'release',
+      '-Id',
+      input.claim_id,
+    ],
+    {
+      cwd: 'B:\\ohmic',
+      windowsHide: true,
+      maxBuffer: 1024 * 1024,
+    }
+  )
+
+  const result = parseReleaseResult(stdout)
+  return {
+    writeback: {
+      writeback_status: 'accepted',
+      claim_id: result.claimId,
+      released_claim_path: result.filePath,
     },
   }
 }

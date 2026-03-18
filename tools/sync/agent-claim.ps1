@@ -1,6 +1,6 @@
 param(
     [Parameter(Position = 0)]
-    [ValidateSet('status', 'claim', 'complete')]
+    [ValidateSet('status', 'claim', 'complete', 'release')]
     [string]$Command = 'status',
 
     [string]$Id,
@@ -259,6 +259,30 @@ switch ($Command) {
         Refresh-WorkSnapshot -TriggerReason ('claim-complete:{0}' -f $Id)
 
         Write-Output "Completed claim $Id"
+        Write-Output $dest
+        exit 0
+    }
+
+    'release' {
+        if (-not $Id) {
+            throw 'Id is required for release.'
+        }
+
+        $source = Join-Path $activeDir ($Id + '.md')
+        if (-not (Test-Path $source)) {
+            throw "Active claim not found: $Id"
+        }
+
+        $raw = Get-Content -Raw $source
+        $raw = $raw -replace '(?m)^status:\s*active$', 'status: released'
+        $raw += "`r`n`r`n# Release`r`n`r`n- released: $([DateTime]::UtcNow.ToString('o'))`r`n"
+
+        $dest = Join-Path $completedDir ($Id + '.md')
+        Set-Content -Path $dest -Value $raw -Encoding UTF8
+        Remove-Item $source -Force
+        Refresh-WorkSnapshot -TriggerReason ('claim-release:{0}' -f $Id)
+
+        Write-Output "Released claim $Id"
         Write-Output $dest
         exit 0
     }

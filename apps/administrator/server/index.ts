@@ -5,7 +5,7 @@ import { ProjectionReader } from './projectionReader.js'
 import { writeCurrentActionFocusSelection, writeIntakeFocusSelection } from './focusWriter.js'
 import { getAdministratorRuntimeDir } from './runtimeConfig.js'
 import { readActiveClaimsFromDisk } from './activeClaimsSource.js'
-import { claimReadyTask, completeClaim } from './queueActions.js'
+import { claimReadyTask, completeClaim, releaseClaim } from './queueActions.js'
 import { readReadyTasksFromDisk } from './readyTasksSource.js'
 import { readTandemStatus } from './tandemProxy.js'
 import { readWorkspaceActivity } from './workspaceActivitySource.js'
@@ -212,6 +212,26 @@ export function createAdministratorServer(port = PORT) {
             return
           }
           completeClaim(input)
+            .then((result) => sendJson(res, result))
+            .catch((err) => sendJson(res, { error: err.message }, 500))
+        } catch {
+          sendJson(res, { error: 'Invalid JSON body' }, 400)
+        }
+      })
+      return
+    }
+
+    if (requestPath === '/api/queue/release-claim' && req.method === 'POST') {
+      let body = ''
+      req.on('data', (chunk: Buffer) => { body += chunk.toString() })
+      req.on('end', () => {
+        try {
+          const input = JSON.parse(body)
+          if (!input?.claim_id) {
+            sendJson(res, { error: 'Missing claim_id in request body' }, 400)
+            return
+          }
+          releaseClaim(input)
             .then((result) => sendJson(res, result))
             .catch((err) => sendJson(res, { error: err.message }, 500))
         } catch {
