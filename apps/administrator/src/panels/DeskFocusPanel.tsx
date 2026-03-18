@@ -1,6 +1,10 @@
-import { publishIntakeFocus } from '@/api/focus'
+import { useState } from 'react'
+import { publishClaimFocus, publishIntakeFocus } from '@/api/focus'
+import { claimQueueTask, completeQueueClaim } from '@/api/queue'
 import { useDeskFocusStore } from '@/store/deskFocusStore'
 import { useIntakeStore } from '@/store/intakeStore'
+import { useQueueActivityStore } from '@/store/queueActivityStore'
+import { useWorkspaceActivityStore } from '@/store/workspaceActivityStore'
 
 function formatFocusPath(filePath: string | null): string {
   if (!filePath) {
@@ -27,17 +31,74 @@ function getFocusLabel(focusKind: 'intake' | 'ready_task' | 'claim' | null): str
 }
 
 export function DeskFocusPanel() {
+  const [pendingAction, setPendingAction] = useState<'claim' | 'complete' | 'focus' | null>(null)
   const selection = useDeskFocusStore((state) => state.selection)
   const generatedAt = useDeskFocusStore((state) => state.generatedAt)
   const setProjection = useDeskFocusStore((state) => state.setProjection)
+  const fetchQueueActivity = useQueueActivityStore((state) => state.fetch)
+  const readyTasks = useQueueActivityStore((state) => state.readyTasks)
+  const activeClaims = useQueueActivityStore((state) => state.activeClaims)
+  const refreshWorkspaceActivity = useWorkspaceActivityStore((state) => state.fetch)
   const selectedIntakeId = useIntakeStore((state) => state.selectedId)
   const selectedIntake = useIntakeStore((state) =>
     state.items.find((item) => item.intake_id === state.selectedId) ?? null
   )
+  const focusedReadyTask =
+    selection?.focus_kind === 'ready_task'
+      ? readyTasks.find((task) => task.task_id === selection.task_id) ?? null
+      : null
+  const focusedClaim =
+    selection?.focus_kind === 'claim'
+      ? activeClaims.find((claim) => claim.claim_id === selection.claim_id) ?? null
+      : null
 
   async function handleRefocusIntake() {
-    const projection = await publishIntakeFocus(selectedIntakeId ?? null)
-    setProjection(projection)
+    setPendingAction('focus')
+    try {
+      const projection = await publishIntakeFocus(selectedIntakeId ?? null)
+      setProjection(projection)
+    } finally {
+      setPendingAction(null)
+    }
+  }
+
+  async function handleClaimFocusedTask() {
+    if (!focusedReadyTask) {
+      return
+    }
+
+    setPendingAction('claim')
+    try {
+      const response = await claimQueueTask(focusedReadyTask)
+      await Promise.all([fetchQueueActivity(), refreshWorkspaceActivity()])
+      const projection = await publishClaimFocus({
+        claim_id: response.writeback.claim_id,
+        title: focusedReadyTask.title,
+        owner: response.writeback.owner,
+        status: 'active',
+        paths: [focusedReadyTask.file_path],
+        file_path: focusedReadyTask.file_path,
+      })
+      setProjection(projection)
+    } finally {
+      setPendingAction(null)
+    }
+  }
+
+  async function handleCompleteFocusedClaim() {
+    if (!focusedClaim) {
+      return
+    }
+
+    setPendingAction('complete')
+    try {
+      await completeQueueClaim(focusedClaim.claim_id)
+      await Promise.all([fetchQueueActivity(), refreshWorkspaceActivity()])
+      const projection = await publishIntakeFocus(selectedIntakeId ?? null)
+      setProjection(projection)
+    } finally {
+      setPendingAction(null)
+    }
   }
 
   return (
@@ -93,10 +154,33 @@ export function DeskFocusPanel() {
       <div className="flex flex-wrap gap-2 pt-1">
         <button
           onClick={() => void handleRefocusIntake()}
+          disabled={pendingAction !== null}
           className="rounded border border-ohmic-border px-2.5 py-1 text-[11px] font-medium text-ohmic-text transition-colors hover:border-ohmic-accent/30"
         >
-          {selectedIntakeId ? 'Refocus selected intake' : 'Clear explicit focus'}
+          {pendingAction === 'focus'
+            ? 'Updating focus...'
+            : selectedIntakeId
+              ? 'Refocus selected intake'
+              : 'Clear explicit focus'}
         </button>
+        {focusedReadyTask ? (
+          <button
+            onClick={() => void handleClaimFocusedTask()}
+            disabled={pendingAction !== null}
+            className="rounded border border-ohmic-accent/40 px-2.5 py-1 text-[11px] font-medium text-ohmic-accent transition-colors hover:border-ohmic-accent hover:bg-ohmic-accent/10 disabled:opacity-50"
+          >
+            {pendingAction === 'claim' ? 'Claiming...' : 'Claim focused task'}
+          </button>
+        ) : null}
+        {focusedClaim ? (
+          <button
+            onClick={() => void handleCompleteFocusedClaim()}
+            disabled={pendingAction !== null}
+            className="rounded border border-emerald-300/30 px-2.5 py-1 text-[11px] font-medium text-emerald-300 transition-colors hover:border-emerald-300 hover:bg-emerald-300/10 disabled:opacity-50"
+          >
+            {pendingAction === 'complete' ? 'Completing...' : 'Complete focused claim'}
+          </button>
+        ) : null}
         {selectedIntake ? (
           <div className="rounded border border-ohmic-accent/20 px-2.5 py-1 text-[11px] text-ohmic-text-dim">
             Working intake <span className="text-ohmic-text">{selectedIntake.title}</span>
