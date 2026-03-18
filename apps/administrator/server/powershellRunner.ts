@@ -27,6 +27,14 @@ interface RecordFilingInput {
   reason?: string
 }
 
+interface RecordTandemLaunchIntentInput {
+  intake_id?: string | null
+  target_preset_id?: string | null
+  target_label?: string | null
+  launch_url?: string | null
+  attachment_id?: string | null
+}
+
 interface CommandValidationResult {
   command_id: string
   selected_intake_id: string
@@ -118,6 +126,16 @@ interface RecordFilingResponse {
   filing_record?: Record<string, unknown>
 }
 
+interface RecordTandemLaunchIntentResponse {
+  writeback: {
+    writeback_status: 'accepted'
+    event_id: string
+    intake_id: string | null
+    target_label: string | null
+    audit_summary_count: number
+  }
+}
+
 interface IntakeQueueItem {
   intake_id: string
   title: string
@@ -142,6 +160,7 @@ const reopenWritebackScript = asPowerShellPath('reopen-writeback.ps1')
 const filingHistoryProjectionScript = asPowerShellPath('filing-history-projection.ps1')
 const filingPickerReadScript = asPowerShellPath('filing-picker-read.ps1')
 const filingWritebackScript = asPowerShellPath('filing-writeback.ps1')
+const commonScript = asPowerShellPath('common.ps1')
 
 function asPowerShellPath(fileName: string): string {
   return path.join(ADMIN_SCRIPTS_DIR, fileName).replace(/\\/g, '\\\\')
@@ -750,6 +769,61 @@ export async function reopenInactiveIntake(
   }
 
   return response
+}
+
+export async function recordTandemLaunchIntent(
+  input: RecordTandemLaunchIntentInput
+): Promise<RecordTandemLaunchIntentResponse> {
+  const runtimeDir = escapePowerShellString(RUNTIME_DIR)
+  const occurredAt = new Date().toISOString()
+  const eventId = `tandem_launch_${Date.now()}`
+  const intakeId = escapePowerShellString(input.intake_id ?? '')
+  const targetPresetId = escapePowerShellString(input.target_preset_id ?? '')
+  const targetLabel = escapePowerShellString(input.target_label ?? '')
+  const launchUrl = escapePowerShellString(input.launch_url ?? '')
+  const attachmentId = escapePowerShellString(input.attachment_id ?? '')
+
+  const psScript = `
+    Set-StrictMode -Version Latest
+    $ErrorActionPreference = 'Stop'
+
+    . '${commonScript}'
+    . '${auditSummaryProjectionScript}'
+
+    $runtimeDir = '${runtimeDir}'
+    $auditEventsPath = Join-Path $runtimeDir 'administrator_audit_events.jsonl'
+
+    $event = [pscustomobject]@{
+      event_id = '${eventId}'
+      event_type = 'administrator.tandem.launch'
+      event_family = 'provider_handoff'
+      intake_id = '${intakeId}'
+      summary_label = 'Opened Tandem handoff'
+      actor_label = 'operator:d'
+      occurred_at = '${escapePowerShellString(occurredAt)}'
+      status_delta = if ([string]::IsNullOrWhiteSpace('${attachmentId}')) { '' } else { 'attachment_review' }
+      target_label = if ([string]::IsNullOrWhiteSpace('${targetLabel}')) { '${targetPresetId}' } else { '${targetLabel}' }
+      target_preset_id = '${targetPresetId}'
+      launch_url = '${launchUrl}'
+      attachment_id = '${attachmentId}'
+    }
+
+    Append-JsonLine -PathText $auditEventsPath -Value $event
+    $auditEvents = @(Read-JsonLines -PathText $auditEventsPath)
+    $projection = Write-AdministratorAuditSummaryProjection -AuditEvents $auditEvents -RuntimeDir $runtimeDir
+
+    [pscustomobject]@{
+      writeback = [pscustomobject]@{
+        writeback_status = 'accepted'
+        event_id = '${eventId}'
+        intake_id = if ([string]::IsNullOrWhiteSpace('${intakeId}')) { $null } else { '${intakeId}' }
+        target_label = if ([string]::IsNullOrWhiteSpace('${targetLabel}')) { if ([string]::IsNullOrWhiteSpace('${targetPresetId}')) { $null } else { '${targetPresetId}' } } else { '${targetLabel}' }
+        audit_summary_count = @($projection.rows).Count
+      }
+    } | ConvertTo-Json -Depth 10 -Compress
+  `
+
+  return runPowerShell(psScript) as Promise<RecordTandemLaunchIntentResponse>
 }
 
 function runPowerShell(script: string): Promise<unknown> {

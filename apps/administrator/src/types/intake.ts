@@ -291,6 +291,8 @@ export interface AdministratorAuditSummaryItem {
   occurred_at: string
   status_delta: string
   target_label: string
+  target_preset_id?: string
+  launch_url?: string
 }
 
 export interface AdministratorAuditSummaryProjection {

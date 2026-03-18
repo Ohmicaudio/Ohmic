@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { selectRecentTandemLaunches } from '@/panels/tandemHistory'
+import { selectRecentTandemLaunches, resolveRecentTandemLaunchSelection } from '@/panels/tandemHistory'
 
 describe('selectRecentTandemLaunches', () => {
   it('returns only provider handoff events', () => {
@@ -13,6 +13,8 @@ describe('selectRecentTandemLaunches', () => {
         occurred_at: '2026-03-17T20:00:00Z',
         status_delta: '',
         target_label: 'Gmail support inbox',
+        target_preset_id: 'gmail-support',
+        launch_url: 'http://127.0.0.1:8765/?targetPreset=gmail-support',
       },
       {
         event_id: 'b',
@@ -33,6 +35,8 @@ describe('selectRecentTandemLaunches', () => {
         occurred_at: '2026-03-17T20:02:00Z',
         status_delta: 'attachment_review',
         target_label: 'GitHub issues queue',
+        target_preset_id: 'github-bugs',
+        launch_url: 'http://127.0.0.1:8765/?targetPreset=github-bugs',
       },
     ]
 
@@ -49,8 +53,90 @@ describe('selectRecentTandemLaunches', () => {
       occurred_at: `2026-03-17T20:0${index}:00Z`,
       status_delta: '',
       target_label: `target-${index + 1}`,
+      target_preset_id: `preset-${index + 1}`,
+      launch_url: `http://127.0.0.1:8765/?targetPreset=preset-${index + 1}`,
     }))
 
     expect(selectRecentTandemLaunches(rows, 2)).toEqual(rows.slice(0, 2))
+  })
+
+  it('restores selection using the exact preset id and active intake', () => {
+    const result = resolveRecentTandemLaunchSelection(
+      {
+        event_id: 'evt-1',
+        event_family: 'provider_handoff',
+        intake_id: 'intake-2',
+        summary_label: 'Opened Tandem handoff',
+        actor_label: 'operator:d',
+        occurred_at: '2026-03-17T20:05:00Z',
+        status_delta: '',
+        target_label: 'Wrong label',
+        target_preset_id: 'github-bugs',
+        launch_url: 'http://127.0.0.1:8765/?targetPreset=github-bugs',
+      },
+      [
+        {
+          preset_id: 'gmail-support',
+          display_label: 'Gmail Support',
+          target_label: 'Gmail support inbox',
+        },
+        {
+          preset_id: 'github-bugs',
+          display_label: 'GitHub Bugs',
+          target_label: 'GitHub issues queue',
+        },
+      ],
+      [
+        {
+          intake_id: 'intake-2',
+          title: 'Provider follow-up',
+          intake_kind: 'email',
+          received_at: '2026-03-17T20:00:00Z',
+          status: 'triaging',
+          routing_target: 'operator',
+          trust_tier: '2',
+          priority_hint: 'high',
+          tags: [],
+          warning_state: 'clean',
+          warning_count: 0,
+          summary_label: 'Provider follow-up',
+        },
+      ]
+    )
+
+    expect(result).toEqual({
+      presetId: 'github-bugs',
+      intakeId: 'intake-2',
+    })
+  })
+
+  it('falls back to matching by target label and ignores inactive intakes', () => {
+    const result = resolveRecentTandemLaunchSelection(
+      {
+        event_id: 'evt-2',
+        event_family: 'provider_handoff',
+        intake_id: 'intake-9',
+        summary_label: 'Opened Tandem handoff',
+        actor_label: 'operator:d',
+        occurred_at: '2026-03-17T20:10:00Z',
+        status_delta: '',
+        target_label: 'Gmail support inbox',
+        target_preset_id: '',
+        launch_url: 'http://127.0.0.1:8765/?targetPreset=gmail-support',
+      },
+      [
+        {
+          preset_id: 'gmail-support',
+          display_label: 'Gmail Support',
+          target_label: 'Gmail support inbox',
+        },
+      ],
+      []
+    )
+
+    expect(result).toEqual({
+      presetId: 'gmail-support',
+      intakeId: null,
+    })
   })
 })

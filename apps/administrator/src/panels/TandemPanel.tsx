@@ -4,11 +4,15 @@ import { useTandemStore } from '@/store/tandemStore'
 import { useIntakeStore } from '@/store/intakeStore'
 import { buildTandemContextUrl } from '@/panels/tandemContext'
 import { useAuditSummaryStore } from '@/store/auditSummaryStore'
-import { selectRecentTandemLaunches } from '@/panels/tandemHistory'
+import {
+  resolveRecentTandemLaunchSelection,
+  selectRecentTandemLaunches,
+} from '@/panels/tandemHistory'
 
 export function TandemPanel() {
   const items = useIntakeStore((state) => state.items)
   const selectedId = useIntakeStore((state) => state.selectedId)
+  const selectIntake = useIntakeStore((state) => state.select)
   const {
     configured,
     available,
@@ -66,6 +70,16 @@ export function TandemPanel() {
       await refreshAuditSummary()
     } catch {
       // Keep the handoff non-blocking even if audit writeback fails.
+    }
+  }
+
+  function handleRestoreRecentLaunch(item: (typeof recentLaunches)[number]) {
+    const selection = resolveRecentTandemLaunchSelection(item, targetPresets, items)
+    if (selection.presetId) {
+      setSelectedPreset(selection.presetId)
+    }
+    if (selection.intakeId) {
+      selectIntake(selection.intakeId)
     }
   }
 
@@ -222,6 +236,27 @@ export function TandemPanel() {
                           ? new Date(item.occurred_at).toLocaleString()
                           : '--'}
                       </div>
+                    </div>
+                    <div className="mt-2 flex flex-wrap gap-2">
+                      <button
+                        onClick={() => handleRestoreRecentLaunch(item)}
+                        className="rounded border border-ohmic-border px-2.5 py-1 text-[11px] font-medium text-ohmic-text transition-colors hover:border-ohmic-accent/30"
+                      >
+                        Load into desk
+                      </button>
+                      {item.launch_url ? (
+                        <a
+                          href={item.launch_url}
+                          target="_blank"
+                          rel="noreferrer"
+                          onClick={() => {
+                            handleRestoreRecentLaunch(item)
+                          }}
+                          className="rounded border border-ohmic-accent/40 px-2.5 py-1 text-[11px] font-medium text-ohmic-accent transition-colors hover:border-ohmic-accent hover:bg-ohmic-accent/10"
+                        >
+                          Open recorded launch
+                        </a>
+                      ) : null}
                     </div>
                   </div>
                 ))}
