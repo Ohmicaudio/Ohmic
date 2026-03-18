@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react'
+import { recordTandemLaunchIntent } from '@/api/tandem'
 import { useAuditSummaryStore } from '@/store/auditSummaryStore'
 import { useIntakeStore } from '@/store/intakeStore'
 import { useTandemStore } from '@/store/tandemStore'
@@ -25,6 +26,7 @@ export function ProviderHandoffPanel() {
   const tandemTargetPresets = useTandemStore((state) => state.targetPresets)
   const selectedTandemPresetId = useTandemStore((state) => state.selectedPresetId)
   const tandemLaunchUrl = useTandemStore((state) => state.launchUrl)
+  const tandemHandoffNote = useTandemStore((state) => state.handoffNote)
   const setSelectedTandemPreset = useTandemStore((state) => state.setSelectedPreset)
   const setTandemHandoffNote = useTandemStore((state) => state.setHandoffNote)
 
@@ -80,6 +82,24 @@ export function ProviderHandoffPanel() {
 
   function loadProviderTarget(presetId: string) {
     setSelectedTandemPreset(presetId)
+  }
+
+  async function handleProviderLaunch(
+    launchUrl: string,
+    preset: { preset_id: string; target_label: string }
+  ) {
+    try {
+      await recordTandemLaunchIntent({
+        intake_id: selectedIntake?.intake_id ?? null,
+        target_preset_id: preset.preset_id,
+        target_label: preset.target_label,
+        launch_url: launchUrl,
+        handoff_note: tandemHandoffNote.trim() || null,
+      })
+      await fetchAuditSummary()
+    } catch {
+      // Keep provider launch non-blocking even if audit writeback fails.
+    }
   }
 
   return (
@@ -247,7 +267,10 @@ export function ProviderHandoffPanel() {
                         href={contextualLaunchUrl}
                         target="_blank"
                         rel="noreferrer"
-                        onClick={() => loadProviderTarget(preset.preset_id)}
+                        onClick={() => {
+                          loadProviderTarget(preset.preset_id)
+                          void handleProviderLaunch(contextualLaunchUrl, preset)
+                        }}
                         className="rounded border border-ohmic-accent/40 px-2.5 py-1 text-[11px] font-medium text-ohmic-accent transition-colors hover:border-ohmic-accent hover:bg-ohmic-accent/10"
                       >
                         Open in Tandem
