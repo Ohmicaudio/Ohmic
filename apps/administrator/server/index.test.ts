@@ -315,6 +315,9 @@ describe('administrator server', () => {
       'utf-8'
     )
     const auditSummary = JSON.parse(auditSummaryRaw) as {
+      filter_presets: Array<{
+        preset_id: string
+      }>
       rows: Array<{
         event_family: string
         intake_id: string
@@ -331,6 +334,9 @@ describe('administrator server', () => {
       status_delta: 'attachment_review',
       attachment_id: 'asset-77',
     })
+    expect(auditSummary.filter_presets.map((preset) => preset.preset_id)).toContain(
+      'provider_handoffs'
+    )
   })
 
   it('validates and executes command routes against the live runtime root', async () => {

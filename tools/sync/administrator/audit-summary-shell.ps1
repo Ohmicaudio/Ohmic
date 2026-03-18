@@ -14,6 +14,7 @@ function New-AdministratorAuditSummaryShellModel {
         [pscustomobject]@{ preset_id = 'status_changes'; display_label = 'Status Changes'; included_event_families = @('status_transition'); included_statuses = @(); include_archived = $true; include_routed = $true }
         [pscustomobject]@{ preset_id = 'reopen_events'; display_label = 'Reopen Events'; included_event_families = @('reopen'); included_statuses = @(); include_archived = $true; include_routed = $true }
         [pscustomobject]@{ preset_id = 'filing_changes'; display_label = 'Filing Changes'; included_event_families = @('filing_migration'); included_statuses = @(); include_archived = $true; include_routed = $true }
+        [pscustomobject]@{ preset_id = 'provider_handoffs'; display_label = 'Provider Handoffs'; included_event_families = @('provider_handoff'); included_statuses = @(); include_archived = $true; include_routed = $true }
         [pscustomobject]@{ preset_id = 'tag_and_note_activity'; display_label = 'Tag And Note Activity'; included_event_families = @('note', 'tag'); included_statuses = @(); include_archived = $true; include_routed = $true }
     )
 
