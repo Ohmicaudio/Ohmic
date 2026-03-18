@@ -16,6 +16,11 @@ export interface TandemStatusResponse {
     team_label?: string | null
     default_note?: string | null
   }>
+  target_health: Array<{
+    target_label: string
+    status: 'unknown' | 'ready' | 'attention' | 'attached' | 'error'
+    message?: string | null
+  }>
   launch_url: string | null
   probe_message?: string | null
   message: string
@@ -79,6 +84,7 @@ async function readProbeState(
       session_state: 'missing' | 'idle' | 'attached'
       active_target_label: string | null
       available: boolean
+      target_health: TandemStatusResponse['target_health']
       probe_message: string | null
     }
   | {
@@ -122,6 +128,48 @@ async function readProbeState(
       typeof body.available === 'boolean'
         ? body.available
         : sessionState === 'attached'
+    const targetHealthRaw = Array.isArray(body.target_health)
+      ? body.target_health
+      : Array.isArray(body.targetHealth)
+        ? body.targetHealth
+        : []
+    const targetHealth = targetHealthRaw
+      .flatMap((entry) => {
+        if (!entry || typeof entry !== 'object') {
+          return []
+        }
+        const record = entry as Record<string, unknown>
+        const targetLabel =
+          typeof record.target_label === 'string'
+            ? record.target_label
+            : typeof record.targetLabel === 'string'
+              ? record.targetLabel
+              : null
+        const statusValue =
+          typeof record.status === 'string' ? record.status.trim().toLowerCase() : null
+        const message =
+          typeof record.message === 'string' ? record.message : null
+
+        if (!targetLabel) {
+          return []
+        }
+
+        const status: TandemStatusResponse['target_health'][number]['status'] =
+          statusValue === 'ready' ||
+          statusValue === 'attention' ||
+          statusValue === 'attached' ||
+          statusValue === 'error'
+            ? statusValue
+            : 'unknown'
+
+        return [
+          {
+            target_label: targetLabel,
+            status,
+            message,
+          },
+        ]
+      })
     const probeMessage =
       typeof body.message === 'string'
         ? body.message
@@ -133,6 +181,7 @@ async function readProbeState(
       session_state: sessionState,
       active_target_label: activeTargetLabel,
       available,
+      target_health: targetHealth,
       probe_message: probeMessage,
     }
   } catch (error) {
@@ -202,6 +251,7 @@ export async function readTandemStatus(): Promise<TandemStatusResponse> {
       session_label: sessionLabel,
       active_target_label: null,
       target_presets: targetPresets,
+      target_health: [],
       launch_url: null,
       probe_message: probeUrl
         ? 'Tandem probe is configured but the base URL is not set.'
@@ -215,6 +265,7 @@ export async function readTandemStatus(): Promise<TandemStatusResponse> {
   let sessionState = envSessionState
   let activeTargetLabel = envActiveTargetLabel
   let available = sessionState === 'attached'
+  let targetHealth: TandemStatusResponse['target_health'] = []
   let statusSource: 'env' | 'probe' = 'env'
   let probeState: 'unavailable' | 'reachable' | 'error' = probeUrl ? 'error' : 'unavailable'
   let probeMessage: string | null = probeUrl
@@ -230,6 +281,7 @@ export async function readTandemStatus(): Promise<TandemStatusResponse> {
       sessionState = probe.session_state
       activeTargetLabel = probe.active_target_label
       available = probe.available
+      targetHealth = probe.target_health
     }
   }
 
@@ -244,6 +296,7 @@ export async function readTandemStatus(): Promise<TandemStatusResponse> {
     session_label: sessionLabel,
     active_target_label: activeTargetLabel,
     target_presets: targetPresets,
+    target_health: targetHealth,
     launch_url: launchUrl,
     probe_message: probeMessage,
     message:

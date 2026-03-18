@@ -24,6 +24,7 @@ export function TandemPanel() {
     sessionLabel,
     activeTargetLabel,
     targetPresets,
+    targetHealth,
     selectedPresetId,
     handoffNote,
     launchUrl,
@@ -43,6 +44,10 @@ export function TandemPanel() {
   const selectedPreset = useMemo(
     () => targetPresets.find((preset) => preset.preset_id === selectedPresetId) ?? null,
     [selectedPresetId, targetPresets]
+  )
+  const targetHealthMap = useMemo(
+    () => new Map(targetHealth.map((item) => [item.target_label, item])),
+    [targetHealth]
   )
   const contextualLaunchUrl = buildTandemContextUrl(launchUrl, selectedIntake, selectedPreset)
   const recentLaunches = useMemo(
@@ -203,6 +208,9 @@ export function TandemPanel() {
                     <span>{' -> '}{preset.target_label}</span>
                     {preset.team_label ? <span>{` | ${preset.team_label}`}</span> : null}
                     {preset.target_kind ? <span>{` | ${preset.target_kind}`}</span> : null}
+                    {targetHealthMap.get(preset.target_label) ? (
+                      <span>{` | ${targetHealthMap.get(preset.target_label)?.status}`}</span>
+                    ) : null}
                   </div>
                 ))}
               </div>
@@ -219,7 +227,15 @@ export function TandemPanel() {
                   <div>
                     {selectedPreset.target_label}
                     {selectedPreset.target_kind ? ` | ${selectedPreset.target_kind}` : ''}
+                    {targetHealthMap.get(selectedPreset.target_label)
+                      ? ` | ${targetHealthMap.get(selectedPreset.target_label)?.status}`
+                      : ''}
                   </div>
+                  {targetHealthMap.get(selectedPreset.target_label)?.message ? (
+                    <div className="whitespace-pre-wrap">
+                      {targetHealthMap.get(selectedPreset.target_label)?.message}
+                    </div>
+                  ) : null}
                   {selectedPreset.default_note ? (
                     <div className="space-y-2">
                       <div className="whitespace-pre-wrap">{selectedPreset.default_note}</div>

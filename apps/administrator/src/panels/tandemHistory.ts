@@ -1,12 +1,25 @@
 import type { AdministratorAuditSummaryItem, IntakeQueueItem } from '@/types/intake'
 import type { AdministratorTandemTargetPreset } from '@/types/tandem'
 
+function sortNewestFirst(
+  rows: AdministratorAuditSummaryItem[]
+): AdministratorAuditSummaryItem[] {
+  return rows.slice().sort((left, right) => {
+    const leftTime = Date.parse(left.occurred_at || '')
+    const rightTime = Date.parse(right.occurred_at || '')
+    const safeLeft = Number.isFinite(leftTime) ? leftTime : 0
+    const safeRight = Number.isFinite(rightTime) ? rightTime : 0
+    return safeRight - safeLeft
+  })
+}
+
 export function selectRecentTandemLaunches(
   rows: AdministratorAuditSummaryItem[],
   maxItems = 3
 ): AdministratorAuditSummaryItem[] {
-  return rows
-    .filter((row) => row.event_family === 'provider_handoff')
+  return sortNewestFirst(
+    rows.filter((row) => row.event_family === 'provider_handoff')
+  )
     .slice(0, maxItems)
 }
 
@@ -14,11 +27,12 @@ export function selectRecentProviderEvents(
   rows: AdministratorAuditSummaryItem[],
   maxItems = 5
 ): AdministratorAuditSummaryItem[] {
-  return rows
-    .filter(
+  return sortNewestFirst(
+    rows.filter(
       (row) =>
         row.event_family === 'provider_handoff' || row.event_family === 'provider_follow_up'
     )
+  )
     .slice(0, maxItems)
 }
 
@@ -31,12 +45,13 @@ export function selectProviderEventsForIntake(
     return []
   }
 
-  return rows
-    .filter(
+  return sortNewestFirst(
+    rows.filter(
       (row) =>
         row.intake_id === intakeId &&
         (row.event_family === 'provider_handoff' || row.event_family === 'provider_follow_up')
     )
+  )
     .slice(0, maxItems)
 }
 

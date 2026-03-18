@@ -50,7 +50,7 @@ describe('selectRecentTandemLaunches', () => {
       },
     ]
 
-    expect(selectRecentTandemLaunches(rows)).toEqual([rows[0], rows[2]])
+    expect(selectRecentTandemLaunches(rows)).toEqual([rows[2], rows[0]])
   })
 
   it('limits the number of returned handoff events', () => {
@@ -69,7 +69,7 @@ describe('selectRecentTandemLaunches', () => {
       handoff_note: '',
     }))
 
-    expect(selectRecentTandemLaunches(rows, 2)).toEqual(rows.slice(0, 2))
+    expect(selectRecentTandemLaunches(rows, 2)).toEqual([rows[4], rows[3]])
   })
 
   it('returns recent provider events including completions', () => {
@@ -106,7 +106,7 @@ describe('selectRecentTandemLaunches', () => {
       },
     ]
 
-    expect(selectRecentProviderEvents(rows)).toEqual([rows[0], rows[1]])
+    expect(selectRecentProviderEvents(rows)).toEqual([rows[1], rows[0]])
   })
 
   it('returns provider timeline items for a selected intake', () => {
@@ -143,7 +143,7 @@ describe('selectRecentTandemLaunches', () => {
       },
     ]
 
-    expect(selectProviderEventsForIntake(rows, 'intake-1')).toEqual([rows[0], rows[1]])
+    expect(selectProviderEventsForIntake(rows, 'intake-1')).toEqual([rows[1], rows[0]])
     expect(selectProviderEventsForIntake(rows, 'missing')).toEqual([])
   })
 

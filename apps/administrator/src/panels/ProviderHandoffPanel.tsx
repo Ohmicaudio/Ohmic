@@ -25,6 +25,7 @@ import {
   selectRecentProviderEvents,
   resolveRecentTandemLaunchSelection,
   selectLatestTandemLaunchForIntake,
+  selectProviderEventsForIntake,
   selectRecentTandemLaunches,
 } from '@/panels/tandemHistory'
 
@@ -120,6 +121,7 @@ export function ProviderHandoffPanel() {
   const tandemProbeState = useTandemStore((state) => state.probeState)
   const tandemProbeMessage = useTandemStore((state) => state.probeMessage)
   const tandemActiveTargetLabel = useTandemStore((state) => state.activeTargetLabel)
+  const tandemTargetHealth = useTandemStore((state) => state.targetHealth)
   const tandemLaunchUrl = useTandemStore((state) => state.launchUrl)
   const tandemHandoffNote = useTandemStore((state) => state.handoffNote)
   const setSelectedTandemPreset = useTandemStore((state) => state.setSelectedPreset)
@@ -170,6 +172,15 @@ export function ProviderHandoffPanel() {
       tandemTargetPresets.find((preset) => preset.preset_id === selectedTandemPresetId) ?? null,
     [selectedTandemPresetId, tandemTargetPresets]
   )
+  const targetHealthMap = useMemo(
+    () => new Map(tandemTargetHealth.map((item) => [item.target_label, item])),
+    [tandemTargetHealth]
+  )
+  const selectedProviderEvents = useMemo(
+    () => selectProviderEventsForIntake(auditItems, selectedId, 6),
+    [auditItems, selectedId]
+  )
+  const selectedLatestProviderEvent = selectedProviderEvents[0] ?? null
   const attachmentReviewQueue = useMemo(
     () =>
       visibleProviderFollowUpQueue.filter(
@@ -482,8 +493,96 @@ export function ProviderHandoffPanel() {
                 {selectedTandemPreset.target_kind}
               </span>
             ) : null}
+            {targetHealthMap.get(selectedTandemPreset.target_label) ? (
+              <span
+                className={`rounded-full px-2 py-0.5 text-[10px] uppercase tracking-widest ${
+                  targetHealthMap.get(selectedTandemPreset.target_label)?.status === 'attached'
+                    ? 'bg-emerald-300/15 text-emerald-300'
+                    : targetHealthMap.get(selectedTandemPreset.target_label)?.status === 'error'
+                      ? 'bg-rose-300/15 text-rose-300'
+                      : targetHealthMap.get(selectedTandemPreset.target_label)?.status === 'attention'
+                        ? 'bg-amber-300/15 text-amber-300'
+                        : 'bg-ohmic-accent/15 text-ohmic-accent'
+                }`}
+              >
+                {targetHealthMap.get(selectedTandemPreset.target_label)?.status}
+              </span>
+            ) : null}
           </div>
         ) : null}
+      </div>
+
+      <div className="panel space-y-3">
+        <div className="flex items-center justify-between gap-3">
+          <div className="text-xs uppercase tracking-wider text-ohmic-text-dim">
+            Operator Loop
+          </div>
+          <div className="text-[10px] text-ohmic-text-dim">
+            Select -&gt; launch -&gt; follow up -&gt; complete -&gt; reopen
+          </div>
+        </div>
+        {!selectedIntake ? (
+          <div className="text-sm text-ohmic-text-dim">
+            Select an intake item to walk the provider loop from the desk.
+          </div>
+        ) : (
+          <div className="space-y-3">
+            <div className="text-sm text-ohmic-text">{selectedIntake.title}</div>
+            <div className="grid grid-cols-1 md:grid-cols-5 gap-2">
+              <div className="rounded border border-ohmic-border bg-ohmic-bg px-3 py-2">
+                <div className="text-[10px] uppercase tracking-widest text-ohmic-text-dim">
+                  Step 1
+                </div>
+                <div className="mt-1 text-xs text-ohmic-text">
+                  {selectedTandemPreset ? selectedTandemPreset.display_label : 'Choose target'}
+                </div>
+              </div>
+              <div className="rounded border border-ohmic-border bg-ohmic-bg px-3 py-2">
+                <div className="text-[10px] uppercase tracking-widest text-ohmic-text-dim">
+                  Step 2
+                </div>
+                <div className="mt-1 text-xs text-ohmic-text">
+                  {selectedTargetLaunchReady ? 'Launch ready' : 'Launch blocked'}
+                </div>
+              </div>
+              <div className="rounded border border-ohmic-border bg-ohmic-bg px-3 py-2">
+                <div className="text-[10px] uppercase tracking-widest text-ohmic-text-dim">
+                  Step 3
+                </div>
+                <div className="mt-1 text-xs text-ohmic-text">
+                  {selectedHandoff ? 'Handoff recorded' : 'No handoff yet'}
+                </div>
+              </div>
+              <div className="rounded border border-ohmic-border bg-ohmic-bg px-3 py-2">
+                <div className="text-[10px] uppercase tracking-widest text-ohmic-text-dim">
+                  Step 4
+                </div>
+                <div className="mt-1 text-xs text-ohmic-text">
+                  {selectedLatestProviderEvent?.event_family === 'provider_follow_up'
+                    ? 'Completed'
+                    : selectedLatestProviderEvent
+                      ? 'Needs follow-up'
+                      : 'No provider event'}
+                </div>
+              </div>
+              <div className="rounded border border-ohmic-border bg-ohmic-bg px-3 py-2">
+                <div className="text-[10px] uppercase tracking-widest text-ohmic-text-dim">
+                  Step 5
+                </div>
+                <div className="mt-1 text-xs text-ohmic-text">
+                  {selectedLatestProviderEvent?.event_family === 'provider_follow_up'
+                    ? 'Can reopen'
+                    : 'Complete or continue'}
+                </div>
+              </div>
+            </div>
+            {selectedLatestProviderEvent?.handoff_note ? (
+              <div className="text-xs text-ohmic-text-dim whitespace-pre-wrap">
+                {selectedLatestProviderEvent.handoff_note}
+              </div>
+            ) : null}
+          </div>
+        )}
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-3">
@@ -994,6 +1093,11 @@ export function ProviderHandoffPanel() {
                                 {preset.default_note}
                               </div>
                             ) : null}
+                            {targetHealthMap.get(preset.target_label)?.message ? (
+                              <div className="text-[10px] text-ohmic-text-dim whitespace-pre-wrap">
+                                {targetHealthMap.get(preset.target_label)?.message}
+                              </div>
+                            ) : null}
                           </div>
                           <div className="flex flex-col items-end gap-1">
                             {preset.preset_id === selectedTandemPresetId ? (
@@ -1004,6 +1108,20 @@ export function ProviderHandoffPanel() {
                             {presetAttached ? (
                               <span className="rounded-full bg-emerald-300/15 px-2 py-0.5 text-[10px] uppercase tracking-widest text-emerald-300">
                                 attached
+                              </span>
+                            ) : null}
+                            {targetHealthMap.get(preset.target_label) &&
+                            targetHealthMap.get(preset.target_label)?.status !== 'attached' ? (
+                              <span
+                                className={`rounded-full px-2 py-0.5 text-[10px] uppercase tracking-widest ${
+                                  targetHealthMap.get(preset.target_label)?.status === 'error'
+                                    ? 'bg-rose-300/15 text-rose-300'
+                                    : targetHealthMap.get(preset.target_label)?.status === 'attention'
+                                      ? 'bg-amber-300/15 text-amber-300'
+                                      : 'bg-ohmic-accent/15 text-ohmic-accent'
+                                }`}
+                              >
+                                {targetHealthMap.get(preset.target_label)?.status}
                               </span>
                             ) : null}
                           </div>

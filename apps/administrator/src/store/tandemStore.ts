@@ -1,5 +1,8 @@
 import { create } from 'zustand'
-import type { AdministratorTandemTargetPreset } from '@/types/tandem'
+import type {
+  AdministratorTandemTargetHealth,
+  AdministratorTandemTargetPreset,
+} from '@/types/tandem'
 import { fetchTandemStatus } from '@/api/tandem'
 
 interface TandemState {
@@ -13,6 +16,7 @@ interface TandemState {
   sessionLabel: string | null
   activeTargetLabel: string | null
   targetPresets: AdministratorTandemTargetPreset[]
+  targetHealth: AdministratorTandemTargetHealth[]
   selectedPresetId: string
   handoffNote: string
   launchUrl: string | null
@@ -36,6 +40,7 @@ export const useTandemStore = create<TandemState>((set) => ({
   sessionLabel: null,
   activeTargetLabel: null,
   targetPresets: [],
+  targetHealth: [],
   selectedPresetId: '',
   handoffNote: '',
   launchUrl: null,
@@ -67,6 +72,7 @@ export const useTandemStore = create<TandemState>((set) => ({
         sessionLabel: data.session_label,
         activeTargetLabel: data.active_target_label,
         targetPresets: data.target_presets,
+        targetHealth: data.target_health,
         selectedPresetId: nextSelectedPresetId,
         launchUrl: data.launch_url,
         probeMessage: data.probe_message ?? null,

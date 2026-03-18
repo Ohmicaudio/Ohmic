@@ -7,6 +7,12 @@ export interface AdministratorTandemTargetPreset {
   default_note?: string | null
 }
 
+export interface AdministratorTandemTargetHealth {
+  target_label: string
+  status: 'unknown' | 'ready' | 'attention' | 'attached' | 'error'
+  message?: string | null
+}
+
 export interface AdministratorTandemStatus {
   configured: boolean
   available: boolean
@@ -18,6 +24,7 @@ export interface AdministratorTandemStatus {
   session_label: string | null
   active_target_label: string | null
   target_presets: AdministratorTandemTargetPreset[]
+  target_health: AdministratorTandemTargetHealth[]
   launch_url: string | null
   probe_message?: string | null
   message: string

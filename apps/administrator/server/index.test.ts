@@ -275,6 +275,11 @@ describe('administrator server', () => {
         display_label: string
         target_label: string
       }>
+      target_health: Array<{
+        target_label: string
+        status: string
+        message?: string | null
+      }>
       launch_url: string | null
       mode: string
     }
@@ -290,6 +295,7 @@ describe('administrator server', () => {
       active_target_label: 'Gmail support inbox',
       launch_url: 'http://127.0.0.1:8765/?sessionLabel=gmail-triage',
       mode: 'configured',
+      target_health: [],
     })
     expect(tandem.target_presets).toMatchObject([
       {
@@ -325,6 +331,13 @@ describe('administrator server', () => {
             session_state: 'attached',
             active_target_label: 'Live Gmail support inbox',
             available: true,
+            target_health: [
+              {
+                target_label: 'Live Gmail support inbox',
+                status: 'attached',
+                message: 'Inbox session attached.',
+              },
+            ],
             message: 'Live Tandem status reached the inbox target.',
           })
         )
@@ -357,6 +370,11 @@ describe('administrator server', () => {
       session_state: string
       active_target_label: string | null
       available: boolean
+      target_health: Array<{
+        target_label: string
+        status: string
+        message?: string | null
+      }>
       probe_message?: string | null
     }
 
@@ -366,6 +384,13 @@ describe('administrator server', () => {
       session_state: 'attached',
       active_target_label: 'Live Gmail support inbox',
       available: true,
+      target_health: [
+        {
+          target_label: 'Live Gmail support inbox',
+          status: 'attached',
+          message: 'Inbox session attached.',
+        },
+      ],
       probe_message: 'Live Tandem status reached the inbox target.',
     })
   })
