@@ -2,10 +2,14 @@ import { useEffect } from 'react'
 import { useIntakeStore } from '@/store/intakeStore'
 import { useIntakeContextStore } from '@/store/intakeContextStore'
 import { useAuditSummaryStore } from '@/store/auditSummaryStore'
+import { useTandemStore } from '@/store/tandemStore'
 import { StatusBadge } from '@/components/StatusBadge'
 import { PriorityIndicator } from '@/components/PriorityIndicator'
 import { TagChip } from '@/components/TagChip'
-import { selectLatestTandemLaunchForIntake } from '@/panels/tandemHistory'
+import {
+  resolveRecentTandemLaunchSelection,
+  selectLatestTandemLaunchForIntake,
+} from '@/panels/tandemHistory'
 
 function DetailRow({
   label,
@@ -30,6 +34,8 @@ export function IntakeDetailPanel() {
   const auditAvailable = useAuditSummaryStore((state) => state.available)
   const auditLoading = useAuditSummaryStore((state) => state.loading)
   const fetchAuditSummary = useAuditSummaryStore((state) => state.fetch)
+  const tandemTargetPresets = useTandemStore((state) => state.targetPresets)
+  const setSelectedTandemPreset = useTandemStore((state) => state.setSelectedPreset)
   const selectedItem = items.find((item) => item.intake_id === selectedId) ?? null
   const itemNotes = selectedId
     ? notes.filter((note) => note.intake_id === selectedId)
@@ -38,6 +44,9 @@ export function IntakeDetailPanel() {
     ? tagAssignments.filter((tag) => tag.intake_id === selectedId)
     : []
   const latestTandemLaunch = selectLatestTandemLaunchForIntake(auditItems, selectedId)
+  const latestTandemSelection = latestTandemLaunch
+    ? resolveRecentTandemLaunchSelection(latestTandemLaunch, tandemTargetPresets, items)
+    : null
 
   useEffect(() => {
     if (selectedId && notes.length === 0 && tagAssignments.length === 0) {
@@ -152,8 +161,17 @@ export function IntakeDetailPanel() {
                     ? 'Attachment review handoff'
                     : 'Provider handoff recorded from the desk'}
                 </div>
-                {latestTandemLaunch.launch_url ? (
-                  <div className="pt-1">
+                {latestTandemLaunch.launch_url || latestTandemSelection?.presetId ? (
+                  <div className="pt-1 flex flex-wrap gap-2">
+                    {latestTandemSelection?.presetId ? (
+                      <button
+                        onClick={() => setSelectedTandemPreset(latestTandemSelection.presetId!)}
+                        className="inline-flex rounded border border-ohmic-border px-2.5 py-1 text-[11px] font-medium text-ohmic-text transition-colors hover:border-ohmic-accent/30"
+                      >
+                        Load target into Tandem desk
+                      </button>
+                    ) : null}
+                    {latestTandemLaunch.launch_url ? (
                     <a
                       href={latestTandemLaunch.launch_url}
                       target="_blank"
@@ -162,6 +180,7 @@ export function IntakeDetailPanel() {
                     >
                       Reopen last handoff
                     </a>
+                    ) : null}
                   </div>
                 ) : null}
               </div>
