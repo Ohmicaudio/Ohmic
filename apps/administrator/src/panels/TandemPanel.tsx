@@ -322,11 +322,11 @@ export function TandemPanel() {
             </div>
           ) : null}
 
-          <div className="rounded border border-ohmic-border/60 bg-ohmic-bg px-3 py-2 text-xs text-ohmic-text-dim">
-            {probeMessage ||
-              message ||
-              'This is the first external-provider seam. Full tab/session handoff will build on this status floor.'}
-          </div>
+          {probeMessage || message ? (
+            <div className="rounded border border-ohmic-border/60 bg-ohmic-bg px-3 py-2 text-xs text-ohmic-text-dim">
+              {probeMessage || message}
+            </div>
+          ) : null}
 
           {pendingHandshake ? (
             <div
@@ -393,9 +393,9 @@ export function TandemPanel() {
           ) : null}
 
           {!configured || !selectedPreset || !contextualLaunchUrl ? (
-            <div className="rounded border border-ohmic-warning/30 bg-ohmic-warning/10 px-3 py-3 text-[11px] text-ohmic-warning space-y-2">
+            <div className="rounded border border-ohmic-warning/30 bg-ohmic-warning/10 px-3 py-2.5 text-[11px] text-ohmic-warning space-y-2">
               <div className="font-medium text-[11px] uppercase tracking-widest">
-                Provider handoff is not launch-ready
+                Provider handoff setup
               </div>
               <div>
                 {!configured
@@ -404,24 +404,21 @@ export function TandemPanel() {
                     ? 'Choose a provider target preset before launch.'
                     : 'Launch URL is not ready yet for the selected provider target.'}
               </div>
-              <div className="space-y-1 text-ohmic-text-dim">
+              <div className="space-y-1 text-[10px] text-ohmic-text-dim">
                 {!configured ? (
                   <>
                     <div>1. Set `ADMINISTRATOR_TANDEM_BASE_URL`.</div>
-                    <div>2. Add at least one target preset for the provider you want to open.</div>
-                    <div>3. Return here to prepare a handoff note and launch.</div>
+                    <div>2. Add a target preset, then return here to launch.</div>
                   </>
                 ) : !selectedPreset ? (
                   <>
                     <div>1. Pick the provider target you want to enter.</div>
-                    <div>2. Add a handoff note if the provider needs context.</div>
-                    <div>3. Launch Tandem from this rail once the target is selected.</div>
+                    <div>2. Add context only if the provider needs it.</div>
                   </>
                 ) : (
                   <>
                     <div>1. Confirm the selected target preset is healthy.</div>
-                    <div>2. Refresh the Tandem status seam.</div>
-                    <div>3. Launch again once the launch URL resolves for this target.</div>
+                    <div>2. Refresh once the launch URL resolves for this target.</div>
                   </>
                 )}
               </div>
@@ -471,71 +468,65 @@ export function TandemPanel() {
             </>
           ) : null}
 
-          <details className="space-y-2 pt-1">
-            <summary className="cursor-pointer list-none text-xs uppercase tracking-wider text-ohmic-text-dim">
-              Recent handoffs
-            </summary>
-            <div className="pt-2">
-              {recentLaunches.length === 0 ? (
-                <div className="text-[11px] text-ohmic-text-dim">
-                  Tandem launch events will appear here after operator handoff activity.
-                </div>
-              ) : (
-                <div className="space-y-2">
-                  {recentLaunches.map((item) => (
-                    <div
-                      key={item.event_id}
-                      className="rounded border border-ohmic-border px-3 py-2 text-[11px] text-ohmic-text-dim"
-                    >
-                      <div className="flex items-start justify-between gap-3">
-                        <div className="space-y-1 min-w-0">
-                          <div className="text-ohmic-text">
-                            {item.target_label || item.summary_label}
-                          </div>
-                          <div className="break-words">
-                            {item.intake_id || 'No intake context'}
-                            {item.status_delta ? ` | ${item.status_delta}` : ''}
-                            {item.attachment_id ? ` | ${item.attachment_id}` : ''}
-                          </div>
-                          {item.handoff_note ? (
-                            <div className="break-words text-[10px]">
-                              {item.handoff_note}
-                            </div>
-                          ) : null}
+          {recentLaunches.length > 0 ? (
+            <details className="space-y-2 pt-1">
+              <summary className="cursor-pointer list-none text-xs uppercase tracking-wider text-ohmic-text-dim">
+                Recent handoffs
+              </summary>
+              <div className="pt-2 space-y-2">
+                {recentLaunches.map((item) => (
+                  <div
+                    key={item.event_id}
+                    className="rounded border border-ohmic-border px-3 py-2 text-[11px] text-ohmic-text-dim"
+                  >
+                    <div className="flex items-start justify-between gap-3">
+                      <div className="space-y-1 min-w-0">
+                        <div className="text-ohmic-text">
+                          {item.target_label || item.summary_label}
                         </div>
-                        <div className="whitespace-nowrap">
-                          {item.occurred_at
-                            ? new Date(item.occurred_at).toLocaleString()
-                            : '--'}
+                        <div className="break-words">
+                          {item.intake_id || 'No intake context'}
+                          {item.status_delta ? ` | ${item.status_delta}` : ''}
+                          {item.attachment_id ? ` | ${item.attachment_id}` : ''}
                         </div>
-                      </div>
-                      <div className="mt-2 flex flex-wrap gap-2">
-                        <button
-                          onClick={() => handleRestoreRecentLaunch(item)}
-                          className="rounded border border-ohmic-border px-2.5 py-1 text-[11px] font-medium text-ohmic-text transition-colors hover:border-ohmic-accent/30"
-                        >
-                          Load into desk
-                        </button>
-                        {item.launch_url ? (
-                          <a
-                            href={item.launch_url}
-                            target="_blank"
-                            rel="noreferrer"
-                            onClick={() => {
-                              handleRestoreRecentLaunch(item)
-                            }}
-                            className="rounded border border-ohmic-accent/40 px-2.5 py-1 text-[11px] font-medium text-ohmic-accent transition-colors hover:border-ohmic-accent hover:bg-ohmic-accent/10"
-                          >
-                            Open recorded launch
-                          </a>
+                        {item.handoff_note ? (
+                          <div className="break-words text-[10px]">
+                            {item.handoff_note}
+                          </div>
                         ) : null}
                       </div>
+                      <div className="whitespace-nowrap">
+                        {item.occurred_at
+                          ? new Date(item.occurred_at).toLocaleString()
+                          : '--'}
+                      </div>
                     </div>
-                  ))}
-                </div>
-              )}
-            </div>
-          </details>
+                    <div className="mt-2 flex flex-wrap gap-2">
+                      <button
+                        onClick={() => handleRestoreRecentLaunch(item)}
+                        className="rounded border border-ohmic-border px-2.5 py-1 text-[11px] font-medium text-ohmic-text transition-colors hover:border-ohmic-accent/30"
+                      >
+                        Load into desk
+                      </button>
+                      {item.launch_url ? (
+                        <a
+                          href={item.launch_url}
+                          target="_blank"
+                          rel="noreferrer"
+                          onClick={() => {
+                            handleRestoreRecentLaunch(item)
+                          }}
+                          className="rounded border border-ohmic-accent/40 px-2.5 py-1 text-[11px] font-medium text-ohmic-accent transition-colors hover:border-ohmic-accent hover:bg-ohmic-accent/10"
+                        >
+                          Open recorded launch
+                        </a>
+                      ) : null}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </details>
+          ) : null}
         </div>
       )}
     </div>
