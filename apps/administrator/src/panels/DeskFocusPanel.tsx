@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { publishClaimFocus, publishIntakeFocus } from '@/api/focus'
+import { publishClaimFocus, publishIntakeFocus, publishReadyTaskFocus } from '@/api/focus'
 import { claimQueueTask, completeQueueClaim, releaseQueueClaim } from '@/api/queue'
 import { useDeskFocusStore } from '@/store/deskFocusStore'
 import { useIntakeStore } from '@/store/intakeStore'
@@ -54,6 +54,26 @@ export function DeskFocusPanel() {
   const implicitReadyTask =
     !selection && !selectedIntakeId ? readyTasks[0] ?? null : null
 
+  async function settleDeskFocusAfterQueueMutation() {
+    await Promise.all([fetchQueueActivity(), refreshWorkspaceActivity()])
+    const nextReadyTask = useQueueActivityStore.getState().readyTasks[0] ?? null
+
+    if (selectedIntakeId) {
+      const projection = await publishIntakeFocus(selectedIntakeId)
+      setProjection(projection)
+      return
+    }
+
+    if (nextReadyTask) {
+      const projection = await publishReadyTaskFocus(nextReadyTask)
+      setProjection(projection)
+      return
+    }
+
+    const projection = await publishIntakeFocus(null)
+    setProjection(projection)
+  }
+
   async function handleRefocusIntake() {
     setPendingAction('focus')
     try {
@@ -95,9 +115,7 @@ export function DeskFocusPanel() {
     setPendingAction('complete')
     try {
       await completeQueueClaim(focusedClaim.claim_id)
-      await Promise.all([fetchQueueActivity(), refreshWorkspaceActivity()])
-      const projection = await publishIntakeFocus(selectedIntakeId ?? null)
-      setProjection(projection)
+      await settleDeskFocusAfterQueueMutation()
     } finally {
       setPendingAction(null)
     }
@@ -111,9 +129,7 @@ export function DeskFocusPanel() {
     setPendingAction('release')
     try {
       await releaseQueueClaim(focusedClaim.claim_id)
-      await Promise.all([fetchQueueActivity(), refreshWorkspaceActivity()])
-      const projection = await publishIntakeFocus(selectedIntakeId ?? null)
-      setProjection(projection)
+      await settleDeskFocusAfterQueueMutation()
     } finally {
       setPendingAction(null)
     }

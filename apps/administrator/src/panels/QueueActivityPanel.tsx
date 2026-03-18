@@ -1,8 +1,9 @@
 import { useEffect, useMemo, useState } from 'react'
 import { claimQueueTask, completeQueueClaim, releaseQueueClaim } from '@/api/queue'
-import { publishClaimFocus, publishReadyTaskFocus } from '@/api/focus'
+import { publishIntakeFocus, publishClaimFocus, publishReadyTaskFocus } from '@/api/focus'
 import { useQueueActivityStore } from '@/store/queueActivityStore'
 import { useDeskFocusStore } from '@/store/deskFocusStore'
+import { useIntakeStore } from '@/store/intakeStore'
 import { useWorkspaceActivityStore } from '@/store/workspaceActivityStore'
 
 function formatTaskPath(filePath: string): string {
@@ -45,6 +46,7 @@ export function QueueActivityPanel() {
   } = useQueueActivityStore()
   const focusedSelection = useDeskFocusStore((state) => state.selection)
   const setDeskFocusProjection = useDeskFocusStore((state) => state.setProjection)
+  const selectedIntakeId = useIntakeStore((state) => state.selectedId)
   const refreshWorkspaceActivity = useWorkspaceActivityStore((state) => state.fetch)
 
   useEffect(() => {
@@ -83,6 +85,13 @@ export function QueueActivityPanel() {
     try {
       await completeQueueClaim(claimId)
       await Promise.all([fetch(), refreshWorkspaceActivity()])
+      const nextReadyTask = useQueueActivityStore.getState().readyTasks[0] ?? null
+      const projection = selectedIntakeId
+        ? await publishIntakeFocus(selectedIntakeId)
+        : nextReadyTask
+          ? await publishReadyTaskFocus(nextReadyTask)
+          : await publishIntakeFocus(null)
+      setDeskFocusProjection(projection)
     } finally {
       setPendingClaimId(null)
     }
@@ -93,6 +102,13 @@ export function QueueActivityPanel() {
     try {
       await releaseQueueClaim(claimId)
       await Promise.all([fetch(), refreshWorkspaceActivity()])
+      const nextReadyTask = useQueueActivityStore.getState().readyTasks[0] ?? null
+      const projection = selectedIntakeId
+        ? await publishIntakeFocus(selectedIntakeId)
+        : nextReadyTask
+          ? await publishReadyTaskFocus(nextReadyTask)
+          : await publishIntakeFocus(null)
+      setDeskFocusProjection(projection)
     } finally {
       setPendingReleasedClaimId(null)
     }
