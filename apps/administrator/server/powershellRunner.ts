@@ -33,6 +33,7 @@ interface RecordTandemLaunchIntentInput {
   target_label?: string | null
   launch_url?: string | null
   attachment_id?: string | null
+  handoff_note?: string | null
 }
 
 interface CommandValidationResult {
@@ -782,6 +783,7 @@ export async function recordTandemLaunchIntent(
   const targetLabel = escapePowerShellString(input.target_label ?? '')
   const launchUrl = escapePowerShellString(input.launch_url ?? '')
   const attachmentId = escapePowerShellString(input.attachment_id ?? '')
+  const handoffNote = escapePowerShellString(input.handoff_note ?? '')
 
   const psScript = `
     Set-StrictMode -Version Latest
@@ -806,6 +808,7 @@ export async function recordTandemLaunchIntent(
       target_preset_id = '${targetPresetId}'
       launch_url = '${launchUrl}'
       attachment_id = '${attachmentId}'
+      handoff_note = '${handoffNote}'
     }
 
     Append-JsonLine -PathText $auditEventsPath -Value $event
