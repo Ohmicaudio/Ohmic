@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo } from 'react'
 import { recordTandemLaunchIntent } from '@/api/tandem'
 import { useTandemStore } from '@/store/tandemStore'
 import { useIntakeStore } from '@/store/intakeStore'
@@ -18,17 +18,18 @@ export function TandemPanel() {
     sessionLabel,
     activeTargetLabel,
     targetPresets,
+    selectedPresetId,
     launchUrl,
     message,
     loading,
     error,
+    setSelectedPreset,
     fetch,
   } = useTandemStore()
   const auditItems = useAuditSummaryStore((state) => state.items)
   const auditAvailable = useAuditSummaryStore((state) => state.available)
   const auditLoading = useAuditSummaryStore((state) => state.loading)
   const refreshAuditSummary = useAuditSummaryStore((state) => state.fetch)
-  const [selectedPresetId, setSelectedPresetId] = useState<string>('')
   const selectedIntake = items.find((item) => item.intake_id === selectedId) ?? null
   const selectedPreset = useMemo(
     () => targetPresets.find((preset) => preset.preset_id === selectedPresetId) ?? null,
@@ -49,19 +50,6 @@ export function TandemPanel() {
       void refreshAuditSummary()
     }
   }, [auditAvailable, auditLoading, refreshAuditSummary])
-
-  useEffect(() => {
-    if (!targetPresets.length) {
-      if (selectedPresetId) {
-        setSelectedPresetId('')
-      }
-      return
-    }
-
-    if (!selectedPresetId || !targetPresets.some((preset) => preset.preset_id === selectedPresetId)) {
-      setSelectedPresetId(targetPresets[0]?.preset_id ?? '')
-    }
-  }, [selectedPresetId, targetPresets])
 
   async function handleTandemLaunch() {
     if (!contextualLaunchUrl) {
@@ -149,7 +137,7 @@ export function TandemPanel() {
               </div>
               <select
                 value={selectedPresetId}
-                onChange={(event) => setSelectedPresetId(event.target.value)}
+                onChange={(event) => setSelectedPreset(event.target.value)}
                 className="w-full bg-ohmic-bg border border-ohmic-border rounded px-3 py-2 text-sm text-ohmic-text focus:border-ohmic-accent focus:outline-none transition-colors"
               >
                 {targetPresets.map((preset) => (

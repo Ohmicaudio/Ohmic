@@ -14,11 +14,15 @@ export function AttachmentPreviewPanel() {
   const intakeItems = useIntakeStore((s) => s.items)
   const tandemLaunchUrl = useTandemStore((s) => s.launchUrl)
   const tandemTargetPresets = useTandemStore((s) => s.targetPresets)
+  const selectedTandemPresetId = useTandemStore((s) => s.selectedPresetId)
   const refreshAuditSummary = useAuditSummaryStore((state) => state.fetch)
   const { noteText, setIntakeId, setActionInput, setNoteText } = useCommandStore()
   const selectedIntake =
     intakeItems.find((item) => item.intake_id === selectedIntakeId) ?? null
-  const defaultPreset = tandemTargetPresets[0] ?? null
+  const selectedPreset =
+    tandemTargetPresets.find((preset) => preset.preset_id === selectedTandemPresetId) ??
+    tandemTargetPresets[0] ??
+    null
 
   function primeReviewHandoff(action: string, item: (typeof items)[number]) {
     if (!selectedIntakeId) {
@@ -35,7 +39,7 @@ export function AttachmentPreviewPanel() {
       tandemLaunchUrl,
       selectedIntake,
       item,
-      defaultPreset
+      selectedPreset
     )
 
     if (!launchUrl) {
@@ -45,8 +49,8 @@ export function AttachmentPreviewPanel() {
     try {
       await recordTandemLaunchIntent({
         intake_id: selectedIntake?.intake_id ?? null,
-        target_preset_id: defaultPreset?.preset_id ?? null,
-        target_label: defaultPreset?.target_label ?? null,
+        target_preset_id: selectedPreset?.preset_id ?? null,
+        target_label: selectedPreset?.target_label ?? null,
         launch_url: launchUrl,
         attachment_id: item.asset_id,
       })
@@ -133,14 +137,14 @@ export function AttachmentPreviewPanel() {
                       tandemLaunchUrl,
                       selectedIntake,
                       item,
-                      defaultPreset
+                      selectedPreset
                     ) ? (
                       <a
                         href={buildTandemAttachmentReviewUrl(
                           tandemLaunchUrl,
                           selectedIntake,
                           item,
-                          defaultPreset
+                          selectedPreset
                         )!}
                         target="_blank"
                         rel="noreferrer"

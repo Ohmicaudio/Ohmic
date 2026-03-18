@@ -14,10 +14,12 @@ interface TandemState {
     display_label: string
     target_label: string
   }>
+  selectedPresetId: string
   launchUrl: string | null
   message: string | null
   loading: boolean
   error: string | null
+  setSelectedPreset: (presetId: string) => void
   fetch: () => Promise<void>
 }
 
@@ -30,15 +32,23 @@ export const useTandemStore = create<TandemState>((set) => ({
   sessionLabel: null,
   activeTargetLabel: null,
   targetPresets: [],
+  selectedPresetId: '',
   launchUrl: null,
   message: null,
   loading: false,
   error: null,
 
+  setSelectedPreset: (presetId) => set({ selectedPresetId: presetId }),
+
   fetch: async () => {
     set({ loading: true, error: null })
     try {
       const data = await fetchTandemStatus()
+      const selectedPresetId = useTandemStore.getState().selectedPresetId
+      const nextSelectedPresetId =
+        selectedPresetId && data.target_presets.some((preset) => preset.preset_id === selectedPresetId)
+          ? selectedPresetId
+          : data.target_presets[0]?.preset_id ?? ''
       set({
         configured: data.configured,
         available: data.available,
@@ -48,6 +58,7 @@ export const useTandemStore = create<TandemState>((set) => ({
         sessionLabel: data.session_label,
         activeTargetLabel: data.active_target_label,
         targetPresets: data.target_presets,
+        selectedPresetId: nextSelectedPresetId,
         launchUrl: data.launch_url,
         message: data.message,
         loading: false,

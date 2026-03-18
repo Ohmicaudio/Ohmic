@@ -18,6 +18,7 @@ describe('tandemStore', () => {
       sessionLabel: null,
       activeTargetLabel: null,
       targetPresets: [],
+      selectedPresetId: '',
       launchUrl: null,
       message: null,
       loading: false,
@@ -62,10 +63,70 @@ describe('tandemStore', () => {
           target_label: 'Gmail support inbox',
         },
       ],
+      selectedPresetId: 'gmail-support',
       launchUrl: 'http://127.0.0.1:8765/?sessionLabel=gmail-triage',
       message: 'Tandem is attached to Gmail support inbox. Open the live provider session from here.',
       loading: false,
       error: null,
     })
+  })
+
+  it('keeps a valid selected preset across status refreshes', async () => {
+    useTandemStore.setState({ selectedPresetId: 'github-bugs' })
+
+    vi.mocked(fetchTandemStatus).mockResolvedValue({
+      configured: true,
+      available: false,
+      mode: 'configured',
+      session_state: 'idle',
+      base_url: 'http://127.0.0.1:8765',
+      session_label: 'ops',
+      active_target_label: null,
+      target_presets: [
+        {
+          preset_id: 'gmail-support',
+          display_label: 'Gmail Support',
+          target_label: 'Gmail support inbox',
+        },
+        {
+          preset_id: 'github-bugs',
+          display_label: 'GitHub Bugs',
+          target_label: 'GitHub issues queue',
+        },
+      ],
+      launch_url: 'http://127.0.0.1:8765/?sessionLabel=ops',
+      message: 'Tandem is configured and idle. Open the handoff to attach it to a live provider target.',
+    })
+
+    await useTandemStore.getState().fetch()
+
+    expect(useTandemStore.getState().selectedPresetId).toBe('github-bugs')
+  })
+
+  it('falls back to the first preset when the selected preset disappears', async () => {
+    useTandemStore.setState({ selectedPresetId: 'old-preset' })
+
+    vi.mocked(fetchTandemStatus).mockResolvedValue({
+      configured: true,
+      available: false,
+      mode: 'configured',
+      session_state: 'idle',
+      base_url: 'http://127.0.0.1:8765',
+      session_label: 'ops',
+      active_target_label: null,
+      target_presets: [
+        {
+          preset_id: 'gmail-support',
+          display_label: 'Gmail Support',
+          target_label: 'Gmail support inbox',
+        },
+      ],
+      launch_url: 'http://127.0.0.1:8765/?sessionLabel=ops',
+      message: 'Tandem is configured and idle. Open the handoff to attach it to a live provider target.',
+    })
+
+    await useTandemStore.getState().fetch()
+
+    expect(useTandemStore.getState().selectedPresetId).toBe('gmail-support')
   })
 })
