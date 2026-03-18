@@ -15,11 +15,13 @@ interface TandemState {
     target_label: string
   }>
   selectedPresetId: string
+  handoffNote: string
   launchUrl: string | null
   message: string | null
   loading: boolean
   error: string | null
   setSelectedPreset: (presetId: string) => void
+  setHandoffNote: (note: string) => void
   fetch: () => Promise<void>
 }
 
@@ -33,12 +35,14 @@ export const useTandemStore = create<TandemState>((set) => ({
   activeTargetLabel: null,
   targetPresets: [],
   selectedPresetId: '',
+  handoffNote: '',
   launchUrl: null,
   message: null,
   loading: false,
   error: null,
 
   setSelectedPreset: (presetId) => set({ selectedPresetId: presetId }),
+  setHandoffNote: (note) => set({ handoffNote: note }),
 
   fetch: async () => {
     set({ loading: true, error: null })

@@ -23,11 +23,13 @@ export function TandemPanel() {
     activeTargetLabel,
     targetPresets,
     selectedPresetId,
+    handoffNote,
     launchUrl,
     message,
     loading,
     error,
     setSelectedPreset,
+    setHandoffNote,
     fetch,
   } = useTandemStore()
   const auditItems = useAuditSummaryStore((state) => state.items)
@@ -66,6 +68,7 @@ export function TandemPanel() {
         target_preset_id: selectedPreset?.preset_id ?? null,
         target_label: selectedPreset?.target_label ?? activeTargetLabel ?? null,
         launch_url: contextualLaunchUrl,
+        handoff_note: handoffNote.trim() || null,
       })
       await refreshAuditSummary()
     } catch {
@@ -183,6 +186,19 @@ export function TandemPanel() {
               'This is the first external-provider seam. Full tab/session handoff will build on this status floor.'}
           </div>
 
+          <div className="space-y-1">
+            <label className="block text-xs uppercase tracking-wider text-ohmic-text-dim">
+              Handoff note
+            </label>
+            <textarea
+              value={handoffNote}
+              onChange={(event) => setHandoffNote(event.target.value)}
+              placeholder="Optional context for why this provider handoff is happening..."
+              rows={2}
+              className="w-full bg-ohmic-bg border border-ohmic-border rounded px-3 py-2 text-sm text-ohmic-text placeholder:text-ohmic-muted focus:border-ohmic-accent focus:outline-none transition-colors resize-none"
+            />
+          </div>
+
           {selectedIntake ? (
             <div className="text-[11px] text-ohmic-text-dim">
               Opening Tandem will carry the current intake context for{' '}
@@ -231,6 +247,11 @@ export function TandemPanel() {
                           {item.status_delta ? ` | ${item.status_delta}` : ''}
                           {item.attachment_id ? ` | ${item.attachment_id}` : ''}
                         </div>
+                        {item.handoff_note ? (
+                          <div className="break-words text-[10px]">
+                            {item.handoff_note}
+                          </div>
+                        ) : null}
                       </div>
                       <div className="whitespace-nowrap">
                         {item.occurred_at

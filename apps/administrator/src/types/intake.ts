@@ -294,6 +294,7 @@ export interface AdministratorAuditSummaryItem {
   target_preset_id?: string
   launch_url?: string
   attachment_id?: string
+  handoff_note?: string
 }
 
 export interface AdministratorAuditSummaryProjection {

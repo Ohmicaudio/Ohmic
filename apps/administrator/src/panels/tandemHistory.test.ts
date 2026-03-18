@@ -20,6 +20,7 @@ describe('selectRecentTandemLaunches', () => {
         target_preset_id: 'gmail-support',
         launch_url: 'http://127.0.0.1:8765/?targetPreset=gmail-support',
         attachment_id: '',
+        handoff_note: '',
       },
       {
         event_id: 'b',
@@ -43,6 +44,7 @@ describe('selectRecentTandemLaunches', () => {
         target_preset_id: 'github-bugs',
         launch_url: 'http://127.0.0.1:8765/?targetPreset=github-bugs',
         attachment_id: 'asset-1',
+        handoff_note: 'Need issue reproduction screenshot.',
       },
     ]
 
@@ -62,6 +64,7 @@ describe('selectRecentTandemLaunches', () => {
       target_preset_id: `preset-${index + 1}`,
       launch_url: `http://127.0.0.1:8765/?targetPreset=preset-${index + 1}`,
       attachment_id: '',
+      handoff_note: '',
     }))
 
     expect(selectRecentTandemLaunches(rows, 2)).toEqual(rows.slice(0, 2))
@@ -80,6 +83,8 @@ describe('selectRecentTandemLaunches', () => {
         target_label: 'Old target',
         target_preset_id: 'old-target',
         launch_url: 'http://127.0.0.1:8765/?targetPreset=old-target',
+        attachment_id: '',
+        handoff_note: '',
       },
       {
         event_id: 'evt-2',
@@ -92,6 +97,8 @@ describe('selectRecentTandemLaunches', () => {
         target_label: 'Other target',
         target_preset_id: 'other-target',
         launch_url: 'http://127.0.0.1:8765/?targetPreset=other-target',
+        attachment_id: '',
+        handoff_note: '',
       },
       {
         event_id: 'evt-3',
@@ -104,6 +111,8 @@ describe('selectRecentTandemLaunches', () => {
         target_label: 'Newest target',
         target_preset_id: 'new-target',
         launch_url: 'http://127.0.0.1:8765/?targetPreset=new-target',
+        attachment_id: 'asset-9',
+        handoff_note: 'Need the latest captured screenshot in Gmail.',
       },
     ]
 
@@ -126,6 +135,7 @@ describe('selectRecentTandemLaunches', () => {
         target_preset_id: 'github-bugs',
         launch_url: 'http://127.0.0.1:8765/?targetPreset=github-bugs',
         attachment_id: '',
+        handoff_note: '',
       },
       [
         {
@@ -177,6 +187,7 @@ describe('selectRecentTandemLaunches', () => {
         target_preset_id: '',
         launch_url: 'http://127.0.0.1:8765/?targetPreset=gmail-support',
         attachment_id: '',
+        handoff_note: '',
       },
       [
         {

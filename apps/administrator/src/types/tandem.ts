@@ -23,4 +23,5 @@ export interface AdministratorTandemLaunchIntentRequest {
   target_label?: string | null
   launch_url?: string | null
   attachment_id?: string | null
+  handoff_note?: string | null
 }

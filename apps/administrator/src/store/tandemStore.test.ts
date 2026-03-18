@@ -19,6 +19,7 @@ describe('tandemStore', () => {
       activeTargetLabel: null,
       targetPresets: [],
       selectedPresetId: '',
+      handoffNote: '',
       launchUrl: null,
       message: null,
       loading: false,
@@ -64,6 +65,7 @@ describe('tandemStore', () => {
         },
       ],
       selectedPresetId: 'gmail-support',
+      handoffNote: '',
       launchUrl: 'http://127.0.0.1:8765/?sessionLabel=gmail-triage',
       message: 'Tandem is attached to Gmail support inbox. Open the live provider session from here.',
       loading: false,
@@ -128,5 +130,13 @@ describe('tandemStore', () => {
     await useTandemStore.getState().fetch()
 
     expect(useTandemStore.getState().selectedPresetId).toBe('gmail-support')
+  })
+
+  it('stores a shared handoff note for provider launch actions', () => {
+    useTandemStore.getState().setHandoffNote('Customer asked for screenshot confirmation.')
+
+    expect(useTandemStore.getState().handoffNote).toBe(
+      'Customer asked for screenshot confirmation.'
+    )
   })
 })

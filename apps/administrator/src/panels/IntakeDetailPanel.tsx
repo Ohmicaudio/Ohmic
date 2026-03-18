@@ -166,6 +166,11 @@ export function IntakeDetailPanel() {
                     Attachment: <span className="text-ohmic-text">{latestTandemLaunch.attachment_id}</span>
                   </div>
                 ) : null}
+                {latestTandemLaunch.handoff_note ? (
+                  <div className="text-xs text-ohmic-text-dim whitespace-pre-wrap">
+                    {latestTandemLaunch.handoff_note}
+                  </div>
+                ) : null}
                 {latestTandemLaunch.launch_url || latestTandemSelection?.presetId ? (
                   <div className="pt-1 flex flex-wrap gap-2">
                     {latestTandemSelection?.presetId ? (

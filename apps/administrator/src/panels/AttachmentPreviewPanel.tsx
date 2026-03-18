@@ -15,6 +15,7 @@ export function AttachmentPreviewPanel() {
   const tandemLaunchUrl = useTandemStore((s) => s.launchUrl)
   const tandemTargetPresets = useTandemStore((s) => s.targetPresets)
   const selectedTandemPresetId = useTandemStore((s) => s.selectedPresetId)
+  const handoffNote = useTandemStore((s) => s.handoffNote)
   const refreshAuditSummary = useAuditSummaryStore((state) => state.fetch)
   const { noteText, setIntakeId, setActionInput, setNoteText } = useCommandStore()
   const selectedIntake =
@@ -53,6 +54,7 @@ export function AttachmentPreviewPanel() {
         target_label: selectedPreset?.target_label ?? null,
         launch_url: launchUrl,
         attachment_id: item.asset_id,
+        handoff_note: handoffNote.trim() || null,
       })
       await refreshAuditSummary()
     } catch {

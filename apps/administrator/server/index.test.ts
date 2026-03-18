@@ -305,6 +305,7 @@ describe('administrator server', () => {
         target_label: 'Gmail support inbox',
         launch_url: 'http://127.0.0.1:8765/?sessionLabel=gmail-triage',
         attachment_id: 'asset-77',
+        handoff_note: 'Need provider confirmation on the captured attachment.',
       }),
     })
 
@@ -324,6 +325,7 @@ describe('administrator server', () => {
         target_label: string
         status_delta: string
         attachment_id?: string
+        handoff_note?: string
       }>
     }
 
@@ -333,6 +335,7 @@ describe('administrator server', () => {
       target_label: 'Gmail support inbox',
       status_delta: 'attachment_review',
       attachment_id: 'asset-77',
+      handoff_note: 'Need provider confirmation on the captured attachment.',
     })
     expect(auditSummary.filter_presets.map((preset) => preset.preset_id)).toContain(
       'provider_handoffs'
