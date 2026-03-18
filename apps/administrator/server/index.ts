@@ -10,6 +10,7 @@ import {
   getFilingOptions,
   recordFiling,
   recordProviderFollowUpCompletion,
+  recordProviderFollowUpReopen,
   recordTandemLaunchIntent,
   reopenInactiveIntake,
   validateCommand,
@@ -101,7 +102,31 @@ export function createAdministratorServer(port = PORT) {
       req.on('end', () => {
         try {
           const input = JSON.parse(body)
+          if (!input?.intake_id) {
+            sendJson(res, { error: 'Missing intake_id in request body' }, 400)
+            return
+          }
           recordProviderFollowUpCompletion(input)
+            .then((result) => sendJson(res, result))
+            .catch((err) => sendJson(res, { error: err.message }, 500))
+        } catch {
+          sendJson(res, { error: 'Invalid JSON body' }, 400)
+        }
+      })
+      return
+    }
+
+    if (requestPath === '/api/tandem/follow-up-reopen' && req.method === 'POST') {
+      let body = ''
+      req.on('data', (chunk: Buffer) => { body += chunk.toString() })
+      req.on('end', () => {
+        try {
+          const input = JSON.parse(body)
+          if (!input?.intake_id) {
+            sendJson(res, { error: 'Missing intake_id in request body' }, 400)
+            return
+          }
+          recordProviderFollowUpReopen(input)
             .then((result) => sendJson(res, result))
             .catch((err) => sendJson(res, { error: err.message }, 500))
         } catch {

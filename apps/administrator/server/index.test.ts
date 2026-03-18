@@ -390,6 +390,48 @@ describe('administrator server', () => {
     })
   })
 
+  it('reopens provider follow-up into the audit summary', async () => {
+    const { createAdministratorServer } = await importServer()
+    const app = createAdministratorServer(0)
+    const baseUrl = await app.start()
+    stopServer = app.stop
+
+    const reopenRes = await fetch(`${baseUrl}/api/tandem/follow-up-reopen`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        intake_id: 'intake-provider-1',
+        target_preset_id: 'gmail-support',
+        target_label: 'Gmail support inbox',
+        reopen_note: 'Need another pass after provider clarification.',
+      }),
+    })
+
+    expect(reopenRes.ok).toBe(true)
+
+    const auditSummaryRaw = await readFile(
+      path.join(tempRuntimeDir!, 'administrator_audit_summary.json'),
+      'utf-8'
+    )
+    const auditSummary = JSON.parse(auditSummaryRaw) as {
+      rows: Array<{
+        event_family: string
+        intake_id: string
+        target_label: string
+        status_delta: string
+        handoff_note?: string
+      }>
+    }
+
+    expect(auditSummary.rows[0]).toMatchObject({
+      event_family: 'provider_handoff',
+      intake_id: 'intake-provider-1',
+      target_label: 'Gmail support inbox',
+      status_delta: 'reopened_follow_up',
+      handoff_note: 'Need another pass after provider clarification.',
+    })
+  })
+
   it('validates and executes command routes against the live runtime root', async () => {
     await writeActiveQueueFixture('intake-3', 'Validate and execute target')
 
@@ -514,7 +556,7 @@ describe('administrator server', () => {
     expect(reopen.writeback.inactive_item_removed).toBe(true)
   })
 
-  it('returns 400 for invalid JSON and missing filing intake id', async () => {
+  it('returns 400 for invalid JSON and missing required provider fields', async () => {
     const { createAdministratorServer } = await importServer()
     const app = createAdministratorServer(0)
     const baseUrl = await app.start()
@@ -529,5 +571,30 @@ describe('administrator server', () => {
 
     const missingQueryRes = await fetch(`${baseUrl}/api/filing/options`)
     expect(missingQueryRes.status).toBe(400)
+
+    const missingFollowUpIntakeRes = await fetch(`${baseUrl}/api/tandem/follow-up-complete`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        target_label: 'Gmail support inbox',
+      }),
+    })
+    expect(missingFollowUpIntakeRes.status).toBe(400)
+
+    const invalidReopenJsonRes = await fetch(`${baseUrl}/api/tandem/follow-up-reopen`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: '{bad json',
+    })
+    expect(invalidReopenJsonRes.status).toBe(400)
+
+    const missingReopenIntakeRes = await fetch(`${baseUrl}/api/tandem/follow-up-reopen`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        target_label: 'Gmail support inbox',
+      }),
+    })
+    expect(missingReopenIntakeRes.status).toBe(400)
   })
 })

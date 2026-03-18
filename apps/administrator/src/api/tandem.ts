@@ -1,5 +1,6 @@
 import type {
   AdministratorTandemFollowUpCompletionRequest,
+  AdministratorTandemFollowUpReopenRequest,
   AdministratorTandemLaunchIntentRequest,
   AdministratorTandemStatus,
 } from '@/types/tandem'
@@ -39,5 +40,19 @@ export async function recordProviderFollowUpCompletion(
 
   if (!res.ok) {
     throw new Error(`Provider follow-up completion writeback failed: ${res.status}`)
+  }
+}
+
+export async function recordProviderFollowUpReopen(
+  input: AdministratorTandemFollowUpReopenRequest
+): Promise<void> {
+  const res = await fetch(`${API_BASE}/tandem/follow-up-reopen`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(input),
+  })
+
+  if (!res.ok) {
+    throw new Error(`Provider follow-up reopen writeback failed: ${res.status}`)
   }
 }

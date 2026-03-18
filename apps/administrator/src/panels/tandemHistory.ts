@@ -10,6 +10,18 @@ export function selectRecentTandemLaunches(
     .slice(0, maxItems)
 }
 
+export function selectRecentProviderEvents(
+  rows: AdministratorAuditSummaryItem[],
+  maxItems = 5
+): AdministratorAuditSummaryItem[] {
+  return rows
+    .filter(
+      (row) =>
+        row.event_family === 'provider_handoff' || row.event_family === 'provider_follow_up'
+    )
+    .slice(0, maxItems)
+}
+
 export function selectLatestTandemLaunchForIntake(
   rows: AdministratorAuditSummaryItem[],
   intakeId: string | null

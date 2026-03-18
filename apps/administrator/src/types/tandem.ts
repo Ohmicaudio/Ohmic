@@ -35,3 +35,10 @@ export interface AdministratorTandemFollowUpCompletionRequest {
   target_label?: string | null
   completion_note?: string | null
 }
+
+export interface AdministratorTandemFollowUpReopenRequest {
+  intake_id: string
+  target_preset_id?: string | null
+  target_label?: string | null
+  reopen_note?: string | null
+}

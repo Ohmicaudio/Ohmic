@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import {
   resolveRecentTandemLaunchSelection,
+  selectRecentProviderEvents,
   selectLatestTandemLaunchForIntake,
   selectRecentTandemLaunches,
 } from '@/panels/tandemHistory'
@@ -68,6 +69,43 @@ describe('selectRecentTandemLaunches', () => {
     }))
 
     expect(selectRecentTandemLaunches(rows, 2)).toEqual(rows.slice(0, 2))
+  })
+
+  it('returns recent provider events including completions', () => {
+    const rows = [
+      {
+        event_id: 'handoff-1',
+        event_family: 'provider_handoff',
+        intake_id: 'intake-1',
+        summary_label: 'Opened Tandem handoff',
+        actor_label: 'operator:d',
+        occurred_at: '2026-03-17T20:00:00Z',
+        status_delta: '',
+        target_label: 'Gmail support inbox',
+      },
+      {
+        event_id: 'complete-1',
+        event_family: 'provider_follow_up',
+        intake_id: 'intake-1',
+        summary_label: 'Completed provider follow-up',
+        actor_label: 'operator:d',
+        occurred_at: '2026-03-17T21:00:00Z',
+        status_delta: 'completed',
+        target_label: 'Gmail support inbox',
+      },
+      {
+        event_id: 'ignored-1',
+        event_family: 'status_transition',
+        intake_id: 'intake-2',
+        summary_label: 'Queued',
+        actor_label: 'operator:d',
+        occurred_at: '2026-03-17T21:01:00Z',
+        status_delta: 'new -> queued',
+        target_label: 'orchestrator',
+      },
+    ]
+
+    expect(selectRecentProviderEvents(rows)).toEqual([rows[0], rows[1]])
   })
 
   it('returns the latest handoff row for the selected intake', () => {

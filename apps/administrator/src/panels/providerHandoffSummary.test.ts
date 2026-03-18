@@ -237,4 +237,75 @@ describe('providerHandoffSummary', () => {
     expect(lookup.get('intake-1')?.ageBand).toBe('stale')
     expect(lookup.has('intake-3')).toBe(false)
   })
+
+  it('keeps a reopened follow-up visible after a completion event', () => {
+    const reopenedRows = [
+      {
+        event_id: 'evt-1',
+        event_family: 'provider_handoff',
+        intake_id: 'intake-1',
+        summary_label: 'Opened Tandem handoff',
+        actor_label: 'operator:d',
+        occurred_at: '2026-03-17T10:00:00Z',
+        status_delta: '',
+        target_label: 'Gmail support inbox',
+        target_preset_id: 'gmail-support',
+        launch_url: 'http://127.0.0.1:8765/?targetPreset=gmail-support',
+        attachment_id: '',
+        handoff_note: '',
+      },
+      {
+        event_id: 'evt-2',
+        event_family: 'provider_follow_up',
+        intake_id: 'intake-1',
+        summary_label: 'Completed provider follow-up',
+        actor_label: 'operator:d',
+        occurred_at: '2026-03-17T11:00:00Z',
+        status_delta: 'completed',
+        target_label: 'Gmail support inbox',
+        target_preset_id: 'gmail-support',
+        launch_url: '',
+        attachment_id: '',
+        handoff_note: 'Provider closed the loop.',
+      },
+      {
+        event_id: 'evt-3',
+        event_family: 'provider_handoff',
+        intake_id: 'intake-1',
+        summary_label: 'Reopened provider follow-up',
+        actor_label: 'operator:d',
+        occurred_at: '2026-03-17T12:00:00Z',
+        status_delta: 'reopened_follow_up',
+        target_label: 'Gmail support inbox',
+        target_preset_id: 'gmail-support',
+        launch_url: '',
+        attachment_id: '',
+        handoff_note: 'Need another pass.',
+      },
+    ]
+
+    expect(
+      buildProviderFollowUpQueue(
+        reopenedRows,
+        [
+          {
+            intake_id: 'intake-1',
+            title: 'Provider handoff one',
+            intake_kind: 'manual',
+            received_at: '2026-03-17T09:30:00Z',
+            status: 'triaging',
+            routing_target: '',
+            trust_tier: '2',
+            priority_hint: 'high',
+            tags: [],
+            warning_state: 'clean',
+            warning_count: 0,
+            summary_label: 'Provider handoff one',
+          },
+        ],
+        5,
+        nowMs
+      )
+    ).toHaveLength(1)
+  })
 })

@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react'
 import {
   recordProviderFollowUpCompletion,
+  recordProviderFollowUpReopen,
   recordTandemLaunchIntent,
 } from '@/api/tandem'
 import { useAuditSummaryStore } from '@/store/auditSummaryStore'
@@ -18,10 +19,49 @@ import {
   groupProviderHandoffsByTarget,
 } from '@/panels/providerHandoffSummary'
 import {
+  selectRecentProviderEvents,
   resolveRecentTandemLaunchSelection,
   selectLatestTandemLaunchForIntake,
   selectRecentTandemLaunches,
 } from '@/panels/tandemHistory'
+
+function buildCompletionTemplate(
+  item: {
+    priority?: 'needs_attachment_review' | 'follow_up_pending'
+    targetLabel: string
+    targetPresetId?: string | null
+  },
+  presets: ReturnType<typeof useTandemStore.getState>['targetPresets']
+): string {
+  const preset = item.targetPresetId
+    ? presets.find((candidate) => candidate.preset_id === item.targetPresetId)
+    : null
+
+  if (item.priority === 'needs_attachment_review') {
+    return `Attachment review completed for ${item.targetLabel}.`
+  }
+  if (preset?.team_label) {
+    return `${preset.team_label} follow-up completed for ${item.targetLabel}.`
+  }
+  return `Provider follow-up completed for ${item.targetLabel}.`
+}
+
+function buildReopenTemplate(
+  item: {
+    targetLabel: string
+    targetPresetId?: string | null
+  },
+  presets: ReturnType<typeof useTandemStore.getState>['targetPresets']
+): string {
+  const preset = item.targetPresetId
+    ? presets.find((candidate) => candidate.preset_id === item.targetPresetId)
+    : null
+
+  if (preset?.default_note) {
+    return `Reopened provider follow-up for ${item.targetLabel}. ${preset.default_note}`
+  }
+  return `Reopened provider follow-up for ${item.targetLabel}.`
+}
 
 export function ProviderHandoffPanel() {
   const [focusedTargetLabel, setFocusedTargetLabel] = useState<string | null>(null)
@@ -52,6 +92,7 @@ export function ProviderHandoffPanel() {
   const selectedIntake = intakeItems.find((item) => item.intake_id === selectedId) ?? null
   const selectedHandoff = selectLatestTandemLaunchForIntake(auditItems, selectedId)
   const recentHandoffs = useMemo(() => selectRecentTandemLaunches(auditItems, 5), [auditItems])
+  const recentProviderEvents = useMemo(() => selectRecentProviderEvents(auditItems, 8), [auditItems])
   const providerSummary = useMemo(() => buildProviderHandoffSummary(auditItems), [auditItems])
   const providerFollowUpQueue = useMemo(
     () => buildProviderFollowUpQueue(auditItems, intakeItems),
@@ -99,17 +140,38 @@ export function ProviderHandoffPanel() {
     targetPresetId: string | null
     targetLabel: string
     handoffNote: string | null
+    priority?: 'needs_attachment_review' | 'follow_up_pending'
   }) {
     try {
       await recordProviderFollowUpCompletion({
         intake_id: item.intakeId,
         target_preset_id: item.targetPresetId,
         target_label: item.targetLabel,
-        completion_note: item.handoffNote ?? null,
+        completion_note:
+          item.handoffNote?.trim() ||
+          buildCompletionTemplate(item, tandemTargetPresets),
       })
       await fetchAuditSummary()
     } catch {
       // Keep completion non-blocking for the desk.
+    }
+  }
+
+  async function handleReopenFollowUp(item: {
+    intakeId: string
+    targetPresetId: string | null
+    targetLabel: string
+  }) {
+    try {
+      await recordProviderFollowUpReopen({
+        intake_id: item.intakeId,
+        target_preset_id: item.targetPresetId,
+        target_label: item.targetLabel,
+        reopen_note: buildReopenTemplate(item, tandemTargetPresets),
+      })
+      await fetchAuditSummary()
+    } catch {
+      // Keep reopen non-blocking for the desk.
     }
   }
 
@@ -319,7 +381,10 @@ export function ProviderHandoffPanel() {
                       if (item.targetPresetId) {
                         setSelectedTandemPreset(item.targetPresetId)
                       }
-                      setTandemHandoffNote(item.handoffNote ?? '')
+                      setTandemHandoffNote(
+                        item.handoffNote ??
+                          buildCompletionTemplate(item, tandemTargetPresets)
+                      )
                       selectIntake(item.intakeId)
                     }}
                     className="rounded border border-ohmic-border px-2.5 py-1 text-[11px] font-medium text-ohmic-text transition-colors hover:border-ohmic-accent/30"
@@ -661,7 +726,12 @@ export function ProviderHandoffPanel() {
           </div>
         ) : (
           <div className="space-y-2">
-            {visibleRecentHandoffs.map((item, index) => (
+            {selectRecentProviderEvents(
+              focusedTargetLabel
+                ? recentProviderEvents.filter((item) => item.target_label === focusedTargetLabel)
+                : recentProviderEvents,
+              8
+            ).map((item) => (
               <div
                 key={item.event_id}
                 className="rounded border border-ohmic-border bg-ohmic-bg px-3 py-2 space-y-1.5"
@@ -698,25 +768,46 @@ export function ProviderHandoffPanel() {
                   >
                     Load into Tandem desk
                   </button>
-                  <button
-                    onClick={() => primeProviderFollowUp(item)}
-                    className="rounded border border-ohmic-border px-2.5 py-1 text-[11px] font-medium text-ohmic-text transition-colors hover:border-ohmic-accent/30"
-                  >
-                    Prime follow-up
-                  </button>
-                  <button
-                    onClick={() =>
-                      void handleCompleteFollowUp({
-                        intakeId: item.intake_id,
-                        targetPresetId: item.target_preset_id ?? null,
-                        targetLabel: item.target_label || item.summary_label,
-                        handoffNote: item.handoff_note ?? null,
-                      })
-                    }
-                    className="rounded border border-emerald-400/30 px-2.5 py-1 text-[11px] font-medium text-emerald-300 transition-colors hover:border-emerald-300 hover:bg-emerald-300/10"
-                  >
-                    Mark complete
-                  </button>
+                  {item.event_family === 'provider_follow_up' ? (
+                    <button
+                      onClick={() =>
+                        item.intake_id
+                          ? void handleReopenFollowUp({
+                              intakeId: item.intake_id,
+                              targetPresetId: item.target_preset_id ?? null,
+                              targetLabel: item.target_label || item.summary_label,
+                            })
+                          : undefined
+                      }
+                      className="rounded border border-amber-400/30 px-2.5 py-1 text-[11px] font-medium text-amber-300 transition-colors hover:border-amber-300 hover:bg-amber-300/10"
+                    >
+                      Reopen follow-up
+                    </button>
+                  ) : (
+                    <>
+                      <button
+                        onClick={() => primeProviderFollowUp(item)}
+                        className="rounded border border-ohmic-border px-2.5 py-1 text-[11px] font-medium text-ohmic-text transition-colors hover:border-ohmic-accent/30"
+                      >
+                        Prime follow-up
+                      </button>
+                      <button
+                        onClick={() =>
+                          item.intake_id
+                            ? void handleCompleteFollowUp({
+                                intakeId: item.intake_id,
+                                targetPresetId: item.target_preset_id ?? null,
+                                targetLabel: item.target_label || item.summary_label,
+                                handoffNote: item.handoff_note ?? null,
+                              })
+                            : undefined
+                        }
+                        className="rounded border border-emerald-400/30 px-2.5 py-1 text-[11px] font-medium text-emerald-300 transition-colors hover:border-emerald-300 hover:bg-emerald-300/10"
+                      >
+                        Mark complete
+                      </button>
+                    </>
+                  )}
                   {item.launch_url ? (
                     <a
                       href={item.launch_url}

@@ -43,6 +43,13 @@ interface RecordProviderFollowUpCompletionInput {
   completion_note?: string | null
 }
 
+interface RecordProviderFollowUpReopenInput {
+  intake_id: string
+  target_preset_id?: string | null
+  target_label?: string | null
+  reopen_note?: string | null
+}
+
 interface CommandValidationResult {
   command_id: string
   selected_intake_id: string
@@ -145,6 +152,16 @@ interface RecordTandemLaunchIntentResponse {
 }
 
 interface RecordProviderFollowUpCompletionResponse {
+  writeback: {
+    writeback_status: 'accepted'
+    event_id: string
+    intake_id: string
+    target_label: string | null
+    audit_summary_count: number
+  }
+}
+
+interface RecordProviderFollowUpReopenResponse {
   writeback: {
     writeback_status: 'accepted'
     event_id: string
@@ -897,6 +914,59 @@ export async function recordProviderFollowUpCompletion(
   `
 
   return runPowerShell(psScript) as Promise<RecordProviderFollowUpCompletionResponse>
+}
+
+export async function recordProviderFollowUpReopen(
+  input: RecordProviderFollowUpReopenInput
+): Promise<RecordProviderFollowUpReopenResponse> {
+  const runtimeDir = escapePowerShellString(RUNTIME_DIR)
+  const occurredAt = new Date().toISOString()
+  const eventId = `provider_follow_up_reopen_${Date.now()}`
+  const intakeId = escapePowerShellString(input.intake_id)
+  const targetPresetId = escapePowerShellString(input.target_preset_id ?? '')
+  const targetLabel = escapePowerShellString(input.target_label ?? '')
+  const reopenNote = escapePowerShellString(input.reopen_note ?? '')
+
+  const psScript = `
+    Set-StrictMode -Version Latest
+    $ErrorActionPreference = 'Stop'
+
+    . '${commonScript}'
+    . '${auditSummaryProjectionScript}'
+
+    $runtimeDir = '${runtimeDir}'
+    $auditEventsPath = Join-Path $runtimeDir 'administrator_audit_events.jsonl'
+
+    $event = [pscustomobject]@{
+      event_id = '${eventId}'
+      event_type = 'administrator.provider.follow_up_reopened'
+      event_family = 'provider_handoff'
+      intake_id = '${intakeId}'
+      summary_label = 'Reopened provider follow-up'
+      actor_label = 'operator:d'
+      occurred_at = '${escapePowerShellString(occurredAt)}'
+      status_delta = 'reopened_follow_up'
+      target_label = if ([string]::IsNullOrWhiteSpace('${targetLabel}')) { if ([string]::IsNullOrWhiteSpace('${targetPresetId}')) { '' } else { '${targetPresetId}' } } else { '${targetLabel}' }
+      target_preset_id = '${targetPresetId}'
+      handoff_note = '${reopenNote}'
+    }
+
+    Append-JsonLine -PathText $auditEventsPath -Value $event
+    $auditEvents = @(Read-JsonLines -PathText $auditEventsPath)
+    $projection = Write-AdministratorAuditSummaryProjection -AuditEvents $auditEvents -RuntimeDir $runtimeDir
+
+    [pscustomobject]@{
+      writeback = [pscustomobject]@{
+        writeback_status = 'accepted'
+        event_id = '${eventId}'
+        intake_id = '${intakeId}'
+        target_label = if ([string]::IsNullOrWhiteSpace('${targetLabel}')) { if ([string]::IsNullOrWhiteSpace('${targetPresetId}')) { $null } else { '${targetPresetId}' } } else { '${targetLabel}' }
+        audit_summary_count = @($projection.rows).Count
+      }
+    } | ConvertTo-Json -Depth 10 -Compress
+  `
+
+  return runPowerShell(psScript) as Promise<RecordProviderFollowUpReopenResponse>
 }
 
 function runPowerShell(script: string): Promise<unknown> {
