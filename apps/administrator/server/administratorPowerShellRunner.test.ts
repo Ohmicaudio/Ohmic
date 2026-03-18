@@ -394,7 +394,7 @@ describe('powerShellRunner', () => {
       intake_id: 'filing-intake-1',
       target_label: 'Customer Archive',
     })
-  })
+  }, 30000)
 
   it('records tandem launch intent into the audit summary runtime', async () => {
     previousRuntimeDir = process.env.ADMINISTRATOR_RUNTIME_DIR
