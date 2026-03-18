@@ -6,6 +6,7 @@ import { writeIntakeFocusSelection } from './focusWriter.js'
 import { getAdministratorRuntimeDir } from './runtimeConfig.js'
 import { readReadyTasksFromDisk } from './readyTasksSource.js'
 import { readTandemStatus } from './tandemProxy.js'
+import { readWorkspaceActivity } from './workspaceActivitySource.js'
 import {
   executeCommand,
   getFilingOptions,
@@ -200,6 +201,12 @@ export function createAdministratorServer(port = PORT) {
       const name = projMatch[1]
       if (name === 'ready_tasks') {
         readReadyTasksFromDisk()
+          .then((data) => sendJson(res, data))
+          .catch((err) => sendJson(res, { error: err.message }, 500))
+        return
+      }
+      if (name === 'administrator_workspace_activity') {
+        readWorkspaceActivity()
           .then((data) => sendJson(res, data))
           .catch((err) => sendJson(res, { error: err.message }, 500))
         return

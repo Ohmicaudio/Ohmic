@@ -12,6 +12,7 @@ import type {
   IntakeQueueProjection,
   ReadyTasksProjection,
   WarningReviewProjection,
+  WorkspaceActivityProjection,
 } from '@/types/intake'
 
 const API_BASE = '/api'
@@ -80,6 +81,10 @@ export async function fetchStatusHistoryProjection(): Promise<AdministratorStatu
 
 export async function fetchReadyTasks(): Promise<ReadyTasksProjection> {
   return fetchJson<ReadyTasksProjection>('/projections/ready_tasks')
+}
+
+export async function fetchWorkspaceActivityProjection(): Promise<WorkspaceActivityProjection> {
+  return fetchJson<WorkspaceActivityProjection>('/projections/administrator_workspace_activity')
 }
 
 // SSE stream for live updates.

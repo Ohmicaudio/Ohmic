@@ -14,6 +14,7 @@ import { CommandComposerPanel } from '@/panels/CommandComposerPanel'
 import { AuditTrailPanel } from '@/panels/AuditTrailPanel'
 import { WarningReviewPanel } from '@/panels/WarningReviewPanel'
 import { TandemPanel } from '@/panels/TandemPanel'
+import { WorkspaceActivityPanel } from '@/panels/WorkspaceActivityPanel'
 import { subscribeToUpdates } from '@/api/projections'
 import { useAggregationPanelStore } from '@/store/aggregationPanelStore'
 import { useAttachmentPreviewStore } from '@/store/attachmentPreviewStore'
@@ -163,6 +164,8 @@ export function App() {
             <AuditTrailPanel />
           </div>
         </div>
+
+        <WorkspaceActivityPanel />
 
         <div className="mt-8">
           <ProviderHandoffPanel />

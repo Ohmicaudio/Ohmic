@@ -156,6 +156,30 @@ export interface ReopenInactiveIntakeResponse {
   updated_intake?: Record<string, unknown>
 }
 
+export interface WorkspaceCommitActivity {
+  hash: string
+  summary: string
+  committed_at: string
+}
+
+export interface WorkspaceFileActivity {
+  path: string
+  status: string
+}
+
+export interface WorkspaceActivityProjection {
+  generated_at: string
+  workspace_dir: string
+  branch: string | null
+  scope_label: string
+  head_commit: WorkspaceCommitActivity | null
+  recent_commits: WorkspaceCommitActivity[]
+  dirty_files: WorkspaceFileActivity[]
+  dirty_file_count: number
+  status: 'available' | 'unavailable'
+  message: string | null
+}
+
 export interface AdministratorNote {
   note_id: string
   intake_id: string

@@ -211,6 +211,36 @@ describe('administrator server', () => {
     })
   })
 
+  it('serves workspace activity for the administrator lane', async () => {
+    const { createAdministratorServer } = await importServer()
+    const app = createAdministratorServer(0)
+    const baseUrl = await app.start()
+    stopServer = app.stop
+
+    const activityRes = await fetch(`${baseUrl}/api/projections/administrator_workspace_activity`)
+    expect(activityRes.ok).toBe(true)
+    const activity = (await activityRes.json()) as {
+      status: string
+      scope_label: string
+      workspace_dir: string
+      recent_commits: Array<{
+        hash: string
+        summary: string
+        committed_at: string
+      }>
+    }
+
+    expect(activity.status).toBe('available')
+    expect(activity.scope_label).toBe('apps/administrator')
+    expect(activity.workspace_dir).toMatch(/ohmic/i)
+    expect(activity.recent_commits.length).toBeGreaterThan(0)
+    expect(activity.recent_commits[0]).toMatchObject({
+      hash: expect.any(String),
+      summary: expect.any(String),
+      committed_at: expect.any(String),
+    })
+  })
+
   it('serves filing options for an active intake item', async () => {
     await writeActiveQueueFixture('intake-1', 'Customer escalation')
 
