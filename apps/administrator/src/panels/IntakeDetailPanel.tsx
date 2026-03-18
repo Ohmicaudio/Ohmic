@@ -2,6 +2,7 @@ import { useEffect } from 'react'
 import { useIntakeStore } from '@/store/intakeStore'
 import { useIntakeContextStore } from '@/store/intakeContextStore'
 import { useAuditSummaryStore } from '@/store/auditSummaryStore'
+import { useDeskFocusStore } from '@/store/deskFocusStore'
 import { useTandemStore } from '@/store/tandemStore'
 import { StatusBadge } from '@/components/StatusBadge'
 import { PriorityIndicator } from '@/components/PriorityIndicator'
@@ -68,6 +69,7 @@ export function IntakeDetailPanel() {
   const auditLoading = useAuditSummaryStore((state) => state.loading)
   const auditAttempted = useAuditSummaryStore((state) => state.attempted)
   const fetchAuditSummary = useAuditSummaryStore((state) => state.fetch)
+  const focusSelection = useDeskFocusStore((state) => state.selection)
   const tandemTargetPresets = useTandemStore((state) => state.targetPresets)
   const setSelectedTandemPreset = useTandemStore((state) => state.setSelectedPreset)
   const setTandemHandoffNote = useTandemStore((state) => state.setHandoffNote)
@@ -84,6 +86,9 @@ export function IntakeDetailPanel() {
     : null
   const providerTimeline = selectProviderEventsForIntake(auditItems, selectedId)
   const providerNotes = providerTimeline.filter((event) => event.handoff_note?.trim())
+  const isFocusedIntake =
+    focusSelection?.focus_kind === 'intake' &&
+    focusSelection.selected_intake_id === selectedItem?.intake_id
 
   useEffect(() => {
     if (selectedId && notes.length === 0 && tagAssignments.length === 0) {
@@ -121,14 +126,19 @@ export function IntakeDetailPanel() {
       ) : (
         <div className="panel space-y-4">
           <div className="space-y-2">
-            <div className="flex items-start justify-between gap-3">
-              <div className="space-y-1 min-w-0">
-                <div className="flex items-center gap-2">
-                  <PriorityIndicator priority={selectedItem.priority_hint} />
-                  <span className="text-[10px] uppercase tracking-wider text-ohmic-text-dim">
-                    {selectedItem.intake_kind}
-                  </span>
-                </div>
+              <div className="flex items-start justify-between gap-3">
+                <div className="space-y-1 min-w-0">
+                  <div className="flex items-center gap-2">
+                    <PriorityIndicator priority={selectedItem.priority_hint} />
+                    <span className="text-[10px] uppercase tracking-wider text-ohmic-text-dim">
+                      {selectedItem.intake_kind}
+                    </span>
+                    {isFocusedIntake ? (
+                      <span className="rounded border border-emerald-300/30 px-2 py-0.5 text-[10px] uppercase tracking-widest text-emerald-300">
+                        Desk focus
+                      </span>
+                    ) : null}
+                  </div>
                 <h3 className="text-base font-semibold text-ohmic-text break-words">
                   {selectedItem.title}
                 </h3>

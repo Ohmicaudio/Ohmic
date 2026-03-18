@@ -53,6 +53,7 @@ export function App() {
   const fetchWarningReview = useWarningReviewStore((s) => s.fetch)
   const fetchTandem = useTandemStore((s) => s.fetch)
   const loadAuditTrail = useCommandStore((s) => s.loadAuditTrail)
+  const setComposerIntakeId = useCommandStore((s) => s.setIntakeId)
   const fetchHealth = useServerHealthStore((s) => s.fetch)
   const healthStatus = useServerHealthStore((s) => s.status)
   const runtimeDir = useServerHealthStore((s) => s.runtimeDir)
@@ -167,6 +168,10 @@ export function App() {
       cancelled = true
     }
   }, [fetchDeskFocus, selectedIntakeId, setDeskFocusProjection])
+
+  useEffect(() => {
+    setComposerIntakeId(selectedIntakeId ?? '')
+  }, [selectedIntakeId, setComposerIntakeId])
 
   return (
     <div className="min-h-screen flex flex-col">
