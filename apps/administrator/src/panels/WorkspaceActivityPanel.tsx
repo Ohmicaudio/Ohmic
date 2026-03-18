@@ -57,8 +57,8 @@ export function WorkspaceActivityPanel() {
       ) : error ? (
         <div className="panel text-sm text-ohmic-danger py-6">{error}</div>
       ) : (
-        <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
-          <div className="panel space-y-3 xl:col-span-1">
+        <div className="space-y-4">
+          <div className="panel space-y-3">
             <div className="flex items-center justify-between gap-3">
               <div className="text-xs uppercase tracking-wider text-ohmic-text-dim">
                 Branch Status
@@ -93,14 +93,14 @@ export function WorkspaceActivityPanel() {
             {message ? (
               <div className="text-xs text-ohmic-text-dim whitespace-pre-wrap">
                 {message}
-              </div>
-            ) : null}
+                </div>
+              ) : null}
             {headCommit ? (
-              <div className="rounded border border-ohmic-border bg-ohmic-bg px-3 py-2 space-y-1.5">
+              <div className="rounded-xl border border-ohmic-border bg-ohmic-bg px-3 py-3 space-y-2">
                 <div className="text-[10px] uppercase tracking-wider text-ohmic-text-dim">
                   Head Commit
                 </div>
-                <div className="text-sm text-ohmic-text">{headCommit.summary}</div>
+                <div className="text-[15px] leading-6 text-ohmic-text">{headCommit.summary}</div>
                 <div className="text-[11px] text-ohmic-text-dim">
                   {formatCommitHash(headCommit.hash)} |{' '}
                   {new Date(headCommit.committed_at).toLocaleString()}
@@ -109,60 +109,62 @@ export function WorkspaceActivityPanel() {
             ) : null}
           </div>
 
-          <div className="panel space-y-3 xl:col-span-1">
-            <div className="text-xs uppercase tracking-wider text-ohmic-text-dim">
-              Recent Commits
-            </div>
-            {recentCommits.length === 0 ? (
-              <div className="text-sm text-ohmic-text-dim">
-                No administrator-lane commits are visible right now.
+          <div className="grid grid-cols-1 gap-4 2xl:grid-cols-2">
+            <div className="panel space-y-3">
+              <div className="text-xs uppercase tracking-wider text-ohmic-text-dim">
+                Recent Commits
               </div>
-            ) : (
-              <div className="space-y-2">
-                {recentCommits.map((commit) => (
-                  <div
-                    key={`${commit.hash}-${commit.committed_at}`}
-                    className="rounded border border-ohmic-border bg-ohmic-bg px-3 py-2 space-y-1"
-                  >
-                    <div className="text-sm text-ohmic-text">{commit.summary}</div>
-                    <div className="text-[11px] text-ohmic-text-dim">
-                      {formatCommitHash(commit.hash)} |{' '}
-                      {new Date(commit.committed_at).toLocaleString()}
+              {recentCommits.length === 0 ? (
+                <div className="text-sm text-ohmic-text-dim">
+                  No administrator-lane commits are visible right now.
+                </div>
+              ) : (
+                <div className="space-y-2">
+                  {recentCommits.slice(0, 4).map((commit) => (
+                    <div
+                      key={`${commit.hash}-${commit.committed_at}`}
+                      className="rounded-xl border border-ohmic-border bg-ohmic-bg px-3 py-3 space-y-1.5"
+                    >
+                      <div className="text-[15px] leading-6 text-ohmic-text">{commit.summary}</div>
+                      <div className="text-[11px] text-ohmic-text-dim">
+                        {formatCommitHash(commit.hash)} |{' '}
+                        {new Date(commit.committed_at).toLocaleString()}
+                      </div>
                     </div>
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
-
-          <div className="panel space-y-3 xl:col-span-1">
-            <div className="text-xs uppercase tracking-wider text-ohmic-text-dim">
-              Working Changes
+                  ))}
+                </div>
+              )}
             </div>
-            {dirtyFiles.length === 0 ? (
-              <div className="text-sm text-ohmic-text-dim">
-                No uncommitted administrator-lane changes are visible.
+
+            <div className="panel space-y-3">
+              <div className="text-xs uppercase tracking-wider text-ohmic-text-dim">
+                Working Changes
               </div>
-            ) : (
-              <div className="space-y-2">
-                {dirtyFiles.slice(0, 8).map((file) => (
-                  <div
-                    key={`${file.status}-${file.path}`}
-                    className="rounded border border-ohmic-border bg-ohmic-bg px-3 py-2 flex items-start justify-between gap-3"
-                  >
-                    <div className="text-xs text-ohmic-text break-all">{file.path}</div>
-                    <span className="rounded-full bg-ohmic-accent/10 px-2 py-0.5 text-[10px] uppercase tracking-widest text-ohmic-accent">
-                      {file.status}
-                    </span>
-                  </div>
-                ))}
-                {dirtyFiles.length > 8 ? (
-                  <div className="text-[11px] text-ohmic-text-dim">
-                    +{dirtyFiles.length - 8} more file changes
-                  </div>
-                ) : null}
-              </div>
-            )}
+              {dirtyFiles.length === 0 ? (
+                <div className="text-sm text-ohmic-text-dim">
+                  No uncommitted administrator-lane changes are visible.
+                </div>
+              ) : (
+                <div className="space-y-2">
+                  {dirtyFiles.slice(0, 6).map((file) => (
+                    <div
+                      key={`${file.status}-${file.path}`}
+                      className="rounded-xl border border-ohmic-border bg-ohmic-bg px-3 py-3 flex items-start justify-between gap-3"
+                    >
+                      <div className="text-xs text-ohmic-text break-all">{file.path}</div>
+                      <span className="rounded-full bg-ohmic-accent/10 px-2 py-0.5 text-[10px] uppercase tracking-widest text-ohmic-accent">
+                        {file.status}
+                      </span>
+                    </div>
+                  ))}
+                  {dirtyFiles.length > 6 ? (
+                    <div className="text-[11px] text-ohmic-text-dim">
+                      +{dirtyFiles.length - 6} more file changes
+                    </div>
+                  ) : null}
+                </div>
+              )}
+            </div>
           </div>
         </div>
       )}

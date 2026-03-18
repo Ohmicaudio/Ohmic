@@ -28,18 +28,30 @@
 
 @layer components {
   .panel {
-    @apply bg-ohmic-surface border border-ohmic-border rounded-lg p-4;
+    @apply rounded-xl border border-ohmic-border/80 bg-ohmic-surface/90 p-4 shadow-[0_18px_40px_rgba(4,6,12,0.28)];
   }
   .panel-header {
     @apply text-sm font-semibold uppercase tracking-wider text-ohmic-text-dim mb-3;
   }
   .lane-shell {
-    @apply rounded-2xl border border-ohmic-border/70 bg-ohmic-surface/35 p-4 md:p-5;
+    @apply rounded-[1.4rem] border border-ohmic-border/70 bg-ohmic-surface/45 p-5 md:p-6 shadow-[0_24px_60px_rgba(2,4,10,0.32)];
   }
   .lane-kicker {
-    @apply text-[10px] font-semibold uppercase tracking-[0.28em] text-ohmic-text-dim;
+    @apply text-[10px] font-semibold uppercase tracking-[0.26em] text-ohmic-text-dim;
   }
   .lane-caption {
-    @apply mt-1 text-sm text-ohmic-text-dim leading-relaxed;
+    @apply mt-2 text-[13px] text-ohmic-text-dim leading-6;
+  }
+  .section-shell {
+    @apply rounded-[1.6rem] border border-ohmic-border/70 bg-ohmic-surface/30 p-5 md:p-6 shadow-[0_28px_70px_rgba(2,4,10,0.28)];
+  }
+  .section-kicker {
+    @apply text-[10px] font-semibold uppercase tracking-[0.3em] text-ohmic-text-dim;
+  }
+  .section-caption {
+    @apply mt-2 max-w-3xl text-sm leading-6 text-ohmic-text-dim;
+  }
+  .metric-pill {
+    @apply rounded-full border border-ohmic-border/80 bg-ohmic-bg/70 px-3 py-1 text-[11px] uppercase tracking-[0.18em] text-ohmic-text;
   }
 }

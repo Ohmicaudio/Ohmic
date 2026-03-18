@@ -19,7 +19,7 @@ function CardView({ card }: { card: StatusCard }) {
         : 'border-ohmic-border'
 
   return (
-    <div className={`panel ${emphasisBorder}`}>
+    <div className={`panel h-full ${emphasisBorder}`}>
       <div className="flex items-center justify-between mb-3">
         <h3 className="panel-header mb-0">{card.title}</h3>
         <StatusBadge status={card.freshness} />
@@ -27,10 +27,10 @@ function CardView({ card }: { card: StatusCard }) {
       <div className="space-y-2">
         {card.fields.map((field) => (
           <div key={field.label} className="flex items-start justify-between gap-4">
-            <span className="text-xs text-ohmic-text-dim whitespace-nowrap">
+            <span className="text-[11px] text-ohmic-text-dim whitespace-nowrap">
               {field.label}
             </span>
-            <span className="text-xs text-ohmic-text text-right break-all max-w-[65%]">
+            <span className="max-w-[60%] text-right text-[13px] leading-6 text-ohmic-text break-words">
               {field.value}
             </span>
           </div>
@@ -97,21 +97,21 @@ export function DashboardPanel() {
       {loading && cards.length === 0 ? (
         <div className="text-ohmic-text-dim text-xs animate-pulse">Loading projections...</div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-          <div className="panel border-ohmic-accent/20">
+        <div className="grid grid-cols-[repeat(auto-fit,minmax(20rem,1fr))] gap-4">
+          <div className="panel h-full border-ohmic-accent/20">
             <div className="flex items-center justify-between mb-3">
               <h3 className="panel-header mb-0">Next Best Action</h3>
               <StatusBadge status={nextProviderAction ? 'warning' : 'healthy'} />
             </div>
             {nextProviderAction ? (
               <div className="space-y-2">
-                <div className="text-xs text-ohmic-text">
+                <div className="text-sm leading-6 text-ohmic-text">
                   {nextProviderAction.intakeTitle}
                 </div>
-                <div className="text-xs text-ohmic-text-dim">
+                <div className="text-[11px] text-ohmic-text-dim">
                   {nextProviderAction.priorityLabel} | {nextProviderAction.targetLabel}
                 </div>
-                <div className="text-xs text-ohmic-text-dim">
+                <div className="text-[11px] text-ohmic-text-dim">
                   {nextProviderAction.ageLabel} |{' '}
                   {nextProviderAction.occurredAt
                     ? new Date(nextProviderAction.occurredAt).toLocaleString()
@@ -124,7 +124,7 @@ export function DashboardPanel() {
               </div>
             )}
           </div>
-          <div className="panel border-ohmic-accent/20">
+          <div className="panel h-full border-ohmic-accent/20">
             <div className="flex items-center justify-between mb-3">
               <h3 className="panel-header mb-0">Provider Follow-up</h3>
               <StatusBadge
@@ -133,50 +133,50 @@ export function DashboardPanel() {
             </div>
             <div className="space-y-2">
               <div className="flex items-start justify-between gap-4">
-                <span className="text-xs text-ohmic-text-dim whitespace-nowrap">
+                <span className="text-[11px] text-ohmic-text-dim whitespace-nowrap">
                   Unresolved
                 </span>
-                <span className="text-xs text-ohmic-text text-right break-all max-w-[65%]">
+                <span className="max-w-[60%] text-right text-[13px] leading-6 text-ohmic-text break-words">
                   {providerSummary.unresolvedCount}
                 </span>
               </div>
               <div className="flex items-start justify-between gap-4">
-                <span className="text-xs text-ohmic-text-dim whitespace-nowrap">
+                <span className="text-[11px] text-ohmic-text-dim whitespace-nowrap">
                   Stale
                 </span>
-                <span className="text-xs text-ohmic-text text-right break-all max-w-[65%]">
+                <span className="max-w-[60%] text-right text-[13px] leading-6 text-ohmic-text break-words">
                   {providerSummary.staleFollowUpCount}
                 </span>
               </div>
               <div className="flex items-start justify-between gap-4">
-                <span className="text-xs text-ohmic-text-dim whitespace-nowrap">
+                <span className="text-[11px] text-ohmic-text-dim whitespace-nowrap">
                   Attachment reviews
                 </span>
-                <span className="text-xs text-ohmic-text text-right break-all max-w-[65%]">
+                <span className="max-w-[60%] text-right text-[13px] leading-6 text-ohmic-text break-words">
                   {providerSummary.attachmentReviewCount}
                 </span>
               </div>
             </div>
           </div>
-          <div className="panel border-ohmic-accent/20">
+          <div className="panel h-full border-ohmic-accent/20">
             <div className="flex items-center justify-between mb-3">
               <h3 className="panel-header mb-0">Attachment Review</h3>
               <StatusBadge status={attachmentReviewCount > 0 ? 'warning' : 'healthy'} />
             </div>
             <div className="space-y-2">
               <div className="flex items-start justify-between gap-4">
-                <span className="text-xs text-ohmic-text-dim whitespace-nowrap">
+                <span className="text-[11px] text-ohmic-text-dim whitespace-nowrap">
                   Pending reviews
                 </span>
-                <span className="text-xs text-ohmic-text text-right break-all max-w-[65%]">
+                <span className="max-w-[60%] text-right text-[13px] leading-6 text-ohmic-text break-words">
                   {attachmentReviewCount}
                 </span>
               </div>
               <div className="flex items-start justify-between gap-4">
-                <span className="text-xs text-ohmic-text-dim whitespace-nowrap">
+                <span className="text-[11px] text-ohmic-text-dim whitespace-nowrap">
                   Next target
                 </span>
-                <span className="text-xs text-ohmic-text text-right break-all max-w-[65%]">
+                <span className="max-w-[60%] text-right text-[13px] leading-6 text-ohmic-text break-words">
                   {providerQueue.find((item) => item.priority === 'needs_attachment_review')
                     ?.targetLabel ?? '--'}
                 </span>

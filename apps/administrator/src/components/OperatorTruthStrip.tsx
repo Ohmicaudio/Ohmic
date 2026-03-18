@@ -10,7 +10,7 @@ function TruthPill({
   value: string
 }) {
   return (
-    <div className="rounded-full border border-ohmic-border bg-ohmic-surface/40 px-3 py-1 text-[10px] uppercase tracking-widest text-ohmic-text-dim">
+    <div className="metric-pill">
       <span>{label}</span>
       <span className="ml-2 text-ohmic-text">{value}</span>
     </div>
@@ -37,7 +37,7 @@ export function OperatorTruthStrip() {
   }, [fetchQueueActivity, fetchWorkspaceActivity, queueGeneratedAt, workspaceGeneratedAt])
 
   return (
-    <div className="mt-6 flex flex-wrap gap-2">
+    <div className="mt-5 flex flex-wrap gap-2">
       <TruthPill label="Ready" value={String(readyCount)} />
       <TruthPill label="Active claims" value={String(activeClaimCount)} />
       <TruthPill label="Branch" value={branch || '--'} />

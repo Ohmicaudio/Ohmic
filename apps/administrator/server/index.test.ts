@@ -270,6 +270,47 @@ describe('administrator server', () => {
     })
   })
 
+  it('serves stable fallback projections for optional runtime surfaces', async () => {
+    const { createAdministratorServer } = await importServer()
+    const app = createAdministratorServer(0)
+    const baseUrl = await app.start()
+    stopServer = app.stop
+
+    const inactiveShellRes = await fetch(`${baseUrl}/api/projections/administrator_inactive_intake`)
+    expect(inactiveShellRes.ok).toBe(true)
+    const inactiveShell = (await inactiveShellRes.json()) as {
+      row_count: number
+      filter_presets: Array<{ preset_id: string }>
+      rows: unknown[]
+    }
+
+    expect(inactiveShell.row_count).toBe(0)
+    expect(inactiveShell.rows).toEqual([])
+    expect(inactiveShell.filter_presets[0]?.preset_id).toBe('inactive_all')
+
+    const inactiveProjectionRes = await fetch(
+      `${baseUrl}/api/projections/administrator_inactive_intake_projection`
+    )
+    expect(inactiveProjectionRes.ok).toBe(true)
+    const inactiveProjection = (await inactiveProjectionRes.json()) as {
+      count: number
+      inactive_items: unknown[]
+    }
+
+    expect(inactiveProjection.count).toBe(0)
+    expect(inactiveProjection.inactive_items).toEqual([])
+
+    const auditFallbackRes = await fetch(`${baseUrl}/api/projections/administrator_audit_summary`)
+    expect(auditFallbackRes.ok).toBe(true)
+    const auditFallback = (await auditFallbackRes.json()) as {
+      row_count: number
+      rows: unknown[]
+    }
+
+    expect(auditFallback.row_count).toBe(0)
+    expect(auditFallback.rows).toEqual([])
+  })
+
   it('serves active claims from the live active-jobs directory', async () => {
     await writeFile(
       path.join(tempActiveClaimsDir!, '20260318T080000Z-test-claim.md'),

@@ -9,6 +9,7 @@ import { claimReadyTask, completeClaim } from './queueActions.js'
 import { readReadyTasksFromDisk } from './readyTasksSource.js'
 import { readTandemStatus } from './tandemProxy.js'
 import { readWorkspaceActivity } from './workspaceActivitySource.js'
+import { buildProjectionFallback } from './projectionFallbacks.js'
 import {
   executeCommand,
   getFilingOptions,
@@ -263,6 +264,11 @@ export function createAdministratorServer(port = PORT) {
       if (data) {
         sendJson(res, data)
       } else {
+        const fallback = buildProjectionFallback(name)
+        if (fallback) {
+          sendJson(res, fallback)
+          return
+        }
         send404(res, `Projection "${name}" not found or not yet generated`)
       }
       return

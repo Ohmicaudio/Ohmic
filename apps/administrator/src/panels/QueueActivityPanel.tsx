@@ -3,6 +3,13 @@ import { claimQueueTask, completeQueueClaim } from '@/api/queue'
 import { useQueueActivityStore } from '@/store/queueActivityStore'
 import { useWorkspaceActivityStore } from '@/store/workspaceActivityStore'
 
+function formatTaskPath(filePath: string): string {
+  const segments = filePath.split(/[\\/]+/)
+  const fileName = segments[segments.length - 1] ?? filePath
+  const parent = segments.length > 1 ? segments[segments.length - 2] : null
+  return parent ? `${parent}/${fileName}` : fileName
+}
+
 function getPriorityBadge(priority: string): string {
   switch (priority) {
     case 'critical':
@@ -99,7 +106,7 @@ export function QueueActivityPanel() {
       ) : error ? (
         <div className="panel text-sm text-ohmic-danger py-6">{error}</div>
       ) : (
-        <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
+        <div className="space-y-4">
           <div className="panel space-y-3">
             <div className="flex items-center justify-between gap-3">
               <div className="text-xs uppercase tracking-wider text-ohmic-text-dim">
@@ -108,6 +115,9 @@ export function QueueActivityPanel() {
               <span className="rounded-full bg-ohmic-accent/10 px-2 py-0.5 text-[10px] uppercase tracking-widest text-ohmic-accent">
                 {readyCount}
               </span>
+            </div>
+            <div className="text-[11px] text-ohmic-text-dim">
+              Showing the first {Math.min(readyTasks.length, 8)} items from the live ready queue.
             </div>
             {readyTasks.length === 0 ? (
               <div className="text-sm text-ohmic-text-dim">
@@ -118,25 +128,28 @@ export function QueueActivityPanel() {
                 {readyTasks.slice(0, 8).map((task) => (
                   <div
                     key={task.task_id}
-                    className="rounded border border-ohmic-border bg-ohmic-bg px-3 py-2 space-y-1.5"
+                    className="rounded-xl border border-ohmic-border bg-ohmic-bg px-3 py-3 space-y-2"
                   >
                     {(() => {
                       const matchingClaim = claimByTaskPath.get(task.file_path.toLowerCase()) ?? null
                       return (
                         <>
                           <div className="flex items-start justify-between gap-3">
-                      <div className="space-y-1 min-w-0">
-                        <div className="text-sm text-ohmic-text">{task.title}</div>
-                        <div className="text-[11px] text-ohmic-text-dim">
-                          {task.project} | {task.status}
-                        </div>
-                      </div>
-                      <span className={`rounded-full px-2 py-0.5 text-[10px] uppercase tracking-widest ${getPriorityBadge(task.priority)}`}>
-                        {task.priority}
-                      </span>
+                            <div className="min-w-0 space-y-1">
+                              <div className="text-[10px] uppercase tracking-[0.2em] text-ohmic-text-dim">
+                                {formatTaskPath(task.file_path)}
+                              </div>
+                              <div className="text-[15px] leading-6 text-ohmic-text">{task.title}</div>
+                              <div className="text-[11px] text-ohmic-text-dim">
+                                {task.project} | {task.status}
+                              </div>
+                            </div>
+                            <span className={`rounded-full px-2 py-0.5 text-[10px] uppercase tracking-widest ${getPriorityBadge(task.priority)}`}>
+                              {task.priority}
+                            </span>
                           </div>
-                          <div className="text-[11px] text-ohmic-text-dim break-all">
-                            {task.file_path}
+                          <div className="text-[11px] text-ohmic-text-dim">
+                            {task.task_id}
                           </div>
                           <div className="flex flex-wrap gap-2 pt-1">
                             {matchingClaim ? (
@@ -171,6 +184,9 @@ export function QueueActivityPanel() {
                 {activeClaimCount}
               </span>
             </div>
+            <div className="text-[11px] text-ohmic-text-dim">
+              Live ownership records for work currently claimed from the queue.
+            </div>
             {activeClaims.length === 0 ? (
               <div className="text-sm text-ohmic-text-dim">
                 No active claims are visible right now.
@@ -180,22 +196,22 @@ export function QueueActivityPanel() {
                 {activeClaims.slice(0, 8).map((claim) => (
                   <div
                     key={claim.claim_id}
-                    className="rounded border border-ohmic-border bg-ohmic-bg px-3 py-2 space-y-1.5"
+                    className="rounded-xl border border-ohmic-border bg-ohmic-bg px-3 py-3 space-y-2"
                   >
                     <div className="flex items-start justify-between gap-3">
                       <div className="space-y-1 min-w-0">
-                        <div className="text-sm text-ohmic-text">{claim.title}</div>
+                        <div className="text-[10px] uppercase tracking-[0.2em] text-ohmic-text-dim">
+                          {formatTaskPath(claim.file_path)}
+                        </div>
+                        <div className="text-[15px] leading-6 text-ohmic-text">{claim.title}</div>
                         <div className="text-[11px] text-ohmic-text-dim">
                           owner {claim.owner} | {claim.status}
                         </div>
                       </div>
                     </div>
-                    <div className="text-[11px] text-ohmic-text-dim break-all">
-                      {claim.file_path}
-                    </div>
                     {claim.paths.length > 0 ? (
-                      <div className="text-[11px] text-ohmic-text-dim break-all">
-                        Scope: {claim.paths.join(' | ')}
+                      <div className="text-[11px] text-ohmic-text-dim">
+                        Scope: {claim.paths.length} file{claim.paths.length === 1 ? '' : 's'}
                       </div>
                     ) : null}
                     <div className="flex flex-wrap gap-2 pt-1">

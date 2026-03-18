@@ -117,8 +117,8 @@ export function App() {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <header className="border-b border-ohmic-border bg-ohmic-surface/50 backdrop-blur-sm sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-4 py-3 flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
+      <header className="sticky top-0 z-50 border-b border-ohmic-border bg-ohmic-surface/60 backdrop-blur-md">
+        <div className="mx-auto flex w-full max-w-[1680px] flex-col gap-3 px-6 py-4 lg:flex-row lg:items-center lg:justify-between">
           <div className="space-y-1">
             <div className="flex items-center gap-3">
               <div className="w-2 h-2 rounded-full bg-ohmic-accent animate-pulse" />
@@ -142,24 +142,24 @@ export function App() {
         </div>
       </header>
 
-      <main className="flex-1 max-w-7xl mx-auto w-full px-4 py-6">
+      <main className="mx-auto flex-1 w-full max-w-[1680px] px-6 py-8">
         <DashboardPanel />
         <OperatorTruthStrip />
 
-        <section className="mt-8 space-y-3">
-          <div className="flex flex-col gap-1 lg:flex-row lg:items-end lg:justify-between">
+        <section className="section-shell mt-8 space-y-5">
+          <div className="flex flex-col gap-2 lg:flex-row lg:items-end lg:justify-between">
             <div>
-              <h2 className="text-xs font-semibold uppercase tracking-[0.28em] text-ohmic-text-dim">
+              <h2 className="section-kicker">
                 Operations
               </h2>
-              <div className="text-sm text-ohmic-text-dim">
-                Queue on the left, intake and provider context in the middle, action rail on the right.
+              <div className="section-caption">
+                Work the desk in three lanes: live queue and runtime on the left, intake and provider context in the middle, and the action rail on the right.
               </div>
             </div>
           </div>
 
-          <div className="grid grid-cols-1 xl:grid-cols-12 gap-6">
-            <div className="lane-shell space-y-5 xl:col-span-4">
+          <div className="grid grid-cols-1 gap-6 xl:grid-cols-[minmax(24rem,1.05fr)_minmax(34rem,1.3fr)_minmax(24rem,0.95fr)]">
+            <div className="lane-shell space-y-5">
               <div>
                 <h3 className="lane-kicker">Queue and Runtime</h3>
                 <div className="lane-caption">
@@ -175,7 +175,7 @@ export function App() {
               </div>
             </div>
 
-            <div className="lane-shell space-y-5 xl:col-span-5">
+            <div className="lane-shell space-y-5">
               <div>
                 <h3 className="lane-kicker">Selected Intake</h3>
                 <div className="lane-caption">
@@ -188,11 +188,11 @@ export function App() {
               </div>
             </div>
 
-            <div className="lane-shell space-y-5 xl:col-span-3 xl:sticky xl:top-24 self-start">
+            <div className="lane-shell space-y-5 self-start xl:sticky xl:top-24">
               <div>
                 <h3 className="lane-kicker">Action Rail</h3>
                 <div className="lane-caption">
-                  External handoff and command execution stacked together as the live control rail.
+                  External handoff and command execution staged together as the live control rail.
                 </div>
               </div>
               <div className="space-y-6">
@@ -203,19 +203,19 @@ export function App() {
           </div>
         </section>
 
-        <section className="mt-8 space-y-3">
-          <div className="flex flex-col gap-1 lg:flex-row lg:items-end lg:justify-between">
+        <section className="section-shell mt-8 space-y-5">
+          <div className="flex flex-col gap-2 lg:flex-row lg:items-end lg:justify-between">
             <div>
-              <h2 className="text-xs font-semibold uppercase tracking-[0.28em] text-ohmic-text-dim">
+              <h2 className="section-kicker">
                 Context and History
               </h2>
-              <div className="text-sm text-ohmic-text-dim">
-                Filing, review, and audit surfaces grouped below the active operator loop.
+              <div className="section-caption">
+                Filing, review, and audit surfaces grouped below the active operator loop so they stay available without crowding the main path.
               </div>
             </div>
           </div>
 
-          <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 gap-6 2xl:grid-cols-[minmax(30rem,0.95fr)_minmax(34rem,1.05fr)]">
             <div className="lane-shell space-y-5">
               <div>
                 <h3 className="lane-kicker">Filing and Status</h3>
