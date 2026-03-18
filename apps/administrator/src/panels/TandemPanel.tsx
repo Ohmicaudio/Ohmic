@@ -141,9 +141,14 @@ export function TandemPanel() {
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
-        <h2 className="text-sm font-bold uppercase tracking-widest text-ohmic-accent">
-          Tandem Handoff
-        </h2>
+        <div className="space-y-1">
+          <h2 className="text-sm font-bold uppercase tracking-widest text-ohmic-accent">
+            Step 1 - Provider Handoff
+          </h2>
+          <div className="text-[11px] text-ohmic-text-dim">
+            Choose the provider target, prepare the note, then launch or resolve the handshake.
+          </div>
+        </div>
         <button
           onClick={() => void fetch()}
           className="text-xs text-ohmic-text-dim hover:text-ohmic-text transition-colors"
@@ -159,10 +164,17 @@ export function TandemPanel() {
       ) : error ? (
         <div className="panel text-sm text-ohmic-danger py-6">{error}</div>
       ) : (
-        <div className="panel space-y-3">
+        <div className="panel space-y-4 border-ohmic-accent/20">
           <div className="flex items-center justify-between gap-3">
-            <div className="text-sm font-medium text-ohmic-text">
-              {configured ? 'Tandem configured' : 'Tandem not configured'}
+            <div className="space-y-1">
+              <div className="text-sm font-medium text-ohmic-text">
+                {configured ? 'Tandem configured' : 'Tandem not configured'}
+              </div>
+              <div className="text-[11px] text-ohmic-text-dim">
+                {selectedPreset
+                  ? `Selected target: ${selectedPreset.display_label}`
+                  : 'Select a target preset to prepare a provider launch.'}
+              </div>
             </div>
             <div className="flex flex-wrap items-center gap-2">
               <span
@@ -258,7 +270,7 @@ export function TandemPanel() {
                 ))}
               </div>
               {selectedPreset ? (
-                <div className="rounded border border-ohmic-border bg-ohmic-bg px-3 py-2 space-y-2 text-[11px] text-ohmic-text-dim">
+                <div className="rounded border border-ohmic-accent/20 bg-ohmic-bg px-3 py-2 space-y-2 text-[11px] text-ohmic-text-dim">
                   <div className="flex items-center justify-between gap-3">
                     <div className="text-ohmic-text">
                       {selectedPreset.display_label}
@@ -295,7 +307,7 @@ export function TandemPanel() {
             </div>
           ) : null}
 
-          <div className="text-xs text-ohmic-text-dim">
+          <div className="rounded border border-ohmic-border/60 bg-ohmic-bg px-3 py-2 text-xs text-ohmic-text-dim">
             {probeMessage ||
               message ||
               'This is the first external-provider seam. Full tab/session handoff will build on this status floor.'}
@@ -396,7 +408,7 @@ export function TandemPanel() {
           ) : null}
 
           {contextualLaunchUrl ? (
-            <div className="pt-1">
+            <div className="pt-1 flex flex-wrap gap-2">
               <a
                 href={contextualLaunchUrl}
                 target="_blank"
@@ -408,6 +420,9 @@ export function TandemPanel() {
               >
                 Open Tandem
               </a>
+              <div className="rounded border border-ohmic-border px-2.5 py-1.5 text-[11px] text-ohmic-text-dim">
+                Launch carries current intake and selected target context.
+              </div>
             </div>
           ) : null}
 

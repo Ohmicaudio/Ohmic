@@ -180,9 +180,14 @@ export function CommandComposerPanel() {
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
-        <h2 className="text-sm font-bold uppercase tracking-widest text-ohmic-accent">
-          Command Composer
-        </h2>
+        <div className="space-y-1">
+          <h2 className="text-sm font-bold uppercase tracking-widest text-ohmic-accent">
+            Step 2 - Apply Desk Action
+          </h2>
+          <div className="text-[11px] text-ohmic-text-dim">
+            Validate first, then commit the intake action into runtime and audit history.
+          </div>
+        </div>
         <button
           onClick={reset}
           className="text-xs text-ohmic-text-dim hover:text-ohmic-text transition-colors"
@@ -191,7 +196,10 @@ export function CommandComposerPanel() {
         </button>
       </div>
 
-      <div className="panel space-y-4">
+      <div className="panel space-y-4 border-emerald-300/20">
+        <div className="rounded border border-ohmic-border/60 bg-ohmic-bg px-3 py-2 text-[11px] text-ohmic-text-dim">
+          Use this after reviewing the intake and provider context. This is the point where the desk writes back.
+        </div>
         <div>
           <label className="block text-xs text-ohmic-text-dim mb-1">Intake ID</label>
           <input
@@ -292,6 +300,14 @@ export function CommandComposerPanel() {
           >
             {executing ? 'Applying...' : 'Apply Command'}
           </button>
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-[11px] text-ohmic-text-dim">
+          <div className="rounded border border-ohmic-border/60 bg-ohmic-bg px-3 py-2">
+            Validate checks the PowerShell contract before writeback.
+          </div>
+          <div className="rounded border border-ohmic-border/60 bg-ohmic-bg px-3 py-2">
+            Apply writes the result into runtime projections and audit history.
+          </div>
         </div>
       </div>
 
