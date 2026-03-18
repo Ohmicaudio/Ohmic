@@ -170,6 +170,7 @@ describe('selectRecentTandemLaunches', () => {
     expect(result).toEqual({
       presetId: 'github-bugs',
       intakeId: 'intake-2',
+      handoffNote: '',
     })
   })
 
@@ -202,6 +203,7 @@ describe('selectRecentTandemLaunches', () => {
     expect(result).toEqual({
       presetId: 'gmail-support',
       intakeId: null,
+      handoffNote: '',
     })
   })
 })

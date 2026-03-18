@@ -36,6 +36,7 @@ export function resolveRecentTandemLaunchSelection(
 ): {
   presetId: string | null
   intakeId: string | null
+  handoffNote: string
 } {
   const exactPreset = row.target_preset_id
     ? targetPresets.find((preset) => preset.preset_id === row.target_preset_id)
@@ -50,5 +51,6 @@ export function resolveRecentTandemLaunchSelection(
   return {
     presetId: labelPreset?.preset_id ?? null,
     intakeId: activeIntake?.intake_id ?? null,
+    handoffNote: row.handoff_note ?? '',
   }
 }

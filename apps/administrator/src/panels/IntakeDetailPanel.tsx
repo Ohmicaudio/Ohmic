@@ -36,6 +36,7 @@ export function IntakeDetailPanel() {
   const fetchAuditSummary = useAuditSummaryStore((state) => state.fetch)
   const tandemTargetPresets = useTandemStore((state) => state.targetPresets)
   const setSelectedTandemPreset = useTandemStore((state) => state.setSelectedPreset)
+  const setTandemHandoffNote = useTandemStore((state) => state.setHandoffNote)
   const selectedItem = items.find((item) => item.intake_id === selectedId) ?? null
   const itemNotes = selectedId
     ? notes.filter((note) => note.intake_id === selectedId)
@@ -175,7 +176,10 @@ export function IntakeDetailPanel() {
                   <div className="pt-1 flex flex-wrap gap-2">
                     {latestTandemSelection?.presetId ? (
                       <button
-                        onClick={() => setSelectedTandemPreset(latestTandemSelection.presetId!)}
+                        onClick={() => {
+                          setSelectedTandemPreset(latestTandemSelection.presetId!)
+                          setTandemHandoffNote(latestTandemSelection.handoffNote)
+                        }}
                         className="inline-flex rounded border border-ohmic-border px-2.5 py-1 text-[11px] font-medium text-ohmic-text transition-colors hover:border-ohmic-accent/30"
                       >
                         Load target into Tandem desk

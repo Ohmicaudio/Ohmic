@@ -84,6 +84,7 @@ export function TandemPanel() {
     if (selection.intakeId) {
       selectIntake(selection.intakeId)
     }
+    setHandoffNote(selection.handoffNote)
   }
 
   return (

@@ -43,6 +43,7 @@ export function InactiveIntakePanel() {
   const fetchAuditSummary = useAuditSummaryStore((s) => s.fetch)
   const tandemTargetPresets = useTandemStore((s) => s.targetPresets)
   const setSelectedTandemPreset = useTandemStore((s) => s.setSelectedPreset)
+  const setTandemHandoffNote = useTandemStore((s) => s.setHandoffNote)
 
   useEffect(() => {
     if (items.length === 0 && !loading) {
@@ -89,6 +90,7 @@ export function InactiveIntakePanel() {
     if (selection.presetId) {
       setSelectedTandemPreset(selection.presetId)
     }
+    setTandemHandoffNote(selection.handoffNote)
   }
 
   return (
