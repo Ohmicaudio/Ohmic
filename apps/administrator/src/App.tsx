@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 import { RuntimeIndicator } from '@/components/RuntimeIndicator'
 import { OperatorTruthStrip } from '@/components/OperatorTruthStrip'
 import { AggregationPanel } from '@/panels/AggregationPanel'
@@ -33,12 +33,16 @@ import { useTandemStore } from '@/store/tandemStore'
 import { useWarningReviewStore } from '@/store/warningReviewStore'
 
 export function App() {
+  const didAutoSelectIntake = useRef(false)
   const fetchDashboard = useDashboardStore((s) => s.fetch)
   const fetchAggregationPanel = useAggregationPanelStore((s) => s.fetch)
   const fetchAttachmentPreview = useAttachmentPreviewStore((s) => s.fetch)
   const fetchAuditSummary = useAuditSummaryStore((s) => s.fetch)
   const fetchFilingHistory = useFilingHistoryStore((s) => s.fetch)
   const fetchIntake = useIntakeStore((s) => s.fetch)
+  const intakeItems = useIntakeStore((s) => s.items)
+  const selectedIntakeId = useIntakeStore((s) => s.selectedId)
+  const selectIntake = useIntakeStore((s) => s.select)
   const fetchInactiveIntake = useInactiveIntakeStore((s) => s.fetch)
   const fetchIntakeContext = useIntakeContextStore((s) => s.fetch)
   const fetchStatusHistory = useStatusHistoryStore((s) => s.fetch)
@@ -115,6 +119,25 @@ export function App() {
     fetchWarningReview,
   ])
 
+  useEffect(() => {
+    if (intakeItems.length === 0) {
+      return
+    }
+
+    const hasSelectedIntake = selectedIntakeId
+      ? intakeItems.some((item) => item.intake_id === selectedIntakeId)
+      : false
+
+    if (hasSelectedIntake) {
+      return
+    }
+
+    if (!didAutoSelectIntake.current || selectedIntakeId) {
+      selectIntake(intakeItems[0].intake_id)
+      didAutoSelectIntake.current = true
+    }
+  }, [intakeItems, selectIntake, selectedIntakeId])
+
   return (
     <div className="min-h-screen flex flex-col">
       <header className="sticky top-0 z-50 border-b border-ohmic-border bg-ohmic-surface/60 backdrop-blur-md">
@@ -168,9 +191,9 @@ export function App() {
                 </div>
               </div>
               <div className="space-y-6">
+                <IntakeQueuePanel />
                 <QueueActivityPanel />
                 <WorkspaceActivityPanel />
-                <IntakeQueuePanel />
                 <InactiveIntakePanel />
                 <AggregationPanel />
               </div>
