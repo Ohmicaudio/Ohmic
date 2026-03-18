@@ -1,4 +1,5 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
+import { fetchQueueDocumentContext } from '@/api/queue'
 import { useIntakeStore } from '@/store/intakeStore'
 import { useIntakeContextStore } from '@/store/intakeContextStore'
 import { useAuditSummaryStore } from '@/store/auditSummaryStore'
@@ -109,6 +110,14 @@ export function IntakeDetailPanel() {
       : null
   const fallbackReadyTask = focusedReadyTask ?? readyTasks[0] ?? null
   const fallbackClaim = focusedClaim ?? activeClaims[0] ?? null
+  const fallbackQueuePath = fallbackReadyTask?.file_path ?? fallbackClaim?.file_path ?? null
+  const [queueContext, setQueueContext] = useState<{
+    title: string
+    excerpt: string
+    source_heading: string | null
+  } | null>(null)
+  const [queueContextLoading, setQueueContextLoading] = useState(false)
+  const [queueContextError, setQueueContextError] = useState<string | null>(null)
 
   useEffect(() => {
     if (selectedId && notes.length === 0 && tagAssignments.length === 0) {
@@ -121,6 +130,44 @@ export function IntakeDetailPanel() {
       void fetchAuditSummary()
     }
   }, [selectedId, auditAttempted, auditAvailable, auditLoading, fetchAuditSummary])
+
+  useEffect(() => {
+    if (selectedItem || !fallbackQueuePath) {
+      setQueueContext(null)
+      setQueueContextError(null)
+      setQueueContextLoading(false)
+      return
+    }
+
+    let cancelled = false
+    setQueueContextLoading(true)
+    setQueueContextError(null)
+
+    fetchQueueDocumentContext(fallbackQueuePath)
+      .then((context) => {
+        if (!cancelled) {
+          setQueueContext({
+            title: context.title,
+            excerpt: context.excerpt,
+            source_heading: context.source_heading,
+          })
+          setQueueContextLoading(false)
+        }
+      })
+      .catch((error: unknown) => {
+        if (!cancelled) {
+          setQueueContext(null)
+          setQueueContextError(
+            error instanceof Error ? error.message : 'Failed to load queue context'
+          )
+          setQueueContextLoading(false)
+        }
+      })
+
+    return () => {
+      cancelled = true
+    }
+  }, [fallbackQueuePath, selectedItem])
 
   const providerRuntimeUnavailable = auditAttempted && !auditAvailable
 
@@ -189,6 +236,32 @@ export function IntakeDetailPanel() {
               <div className="text-sm text-ohmic-text-dim">
                 Use <span className="text-ohmic-text">Desk Focus</span> or the queue cards to lock this work into the desk, then return here once you have a live intake context to route.
               </div>
+            </div>
+
+            <div className="rounded-lg border border-ohmic-border/70 bg-ohmic-surface/70 px-3 py-3 space-y-2">
+              <div className="text-[10px] uppercase tracking-widest text-ohmic-text-dim">
+                Queue packet preview
+              </div>
+              {queueContextLoading ? (
+                <div className="text-sm text-ohmic-text-dim animate-pulse">
+                  Loading queue packet context...
+                </div>
+              ) : queueContextError ? (
+                <div className="text-sm text-ohmic-warning">{queueContextError}</div>
+              ) : queueContext ? (
+                <div className="space-y-2">
+                  <div className="text-sm text-ohmic-text">
+                    {queueContext.source_heading || queueContext.title}
+                  </div>
+                  <pre className="overflow-x-auto whitespace-pre-wrap break-words rounded border border-ohmic-border bg-ohmic-bg px-3 py-2 text-[11px] leading-5 text-ohmic-text-dim">
+                    {queueContext.excerpt}
+                  </pre>
+                </div>
+              ) : (
+                <div className="text-sm text-ohmic-text-dim">
+                  No queue packet preview is available for the current focus.
+                </div>
+              )}
             </div>
           </div>
         ) : (

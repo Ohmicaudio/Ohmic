@@ -6,6 +6,7 @@ import path from 'path'
 const localRuntimeBase = 'B:\\ohmic-local\\runtime\\administrator-tests'
 const localQueueBase = 'B:\\ohmic-local\\runtime\\administrator-ready-tests'
 const localActiveClaimsBase = 'B:\\ohmic-local\\runtime\\administrator-active-tests'
+const localWorkspaceBase = 'B:\\ohmic-local\\runtime\\administrator-workspace-tests'
 
 async function importServer() {
   vi.resetModules()
@@ -43,6 +44,7 @@ describe('administrator server', () => {
   let tempRuntimeDir: string | null = null
   let tempReadyQueueDir: string | null = null
   let tempActiveClaimsDir: string | null = null
+  let tempWorkspaceDir: string | null = null
   let stopServer: (() => Promise<void>) | null = null
   let tandemProbeServer: http.Server | null = null
 
@@ -51,12 +53,15 @@ describe('administrator server', () => {
     await mkdir(localRuntimeBase, { recursive: true })
     await mkdir(localQueueBase, { recursive: true })
     await mkdir(localActiveClaimsBase, { recursive: true })
+    await mkdir(localWorkspaceBase, { recursive: true })
     tempRuntimeDir = await mkdtemp(path.join(localRuntimeBase, 'server-'))
     tempReadyQueueDir = await mkdtemp(path.join(localQueueBase, 'ready-'))
     tempActiveClaimsDir = await mkdtemp(path.join(localActiveClaimsBase, 'active-'))
+    tempWorkspaceDir = await mkdtemp(path.join(localWorkspaceBase, 'workspace-'))
     process.env.ADMINISTRATOR_RUNTIME_DIR = tempRuntimeDir
     process.env.ADMINISTRATOR_READY_QUEUE_DIR = tempReadyQueueDir
     process.env.ADMINISTRATOR_ACTIVE_JOBS_DIR = tempActiveClaimsDir
+    process.env.ADMINISTRATOR_WORKSPACE_ROOT = tempWorkspaceDir
 
     await writeFile(
       path.join(tempRuntimeDir, 'dashboard_status_cards.json'),
@@ -119,6 +124,10 @@ describe('administrator server', () => {
       await rm(tempActiveClaimsDir, { recursive: true, force: true })
       tempActiveClaimsDir = null
     }
+    if (tempWorkspaceDir) {
+      await rm(tempWorkspaceDir, { recursive: true, force: true })
+      tempWorkspaceDir = null
+    }
 
     if (tandemProbeServer) {
       await new Promise<void>((resolve, reject) => {
@@ -138,6 +147,7 @@ describe('administrator server', () => {
     delete process.env.ADMINISTRATOR_TANDEM_STATUS_URL
     delete process.env.ADMINISTRATOR_READY_QUEUE_DIR
     delete process.env.ADMINISTRATOR_ACTIVE_JOBS_DIR
+    delete process.env.ADMINISTRATOR_WORKSPACE_ROOT
   })
 
   async function writeActiveQueueFixture(intakeId: string, title: string) {
@@ -350,6 +360,50 @@ describe('administrator server', () => {
       status: 'active',
       paths: [],
     })
+  })
+
+  it('serves queue document context from the workspace root', async () => {
+    const taskFilePath = path.join(tempWorkspaceDir!, 'agent-system', 'requests', 'ready')
+    await mkdir(taskFilePath, { recursive: true })
+    const filePath = path.join(taskFilePath, '2026-03-18-test-packet.md')
+    await writeFile(
+      filePath,
+      [
+        'scope: task',
+        'status: ready',
+        '',
+        '# Test Packet',
+        '',
+        '## Goal',
+        '',
+        'Make the administrator queue desk surface the real packet excerpt.',
+      ].join('\n'),
+      'utf-8'
+    )
+
+    const { createAdministratorServer } = await importServer()
+    const app = createAdministratorServer(0)
+    const baseUrl = await app.start()
+    stopServer = app.stop
+
+    const contextRes = await fetch(`${baseUrl}/api/queue/context`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        file_path: filePath,
+      }),
+    })
+
+    expect(contextRes.ok).toBe(true)
+    const context = (await contextRes.json()) as {
+      file_path: string
+      title: string
+      excerpt: string
+    }
+
+    expect(context.file_path).toBe(filePath)
+    expect(context.title).toBe('Test Packet')
+    expect(context.excerpt).toContain('## Goal')
   })
 
   it('claims a ready task through the queue route', async () => {
@@ -1284,6 +1338,13 @@ describe('administrator server', () => {
       body: JSON.stringify({}),
     })
     expect(missingReleaseClaimRes.status).toBe(400)
+
+    const missingQueueContextRes = await fetch(`${baseUrl}/api/queue/context`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({}),
+    })
+    expect(missingQueueContextRes.status).toBe(400)
   })
 
   it('ignores malformed tandem probe target health rows', async () => {

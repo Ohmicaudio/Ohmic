@@ -1,6 +1,7 @@
 import type {
   ClaimReadyTaskResponse,
   CompleteClaimResponse,
+  QueueDocumentContext,
   ReleaseClaimResponse,
   ReadyTask,
 } from '@/types/intake'
@@ -36,5 +37,13 @@ export async function completeQueueClaim(claimId: string): Promise<CompleteClaim
 export async function releaseQueueClaim(claimId: string): Promise<ReleaseClaimResponse> {
   return postJson<ReleaseClaimResponse>('/queue/release-claim', {
     claim_id: claimId,
+  })
+}
+
+export async function fetchQueueDocumentContext(
+  filePath: string
+): Promise<QueueDocumentContext> {
+  return postJson<QueueDocumentContext>('/queue/context', {
+    file_path: filePath,
   })
 }

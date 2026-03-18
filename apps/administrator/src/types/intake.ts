@@ -455,6 +455,13 @@ export interface ReadyTasksProjection {
   tasks: ReadyTask[]
 }
 
+export interface QueueDocumentContext {
+  file_path: string
+  title: string
+  excerpt: string
+  source_heading: string | null
+}
+
 export interface AdministratorDeskFocusSelection {
   focus_kind: 'intake' | 'ready_task' | 'claim'
   selected_intake_id: string | null

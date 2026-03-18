@@ -9,6 +9,7 @@ import { claimReadyTask, completeClaim, releaseClaim } from './queueActions.js'
 import { readReadyTasksFromDisk } from './readyTasksSource.js'
 import { readTandemStatus } from './tandemProxy.js'
 import { readWorkspaceActivity } from './workspaceActivitySource.js'
+import { readQueueDocumentContext } from './queueContextSource.js'
 import { buildProjectionFallback } from './projectionFallbacks.js'
 import {
   executeCommand,
@@ -234,6 +235,26 @@ export function createAdministratorServer(port = PORT) {
           releaseClaim(input)
             .then((result) => sendJson(res, result))
             .catch((err) => sendJson(res, { error: err.message }, 500))
+        } catch {
+          sendJson(res, { error: 'Invalid JSON body' }, 400)
+        }
+      })
+      return
+    }
+
+    if (requestPath === '/api/queue/context' && req.method === 'POST') {
+      let body = ''
+      req.on('data', (chunk: Buffer) => { body += chunk.toString() })
+      req.on('end', () => {
+        try {
+          const input = JSON.parse(body)
+          if (!input?.file_path) {
+            sendJson(res, { error: 'Missing file_path in request body' }, 400)
+            return
+          }
+          readQueueDocumentContext(input.file_path)
+            .then((result) => sendJson(res, result))
+            .catch((err) => sendJson(res, { error: err.message }, 400))
         } catch {
           sendJson(res, { error: 'Invalid JSON body' }, 400)
         }
