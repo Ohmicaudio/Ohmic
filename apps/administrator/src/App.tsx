@@ -118,21 +118,26 @@ export function App() {
   return (
     <div className="min-h-screen flex flex-col">
       <header className="border-b border-ohmic-border bg-ohmic-surface/50 backdrop-blur-sm sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-2 h-2 rounded-full bg-ohmic-accent animate-pulse" />
-            <h1 className="text-sm font-bold tracking-widest uppercase">
-              Ohmic Administrator
-            </h1>
+        <div className="max-w-7xl mx-auto px-4 py-3 flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
+          <div className="space-y-1">
+            <div className="flex items-center gap-3">
+              <div className="w-2 h-2 rounded-full bg-ohmic-accent animate-pulse" />
+              <h1 className="text-sm font-bold tracking-widest uppercase">
+                Ohmic Administrator
+              </h1>
+            </div>
+            <div className="text-[11px] uppercase tracking-widest text-ohmic-text-dim">
+              Operator desk for intake, provider handoff, and live queue truth
+            </div>
           </div>
-          <div className="flex items-center gap-4">
+          <div className="flex flex-wrap items-center gap-4">
             <RuntimeIndicator
               status={healthStatus}
               runtimeDir={runtimeDir}
               loadedProjectionCount={loadedProjectionCount}
               expectedProjectionCount={expectedProjectionCount}
             />
-            <div className="text-xs text-ohmic-text-dim">Intake Triage &amp; Routing</div>
+            <div className="text-xs text-ohmic-text-dim">Intake Triage and Routing</div>
           </div>
         </div>
       </header>
@@ -141,39 +146,64 @@ export function App() {
         <DashboardPanel />
         <OperatorTruthStrip />
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-8">
-          <div className="lg:col-span-2">
-            <IntakeQueuePanel />
-            <InactiveIntakePanel />
-            <AggregationPanel />
+        <section className="mt-8 space-y-3">
+          <div className="flex flex-col gap-1 lg:flex-row lg:items-end lg:justify-between">
+            <div>
+              <h2 className="text-xs font-semibold uppercase tracking-[0.28em] text-ohmic-text-dim">
+                Operations
+              </h2>
+              <div className="text-sm text-ohmic-text-dim">
+                Queue on the left, intake and provider context in the middle, action rail on the right.
+              </div>
+            </div>
           </div>
 
-          <div className="space-y-8">
-            <IntakeDetailPanel />
-            <TandemPanel />
-            <CommandComposerPanel />
-          </div>
-        </div>
+          <div className="grid grid-cols-1 xl:grid-cols-12 gap-6">
+            <div className="space-y-6 xl:col-span-4">
+              <QueueActivityPanel />
+              <WorkspaceActivityPanel />
+              <IntakeQueuePanel />
+              <InactiveIntakePanel />
+              <AggregationPanel />
+            </div>
 
-        <div className="grid grid-cols-1 xl:grid-cols-2 gap-6 mt-8">
-          <div className="space-y-6">
-            <FilingPickerPanel />
-            <FilingHistoryPanel />
-            <StatusHistoryPanel />
-          </div>
-          <div className="space-y-6">
-            <WarningReviewPanel />
-            <AttachmentPreviewPanel />
-            <AuditTrailPanel />
-          </div>
-        </div>
+            <div className="space-y-6 xl:col-span-5">
+              <IntakeDetailPanel />
+              <ProviderHandoffPanel />
+            </div>
 
-        <QueueActivityPanel />
-        <WorkspaceActivityPanel />
+            <div className="space-y-6 xl:col-span-3 xl:sticky xl:top-24 self-start">
+              <TandemPanel />
+              <CommandComposerPanel />
+            </div>
+          </div>
+        </section>
 
-        <div className="mt-8">
-          <ProviderHandoffPanel />
-        </div>
+        <section className="mt-8 space-y-3">
+          <div className="flex flex-col gap-1 lg:flex-row lg:items-end lg:justify-between">
+            <div>
+              <h2 className="text-xs font-semibold uppercase tracking-[0.28em] text-ohmic-text-dim">
+                Context and History
+              </h2>
+              <div className="text-sm text-ohmic-text-dim">
+                Filing, review, and audit surfaces grouped below the active operator loop.
+              </div>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
+            <div className="space-y-6">
+              <FilingPickerPanel />
+              <FilingHistoryPanel />
+              <StatusHistoryPanel />
+            </div>
+            <div className="space-y-6">
+              <WarningReviewPanel />
+              <AttachmentPreviewPanel />
+              <AuditTrailPanel />
+            </div>
+          </div>
+        </section>
       </main>
 
       <footer className="border-t border-ohmic-border py-3 text-center text-xs text-ohmic-text-dim">

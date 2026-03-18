@@ -32,7 +32,7 @@ export function WorkspaceActivityPanel() {
   }, [fetch])
 
   return (
-    <div className="space-y-4 mt-8">
+    <div className="space-y-4">
       <div className="flex items-center justify-between gap-3">
         <div>
           <h2 className="text-sm font-bold uppercase tracking-widest text-ohmic-accent">
