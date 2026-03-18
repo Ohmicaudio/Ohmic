@@ -2,12 +2,14 @@ import { useEffect } from 'react'
 import { useCommandStore } from '@/store/commandStore'
 import { useIntakeStore } from '@/store/intakeStore'
 import { useAuditSummaryStore } from '@/store/auditSummaryStore'
+import { useTandemStore } from '@/store/tandemStore'
 import { StatusBadge } from '@/components/StatusBadge'
 import type { AdministratorAuditSummaryItem, AuditFilterPreset } from '@/types/intake'
 import {
   buildAuditFollowUpNote,
   deriveAuditFollowUpAction,
 } from '@/panels/auditFollowUp'
+import { resolveRecentTandemLaunchSelection } from '@/panels/tandemHistory'
 
 function filterAuditRows(
   rows: AdministratorAuditSummaryItem[],
@@ -31,6 +33,7 @@ export function AuditTrailPanel() {
     setNoteText,
   } = useCommandStore()
   const { selectedId, select } = useIntakeStore()
+  const intakeItems = useIntakeStore((state) => state.items)
   const {
     items,
     filterPresets,
@@ -40,6 +43,9 @@ export function AuditTrailPanel() {
     fetch,
     setActivePreset,
   } = useAuditSummaryStore()
+  const tandemTargetPresets = useTandemStore((state) => state.targetPresets)
+  const setSelectedTandemPreset = useTandemStore((state) => state.setSelectedPreset)
+  const setTandemHandoffNote = useTandemStore((state) => state.setHandoffNote)
 
   useEffect(() => {
     fetch()
@@ -76,6 +82,17 @@ export function AuditTrailPanel() {
       status_delta: '',
     }))
     select(intakeId)
+  }
+
+  function loadProviderHandoff(item: AdministratorAuditSummaryItem) {
+    const selection = resolveRecentTandemLaunchSelection(item, tandemTargetPresets, intakeItems)
+    if (selection.presetId) {
+      setSelectedTandemPreset(selection.presetId)
+    }
+    setTandemHandoffNote(selection.handoffNote)
+    if (selection.intakeId) {
+      select(selection.intakeId)
+    }
   }
 
   return (
@@ -156,7 +173,13 @@ export function AuditTrailPanel() {
                       {item.actor_label ? <span>{item.actor_label}</span> : null}
                       {item.status_delta ? <span>{item.status_delta}</span> : null}
                       {item.target_label ? <span>{item.target_label}</span> : null}
+                      {item.attachment_id ? <span>{item.attachment_id}</span> : null}
                     </div>
+                    {item.handoff_note ? (
+                      <div className="text-[11px] text-ohmic-text-dim whitespace-pre-wrap">
+                        {item.handoff_note}
+                      </div>
+                    ) : null}
                   </div>
                   <span className="text-[10px] text-ohmic-text-dim whitespace-nowrap">
                     {item.occurred_at ? new Date(item.occurred_at).toLocaleString() : '--'}
@@ -164,7 +187,15 @@ export function AuditTrailPanel() {
                 </button>
 
                 {item.intake_id && deriveAuditFollowUpAction(item.event_family) ? (
-                  <div className="flex justify-end">
+                  <div className="flex justify-end gap-2">
+                    {item.event_family === 'provider_handoff' ? (
+                      <button
+                        onClick={() => loadProviderHandoff(item)}
+                        className="rounded border border-ohmic-border px-2.5 py-1 text-[10px] uppercase tracking-widest text-ohmic-text-dim transition-colors hover:border-ohmic-accent/30 hover:text-ohmic-text"
+                      >
+                        Load Into Tandem
+                      </button>
+                    ) : null}
                     <button
                       onClick={() =>
                         primeAuditFollowUp(item, deriveAuditFollowUpAction(item.event_family)!)
