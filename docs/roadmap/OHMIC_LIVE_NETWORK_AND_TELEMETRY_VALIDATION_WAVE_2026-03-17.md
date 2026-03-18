@@ -1,5 +1,5 @@
 Date: 2026-03-17
-Status: ready
+Status: done
 Project: firmware
 
 # Ohmic Live Network And Telemetry Validation Wave
@@ -24,3 +24,9 @@ later as a follow-on validation lane when it is back on the bench.
 - `2026-03-17-verify-live-dsp-and-remote-shared-status-and-missing-source-truth.md`
 - `2026-03-17-capture-live-dsp-status-surface-against-the-shared-contract.md`
 - `2026-03-17-verify-live-ap-guard-and-lan-target-truth-on-current-network.md`
+
+## Result
+
+- `OHMIC_LIVE_DSP_AND_REMOTE_SHARED_STATUS_AND_MISSING_SOURCE_RESULT_2026-03-17.md`
+- `OHMIC_LIVE_DSP_STATUS_SURFACE_CAPTURE_RESULT_2026-03-17.md`
+- `OHMIC_LIVE_AP_GUARD_AND_LAN_TARGET_VALIDATION_RESULT_2026-03-17.md`

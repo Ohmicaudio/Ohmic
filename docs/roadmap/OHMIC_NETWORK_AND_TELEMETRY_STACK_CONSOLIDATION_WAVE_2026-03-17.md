@@ -1,5 +1,5 @@
 Date: 2026-03-17
-Status: ready
+Status: done
 Project: firmware
 
 # Ohmic Network And Telemetry Stack Consolidation Wave
@@ -38,3 +38,13 @@ guarded, and the live display slot is not yet a real stream-backed surface.
 - `2026-03-17-carry-live-amplab-wifi-profile-and-connect-floor-into-shared-core-runtime.md`
 - `2026-03-17-finish-shared-status-control-and-stream-contract-across-active-nodes.md`
 - `2026-03-17-carve-live-display-stream-slot-and-missing-stream-state-outside-demo-mode.md`
+
+## Result
+
+- `OHMIC_SHARED_FIRMWARE_NETWORK_CORE_EXTRACTION_RESULT_2026-03-17.md`
+- `OHMIC_REMOTE_SHARED_NETWORK_CORE_CONVERGENCE_RESULT_2026-03-17.md`
+- `OHMIC_AP_VS_LAN_TARGET_SELECTION_NORMALIZATION_RESULT_2026-03-17.md`
+- `OHMIC_SHARED_STATUS_CONTROL_AND_STREAM_CONTRACT_RESULT_2026-03-17.md`
+- `OHMIC_CARRY_FORWARD_LIVE_AMP_LAB_NETWORK_AND_STATUS_RESULT_2026-03-17.md`
+- `OHMIC_CARRY_FORWARD_LIVE_AMP_LAB_WIFI_PROFILE_AND_CONNECT_RESULT_2026-03-17.md`
+- `OHMIC_LIVE_SLOT_AND_MISSING_SOURCE_QUARANTINE_RESULT_2026-03-17.md`
