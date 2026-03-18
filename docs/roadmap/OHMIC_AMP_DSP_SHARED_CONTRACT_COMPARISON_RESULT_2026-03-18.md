@@ -34,6 +34,15 @@ Both nodes also reported truthful live network state on LAN:
 - `soft_ap_active: true`
 - `http_server_started: true`
 
+Follow-up carry-forward on the same date also moved shared runtime identity off
+profile-generic values and onto per-device values:
+
+- DSP: `dsp_1701-24DA5ED4DB1C`
+- AmpLab: `amplab-E4876E75DC3C`
+
+That prevents multiple boards of the same class from collapsing onto the same
+shared `unit_id`.
+
 ## Expected profile differences
 
 DSP:
