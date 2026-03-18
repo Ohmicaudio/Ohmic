@@ -31,6 +31,7 @@ function New-AdministratorAuditSummaryShellModel {
                 target_label = [string](Get-AdministratorObjectValue -InputObject $_ -Name 'target_label' -Default '')
                 target_preset_id = [string](Get-AdministratorObjectValue -InputObject $_ -Name 'target_preset_id' -Default '')
                 launch_url = [string](Get-AdministratorObjectValue -InputObject $_ -Name 'launch_url' -Default '')
+                attachment_id = [string](Get-AdministratorObjectValue -InputObject $_ -Name 'attachment_id' -Default '')
                 _sort = ConvertTo-AdministratorSortableUtc -Value (Get-AdministratorObjectValue -InputObject $_ -Name 'occurred_at' -Default '')
             }
         } |

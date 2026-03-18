@@ -19,6 +19,7 @@ describe('selectRecentTandemLaunches', () => {
         target_label: 'Gmail support inbox',
         target_preset_id: 'gmail-support',
         launch_url: 'http://127.0.0.1:8765/?targetPreset=gmail-support',
+        attachment_id: '',
       },
       {
         event_id: 'b',
@@ -41,6 +42,7 @@ describe('selectRecentTandemLaunches', () => {
         target_label: 'GitHub issues queue',
         target_preset_id: 'github-bugs',
         launch_url: 'http://127.0.0.1:8765/?targetPreset=github-bugs',
+        attachment_id: 'asset-1',
       },
     ]
 
@@ -59,6 +61,7 @@ describe('selectRecentTandemLaunches', () => {
       target_label: `target-${index + 1}`,
       target_preset_id: `preset-${index + 1}`,
       launch_url: `http://127.0.0.1:8765/?targetPreset=preset-${index + 1}`,
+      attachment_id: '',
     }))
 
     expect(selectRecentTandemLaunches(rows, 2)).toEqual(rows.slice(0, 2))
@@ -122,6 +125,7 @@ describe('selectRecentTandemLaunches', () => {
         target_label: 'Wrong label',
         target_preset_id: 'github-bugs',
         launch_url: 'http://127.0.0.1:8765/?targetPreset=github-bugs',
+        attachment_id: '',
       },
       [
         {
@@ -172,6 +176,7 @@ describe('selectRecentTandemLaunches', () => {
         target_label: 'Gmail support inbox',
         target_preset_id: '',
         launch_url: 'http://127.0.0.1:8765/?targetPreset=gmail-support',
+        attachment_id: '',
       },
       [
         {

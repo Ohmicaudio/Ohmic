@@ -161,6 +161,11 @@ export function IntakeDetailPanel() {
                     ? 'Attachment review handoff'
                     : 'Provider handoff recorded from the desk'}
                 </div>
+                {latestTandemLaunch.attachment_id ? (
+                  <div className="text-xs text-ohmic-text-dim">
+                    Attachment: <span className="text-ohmic-text">{latestTandemLaunch.attachment_id}</span>
+                  </div>
+                ) : null}
                 {latestTandemLaunch.launch_url || latestTandemSelection?.presetId ? (
                   <div className="pt-1 flex flex-wrap gap-2">
                     {latestTandemSelection?.presetId ? (

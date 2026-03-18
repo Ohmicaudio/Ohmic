@@ -293,6 +293,7 @@ export interface AdministratorAuditSummaryItem {
   target_label: string
   target_preset_id?: string
   launch_url?: string
+  attachment_id?: string
 }
 
 export interface AdministratorAuditSummaryProjection {

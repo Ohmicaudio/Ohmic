@@ -229,6 +229,7 @@ export function TandemPanel() {
                         <div className="break-words">
                           {item.intake_id || 'No intake context'}
                           {item.status_delta ? ` | ${item.status_delta}` : ''}
+                          {item.attachment_id ? ` | ${item.attachment_id}` : ''}
                         </div>
                       </div>
                       <div className="whitespace-nowrap">

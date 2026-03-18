@@ -320,6 +320,7 @@ describe('administrator server', () => {
         intake_id: string
         target_label: string
         status_delta: string
+        attachment_id?: string
       }>
     }
 
@@ -328,6 +329,7 @@ describe('administrator server', () => {
       intake_id: 'intake-tandem-1',
       target_label: 'Gmail support inbox',
       status_delta: 'attachment_review',
+      attachment_id: 'asset-77',
     })
   })
 
