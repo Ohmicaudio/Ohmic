@@ -11,9 +11,11 @@ export function AttachmentPreviewPanel() {
   const selectedIntakeId = useIntakeStore((s) => s.selectedId)
   const intakeItems = useIntakeStore((s) => s.items)
   const tandemLaunchUrl = useTandemStore((s) => s.launchUrl)
+  const tandemTargetPresets = useTandemStore((s) => s.targetPresets)
   const { noteText, setIntakeId, setActionInput, setNoteText } = useCommandStore()
   const selectedIntake =
     intakeItems.find((item) => item.intake_id === selectedIntakeId) ?? null
+  const defaultPreset = tandemTargetPresets[0] ?? null
 
   function primeReviewHandoff(action: string, item: (typeof items)[number]) {
     if (!selectedIntakeId) {
@@ -101,13 +103,15 @@ export function AttachmentPreviewPanel() {
                     {buildTandemAttachmentReviewUrl(
                       tandemLaunchUrl,
                       selectedIntake,
-                      item
+                      item,
+                      defaultPreset
                     ) ? (
                       <a
                         href={buildTandemAttachmentReviewUrl(
                           tandemLaunchUrl,
                           selectedIntake,
-                          item
+                          item,
+                          defaultPreset
                         )!}
                         target="_blank"
                         rel="noreferrer"

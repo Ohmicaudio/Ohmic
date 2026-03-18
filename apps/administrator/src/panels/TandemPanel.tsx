@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useTandemStore } from '@/store/tandemStore'
 import { useIntakeStore } from '@/store/intakeStore'
 import { buildTandemContextUrl } from '@/panels/tandemContext'
@@ -21,12 +21,30 @@ export function TandemPanel() {
     error,
     fetch,
   } = useTandemStore()
+  const [selectedPresetId, setSelectedPresetId] = useState<string>('')
   const selectedIntake = items.find((item) => item.intake_id === selectedId) ?? null
-  const contextualLaunchUrl = buildTandemContextUrl(launchUrl, selectedIntake)
+  const selectedPreset = useMemo(
+    () => targetPresets.find((preset) => preset.preset_id === selectedPresetId) ?? null,
+    [selectedPresetId, targetPresets]
+  )
+  const contextualLaunchUrl = buildTandemContextUrl(launchUrl, selectedIntake, selectedPreset)
 
   useEffect(() => {
     void fetch()
   }, [fetch])
+
+  useEffect(() => {
+    if (!targetPresets.length) {
+      if (selectedPresetId) {
+        setSelectedPresetId('')
+      }
+      return
+    }
+
+    if (!selectedPresetId || !targetPresets.some((preset) => preset.preset_id === selectedPresetId)) {
+      setSelectedPresetId(targetPresets[0]?.preset_id ?? '')
+    }
+  }, [selectedPresetId, targetPresets])
 
   return (
     <div className="space-y-4">
@@ -94,11 +112,26 @@ export function TandemPanel() {
               <div className="text-xs uppercase tracking-wider text-ohmic-text-dim">
                 Target presets
               </div>
+              <select
+                value={selectedPresetId}
+                onChange={(event) => setSelectedPresetId(event.target.value)}
+                className="w-full bg-ohmic-bg border border-ohmic-border rounded px-3 py-2 text-sm text-ohmic-text focus:border-ohmic-accent focus:outline-none transition-colors"
+              >
+                {targetPresets.map((preset) => (
+                  <option key={preset.preset_id} value={preset.preset_id}>
+                    {preset.display_label}
+                  </option>
+                ))}
+              </select>
               <div className="flex flex-wrap gap-2">
                 {targetPresets.map((preset) => (
                   <div
                     key={preset.preset_id}
-                    className="rounded border border-ohmic-border px-2.5 py-1.5 text-[11px] text-ohmic-text-dim"
+                    className={`rounded border px-2.5 py-1.5 text-[11px] ${
+                      preset.preset_id === selectedPresetId
+                        ? 'border-ohmic-accent/40 bg-ohmic-accent/10 text-ohmic-text'
+                        : 'border-ohmic-border text-ohmic-text-dim'
+                    }`}
                   >
                     <span className="text-ohmic-text">{preset.display_label}</span>
                     <span>{' -> '}{preset.target_label}</span>

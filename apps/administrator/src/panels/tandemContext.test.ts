@@ -36,6 +36,22 @@ describe('buildTandemContextUrl', () => {
     )
   })
 
+  it('adds the selected target preset to the tandem launch url', () => {
+    expect(
+      buildTandemContextUrl(
+        'http://127.0.0.1:8765/?sessionLabel=gmail-triage',
+        null,
+        {
+          preset_id: 'gmail-support',
+          display_label: 'Gmail Support',
+          target_label: 'Gmail support inbox',
+        }
+      )
+    ).toBe(
+      'http://127.0.0.1:8765/?sessionLabel=gmail-triage&targetPreset=gmail-support&targetLabel=Gmail+support+inbox'
+    )
+  })
+
   it('adds attachment review context to the tandem launch url', () => {
     expect(
       buildTandemAttachmentReviewUrl(
@@ -63,10 +79,15 @@ describe('buildTandemContextUrl', () => {
           fallback_label: 'DSP screenshot',
           failure_reason: '',
           review_handoff_action: 'add_note',
+        },
+        {
+          preset_id: 'gmail-support',
+          display_label: 'Gmail Support',
+          target_label: 'Gmail support inbox',
         }
       )
     ).toBe(
-      'http://127.0.0.1:8765/?sessionLabel=gmail-triage&intakeId=intake-42&intakeTitle=Customer+mail+thread&routingTarget=operator&attachmentId=asset-1&previewRefId=preview-1&previewKind=image&attachmentLabel=DSP+screenshot&previewUrl=https%3A%2F%2Fexample.com%2Fpreview.png'
+      'http://127.0.0.1:8765/?sessionLabel=gmail-triage&targetPreset=gmail-support&targetLabel=Gmail+support+inbox&intakeId=intake-42&intakeTitle=Customer+mail+thread&routingTarget=operator&attachmentId=asset-1&previewRefId=preview-1&previewKind=image&attachmentLabel=DSP+screenshot&previewUrl=https%3A%2F%2Fexample.com%2Fpreview.png'
     )
   })
 })
