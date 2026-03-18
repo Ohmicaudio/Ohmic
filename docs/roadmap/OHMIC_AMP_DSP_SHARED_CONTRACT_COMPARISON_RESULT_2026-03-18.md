@@ -52,6 +52,16 @@ instead of generic profile strings:
 That keeps setup-mode discovery aligned with the public-facing per-device
 designator instead of generic `OHMIC-SETUP` naming.
 
+The shared status surface now exposes that public-facing identifier directly:
+
+- DSP `identity.public_designator: OHMIC-DSP-D4DB1C`
+- AmpLab `identity.public_designator: OHMIC-AMP-75DC3C`
+
+The hybrid legacy wrapper also carries the same value under:
+
+- `identity.public_designator`
+- `device.public_designator`
+
 ## Expected profile differences
 
 DSP:
