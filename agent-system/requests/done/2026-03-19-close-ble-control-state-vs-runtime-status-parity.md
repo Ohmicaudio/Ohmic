@@ -1,7 +1,7 @@
 scope: project
 authority: working
 project: ohmic-audio-labs
-status: ready
+status: done
 requested: 2026-03-19
 requester: user
 origin: live-fire-ble-lane
@@ -36,15 +36,13 @@ supersedes:
 
 ## Notes
 
-- BLE transport is live and stable now; remaining work is parity and polish.
+- completed with live Fire evidence in
+  `docs/roadmap/OHMIC_LIVE_FIRE_BLE_CONTROL_AND_PROFILE_PARITY_RESULT_2026-03-19.md`
 
 ## Ready When
 
-- BLE control updates map cleanly into normalized status/control truth
-- Fire card can show the resulting state without relying on raw log text
+- complete
 
 ## Suggested Claim Scope
 
-- mobile BLE onboarding/control card
-- BLE notification parser
-- firmware BLE reply writers
+- complete
