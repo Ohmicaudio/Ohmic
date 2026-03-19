@@ -1,5 +1,5 @@
 {
-    "generated_at":  "2026-03-19T09:22:04Z",
+    "generated_at":  "2026-03-19T09:49:07Z",
     "source":  {
                    "kind":  "dashboard_card_mapper",
                    "path":  "B:\\ohmic\\generated\\agent-work\\runtime"
@@ -30,7 +30,7 @@
                                      },
                                      {
                                          "label":  "Updated",
-                                         "value":  "2026-03-19T09:22:04Z"
+                                         "value":  "2026-03-19T09:49:06Z"
                                      },
                                      {
                                          "label":  "Loop state",
@@ -46,7 +46,7 @@
                       "fields":  [
                                      {
                                          "label":  "Ready",
-                                         "value":  "13"
+                                         "value":  "11"
                                      },
                                      {
                                          "label":  "Active",
