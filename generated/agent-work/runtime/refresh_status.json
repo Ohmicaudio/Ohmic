@@ -1,10 +1,10 @@
 {
-    "updated_at":  "2026-03-19T18:10:01.4470420Z",
+    "updated_at":  "2026-03-19T18:18:44.3549233Z",
     "status":  "success",
     "mode":  "once",
     "project":  "ohmic-administrator",
-    "reason":  "request-move:2026-03-19-add-business-ops-publish-checklist-floor:done",
-    "last_success_at":  "2026-03-19T18:10:01.4470420Z",
+    "reason":  "claim-complete:20260319T181318Z-5dbb5c6b",
+    "last_success_at":  "2026-03-19T18:18:44.3549233Z",
     "outputs":  [
                     "generated/agent-work/current-state.json",
                     "generated/agent-work/runtime/agent_state.json",
