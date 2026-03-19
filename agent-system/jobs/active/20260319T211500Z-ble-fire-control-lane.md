@@ -16,5 +16,5 @@ expires: 2026-03-20T03:15:00Z
 
 # Notes
 
-- BLE scan, connect, setup status, setup commands, and control-state feedback are now live.
-- Current lane is closing the remaining parity gap between BLE control replies and shared runtime truth.
+- BLE scan, connect, setup status, setup commands, control-state feedback, and DSP transport parity are now live.
+- Active remaining board packet is the live profile-select and join validation pass on the Fire surface.

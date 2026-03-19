@@ -1,7 +1,7 @@
 scope: project
 authority: working
 project: amplab-firmware
-status: ready
+status: done
 requested: 2026-03-19
 requester: user
 origin: live-fire-ble-lane
@@ -37,15 +37,13 @@ supersedes:
 
 ## Notes
 
-- current BLE lane already supports `stream.start`, `stream.stop`, `mute.on`, `mute.off`, and control-state replies
-- next parity work is to line that up with the broader audio/runtime transport contract
+- completed with transport parity notes in
+  `docs/roadmap/OHMIC_BLE_DSP_TRANSPORT_PARITY_RESULT_2026-03-19.md`
 
 ## Ready When
 
-- BLE control commands and resulting state align with the shared transport/control model closely enough to stop calling them provisional
+- complete
 
 ## Suggested Claim Scope
 
-- firmware BLE command handlers
-- app BLE command surface
-- transport/status contract notes
+- complete
