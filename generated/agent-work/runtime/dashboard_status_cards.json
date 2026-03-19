@@ -1,5 +1,5 @@
 {
-    "generated_at":  "2026-03-19T15:55:27Z",
+    "generated_at":  "2026-03-19T16:12:01Z",
     "source":  {
                    "kind":  "dashboard_card_mapper",
                    "path":  "B:\\ohmic\\generated\\agent-work\\runtime"
@@ -30,7 +30,7 @@
                                      },
                                      {
                                          "label":  "Updated",
-                                         "value":  "2026-03-19T15:55:26Z"
+                                         "value":  "2026-03-19T16:12:01Z"
                                      },
                                      {
                                          "label":  "Loop state",
@@ -74,7 +74,7 @@
                                      },
                                      {
                                          "label":  "Current action",
-                                         "value":  "Active claim: 2026-03-19-add-gmail-attachment-preview-floor"
+                                         "value":  "Active claim: 2026-03-19-add-gmail-review-cues-to-intake-detail"
                                      },
                                      {
                                          "label":  "Next",
@@ -82,7 +82,7 @@
                                      },
                                      {
                                          "label":  "Claim",
-                                         "value":  "2026-03-19-add-gmail-attachment-preview-floor"
+                                         "value":  "2026-03-19-add-gmail-review-cues-to-intake-detail"
                                      }
                                  ]
                   },

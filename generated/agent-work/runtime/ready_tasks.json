@@ -1,5 +1,5 @@
 {
-    "generated_at":  "2026-03-19T15:55:26Z",
+    "generated_at":  "2026-03-19T16:12:01Z",
     "source":  {
                    "kind":  "repo_summary",
                    "path":  "B:\\ohmic\\agent-system\\requests\\ready"
@@ -121,15 +121,15 @@
                       "file_path":  "B:\\ohmic\\agent-system\\requests\\ready\\2026-03-18-stage-ota-capability-over-shared-trust-and-command-contract.md"
                   },
                   {
-                      "task_id":  "2026-03-19-add-gmail-attachment-preview-floor",
-                      "title":  "add gmail attachment preview floor",
+                      "task_id":  "2026-03-19-add-gmail-review-cues-to-intake-detail",
+                      "title":  "add gmail review cues to intake detail",
                       "priority":  "soon",
                       "project":  "ohmic-administrator",
                       "status":  "ready",
                       "date":  "",
                       "owner":  "",
                       "claim_id":  "",
-                      "file_path":  "B:\\ohmic\\agent-system\\requests\\ready\\2026-03-19-add-gmail-attachment-preview-floor.md"
+                      "file_path":  "B:\\ohmic\\agent-system\\requests\\ready\\2026-03-19-add-gmail-review-cues-to-intake-detail.md"
                   }
               ]
 }

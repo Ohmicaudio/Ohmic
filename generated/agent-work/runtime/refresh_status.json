@@ -1,10 +1,10 @@
 {
-    "updated_at":  "2026-03-19T15:55:27.1574773Z",
+    "updated_at":  "2026-03-19T16:12:01.4702681Z",
     "status":  "success",
     "mode":  "once",
     "project":  "ohmic-administrator",
-    "reason":  "claim-create:2026-03-19-add-gmail-attachment-preview-floor",
-    "last_success_at":  "2026-03-19T15:55:27.1574773Z",
+    "reason":  "claim-create:2026-03-19-add-gmail-review-cues-to-intake-detail",
+    "last_success_at":  "2026-03-19T16:12:01.4702681Z",
     "outputs":  [
                     "generated/agent-work/current-state.json",
                     "generated/agent-work/runtime/agent_state.json",
