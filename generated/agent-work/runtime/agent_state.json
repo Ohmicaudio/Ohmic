@@ -2,14 +2,14 @@
     "session":  {
                     "session_id":  "loop_seed_20260315_01",
                     "project":  "ohmic",
-                    "mode":  "perform",
+                    "mode":  "mixed",
                     "active_repo":  "B:\\ohmic",
                     "agent_id":  "codex",
-                    "task_id":  "2026-03-19-add-business-ops-outbound-queue-floor",
-                    "task_status":  "working",
+                    "task_id":  "",
+                    "task_status":  "needs_input",
                     "orchestrator_active":  false,
                     "compact_count":  0,
-                    "updated_at":  "2026-03-19T16:20:50Z"
+                    "updated_at":  "2026-03-19T16:56:09Z"
                 },
     "input":  {
                   "pending":  true,
@@ -22,9 +22,9 @@
                   "handled_by":  ""
               },
     "state":  {
-                  "summary":  "Queue healthy. 11 ready tasks, 1 active claims.",
-                  "ready_count":  11,
-                  "active_claim_count":  1,
+                  "summary":  "Queue healthy. 10 ready tasks, 0 active claims.",
+                  "ready_count":  10,
+                  "active_claim_count":  0,
                   "board_health":  "healthy",
                   "top_priority":  [
                                        "2026-03-16-normalize-ohmic-live-link-ap-vs-lan-candidate-identities",
@@ -34,27 +34,27 @@
                   "queue_floor_met":  true,
                   "stale_state_detected":  false,
                   "recent_completions":  [
+                                             "2026-03-19-add-business-ops-outbound-queue-floor",
                                              "2026-03-19-seed-business-ops-workspace-shell",
-                                             "2026-03-19-add-gmail-review-cues-to-intake-detail",
-                                             "2026-03-19-add-gmail-attachment-preview-floor"
+                                             "2026-03-19-add-gmail-review-cues-to-intake-detail"
                                          ],
                   "risks":  [
                                 "Blocked tasks present: 26"
                             ]
               },
     "response":  {
-                     "status":  "working",
-                     "message":  "Active claim: 2026-03-19-add-business-ops-outbound-queue-floor",
-                     "current_action":  "executing 2026-03-19-add-business-ops-outbound-queue-floor",
+                     "status":  "needs_input",
+                     "message":  "Pending input: check queue freshness",
+                     "current_action":  "awaiting inbox handling",
                      "recommended_next":  [
                                               "2026-03-16-normalize-ohmic-live-link-ap-vs-lan-candidate-identities",
                                               "2026-03-17-run-shared-network-command-surface-wave",
                                               "2026-03-18-define-ble-bootstrap-and-recovery-network-handoff"
                                           ],
                      "completed":  [
+                                       "2026-03-19-add-business-ops-outbound-queue-floor",
                                        "2026-03-19-seed-business-ops-workspace-shell",
-                                       "2026-03-19-add-gmail-review-cues-to-intake-detail",
-                                       "2026-03-19-add-gmail-attachment-preview-floor"
+                                       "2026-03-19-add-gmail-review-cues-to-intake-detail"
                                    ],
                      "blocked":  [
                                      "2026-03-15-promote-ops-unifier-incubator-when-ohmic-slack-exists",

@@ -1,5 +1,5 @@
 {
-    "generated_at":  "2026-03-19T16:20:50Z",
+    "generated_at":  "2026-03-19T16:56:09Z",
     "source":  {
                    "kind":  "repo_summary",
                    "path":  "B:\\ohmic\\agent-system\\jobs\\active"
@@ -8,21 +8,8 @@
                       "status":  "fresh",
                       "reason":  null
                   },
-    "count":  1,
+    "count":  0,
     "items":  [
-                  {
-                      "claim_id":  "20260319T162037Z-c8325658",
-                      "task":  "2026-03-19-add-business-ops-outbound-queue-floor",
-                      "owner":  "d",
-                      "project":  "ohmic-administrator",
-                      "status":  "active",
-                      "started":  "2026-03-19T16:20:37.3499749Z",
-                      "expires":  "2026-03-19T20:20:37.3499749Z",
-                      "files":  [
-                                    "B:\\ohmic\\repos\\ohmic-administrator\\apps\\admin-web",
-                                    "B:\\ohmic\\repos\\ohmic-administrator\\README.md"
-                                ],
-                      "file_path":  "B:\\ohmic\\agent-system\\jobs\\active\\20260319T162037Z-c8325658.md"
-                  }
+
               ]
 }
