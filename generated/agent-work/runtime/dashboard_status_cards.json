@@ -1,5 +1,5 @@
 {
-    "generated_at":  "2026-03-19T08:38:09Z",
+    "generated_at":  "2026-03-19T08:40:21Z",
     "source":  {
                    "kind":  "dashboard_card_mapper",
                    "path":  "B:\\ohmic\\generated\\agent-work\\runtime"
@@ -22,7 +22,7 @@
                                      },
                                      {
                                          "label":  "Mode",
-                                         "value":  "perform"
+                                         "value":  "mixed"
                                      },
                                      {
                                          "label":  "Repo",
@@ -30,7 +30,7 @@
                                      },
                                      {
                                          "label":  "Updated",
-                                         "value":  "2026-03-19T08:38:08Z"
+                                         "value":  "2026-03-19T08:40:20Z"
                                      },
                                      {
                                          "label":  "Loop state",
@@ -50,7 +50,7 @@
                                      },
                                      {
                                          "label":  "Active",
-                                         "value":  "1"
+                                         "value":  "0"
                                      },
                                      {
                                          "label":  "Board health",
@@ -70,11 +70,11 @@
                       "fields":  [
                                      {
                                          "label":  "Status",
-                                         "value":  "working"
+                                         "value":  "needs_input"
                                      },
                                      {
                                          "label":  "Current action",
-                                         "value":  "Active claim: Add queue pivot epoch and refresh administrator ready wave"
+                                         "value":  "Pending input: check queue freshness"
                                      },
                                      {
                                          "label":  "Next",
@@ -82,7 +82,7 @@
                                      },
                                      {
                                          "label":  "Claim",
-                                         "value":  "Add queue pivot epoch and refresh administrator ready wave"
+                                         "value":  "none"
                                      }
                                  ]
                   },

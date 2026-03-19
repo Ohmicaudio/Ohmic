@@ -1,5 +1,5 @@
 {
-    "generated_at":  "2026-03-19T08:38:08Z",
+    "generated_at":  "2026-03-19T08:40:20Z",
     "source_latest_write_time":  "2026-03-19T08:36:58.0098234Z",
     "project":  "ohmic",
     "staleness":  {
@@ -8,7 +8,7 @@
                   },
     "counts":  {
                    "ready":  16,
-                   "active_claims":  1,
+                   "active_claims":  0,
                    "blocked":  26,
                    "done":  756
                },
@@ -23,8 +23,8 @@
                   "text":  "check queue freshness"
               },
     "response":  {
-                     "status":  "working",
-                     "message":  "Active claim: Add queue pivot epoch and refresh administrator ready wave"
+                     "status":  "needs_input",
+                     "message":  "Pending input: check queue freshness"
                  },
     "top_priority":  [
                          "2026-03-16-normalize-ohmic-live-link-ap-vs-lan-candidate-identities",

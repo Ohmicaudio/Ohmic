@@ -1,5 +1,5 @@
 {
-    "generated_at":  "2026-03-19T08:38:08Z",
+    "generated_at":  "2026-03-19T08:40:20Z",
     "source":  {
                    "kind":  "repo_summary",
                    "path":  "B:\\ohmic\\agent-system\\jobs\\active"
@@ -8,24 +8,8 @@
                       "status":  "fresh",
                       "reason":  null
                   },
-    "count":  1,
+    "count":  0,
     "items":  [
-                  {
-                      "claim_id":  "20260319T081803Z-7d26ceb6",
-                      "task":  "Add queue pivot epoch and refresh administrator ready wave",
-                      "owner":  "d",
-                      "project":  "ohmic",
-                      "status":  "active",
-                      "started":  "2026-03-19T08:18:03.3830139Z",
-                      "expires":  "2026-03-19T12:18:03.3830139Z",
-                      "files":  [
-                                    "B:\\ohmic\\agent-system\\instructions\\request-routing.md",
-                                    "B:\\ohmic\\agent-system\\requests",
-                                    "B:\\ohmic\\agent-system\\templates\\request-template.md",
-                                    "B:\\ohmic\\tools\\sync\\agent-work-poll.ps1",
-                                    "B:\\ohmic\\tools\\sync\\agent-request.ps1"
-                                ],
-                      "file_path":  "B:\\ohmic\\agent-system\\jobs\\active\\20260319T081803Z-7d26ceb6.md"
-                  }
+
               ]
 }

@@ -1,10 +1,10 @@
 {
-    "updated_at":  "2026-03-19T08:38:09.0870922Z",
+    "updated_at":  "2026-03-19T08:40:21.2455570Z",
     "status":  "success",
     "mode":  "once",
-    "project":  "all",
-    "reason":  "manual",
-    "last_success_at":  "2026-03-19T08:38:09.0870922Z",
+    "project":  "ohmic",
+    "reason":  "claim-complete:20260319T081803Z-7d26ceb6",
+    "last_success_at":  "2026-03-19T08:40:21.2455570Z",
     "outputs":  [
                     "generated/agent-work/current-state.json",
                     "generated/agent-work/runtime/agent_state.json",

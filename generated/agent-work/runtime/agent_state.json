@@ -2,14 +2,14 @@
     "session":  {
                     "session_id":  "loop_seed_20260315_01",
                     "project":  "ohmic",
-                    "mode":  "perform",
+                    "mode":  "mixed",
                     "active_repo":  "B:\\ohmic",
                     "agent_id":  "codex",
-                    "task_id":  "Add queue pivot epoch and refresh administrator ready wave",
-                    "task_status":  "working",
+                    "task_id":  "",
+                    "task_status":  "needs_input",
                     "orchestrator_active":  false,
                     "compact_count":  0,
-                    "updated_at":  "2026-03-19T08:38:08Z"
+                    "updated_at":  "2026-03-19T08:40:20Z"
                 },
     "input":  {
                   "pending":  true,
@@ -22,9 +22,9 @@
                   "handled_by":  ""
               },
     "state":  {
-                  "summary":  "Queue healthy. 16 ready tasks, 1 active claims.",
+                  "summary":  "Queue healthy. 16 ready tasks, 0 active claims.",
                   "ready_count":  16,
-                  "active_claim_count":  1,
+                  "active_claim_count":  0,
                   "board_health":  "healthy",
                   "top_priority":  [
                                        "2026-03-16-normalize-ohmic-live-link-ap-vs-lan-candidate-identities",
@@ -43,9 +43,9 @@
                             ]
               },
     "response":  {
-                     "status":  "working",
-                     "message":  "Active claim: Add queue pivot epoch and refresh administrator ready wave",
-                     "current_action":  "executing Add queue pivot epoch and refresh administrator ready wave",
+                     "status":  "needs_input",
+                     "message":  "Pending input: check queue freshness",
+                     "current_action":  "awaiting inbox handling",
                      "recommended_next":  [
                                               "2026-03-16-normalize-ohmic-live-link-ap-vs-lan-candidate-identities",
                                               "2026-03-17-run-shared-network-command-surface-wave",
