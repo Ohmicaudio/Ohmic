@@ -1,10 +1,10 @@
 {
-    "updated_at":  "2026-03-19T18:52:04.8473016Z",
+    "updated_at":  "2026-03-19T19:06:30.4452541Z",
     "status":  "success",
     "mode":  "once",
     "project":  "ohmic-administrator",
-    "reason":  "claim-complete:20260319T184909Z-ffb57960",
-    "last_success_at":  "2026-03-19T18:52:04.8473016Z",
+    "reason":  "request-move:2026-03-19-add-business-ops-publish-calendar-lane:done",
+    "last_success_at":  "2026-03-19T19:06:30.4452541Z",
     "outputs":  [
                     "generated/agent-work/current-state.json",
                     "generated/agent-work/runtime/agent_state.json",
