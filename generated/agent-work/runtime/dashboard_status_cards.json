@@ -1,5 +1,5 @@
 {
-    "generated_at":  "2026-03-19T15:29:27Z",
+    "generated_at":  "2026-03-19T15:55:27Z",
     "source":  {
                    "kind":  "dashboard_card_mapper",
                    "path":  "B:\\ohmic\\generated\\agent-work\\runtime"
@@ -22,7 +22,7 @@
                                      },
                                      {
                                          "label":  "Mode",
-                                         "value":  "mixed"
+                                         "value":  "perform"
                                      },
                                      {
                                          "label":  "Repo",
@@ -30,7 +30,7 @@
                                      },
                                      {
                                          "label":  "Updated",
-                                         "value":  "2026-03-19T15:29:27Z"
+                                         "value":  "2026-03-19T15:55:26Z"
                                      },
                                      {
                                          "label":  "Loop state",
@@ -46,11 +46,11 @@
                       "fields":  [
                                      {
                                          "label":  "Ready",
-                                         "value":  "10"
+                                         "value":  "11"
                                      },
                                      {
                                          "label":  "Active",
-                                         "value":  "0"
+                                         "value":  "1"
                                      },
                                      {
                                          "label":  "Board health",
@@ -70,11 +70,11 @@
                       "fields":  [
                                      {
                                          "label":  "Status",
-                                         "value":  "needs_input"
+                                         "value":  "working"
                                      },
                                      {
                                          "label":  "Current action",
-                                         "value":  "Pending input: check queue freshness"
+                                         "value":  "Active claim: 2026-03-19-add-gmail-attachment-preview-floor"
                                      },
                                      {
                                          "label":  "Next",
@@ -82,7 +82,7 @@
                                      },
                                      {
                                          "label":  "Claim",
-                                         "value":  "none"
+                                         "value":  "2026-03-19-add-gmail-attachment-preview-floor"
                                      }
                                  ]
                   },

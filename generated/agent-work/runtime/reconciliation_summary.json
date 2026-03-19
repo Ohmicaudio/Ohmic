@@ -1,16 +1,16 @@
 {
-    "generated_at":  "2026-03-19T15:29:27Z",
-    "source_latest_write_time":  "2026-03-19T15:28:50.3969731Z",
+    "generated_at":  "2026-03-19T15:55:26Z",
+    "source_latest_write_time":  "2026-03-19T15:55:12.2046433Z",
     "project":  "ohmic",
     "staleness":  {
                       "status":  "fresh",
                       "reason":  null
                   },
     "counts":  {
-                   "ready":  10,
-                   "active_claims":  0,
+                   "ready":  11,
+                   "active_claims":  1,
                    "blocked":  26,
-                   "done":  772
+                   "done":  773
                },
     "board_health":  "healthy",
     "queue_floor_met":  true,
@@ -23,8 +23,8 @@
                   "text":  "check queue freshness"
               },
     "response":  {
-                     "status":  "needs_input",
-                     "message":  "Pending input: check queue freshness"
+                     "status":  "working",
+                     "message":  "Active claim: 2026-03-19-add-gmail-attachment-preview-floor"
                  },
     "top_priority":  [
                          "2026-03-16-normalize-ohmic-live-link-ap-vs-lan-candidate-identities",

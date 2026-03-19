@@ -1,5 +1,5 @@
 {
-    "generated_at":  "2026-03-19T15:29:27Z",
+    "generated_at":  "2026-03-19T15:55:26Z",
     "source":  {
                    "kind":  "repo_summary",
                    "path":  "B:\\ohmic\\agent-system\\jobs\\active"
@@ -8,8 +8,23 @@
                       "status":  "fresh",
                       "reason":  null
                   },
-    "count":  0,
+    "count":  1,
     "items":  [
-
+                  {
+                      "claim_id":  "20260319T155512Z-b7305649",
+                      "task":  "2026-03-19-add-gmail-attachment-preview-floor",
+                      "owner":  "d",
+                      "project":  "ohmic-administrator",
+                      "status":  "active",
+                      "started":  "2026-03-19T15:55:12.1674183Z",
+                      "expires":  "2026-03-19T19:55:12.1674183Z",
+                      "files":  [
+                                    "B:\\ohmic\\repos\\ohmic-administrator\\services\\connectors\\gmail",
+                                    "B:\\ohmic\\repos\\ohmic-administrator\\services\\admin-api",
+                                    "B:\\ohmic\\repos\\ohmic-administrator\\packages\\contracts",
+                                    "B:\\ohmic\\repos\\ohmic-administrator\\apps\\admin-web"
+                                ],
+                      "file_path":  "B:\\ohmic\\agent-system\\jobs\\active\\20260319T155512Z-b7305649.md"
+                  }
               ]
 }
