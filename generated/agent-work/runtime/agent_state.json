@@ -9,7 +9,7 @@
                     "task_status":  "working",
                     "orchestrator_active":  false,
                     "compact_count":  0,
-                    "updated_at":  "2026-03-19T21:21:04Z"
+                    "updated_at":  "2026-03-19T21:30:28Z"
                 },
     "input":  {
                   "pending":  true,
@@ -34,9 +34,9 @@
                   "queue_floor_met":  true,
                   "stale_state_detected":  false,
                   "recent_completions":  [
+                                             "2026-03-19-add-project-board-progress-history-lane",
                                              "2026-03-19-add-project-filtered-board-watch-lane",
-                                             "2026-03-19-close-ble-control-state-vs-runtime-status-parity",
-                                             "2026-03-19-add-business-ops-channel-filter-lane"
+                                             "2026-03-19-close-ble-control-state-vs-runtime-status-parity"
                                          ],
                   "risks":  [
                                 "Blocked tasks present: 26"
@@ -52,9 +52,9 @@
                                               "2026-03-16-normalize-ohmic-live-link-ap-vs-lan-candidate-identities"
                                           ],
                      "completed":  [
+                                       "2026-03-19-add-project-board-progress-history-lane",
                                        "2026-03-19-add-project-filtered-board-watch-lane",
-                                       "2026-03-19-close-ble-control-state-vs-runtime-status-parity",
-                                       "2026-03-19-add-business-ops-channel-filter-lane"
+                                       "2026-03-19-close-ble-control-state-vs-runtime-status-parity"
                                    ],
                      "blocked":  [
                                      "2026-03-15-promote-ops-unifier-incubator-when-ohmic-slack-exists",
