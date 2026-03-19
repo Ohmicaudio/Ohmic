@@ -1,10 +1,10 @@
 {
-    "updated_at":  "2026-03-19T17:52:26.9925974Z",
+    "updated_at":  "2026-03-19T17:59:55.1039880Z",
     "status":  "success",
     "mode":  "once",
     "project":  "ohmic-administrator",
-    "reason":  "request-move:2026-03-19-add-business-ops-draft-studio-floor:done",
-    "last_success_at":  "2026-03-19T17:52:26.9925974Z",
+    "reason":  "request-move:2026-03-19-add-business-ops-draft-shelf-floor:done",
+    "last_success_at":  "2026-03-19T17:59:55.1039880Z",
     "outputs":  [
                     "generated/agent-work/current-state.json",
                     "generated/agent-work/runtime/agent_state.json",
