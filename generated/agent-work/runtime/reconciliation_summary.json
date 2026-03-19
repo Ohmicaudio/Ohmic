@@ -1,6 +1,6 @@
 {
-    "generated_at":  "2026-03-19T21:37:21Z",
-    "source_latest_write_time":  "2026-03-19T21:37:08.9040250Z",
+    "generated_at":  "2026-03-19T21:42:25Z",
+    "source_latest_write_time":  "2026-03-19T21:42:11.7955072Z",
     "project":  "ohmic",
     "staleness":  {
                       "status":  "fresh",
@@ -10,7 +10,7 @@
                    "ready":  11,
                    "active_claims":  1,
                    "blocked":  26,
-                   "done":  802
+                   "done":  803
                },
     "board_health":  "healthy",
     "queue_floor_met":  true,
@@ -24,7 +24,7 @@
               },
     "response":  {
                      "status":  "working",
-                     "message":  "Active claim: stabilize-ble-fire-control-and-runtime-parity"
+                     "message":  "Active claim: validate-ble-fire-profile-select-and-join"
                  },
     "top_priority":  [
                          "2026-03-19-validate-ble-profile-select-and-join-on-live-amplab",

@@ -5,11 +5,11 @@
                     "mode":  "perform",
                     "active_repo":  "B:\\ohmic",
                     "agent_id":  "codex",
-                    "task_id":  "stabilize-ble-fire-control-and-runtime-parity",
+                    "task_id":  "validate-ble-fire-profile-select-and-join",
                     "task_status":  "working",
                     "orchestrator_active":  false,
                     "compact_count":  0,
-                    "updated_at":  "2026-03-19T21:37:21Z"
+                    "updated_at":  "2026-03-19T21:42:25Z"
                 },
     "input":  {
                   "pending":  true,
@@ -34,9 +34,9 @@
                   "queue_floor_met":  true,
                   "stale_state_detected":  false,
                   "recent_completions":  [
+                                             "2026-03-19-add-project-board-worker-freshness-alerts",
                                              "2026-03-19-add-project-board-worker-summary-lane",
-                                             "2026-03-19-extend-ble-control-lane-toward-audio-transport-parity",
-                                             "2026-03-19-add-project-board-progress-history-lane"
+                                             "2026-03-19-extend-ble-control-lane-toward-audio-transport-parity"
                                          ],
                   "risks":  [
                                 "Blocked tasks present: 26"
@@ -44,17 +44,17 @@
               },
     "response":  {
                      "status":  "working",
-                     "message":  "Active claim: stabilize-ble-fire-control-and-runtime-parity",
-                     "current_action":  "executing stabilize-ble-fire-control-and-runtime-parity",
+                     "message":  "Active claim: validate-ble-fire-profile-select-and-join",
+                     "current_action":  "executing validate-ble-fire-profile-select-and-join",
                      "recommended_next":  [
                                               "2026-03-19-validate-ble-profile-select-and-join-on-live-amplab",
                                               "2026-03-16-normalize-ohmic-live-link-ap-vs-lan-candidate-identities",
                                               "2026-03-17-run-shared-network-command-surface-wave"
                                           ],
                      "completed":  [
+                                       "2026-03-19-add-project-board-worker-freshness-alerts",
                                        "2026-03-19-add-project-board-worker-summary-lane",
-                                       "2026-03-19-extend-ble-control-lane-toward-audio-transport-parity",
-                                       "2026-03-19-add-project-board-progress-history-lane"
+                                       "2026-03-19-extend-ble-control-lane-toward-audio-transport-parity"
                                    ],
                      "blocked":  [
                                      "2026-03-15-promote-ops-unifier-incubator-when-ohmic-slack-exists",
