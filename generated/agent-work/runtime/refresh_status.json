@@ -1,10 +1,10 @@
 {
-    "updated_at":  "2026-03-19T09:11:39.8480229Z",
+    "updated_at":  "2026-03-19T09:22:04.6171076Z",
     "status":  "success",
     "mode":  "once",
     "project":  "ohmic-administrator",
-    "reason":  "queue-closeout",
-    "last_success_at":  "2026-03-19T09:11:39.8480229Z",
+    "reason":  "request-move:2026-03-19-add-runtime-stack-history-card:done",
+    "last_success_at":  "2026-03-19T09:22:04.6171076Z",
     "outputs":  [
                     "generated/agent-work/current-state.json",
                     "generated/agent-work/runtime/agent_state.json",

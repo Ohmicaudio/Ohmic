@@ -9,7 +9,7 @@
                     "task_status":  "needs_input",
                     "orchestrator_active":  false,
                     "compact_count":  0,
-                    "updated_at":  "2026-03-19T09:11:39Z"
+                    "updated_at":  "2026-03-19T09:22:04Z"
                 },
     "input":  {
                   "pending":  true,
@@ -22,8 +22,8 @@
                   "handled_by":  ""
               },
     "state":  {
-                  "summary":  "Queue healthy. 14 ready tasks, 0 active claims.",
-                  "ready_count":  14,
+                  "summary":  "Queue healthy. 13 ready tasks, 0 active claims.",
+                  "ready_count":  13,
                   "active_claim_count":  0,
                   "board_health":  "healthy",
                   "top_priority":  [
@@ -34,9 +34,9 @@
                   "queue_floor_met":  true,
                   "stale_state_detected":  false,
                   "recent_completions":  [
+                                             "2026-03-19-add-runtime-stack-history-card",
                                              "2026-03-19-add-hybrid-stack-mode-switch-audit-events",
-                                             "2026-03-19-review-admin-api-timeout-flake-and-split-slow-tests",
-                                             "2026-03-16-define-worker-stack-overflow-spillback-rules"
+                                             "2026-03-19-review-admin-api-timeout-flake-and-split-slow-tests"
                                          ],
                   "risks":  [
                                 "Blocked tasks present: 26"
@@ -52,9 +52,9 @@
                                               "2026-03-18-define-ble-bootstrap-and-recovery-network-handoff"
                                           ],
                      "completed":  [
+                                       "2026-03-19-add-runtime-stack-history-card",
                                        "2026-03-19-add-hybrid-stack-mode-switch-audit-events",
-                                       "2026-03-19-review-admin-api-timeout-flake-and-split-slow-tests",
-                                       "2026-03-16-define-worker-stack-overflow-spillback-rules"
+                                       "2026-03-19-review-admin-api-timeout-flake-and-split-slow-tests"
                                    ],
                      "blocked":  [
                                      "2026-03-15-promote-ops-unifier-incubator-when-ohmic-slack-exists",

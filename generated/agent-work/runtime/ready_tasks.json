@@ -1,5 +1,5 @@
 {
-    "generated_at":  "2026-03-19T09:11:39Z",
+    "generated_at":  "2026-03-19T09:22:04Z",
     "source":  {
                    "kind":  "repo_summary",
                    "path":  "B:\\ohmic\\agent-system\\requests\\ready"
@@ -8,7 +8,7 @@
                       "status":  "fresh",
                       "reason":  null
                   },
-    "count":  14,
+    "count":  13,
     "items":  [
                   {
                       "task_id":  "2026-03-16-define-variance-family-parent-child-link-boundary",
@@ -141,17 +141,6 @@
                       "owner":  "",
                       "claim_id":  "",
                       "file_path":  "B:\\ohmic\\agent-system\\requests\\ready\\2026-03-19-add-manual-intake-duplicate-review-signal.md"
-                  },
-                  {
-                      "task_id":  "2026-03-19-add-runtime-stack-history-card",
-                      "title":  "add-runtime-stack-history-card",
-                      "priority":  "soon",
-                      "project":  "ohmic-administrator",
-                      "status":  "ready",
-                      "date":  "",
-                      "owner":  "",
-                      "claim_id":  "",
-                      "file_path":  "B:\\ohmic\\agent-system\\requests\\ready\\2026-03-19-add-runtime-stack-history-card.md"
                   },
                   {
                       "task_id":  "2026-03-19-surface-worker-status-failures-in-runtime-feedback",
