@@ -138,6 +138,32 @@ function Find-Conflicts {
     $conflicts | Sort-Object ClaimId -Unique
 }
 
+function Rewrite-ClaimStatus {
+    param(
+        [string]$RawText,
+        [string]$StatusValue
+    )
+
+    $rewritten = @()
+    $replaced = $false
+
+    foreach ($line in ($RawText -split "`r?`n")) {
+        if ($line -match '^status:\s*.+$') {
+            $rewritten += "status: $StatusValue"
+            $replaced = $true
+        }
+        else {
+            $rewritten += $line
+        }
+    }
+
+    if (-not $replaced) {
+        $rewritten = @("status: $StatusValue") + $rewritten
+    }
+
+    return ($rewritten -join "`r`n")
+}
+
 switch ($Command) {
     'status' {
         if ($Paths.Count -gt 0) {
@@ -250,7 +276,7 @@ switch ($Command) {
         }
 
         $raw = Get-Content -Raw $source
-        $raw = $raw -replace '(?m)^status:\s*active$', 'status: completed'
+        $raw = Rewrite-ClaimStatus -RawText $raw -StatusValue 'completed'
         $raw += "`r`n`r`n# Completion`r`n`r`n- completed: $([DateTime]::UtcNow.ToString('o'))`r`n"
 
         $dest = Join-Path $completedDir ($Id + '.md')
@@ -274,7 +300,7 @@ switch ($Command) {
         }
 
         $raw = Get-Content -Raw $source
-        $raw = $raw -replace '(?m)^status:\s*active$', 'status: released'
+        $raw = Rewrite-ClaimStatus -RawText $raw -StatusValue 'released'
         $raw += "`r`n`r`n# Release`r`n`r`n- released: $([DateTime]::UtcNow.ToString('o'))`r`n"
 
         $dest = Join-Path $completedDir ($Id + '.md')

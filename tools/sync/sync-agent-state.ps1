@@ -37,6 +37,10 @@ function Parse-FrontMatterLine {
 function Parse-Request {
     param([string]$FilePath)
 
+    if (-not (Test-Path $FilePath)) {
+        return $null
+    }
+
     $keys = @('scope', 'authority', 'project', 'status', 'requested', 'requester', 'origin', 'priority', 'blocking', 'depends_on', 'handoff_from', 'claim_id', 'topic')
     $data = [ordered]@{
         id = [System.IO.Path]::GetFileNameWithoutExtension($FilePath)
@@ -57,13 +61,18 @@ function Parse-Request {
         topic = ''
     }
 
-    foreach ($line in Get-Content $FilePath) {
-        if (Parse-FrontMatterLine -Line $line -Target $data -Keys $keys) {
-            continue
+    try {
+        foreach ($line in Get-Content $FilePath -ErrorAction Stop) {
+            if (Parse-FrontMatterLine -Line $line -Target $data -Keys $keys) {
+                continue
+            }
+            if (-not $data.title -and $line -match '^# (.+)$') {
+                $data.title = $matches[1].Trim()
+            }
         }
-        if (-not $data.title -and $line -match '^# (.+)$') {
-            $data.title = $matches[1].Trim()
-        }
+    }
+    catch {
+        return $null
     }
 
     [pscustomobject]$data
@@ -343,7 +352,11 @@ $requestsByStatus = @{}
 foreach ($status in @('inbox', 'ready', 'blocked', 'done')) {
     $dir = Join-Path $requestsRoot $status
     if (Test-Path $dir) {
-        $requestsByStatus[$status] = @(Get-ChildItem -Path $dir -Filter '*.md' -File | ForEach-Object { Parse-Request $_.FullName })
+        $requestsByStatus[$status] = @(
+            Get-ChildItem -Path $dir -Filter '*.md' -File |
+                ForEach-Object { Parse-Request $_.FullName } |
+                Where-Object { $_ -ne $null }
+        )
     }
     else {
         $requestsByStatus[$status] = @()

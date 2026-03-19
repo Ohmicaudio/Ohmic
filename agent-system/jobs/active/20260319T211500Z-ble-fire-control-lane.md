@@ -2,7 +2,7 @@ claim_id: 20260319T211500Z-ble-fire-control-lane
 status: active
 owner: codex
 project: ohmic-audio-labs
-task: validate-ble-fire-profile-select-and-join
+task: validate-live-ble-control-and-dsp-actions-on-fire
 started: 2026-03-19T21:15:00Z
 expires: 2026-03-20T03:15:00Z
 
@@ -17,5 +17,5 @@ expires: 2026-03-20T03:15:00Z
 # Notes
 
 - BLE scan, connect, setup status, setup commands, control-state feedback, and DSP transport parity are now live.
-- Fire/mobile BLE card now exposes explicit profile refresh, Wi-Fi scan, and join-selected-profile actions to support the remaining live validation packet.
-- Active remaining board packet is the live profile-select and join validation pass on the Fire surface.
+- Fire/mobile BLE card now validates saved profile truth, joined-state truth, and Wi-Fi scan settle on the live Fire surface.
+- Current active packet is the next live control/DSP validation pass over the same BLE lane.

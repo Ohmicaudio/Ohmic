@@ -1,7 +1,7 @@
 scope: project
 authority: working
 project: ohmic-audio-labs
-status: ready
+status: done
 requested: 2026-03-19
 requester: user
 origin: live-fire-ble-lane
@@ -21,8 +21,10 @@ supersedes:
 
 ## Requested Outcome
 
-- Saved profile select, WiFi scan, and queued BLE join are verified against the live AmpLab board from the Fire.
-- Resulting status truth is recorded in docs/roadmap and no longer inferred from isolated command acks.
+- Saved profile select, WiFi scan, and queued BLE join are verified against the
+  live AmpLab board from the Fire.
+- Resulting status truth is recorded in docs/roadmap and no longer inferred
+  from isolated command acks.
 
 ## Scope
 
@@ -33,18 +35,18 @@ supersedes:
 ## Constraints
 
 - validate on the actual Fire and actual AmpLab board
-- preserve the current stable BLE connect path while testing join/profile actions
+- preserve the current stable BLE connect path while testing join/profile
+  actions
 
-## Notes
+## Result
 
-- The UI and command plumbing now exist; this request is the live validation packet.
+- Fire live validation now confirms:
+  - selected profile truth is rendered from BLE
+  - joined-state truth is rendered from BLE compact status
+  - Wi-Fi scan settles to final results on-card instead of sticking on `running`
+- recorded in:
+  - `docs/roadmap/OHMIC_LIVE_FIRE_BLE_JOIN_AND_SCAN_VALIDATION_RESULT_2026-03-19.md`
 
 ## Ready When
 
-- live BLE profile select and/or join works or the precise remaining blocker is documented
-
-## Suggested Claim Scope
-
-- Fire BLE setup surface
-- AmpLab BLE network command handlers
-- live validation notes
+- complete
