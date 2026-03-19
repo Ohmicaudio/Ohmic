@@ -1,5 +1,5 @@
 {
-    "generated_at":  "2026-03-19T16:15:59Z",
+    "generated_at":  "2026-03-19T16:20:50Z",
     "source":  {
                    "kind":  "repo_summary",
                    "path":  "B:\\ohmic\\agent-system\\requests\\ready"
@@ -121,15 +121,15 @@
                       "file_path":  "B:\\ohmic\\agent-system\\requests\\ready\\2026-03-18-stage-ota-capability-over-shared-trust-and-command-contract.md"
                   },
                   {
-                      "task_id":  "2026-03-19-seed-business-ops-workspace-shell",
-                      "title":  "seed business ops workspace shell",
+                      "task_id":  "2026-03-19-add-business-ops-outbound-queue-floor",
+                      "title":  "add business ops outbound queue floor",
                       "priority":  "soon",
                       "project":  "ohmic-administrator",
                       "status":  "ready",
                       "date":  "",
                       "owner":  "",
                       "claim_id":  "",
-                      "file_path":  "B:\\ohmic\\agent-system\\requests\\ready\\2026-03-19-seed-business-ops-workspace-shell.md"
+                      "file_path":  "B:\\ohmic\\agent-system\\requests\\ready\\2026-03-19-add-business-ops-outbound-queue-floor.md"
                   }
               ]
 }

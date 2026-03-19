@@ -1,6 +1,6 @@
 {
-    "generated_at":  "2026-03-19T16:15:59Z",
-    "source_latest_write_time":  "2026-03-19T16:15:42.3912837Z",
+    "generated_at":  "2026-03-19T16:20:50Z",
+    "source_latest_write_time":  "2026-03-19T16:20:37.3806415Z",
     "project":  "ohmic",
     "staleness":  {
                       "status":  "fresh",
@@ -10,7 +10,7 @@
                    "ready":  11,
                    "active_claims":  1,
                    "blocked":  26,
-                   "done":  775
+                   "done":  776
                },
     "board_health":  "healthy",
     "queue_floor_met":  true,
@@ -24,7 +24,7 @@
               },
     "response":  {
                      "status":  "working",
-                     "message":  "Active claim: 2026-03-19-seed-business-ops-workspace-shell"
+                     "message":  "Active claim: 2026-03-19-add-business-ops-outbound-queue-floor"
                  },
     "top_priority":  [
                          "2026-03-16-normalize-ohmic-live-link-ap-vs-lan-candidate-identities",
