@@ -1,10 +1,10 @@
 {
-    "updated_at":  "2026-03-19T17:03:30.8161314Z",
+    "updated_at":  "2026-03-19T17:12:53.2514218Z",
     "status":  "success",
     "mode":  "once",
     "project":  "ohmic-administrator",
-    "reason":  "claim-complete:20260319T165822Z-14a493ae",
-    "last_success_at":  "2026-03-19T17:03:30.8161314Z",
+    "reason":  "request-move:2026-03-19-add-business-ops-focus-and-handoff-workbench:done",
+    "last_success_at":  "2026-03-19T17:12:53.2514218Z",
     "outputs":  [
                     "generated/agent-work/current-state.json",
                     "generated/agent-work/runtime/agent_state.json",
