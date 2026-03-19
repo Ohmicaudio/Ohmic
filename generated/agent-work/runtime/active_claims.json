@@ -1,5 +1,5 @@
 {
-    "generated_at":  "2026-03-19T16:12:01Z",
+    "generated_at":  "2026-03-19T16:15:59Z",
     "source":  {
                    "kind":  "repo_summary",
                    "path":  "B:\\ohmic\\agent-system\\jobs\\active"
@@ -11,19 +11,18 @@
     "count":  1,
     "items":  [
                   {
-                      "claim_id":  "20260319T161147Z-4ae69985",
-                      "task":  "2026-03-19-add-gmail-review-cues-to-intake-detail",
+                      "claim_id":  "20260319T161542Z-331c40f7",
+                      "task":  "2026-03-19-seed-business-ops-workspace-shell",
                       "owner":  "d",
                       "project":  "ohmic-administrator",
                       "status":  "active",
-                      "started":  "2026-03-19T16:11:47.7566603Z",
-                      "expires":  "2026-03-19T20:11:47.7566603Z",
+                      "started":  "2026-03-19T16:15:42.3512890Z",
+                      "expires":  "2026-03-19T20:15:42.3512890Z",
                       "files":  [
                                     "B:\\ohmic\\repos\\ohmic-administrator\\apps\\admin-web",
-                                    "B:\\ohmic\\repos\\ohmic-administrator\\services\\admin-api",
-                                    "B:\\ohmic\\repos\\ohmic-administrator\\packages\\contracts"
+                                    "B:\\ohmic\\repos\\ohmic-administrator\\README.md"
                                 ],
-                      "file_path":  "B:\\ohmic\\agent-system\\jobs\\active\\20260319T161147Z-4ae69985.md"
+                      "file_path":  "B:\\ohmic\\agent-system\\jobs\\active\\20260319T161542Z-331c40f7.md"
                   }
               ]
 }

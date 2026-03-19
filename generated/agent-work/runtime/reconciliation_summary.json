@@ -1,6 +1,6 @@
 {
-    "generated_at":  "2026-03-19T16:12:01Z",
-    "source_latest_write_time":  "2026-03-19T16:11:47.8177079Z",
+    "generated_at":  "2026-03-19T16:15:59Z",
+    "source_latest_write_time":  "2026-03-19T16:15:42.3912837Z",
     "project":  "ohmic",
     "staleness":  {
                       "status":  "fresh",
@@ -10,7 +10,7 @@
                    "ready":  11,
                    "active_claims":  1,
                    "blocked":  26,
-                   "done":  774
+                   "done":  775
                },
     "board_health":  "healthy",
     "queue_floor_met":  true,
@@ -24,7 +24,7 @@
               },
     "response":  {
                      "status":  "working",
-                     "message":  "Active claim: 2026-03-19-add-gmail-review-cues-to-intake-detail"
+                     "message":  "Active claim: 2026-03-19-seed-business-ops-workspace-shell"
                  },
     "top_priority":  [
                          "2026-03-16-normalize-ohmic-live-link-ap-vs-lan-candidate-identities",
