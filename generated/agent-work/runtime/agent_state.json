@@ -9,7 +9,7 @@
                     "task_status":  "needs_input",
                     "orchestrator_active":  false,
                     "compact_count":  0,
-                    "updated_at":  "2026-03-19T18:24:16Z"
+                    "updated_at":  "2026-03-19T18:28:44Z"
                 },
     "input":  {
                   "pending":  true,
@@ -34,9 +34,9 @@
                   "queue_floor_met":  true,
                   "stale_state_detected":  false,
                   "recent_completions":  [
+                                             "2026-03-19-add-business-ops-publish-runway-floor",
                                              "2026-03-19-add-business-ops-reply-shelf-lane",
-                                             "2026-03-19-add-business-ops-reply-lane-floor",
-                                             "2026-03-19-add-business-ops-publish-checklist-floor"
+                                             "2026-03-19-add-business-ops-reply-lane-floor"
                                          ],
                   "risks":  [
                                 "Blocked tasks present: 26"
@@ -52,9 +52,9 @@
                                               "2026-03-18-define-ble-bootstrap-and-recovery-network-handoff"
                                           ],
                      "completed":  [
+                                       "2026-03-19-add-business-ops-publish-runway-floor",
                                        "2026-03-19-add-business-ops-reply-shelf-lane",
-                                       "2026-03-19-add-business-ops-reply-lane-floor",
-                                       "2026-03-19-add-business-ops-publish-checklist-floor"
+                                       "2026-03-19-add-business-ops-reply-lane-floor"
                                    ],
                      "blocked":  [
                                      "2026-03-15-promote-ops-unifier-incubator-when-ohmic-slack-exists",
