@@ -24,7 +24,8 @@ param(
     [string]$ReviewAfter = '',
     [ValidateSet('current', 'needs_review', 'superseded')]
     [string]$ReviewStatus = 'current',
-    [string]$Supersedes = ''
+    [string]$Supersedes = '',
+    [string]$NotesText = ''
 )
 
 $requestsRoot = 'B:\ohmic\agent-system\requests'
@@ -180,7 +181,21 @@ switch ($Command) {
             ''
             '## Notes'
             ''
-            '- add context that lets another agent start without rereading the whole thread'
+        )
+
+        if ([string]::IsNullOrWhiteSpace($NotesText)) {
+            $lines += '- add context that lets another agent start without rereading the whole thread'
+        }
+        else {
+            foreach ($noteLine in ($NotesText -split "`r?`n")) {
+                $trimmed = $noteLine.Trim()
+                if (-not [string]::IsNullOrWhiteSpace($trimmed)) {
+                    $lines += "- $trimmed"
+                }
+            }
+        }
+
+        $lines += @(
             ''
             '## Ready When'
             ''
