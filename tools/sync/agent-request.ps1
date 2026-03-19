@@ -5,6 +5,8 @@ param(
 
     [string]$Id,
     [ValidateSet('inbox', 'blocked', 'ready', 'done')]
+    [string]$FromStatus = '',
+    [ValidateSet('inbox', 'blocked', 'ready', 'done')]
     [string]$Status = 'inbox',
     [string]$Project = 'org-wide',
     [string]$Title = '',
@@ -17,7 +19,12 @@ param(
     [string]$Blocking = 'no',
     [string]$DependsOn = '',
     [string]$HandoffFrom = '',
-    [string]$ClaimId = ''
+    [string]$ClaimId = '',
+    [string]$QueueEpoch = '',
+    [string]$ReviewAfter = '',
+    [ValidateSet('current', 'needs_review', 'superseded')]
+    [string]$ReviewStatus = 'current',
+    [string]$Supersedes = ''
 )
 
 $requestsRoot = 'B:\ohmic\agent-system\requests'
@@ -53,23 +60,39 @@ function Get-RequestFiles {
     }
 }
 
+function Get-RequestStateFromPath {
+    param([string]$FilePath)
+
+    foreach ($state in $validStates) {
+        if ($FilePath -match "\\$state\\[^\\]+\.md$") {
+            return $state
+        }
+    }
+
+    return ''
+}
+
 function Parse-Request {
     param([string]$FilePath)
 
     $raw = Get-Content -Raw $FilePath
-    $data = [ordered]@{
-        FilePath = $FilePath
-        Id = [System.IO.Path]::GetFileNameWithoutExtension($FilePath)
-        Status = ''
-        Project = ''
+        $data = [ordered]@{
+            FilePath = $FilePath
+            Id = [System.IO.Path]::GetFileNameWithoutExtension($FilePath)
+            Status = ''
+            Project = ''
         Requester = ''
         Origin = ''
-        Priority = ''
-        Blocking = ''
-        DependsOn = ''
-        ClaimId = ''
-        Title = ''
-    }
+            Priority = ''
+            Blocking = ''
+            DependsOn = ''
+            ClaimId = ''
+            QueueEpoch = ''
+            ReviewAfter = ''
+            ReviewStatus = ''
+            Supersedes = ''
+            Title = ''
+        }
 
     foreach ($line in ($raw -split "`r?`n")) {
         if ($line -match '^status:\s*(.+)$') { $data.Status = $matches[1].Trim(); continue }
@@ -80,6 +103,10 @@ function Parse-Request {
         if ($line -match '^blocking:\s*(.+)$') { $data.Blocking = $matches[1].Trim(); continue }
         if ($line -match '^depends_on:\s*(.*)$') { $data.DependsOn = $matches[1].Trim(); continue }
         if ($line -match '^claim_id:\s*(.*)$') { $data.ClaimId = $matches[1].Trim(); continue }
+        if ($line -match '^queue_epoch:\s*(.*)$') { $data.QueueEpoch = $matches[1].Trim(); continue }
+        if ($line -match '^review_after:\s*(.*)$') { $data.ReviewAfter = $matches[1].Trim(); continue }
+        if ($line -match '^review_status:\s*(.*)$') { $data.ReviewStatus = $matches[1].Trim(); continue }
+        if ($line -match '^supersedes:\s*(.*)$') { $data.Supersedes = $matches[1].Trim(); continue }
         if ($line -match '^# (.+)$') { $data.Title = $matches[1].Trim(); break }
     }
 
@@ -132,6 +159,10 @@ switch ($Command) {
             "handoff_from: $HandoffFrom"
             "claim_id: $ClaimId"
             'topic: requested-task'
+            "queue_epoch: $QueueEpoch"
+            "review_after: $ReviewAfter"
+            "review_status: $ReviewStatus"
+            "supersedes: $Supersedes"
             ''
             "# $Title"
             ''
@@ -171,7 +202,26 @@ switch ($Command) {
             throw 'Id is required for move.'
         }
 
-        $source = Get-RequestFiles | Where-Object { $_.BaseName -eq $Id } | Select-Object -First 1
+        $matches = @(Get-RequestFiles | Where-Object { $_.BaseName -eq $Id })
+        if ($FromStatus) {
+            $matches = @($matches | Where-Object { (Get-RequestStateFromPath $_.FullName) -eq $FromStatus })
+        }
+
+        $source = $null
+        if ($matches.Count -gt 1 -and -not $FromStatus) {
+            foreach ($candidateState in @('ready', 'blocked', 'inbox', 'done')) {
+                $source = $matches | Where-Object {
+                    (Get-RequestStateFromPath $_.FullName) -eq $candidateState
+                } | Select-Object -First 1
+                if ($source) {
+                    break
+                }
+            }
+        }
+        elseif ($matches.Count -gt 0) {
+            $source = $matches | Select-Object -First 1
+        }
+
         if (-not $source) {
             throw "Request not found: $Id"
         }

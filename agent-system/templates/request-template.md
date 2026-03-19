@@ -11,6 +11,10 @@ depends_on:
 handoff_from:
 claim_id:
 topic: requested-task
+queue_epoch:
+review_after:
+review_status: current
+supersedes:
 
 # task-name
 

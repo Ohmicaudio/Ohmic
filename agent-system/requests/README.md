@@ -32,6 +32,13 @@ Meaningful answered questions live in:
 
 Use that file as a local deep-trace layer when the chain of logic matters and the answer should stay retrievable later.
 
+Queue pivot records live in:
+
+- `requests/epochs/`
+
+Use that folder when a project changes direction enough that older queued work
+may no longer be trustworthy without review.
+
 ## Folder Roles
 
 - `inbox/`
@@ -42,6 +49,8 @@ Use that file as a local deep-trace layer when the chain of logic matters and th
   - clarified tasks that are ready to be claimed
 - `done/`
   - completed task records kept for traceability
+- `epochs/`
+  - project pivot markers and queue-review boundaries
 - `open-questions.md`
   - active unresolved cross-agent or cross-task questions
 - `resolved-questions.md`
@@ -85,6 +94,10 @@ Helpful optional metadata:
 - `handoff_from`
 - `claim_id`
 - `topic`
+- `queue_epoch`
+- `review_after`
+- `review_status`
+- `supersedes`
 
 ## Pickup Order
 
@@ -99,6 +112,12 @@ After any meaningful completed task, agents should re-check:
 
 - `ready/`
 - `open-questions.md`
+
+If the active project has a recent epoch record:
+
+- re-check `epochs/`
+- do not assume older `ready/` packets are still current without looking at the
+  latest epoch guidance
 
 If a question is answered and the chain of logic matters:
 
@@ -131,6 +150,18 @@ powershell -ExecutionPolicy Bypass -File B:\ohmic\tools\sync\register-idle-agent
 - queue mutations should refresh the idle-work snapshot immediately
 - the scheduled poll keeps the snapshot honest if a write path misses a refresh
 - because of that, the timer interval matters less than clean request states and clean claim scopes
+
+## Pivot Reliability Rule
+
+When a project pivots:
+
+1. create an epoch record
+2. demote affected stale packets out of `ready/`
+3. seed a fresh ready wave that matches the new repo and operating model
+4. mark successor packets with the new `queue_epoch`
+
+This prevents the queue from silently pretending that pre-pivot and post-pivot
+work are equally fresh.
 
 ## Naming
 

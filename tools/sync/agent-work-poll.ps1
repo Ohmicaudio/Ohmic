@@ -150,6 +150,10 @@ function Parse-Request {
         DependsOn = ''
         ClaimId = ''
         HandoffFrom = ''
+        QueueEpoch = ''
+        ReviewAfter = ''
+        ReviewStatus = ''
+        Supersedes = ''
         Title = ''
         SuggestedClaimScope = @()
     }
@@ -173,6 +177,10 @@ function Parse-Request {
         if ($line -match '^depends_on:\s*(.*)$') { $request.DependsOn = $matches[1].Trim(); continue }
         if ($line -match '^claim_id:\s*(.*)$') { $request.ClaimId = $matches[1].Trim(); continue }
         if ($line -match '^handoff_from:\s*(.*)$') { $request.HandoffFrom = $matches[1].Trim(); continue }
+        if ($line -match '^queue_epoch:\s*(.*)$') { $request.QueueEpoch = $matches[1].Trim(); continue }
+        if ($line -match '^review_after:\s*(.*)$') { $request.ReviewAfter = $matches[1].Trim(); continue }
+        if ($line -match '^review_status:\s*(.*)$') { $request.ReviewStatus = $matches[1].Trim(); continue }
+        if ($line -match '^supersedes:\s*(.*)$') { $request.Supersedes = $matches[1].Trim(); continue }
         if ($line -match '^# (.+)$') { $request.Title = $matches[1].Trim(); continue }
         if ($inSuggestedScope -and $line -match '^- (.+)$') { $request.SuggestedClaimScope += $matches[1].Trim() }
     }
@@ -220,6 +228,10 @@ function Test-RequestEligible {
         if ($DoneRequestIds -notcontains $Request.DependsOn) {
             $reasons += 'dependency-open'
         }
+    }
+
+    if ($Request.ReviewStatus -and $Request.ReviewStatus -ne 'current') {
+        $reasons += "review-status:$($Request.ReviewStatus)"
     }
 
     if ($Request.ClaimId) {
@@ -271,6 +283,8 @@ function Get-ReadyWork {
             Title = $request.Title
             Eligible = $result.Eligible
             Reasons = ($result.Reasons -join ', ')
+            ReviewStatus = $request.ReviewStatus
+            QueueEpoch = $request.QueueEpoch
             SuggestedClaimScope = ($request.SuggestedClaimScope -join '; ')
             ClaimId = $request.ClaimId
             FilePath = $request.FilePath
@@ -338,7 +352,7 @@ function Emit-Work {
 
     $lines += (
         ($topItems |
-            Select-Object Id, Project, Priority, Eligible, Reasons, Title, SuggestedClaimScope |
+            Select-Object Id, Project, Priority, ReviewStatus, Eligible, Reasons, Title, SuggestedClaimScope |
             Format-Table -AutoSize |
             Out-String).TrimEnd()
     )

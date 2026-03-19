@@ -1,16 +1,16 @@
 {
-    "generated_at":  "2026-03-16T01:50:12Z",
-    "source_latest_write_time":  "2026-03-16T01:49:57.2340406Z",
+    "generated_at":  "2026-03-19T08:38:08Z",
+    "source_latest_write_time":  "2026-03-19T08:36:58.0098234Z",
     "project":  "ohmic",
     "staleness":  {
                       "status":  "fresh",
                       "reason":  null
                   },
     "counts":  {
-                   "ready":  23,
-                   "active_claims":  0,
-                   "blocked":  2,
-                   "done":  438
+                   "ready":  16,
+                   "active_claims":  1,
+                   "blocked":  26,
+                   "done":  756
                },
     "board_health":  "healthy",
     "queue_floor_met":  true,
@@ -23,12 +23,12 @@
                   "text":  "check queue freshness"
               },
     "response":  {
-                     "status":  "needs_input",
-                     "message":  "Pending input: check queue freshness"
+                     "status":  "working",
+                     "message":  "Active claim: Add queue pivot epoch and refresh administrator ready wave"
                  },
     "top_priority":  [
-                         "2026-03-15-reconcile-ohmic-audio-labs-public-deletion-wave",
-                         "2026-03-15-define-master-administrator-command-routing-surface",
-                         "2026-03-15-define-master-administrator-file-and-email-intake-pipeline"
+                         "2026-03-16-normalize-ohmic-live-link-ap-vs-lan-candidate-identities",
+                         "2026-03-17-run-shared-network-command-surface-wave",
+                         "2026-03-18-define-ble-bootstrap-and-recovery-network-handoff"
                      ]
 }

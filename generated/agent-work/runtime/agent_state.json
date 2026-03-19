@@ -2,14 +2,14 @@
     "session":  {
                     "session_id":  "loop_seed_20260315_01",
                     "project":  "ohmic",
-                    "mode":  "mixed",
+                    "mode":  "perform",
                     "active_repo":  "B:\\ohmic",
                     "agent_id":  "codex",
-                    "task_id":  "",
-                    "task_status":  "needs_input",
+                    "task_id":  "Add queue pivot epoch and refresh administrator ready wave",
+                    "task_status":  "working",
                     "orchestrator_active":  false,
                     "compact_count":  0,
-                    "updated_at":  "2026-03-16T01:50:12Z"
+                    "updated_at":  "2026-03-19T08:38:08Z"
                 },
     "input":  {
                   "pending":  true,
@@ -22,43 +22,44 @@
                   "handled_by":  ""
               },
     "state":  {
-                  "summary":  "Queue healthy. 23 ready tasks, 0 active claims.",
-                  "ready_count":  23,
-                  "active_claim_count":  0,
+                  "summary":  "Queue healthy. 16 ready tasks, 1 active claims.",
+                  "ready_count":  16,
+                  "active_claim_count":  1,
                   "board_health":  "healthy",
                   "top_priority":  [
-                                       "2026-03-15-reconcile-ohmic-audio-labs-public-deletion-wave",
-                                       "2026-03-15-define-master-administrator-command-routing-surface",
-                                       "2026-03-15-define-master-administrator-file-and-email-intake-pipeline"
+                                       "2026-03-16-normalize-ohmic-live-link-ap-vs-lan-candidate-identities",
+                                       "2026-03-17-run-shared-network-command-surface-wave",
+                                       "2026-03-18-define-ble-bootstrap-and-recovery-network-handoff"
                                    ],
                   "queue_floor_met":  true,
                   "stale_state_detected":  false,
                   "recent_completions":  [
-                                             "2026-03-15-add-reference-backend-chirp-smoke-harness-and-helper-regression",
-                                             "2026-03-15-implement-handset-live-device-candidate-parity-wave",
-                                             "2026-03-15-implement-amplab-browser-shell-regression-wave"
+                                             "2026-03-16-define-worker-stack-overflow-spillback-rules",
+                                             "2026-03-16-define-worker-stack-depth-by-trust-tier",
+                                             "2026-03-16-define-worker-stack-depth-by-role-family"
                                          ],
                   "risks":  [
-                                "Blocked tasks present: 2"
+                                "Blocked tasks present: 26"
                             ]
               },
     "response":  {
-                     "status":  "needs_input",
-                     "message":  "Pending input: check queue freshness",
-                     "current_action":  "awaiting inbox handling",
+                     "status":  "working",
+                     "message":  "Active claim: Add queue pivot epoch and refresh administrator ready wave",
+                     "current_action":  "executing Add queue pivot epoch and refresh administrator ready wave",
                      "recommended_next":  [
-                                              "2026-03-15-reconcile-ohmic-audio-labs-public-deletion-wave",
-                                              "2026-03-15-define-master-administrator-command-routing-surface",
-                                              "2026-03-15-define-master-administrator-file-and-email-intake-pipeline"
+                                              "2026-03-16-normalize-ohmic-live-link-ap-vs-lan-candidate-identities",
+                                              "2026-03-17-run-shared-network-command-surface-wave",
+                                              "2026-03-18-define-ble-bootstrap-and-recovery-network-handoff"
                                           ],
                      "completed":  [
-                                       "2026-03-15-add-reference-backend-chirp-smoke-harness-and-helper-regression",
-                                       "2026-03-15-implement-handset-live-device-candidate-parity-wave",
-                                       "2026-03-15-implement-amplab-browser-shell-regression-wave"
+                                       "2026-03-16-define-worker-stack-overflow-spillback-rules",
+                                       "2026-03-16-define-worker-stack-depth-by-trust-tier",
+                                       "2026-03-16-define-worker-stack-depth-by-role-family"
                                    ],
                      "blocked":  [
                                      "2026-03-15-promote-ops-unifier-incubator-when-ohmic-slack-exists",
-                                     "2026-03-15-turn-audit-image-briefs-into-production-graphics-queue"
+                                     "2026-03-15-turn-audit-image-briefs-into-production-graphics-queue",
+                                     "2026-03-16-define-admin-vs-orchestrator-local-stack-comparison-card"
                                  ],
                      "notes":  [
                                    "Reconciled from repo-backed request and claim truth first.",

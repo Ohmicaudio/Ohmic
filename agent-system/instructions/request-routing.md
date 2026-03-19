@@ -20,6 +20,14 @@ Canonical open-question surface:
   - shared list of unresolved cross-task or cross-agent questions
   - use it for questions that do not yet merit a claim but should be rechecked after meaningful completed work
 
+Queue pivot / epoch surface:
+
+- `requests/epochs/`
+  - project-level direction changes that invalidate, demote, or force review of
+    older queued work
+  - use it when repo shape, execution model, or operating direction changes
+    enough that older ready packets may no longer be trustworthy at face value
+
 ## Pickup Order
 
 When an agent is looking for queued work:
@@ -71,6 +79,10 @@ Optional but useful:
 - `handoff_from`
 - `claim_id`
 - `topic`
+- `queue_epoch`
+- `review_after`
+- `review_status`
+- `supersedes`
 
 ## Priority Terms
 
@@ -105,6 +117,57 @@ A request can move to `ready/` when:
 - the scope is narrow enough to claim
 - the dependency state is known
 - there is enough context for another agent to begin without re-reading a whole chat thread
+
+## Queue Epoch Rule
+
+When a project pivots hard enough that older queue work may no longer map
+cleanly onto the active repo or operating model, agents must create a queue
+epoch record under `requests/epochs/`.
+
+Use a queue epoch when any of these happen:
+
+- the active product repo changes
+- the execution surface moves from one repo to another
+- a browser shell becomes a real product repo
+- queue wording still points at a pre-pivot architecture
+- the system is now expected to operate inside a new runtime or contract layer
+
+Minimum queue epoch contents:
+
+- project
+- effective date
+- pivot summary
+- what older queued work is affected
+- whether affected work should stay ready, move to blocked, or be rebuilt
+- the new ready wave or successor task family
+
+## Review Status Rule
+
+Queued work should not stay `ready` forever after a major pivot.
+
+Use:
+
+- `review_status: current`
+  - packet still matches the active direction
+- `review_status: needs_review`
+  - packet may still be useful, but another agent must re-check it against the
+    current repo and direction before pickup
+- `review_status: superseded`
+  - packet should not be picked up because a fresher replacement exists
+
+If a packet is both affected by a pivot and still potentially useful:
+
+1. move it out of `ready/`
+2. link it to the new epoch or successor work
+3. rebuild a fresh ready packet if the work is still worth doing now
+
+## Poller Safety Rule
+
+The idle-work poller must not treat `review_status: needs_review` or
+`review_status: superseded` packets as eligible ready work.
+
+That means pivot-damaged queue work should fail safe instead of continuing to
+look normal just because the old file still exists.
 
 ## Execution Rule
 

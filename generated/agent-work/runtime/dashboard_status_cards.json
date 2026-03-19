@@ -1,5 +1,5 @@
 {
-    "generated_at":  "2026-03-16T01:50:12Z",
+    "generated_at":  "2026-03-19T08:38:09Z",
     "source":  {
                    "kind":  "dashboard_card_mapper",
                    "path":  "B:\\ohmic\\generated\\agent-work\\runtime"
@@ -22,7 +22,7 @@
                                      },
                                      {
                                          "label":  "Mode",
-                                         "value":  "mixed"
+                                         "value":  "perform"
                                      },
                                      {
                                          "label":  "Repo",
@@ -30,7 +30,7 @@
                                      },
                                      {
                                          "label":  "Updated",
-                                         "value":  "2026-03-16T01:50:12Z"
+                                         "value":  "2026-03-19T08:38:08Z"
                                      },
                                      {
                                          "label":  "Loop state",
@@ -46,11 +46,11 @@
                       "fields":  [
                                      {
                                          "label":  "Ready",
-                                         "value":  "23"
+                                         "value":  "16"
                                      },
                                      {
                                          "label":  "Active",
-                                         "value":  "0"
+                                         "value":  "1"
                                      },
                                      {
                                          "label":  "Board health",
@@ -70,19 +70,19 @@
                       "fields":  [
                                      {
                                          "label":  "Status",
-                                         "value":  "needs_input"
+                                         "value":  "working"
                                      },
                                      {
                                          "label":  "Current action",
-                                         "value":  "Pending input: check queue freshness"
+                                         "value":  "Active claim: Add queue pivot epoch and refresh administrator ready wave"
                                      },
                                      {
                                          "label":  "Next",
-                                         "value":  "2026-03-15-reconcile-ohmic-audio-labs-public-deletion-wave"
+                                         "value":  "2026-03-16-normalize-ohmic-live-link-ap-vs-lan-candidate-identities"
                                      },
                                      {
                                          "label":  "Claim",
-                                         "value":  "none"
+                                         "value":  "Add queue pivot epoch and refresh administrator ready wave"
                                      }
                                  ]
                   },
@@ -95,7 +95,7 @@
                       "fields":  [
                                      {
                                          "label":  "Risk",
-                                         "value":  "Blocked tasks present: 2"
+                                         "value":  "Blocked tasks present: 26"
                                      },
                                      {
                                          "label":  "Blocker",

@@ -1,5 +1,5 @@
 {
-    "generated_at":  "2026-03-16T01:50:12Z",
+    "generated_at":  "2026-03-19T08:38:08Z",
     "source":  {
                    "kind":  "repo_summary",
                    "path":  "B:\\ohmic\\agent-system\\requests\\ready"
@@ -8,260 +8,183 @@
                       "status":  "fresh",
                       "reason":  null
                   },
-    "count":  23,
+    "count":  16,
     "items":  [
                   {
-                      "task_id":  "2026-03-15-define-master-administrator-command-routing-surface",
-                      "title":  "Define Master Administrator Command Routing Surface",
+                      "task_id":  "2026-03-16-define-variance-family-parent-child-link-boundary",
+                      "title":  "Define Variance Family Parent Child Link Boundary",
+                      "priority":  "low",
+                      "project":  "ohmic",
+                      "status":  "ready",
+                      "date":  "2026-03-16",
+                      "owner":  "",
+                      "claim_id":  "",
+                      "file_path":  "B:\\ohmic\\agent-system\\requests\\ready\\2026-03-16-define-variance-family-parent-child-link-boundary.md"
+                  },
+                  {
+                      "task_id":  "2026-03-16-normalize-ohmic-live-link-ap-vs-lan-candidate-identities",
+                      "title":  "Normalize Ohmic Live Link AP vs LAN Candidate Identities",
+                      "priority":  "high",
+                      "project":  "ohmic",
+                      "status":  "active",
+                      "date":  "2026-03-16",
+                      "owner":  "d",
+                      "claim_id":  "20260316T124119Z-fabe40cd",
+                      "file_path":  "B:\\ohmic\\agent-system\\requests\\ready\\2026-03-16-normalize-ohmic-live-link-ap-vs-lan-candidate-identities.md"
+                  },
+                  {
+                      "task_id":  "2026-03-16-rerun-phone-assisted-amplab-smoke-after-candidate-normalization",
+                      "title":  "Rerun Phone Assisted AmpLab Smoke After Candidate Normalization",
                       "priority":  "medium",
                       "project":  "ohmic",
                       "status":  "ready",
-                      "date":  "2026-03-15",
+                      "date":  "2026-03-16",
                       "owner":  "",
                       "claim_id":  "",
-                      "file_path":  "B:\\ohmic\\agent-system\\requests\\ready\\2026-03-15-define-master-administrator-command-routing-surface.md"
+                      "file_path":  "B:\\ohmic\\agent-system\\requests\\ready\\2026-03-16-rerun-phone-assisted-amplab-smoke-after-candidate-normalization.md"
                   },
                   {
-                      "task_id":  "2026-03-15-define-master-administrator-file-and-email-intake-pipeline",
-                      "title":  "Define Master Administrator File And Email Intake Pipeline",
-                      "priority":  "medium",
-                      "project":  "ohmic",
+                      "task_id":  "2026-03-17-run-shared-network-command-surface-wave",
+                      "title":  "Run Shared Network Command Surface Wave",
+                      "priority":  "high",
+                      "project":  "firmware",
                       "status":  "ready",
-                      "date":  "2026-03-15",
+                      "date":  "2026-03-17",
                       "owner":  "",
                       "claim_id":  "",
-                      "file_path":  "B:\\ohmic\\agent-system\\requests\\ready\\2026-03-15-define-master-administrator-file-and-email-intake-pipeline.md"
+                      "file_path":  "B:\\ohmic\\agent-system\\requests\\ready\\2026-03-17-run-shared-network-command-surface-wave.md"
                   },
                   {
-                      "task_id":  "2026-03-15-define-master-administrator-intake-domain-model",
-                      "title":  "Define Master Administrator Intake Domain Model",
+                      "task_id":  "2026-03-17-teach-remote-and-web-surfaces-to-invoke-network-actions-through-command-first-contract",
+                      "title":  "Teach Remote And Web Surfaces To Invoke Network Actions Through Command First Contract",
                       "priority":  "medium",
-                      "project":  "ohmic",
+                      "project":  "firmware",
                       "status":  "ready",
-                      "date":  "2026-03-15",
+                      "date":  "2026-03-17",
                       "owner":  "",
                       "claim_id":  "",
-                      "file_path":  "B:\\ohmic\\agent-system\\requests\\ready\\2026-03-15-define-master-administrator-intake-domain-model.md"
+                      "file_path":  "B:\\ohmic\\agent-system\\requests\\ready\\2026-03-17-teach-remote-and-web-surfaces-to-invoke-network-actions-through-command-first-contract.md"
                   },
                   {
-                      "task_id":  "2026-03-15-define-master-administrator-provider-adapter-boundary",
-                      "title":  "Define Master Administrator Provider Adapter Boundary",
-                      "priority":  "medium",
-                      "project":  "ohmic",
-                      "status":  "ready",
-                      "date":  "2026-03-15",
-                      "owner":  "",
-                      "claim_id":  "",
-                      "file_path":  "B:\\ohmic\\agent-system\\requests\\ready\\2026-03-15-define-master-administrator-provider-adapter-boundary.md"
-                  },
-                  {
-                      "task_id":  "2026-03-15-define-master-administrator-web-scaffold-wave",
-                      "title":  "Define Master Administrator Web Scaffold Wave",
-                      "priority":  "medium",
-                      "project":  "ohmic",
-                      "status":  "ready",
-                      "date":  "2026-03-15",
-                      "owner":  "",
-                      "claim_id":  "",
-                      "file_path":  "B:\\ohmic\\agent-system\\requests\\ready\\2026-03-15-define-master-administrator-web-scaffold-wave.md"
-                  },
-                  {
-                      "task_id":  "2026-03-15-normalize-design-sandbox-stitch-support-surface",
-                      "title":  "Normalize Design Sandbox Stitch Support Surface",
-                      "priority":  "medium",
-                      "project":  "ohmic-audio-labs",
-                      "status":  "ready",
-                      "date":  "2026-03-15",
-                      "owner":  "",
-                      "claim_id":  "",
-                      "file_path":  "B:\\ohmic\\agent-system\\requests\\ready\\2026-03-15-normalize-design-sandbox-stitch-support-surface.md"
-                  },
-                  {
-                      "task_id":  "2026-03-15-reconcile-ohmic-audio-labs-public-deletion-wave",
-                      "title":  "Reconcile Ohmic Audio Labs Public Deletion Wave",
+                      "task_id":  "2026-03-18-define-ble-bootstrap-and-recovery-network-handoff",
+                      "title":  "Define BLE Bootstrap And Recovery Network Handoff",
                       "priority":  "high",
                       "project":  "ohmic-audio-labs",
                       "status":  "ready",
-                      "date":  "2026-03-15",
+                      "date":  "2026-03-18",
                       "owner":  "",
                       "claim_id":  "",
-                      "file_path":  "B:\\ohmic\\agent-system\\requests\\ready\\2026-03-15-reconcile-ohmic-audio-labs-public-deletion-wave.md"
+                      "file_path":  "B:\\ohmic\\agent-system\\requests\\ready\\2026-03-18-define-ble-bootstrap-and-recovery-network-handoff.md"
                   },
                   {
-                      "task_id":  "2026-03-15-run-ohmic-audio-labs-docs-truth-sweep",
-                      "title":  "Run Ohmic Audio Labs Docs Truth Sweep",
+                      "task_id":  "2026-03-18-define-ble-pairing-trust-and-authority-floor",
+                      "title":  "Define BLE Pairing Trust And Authority Floor",
+                      "priority":  "high",
+                      "project":  "ohmic-audio-labs",
+                      "status":  "ready",
+                      "date":  "2026-03-18",
+                      "owner":  "",
+                      "claim_id":  "",
+                      "file_path":  "B:\\ohmic\\agent-system\\requests\\ready\\2026-03-18-define-ble-pairing-trust-and-authority-floor.md"
+                  },
+                  {
+                      "task_id":  "2026-03-18-extract-shared-amplab-ble-contract-and-transport-foundation",
+                      "title":  "Extract Shared AmpLab BLE Contract And Transport Foundation",
+                      "priority":  "high",
+                      "project":  "ohmic-audio-labs",
+                      "status":  "ready",
+                      "date":  "2026-03-18",
+                      "owner":  "",
+                      "claim_id":  "",
+                      "file_path":  "B:\\ohmic\\agent-system\\requests\\ready\\2026-03-18-extract-shared-amplab-ble-contract-and-transport-foundation.md"
+                  },
+                  {
+                      "task_id":  "2026-03-18-run-ble-setup-auth-and-ota-runway-wave",
+                      "title":  "Run BLE Setup Auth And OTA Runway Wave",
+                      "priority":  "high",
+                      "project":  "ohmic-audio-labs",
+                      "status":  "ready",
+                      "date":  "2026-03-18",
+                      "owner":  "",
+                      "claim_id":  "",
+                      "file_path":  "B:\\ohmic\\agent-system\\requests\\ready\\2026-03-18-run-ble-setup-auth-and-ota-runway-wave.md"
+                  },
+                  {
+                      "task_id":  "2026-03-18-stage-ota-capability-over-shared-trust-and-command-contract",
+                      "title":  "Stage OTA Capability Over Shared Trust And Command Contract",
                       "priority":  "medium",
                       "project":  "ohmic-audio-labs",
                       "status":  "ready",
-                      "date":  "2026-03-15",
+                      "date":  "2026-03-18",
                       "owner":  "",
                       "claim_id":  "",
-                      "file_path":  "B:\\ohmic\\agent-system\\requests\\ready\\2026-03-15-run-ohmic-audio-labs-docs-truth-sweep.md"
+                      "file_path":  "B:\\ohmic\\agent-system\\requests\\ready\\2026-03-18-stage-ota-capability-over-shared-trust-and-command-contract.md"
                   },
                   {
-                      "task_id":  "2026-03-16-compare-remote-to-dsp-wireless-transport-options",
-                      "title":  "Compare Remote To DSP Wireless Transport Options",
-                      "priority":  "medium",
-                      "project":  "ohmic",
+                      "task_id":  "2026-03-19-add-hybrid-stack-mode-switch-audit-events",
+                      "title":  "add-hybrid-stack-mode-switch-audit-events",
+                      "priority":  "soon",
+                      "project":  "ohmic-administrator",
                       "status":  "ready",
-                      "date":  "2026-03-16",
+                      "date":  "",
                       "owner":  "",
                       "claim_id":  "",
-                      "file_path":  "B:\\ohmic\\agent-system\\requests\\ready\\2026-03-16-compare-remote-to-dsp-wireless-transport-options.md"
+                      "file_path":  "B:\\ohmic\\agent-system\\requests\\ready\\2026-03-19-add-hybrid-stack-mode-switch-audit-events.md"
                   },
                   {
-                      "task_id":  "2026-03-16-define-agent-and-model-performance-report-surface",
-                      "title":  "Define Agent And Model Performance Report Surface",
-                      "priority":  "medium",
-                      "project":  "ohmic",
+                      "task_id":  "2026-03-19-add-manual-intake-attachment-ref-floor",
+                      "title":  "add-manual-intake-attachment-ref-floor",
+                      "priority":  "soon",
+                      "project":  "ohmic-administrator",
                       "status":  "ready",
-                      "date":  "2026-03-16",
+                      "date":  "",
                       "owner":  "",
                       "claim_id":  "",
-                      "file_path":  "B:\\ohmic\\agent-system\\requests\\ready\\2026-03-16-define-agent-and-model-performance-report-surface.md"
+                      "file_path":  "B:\\ohmic\\agent-system\\requests\\ready\\2026-03-19-add-manual-intake-attachment-ref-floor.md"
                   },
                   {
-                      "task_id":  "2026-03-16-define-agent-graduation-checkpoints",
-                      "title":  "Define Agent Graduation Checkpoints",
-                      "priority":  "medium",
-                      "project":  "ohmic",
+                      "task_id":  "2026-03-19-add-manual-intake-duplicate-review-signal",
+                      "title":  "add-manual-intake-duplicate-review-signal",
+                      "priority":  "soon",
+                      "project":  "ohmic-administrator",
                       "status":  "ready",
-                      "date":  "2026-03-16",
+                      "date":  "",
                       "owner":  "",
                       "claim_id":  "",
-                      "file_path":  "B:\\ohmic\\agent-system\\requests\\ready\\2026-03-16-define-agent-graduation-checkpoints.md"
+                      "file_path":  "B:\\ohmic\\agent-system\\requests\\ready\\2026-03-19-add-manual-intake-duplicate-review-signal.md"
                   },
                   {
-                      "task_id":  "2026-03-16-define-agent-sanity-and-error-check-hook-layer",
-                      "title":  "Define Agent Sanity And Error Check Hook Layer",
-                      "priority":  "medium",
-                      "project":  "ohmic",
+                      "task_id":  "2026-03-19-add-runtime-stack-history-card",
+                      "title":  "add-runtime-stack-history-card",
+                      "priority":  "soon",
+                      "project":  "ohmic-administrator",
                       "status":  "ready",
-                      "date":  "2026-03-16",
+                      "date":  "",
                       "owner":  "",
                       "claim_id":  "",
-                      "file_path":  "B:\\ohmic\\agent-system\\requests\\ready\\2026-03-16-define-agent-sanity-and-error-check-hook-layer.md"
+                      "file_path":  "B:\\ohmic\\agent-system\\requests\\ready\\2026-03-19-add-runtime-stack-history-card.md"
                   },
                   {
-                      "task_id":  "2026-03-16-define-agent-trust-tier-model",
-                      "title":  "Define Agent Trust Tier Model",
-                      "priority":  "medium",
-                      "project":  "ohmic",
+                      "task_id":  "2026-03-19-review-admin-api-timeout-flake-and-split-slow-tests",
+                      "title":  "review-admin-api-timeout-flake-and-split-slow-tests",
+                      "priority":  "now",
+                      "project":  "ohmic-administrator",
                       "status":  "ready",
-                      "date":  "2026-03-16",
+                      "date":  "",
                       "owner":  "",
                       "claim_id":  "",
-                      "file_path":  "B:\\ohmic\\agent-system\\requests\\ready\\2026-03-16-define-agent-trust-tier-model.md"
+                      "file_path":  "B:\\ohmic\\agent-system\\requests\\ready\\2026-03-19-review-admin-api-timeout-flake-and-split-slow-tests.md"
                   },
                   {
-                      "task_id":  "2026-03-16-define-fresh-agent-restriction-and-escalation-rules",
-                      "title":  "Define Fresh Agent Restriction And Escalation Rules",
-                      "priority":  "medium",
-                      "project":  "ohmic",
+                      "task_id":  "2026-03-19-surface-worker-status-failures-in-runtime-feedback",
+                      "title":  "surface-worker-status-failures-in-runtime-feedback",
+                      "priority":  "soon",
+                      "project":  "ohmic-administrator",
                       "status":  "ready",
-                      "date":  "2026-03-16",
+                      "date":  "",
                       "owner":  "",
                       "claim_id":  "",
-                      "file_path":  "B:\\ohmic\\agent-system\\requests\\ready\\2026-03-16-define-fresh-agent-restriction-and-escalation-rules.md"
-                  },
-                  {
-                      "task_id":  "2026-03-16-define-live-task-route-training-lane",
-                      "title":  "Define Live Task Route Training Lane",
-                      "priority":  "medium",
-                      "project":  "ohmic",
-                      "status":  "ready",
-                      "date":  "2026-03-16",
-                      "owner":  "",
-                      "claim_id":  "",
-                      "file_path":  "B:\\ohmic\\agent-system\\requests\\ready\\2026-03-16-define-live-task-route-training-lane.md"
-                  },
-                  {
-                      "task_id":  "2026-03-16-define-native-format-ingestion-normalization-pipeline",
-                      "title":  "Define Native Format Ingestion Normalization Pipeline",
-                      "priority":  "medium",
-                      "project":  "ohmic",
-                      "status":  "ready",
-                      "date":  "2026-03-16",
-                      "owner":  "",
-                      "claim_id":  "",
-                      "file_path":  "B:\\ohmic\\agent-system\\requests\\ready\\2026-03-16-define-native-format-ingestion-normalization-pipeline.md"
-                  },
-                  {
-                      "task_id":  "2026-03-16-define-non-api-interface-adapter-model",
-                      "title":  "Define Non-API Interface Adapter Model",
-                      "priority":  "medium",
-                      "project":  "ohmic",
-                      "status":  "ready",
-                      "date":  "2026-03-16",
-                      "owner":  "",
-                      "claim_id":  "",
-                      "file_path":  "B:\\ohmic\\agent-system\\requests\\ready\\2026-03-16-define-non-api-interface-adapter-model.md"
-                  },
-                  {
-                      "task_id":  "2026-03-16-define-project-overlay-configuration-layer-for-administrator",
-                      "title":  "Define Project Overlay Configuration Layer For Administrator",
-                      "priority":  "medium",
-                      "project":  "ohmic",
-                      "status":  "ready",
-                      "date":  "2026-03-16",
-                      "owner":  "",
-                      "claim_id":  "",
-                      "file_path":  "B:\\ohmic\\agent-system\\requests\\ready\\2026-03-16-define-project-overlay-configuration-layer-for-administrator.md"
-                  },
-                  {
-                      "task_id":  "2026-03-16-define-provider-agnostic-intake-envelope",
-                      "title":  "Define Provider-Agnostic Intake Envelope",
-                      "priority":  "medium",
-                      "project":  "ohmic",
-                      "status":  "ready",
-                      "date":  "2026-03-16",
-                      "owner":  "",
-                      "claim_id":  "",
-                      "file_path":  "B:\\ohmic\\agent-system\\requests\\ready\\2026-03-16-define-provider-agnostic-intake-envelope.md"
-                  },
-                  {
-                      "task_id":  "2026-03-16-define-remote-to-dsp-wireless-link-requirements",
-                      "title":  "Define Remote To DSP Wireless Link Requirements",
-                      "priority":  "medium",
-                      "project":  "ohmic",
-                      "status":  "ready",
-                      "date":  "2026-03-16",
-                      "owner":  "",
-                      "claim_id":  "",
-                      "file_path":  "B:\\ohmic\\agent-system\\requests\\ready\\2026-03-16-define-remote-to-dsp-wireless-link-requirements.md"
-                  },
-                  {
-                      "task_id":  "2026-03-16-define-task-completion-correctness-report-model",
-                      "title":  "Define Task Completion Correctness Report Model",
-                      "priority":  "medium",
-                      "project":  "ohmic",
-                      "status":  "ready",
-                      "date":  "2026-03-16",
-                      "owner":  "",
-                      "claim_id":  "",
-                      "file_path":  "B:\\ohmic\\agent-system\\requests\\ready\\2026-03-16-define-task-completion-correctness-report-model.md"
-                  },
-                  {
-                      "task_id":  "2026-03-16-scaffold-master-administrator-web-shell-against-current-json-state",
-                      "title":  "Scaffold Master Administrator Web Shell Against Current JSON State",
-                      "priority":  "medium",
-                      "project":  "ohmic",
-                      "status":  "ready",
-                      "date":  "2026-03-16",
-                      "owner":  "",
-                      "claim_id":  "",
-                      "file_path":  "B:\\ohmic\\agent-system\\requests\\ready\\2026-03-16-scaffold-master-administrator-web-shell-against-current-json-state.md"
-                  },
-                  {
-                      "task_id":  "2026-03-16-split-remote-to-dsp-control-plane-vs-audio-plane",
-                      "title":  "Split Remote To DSP Control Plane Vs Audio Plane",
-                      "priority":  "medium",
-                      "project":  "ohmic",
-                      "status":  "ready",
-                      "date":  "2026-03-16",
-                      "owner":  "",
-                      "claim_id":  "",
-                      "file_path":  "B:\\ohmic\\agent-system\\requests\\ready\\2026-03-16-split-remote-to-dsp-control-plane-vs-audio-plane.md"
+                      "file_path":  "B:\\ohmic\\agent-system\\requests\\ready\\2026-03-19-surface-worker-status-failures-in-runtime-feedback.md"
                   }
               ]
 }
