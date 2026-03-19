@@ -1,7 +1,7 @@
-scope: project
+﻿scope: project
 authority: working
 project: ohmic-administrator
-status: ready
+status: done
 requested: 2026-03-19
 requester: codex
 origin: agent
@@ -45,3 +45,4 @@ supersedes:
 ## Suggested Claim Scope
 
 - `B:\ohmic\repos\ohmic-administrator\services\admin-api`
+

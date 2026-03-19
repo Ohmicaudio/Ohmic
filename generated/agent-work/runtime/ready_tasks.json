@@ -1,5 +1,5 @@
 {
-    "generated_at":  "2026-03-19T08:40:20Z",
+    "generated_at":  "2026-03-19T09:11:39Z",
     "source":  {
                    "kind":  "repo_summary",
                    "path":  "B:\\ohmic\\agent-system\\requests\\ready"
@@ -8,7 +8,7 @@
                       "status":  "fresh",
                       "reason":  null
                   },
-    "count":  16,
+    "count":  14,
     "items":  [
                   {
                       "task_id":  "2026-03-16-define-variance-family-parent-child-link-boundary",
@@ -121,17 +121,6 @@
                       "file_path":  "B:\\ohmic\\agent-system\\requests\\ready\\2026-03-18-stage-ota-capability-over-shared-trust-and-command-contract.md"
                   },
                   {
-                      "task_id":  "2026-03-19-add-hybrid-stack-mode-switch-audit-events",
-                      "title":  "add-hybrid-stack-mode-switch-audit-events",
-                      "priority":  "soon",
-                      "project":  "ohmic-administrator",
-                      "status":  "ready",
-                      "date":  "",
-                      "owner":  "",
-                      "claim_id":  "",
-                      "file_path":  "B:\\ohmic\\agent-system\\requests\\ready\\2026-03-19-add-hybrid-stack-mode-switch-audit-events.md"
-                  },
-                  {
                       "task_id":  "2026-03-19-add-manual-intake-attachment-ref-floor",
                       "title":  "add-manual-intake-attachment-ref-floor",
                       "priority":  "soon",
@@ -163,17 +152,6 @@
                       "owner":  "",
                       "claim_id":  "",
                       "file_path":  "B:\\ohmic\\agent-system\\requests\\ready\\2026-03-19-add-runtime-stack-history-card.md"
-                  },
-                  {
-                      "task_id":  "2026-03-19-review-admin-api-timeout-flake-and-split-slow-tests",
-                      "title":  "review-admin-api-timeout-flake-and-split-slow-tests",
-                      "priority":  "now",
-                      "project":  "ohmic-administrator",
-                      "status":  "ready",
-                      "date":  "",
-                      "owner":  "",
-                      "claim_id":  "",
-                      "file_path":  "B:\\ohmic\\agent-system\\requests\\ready\\2026-03-19-review-admin-api-timeout-flake-and-split-slow-tests.md"
                   },
                   {
                       "task_id":  "2026-03-19-surface-worker-status-failures-in-runtime-feedback",
