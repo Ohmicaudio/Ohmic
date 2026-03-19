@@ -1,10 +1,10 @@
 {
-    "updated_at":  "2026-03-19T22:18:55.2978134Z",
+    "updated_at":  "2026-03-19T22:28:35.3391521Z",
     "status":  "success",
     "mode":  "once",
     "project":  "ohmic-administrator",
-    "reason":  "request-move:2026-03-19-harden-claim-completion-sync-when-request-moved-early:done",
-    "last_success_at":  "2026-03-19T22:18:55.2978134Z",
+    "reason":  "request-move:2026-03-19-surface-project-board-recommendation-in-desk-snapshot:done",
+    "last_success_at":  "2026-03-19T22:28:35.3391521Z",
     "outputs":  [
                     "generated/agent-work/current-state.json",
                     "generated/agent-work/runtime/agent_state.json",

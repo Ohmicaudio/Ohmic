@@ -1,5 +1,5 @@
 {
-    "generated_at":  "2026-03-19T22:18:55Z",
+    "generated_at":  "2026-03-19T22:28:35Z",
     "source":  {
                    "kind":  "dashboard_card_mapper",
                    "path":  "B:\\ohmic\\generated\\agent-work\\runtime"
@@ -30,7 +30,7 @@
                                      },
                                      {
                                          "label":  "Updated",
-                                         "value":  "2026-03-19T22:18:54Z"
+                                         "value":  "2026-03-19T22:28:34Z"
                                      },
                                      {
                                          "label":  "Loop state",
@@ -74,15 +74,15 @@
                                      },
                                      {
                                          "label":  "Current action",
-                                         "value":  "Active claim: validate-ble-fire-profile-select-and-join"
+                                         "value":  "Active claim: close-live-ble-stream-source-gap-on-amplab"
                                      },
                                      {
                                          "label":  "Next",
-                                         "value":  "2026-03-19-validate-ble-profile-select-and-join-on-live-amplab"
+                                         "value":  "2026-03-19-close-live-ble-stream-source-gap-on-amplab"
                                      },
                                      {
                                          "label":  "Claim",
-                                         "value":  "validate-ble-fire-profile-select-and-join"
+                                         "value":  "close-live-ble-stream-source-gap-on-amplab"
                                      }
                                  ]
                   },

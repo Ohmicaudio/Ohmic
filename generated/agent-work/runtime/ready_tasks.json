@@ -1,5 +1,5 @@
 {
-    "generated_at":  "2026-03-19T22:18:54Z",
+    "generated_at":  "2026-03-19T22:28:34Z",
     "source":  {
                    "kind":  "repo_summary",
                    "path":  "B:\\ohmic\\agent-system\\requests\\ready"
@@ -121,15 +121,15 @@
                       "file_path":  "B:\\ohmic\\agent-system\\requests\\ready\\2026-03-18-stage-ota-capability-over-shared-trust-and-command-contract.md"
                   },
                   {
-                      "task_id":  "2026-03-19-validate-ble-profile-select-and-join-on-live-amplab",
-                      "title":  "validate-ble-profile-select-and-join-on-live-amplab",
+                      "task_id":  "2026-03-19-close-live-ble-stream-source-gap-on-amplab",
+                      "title":  "close-live-ble-stream-source-gap-on-amplab",
                       "priority":  "high",
                       "project":  "ohmic-audio-labs",
                       "status":  "ready",
                       "date":  "",
                       "owner":  "",
                       "claim_id":  "",
-                      "file_path":  "B:\\ohmic\\agent-system\\requests\\ready\\2026-03-19-validate-ble-profile-select-and-join-on-live-amplab.md"
+                      "file_path":  "B:\\ohmic\\agent-system\\requests\\ready\\2026-03-19-close-live-ble-stream-source-gap-on-amplab.md"
                   }
               ]
 }

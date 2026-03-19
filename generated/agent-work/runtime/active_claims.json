@@ -1,5 +1,5 @@
 {
-    "generated_at":  "2026-03-19T22:18:54Z",
+    "generated_at":  "2026-03-19T22:28:34Z",
     "source":  {
                    "kind":  "repo_summary",
                    "path":  "B:\\ohmic\\agent-system\\jobs\\active"
@@ -12,7 +12,7 @@
     "items":  [
                   {
                       "claim_id":  "20260319T211500Z-ble-fire-control-lane",
-                      "task":  "validate-ble-fire-profile-select-and-join",
+                      "task":  "close-live-ble-stream-source-gap-on-amplab",
                       "owner":  "codex",
                       "project":  "ohmic-audio-labs",
                       "status":  "active",

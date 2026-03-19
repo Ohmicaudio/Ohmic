@@ -5,11 +5,11 @@
                     "mode":  "perform",
                     "active_repo":  "B:\\ohmic",
                     "agent_id":  "codex",
-                    "task_id":  "validate-ble-fire-profile-select-and-join",
+                    "task_id":  "close-live-ble-stream-source-gap-on-amplab",
                     "task_status":  "working",
                     "orchestrator_active":  false,
                     "compact_count":  0,
-                    "updated_at":  "2026-03-19T22:18:54Z"
+                    "updated_at":  "2026-03-19T22:28:34Z"
                 },
     "input":  {
                   "pending":  true,
@@ -27,16 +27,16 @@
                   "active_claim_count":  1,
                   "board_health":  "healthy",
                   "top_priority":  [
-                                       "2026-03-19-validate-ble-profile-select-and-join-on-live-amplab",
+                                       "2026-03-19-close-live-ble-stream-source-gap-on-amplab",
                                        "2026-03-16-normalize-ohmic-live-link-ap-vs-lan-candidate-identities",
                                        "2026-03-17-run-shared-network-command-surface-wave"
                                    ],
                   "queue_floor_met":  true,
                   "stale_state_detected":  false,
                   "recent_completions":  [
-                                             "2026-03-19-harden-claim-completion-sync-when-request-moved-early",
-                                             "2026-03-19-add-project-board-next-action-recommendation-lane",
-                                             "2026-03-19-add-project-board-claim-age-alerts"
+                                             "2026-03-19-surface-project-board-recommendation-in-desk-snapshot",
+                                             "2026-03-19-validate-live-ble-control-and-dsp-actions-on-fire",
+                                             "2026-03-19-validate-ble-profile-select-and-join-on-live-amplab"
                                          ],
                   "risks":  [
                                 "Blocked tasks present: 26"
@@ -44,17 +44,17 @@
               },
     "response":  {
                      "status":  "working",
-                     "message":  "Active claim: validate-ble-fire-profile-select-and-join",
-                     "current_action":  "executing validate-ble-fire-profile-select-and-join",
+                     "message":  "Active claim: close-live-ble-stream-source-gap-on-amplab",
+                     "current_action":  "executing close-live-ble-stream-source-gap-on-amplab",
                      "recommended_next":  [
-                                              "2026-03-19-validate-ble-profile-select-and-join-on-live-amplab",
+                                              "2026-03-19-close-live-ble-stream-source-gap-on-amplab",
                                               "2026-03-16-normalize-ohmic-live-link-ap-vs-lan-candidate-identities",
                                               "2026-03-17-run-shared-network-command-surface-wave"
                                           ],
                      "completed":  [
-                                       "2026-03-19-harden-claim-completion-sync-when-request-moved-early",
-                                       "2026-03-19-add-project-board-next-action-recommendation-lane",
-                                       "2026-03-19-add-project-board-claim-age-alerts"
+                                       "2026-03-19-surface-project-board-recommendation-in-desk-snapshot",
+                                       "2026-03-19-validate-live-ble-control-and-dsp-actions-on-fire",
+                                       "2026-03-19-validate-ble-profile-select-and-join-on-live-amplab"
                                    ],
                      "blocked":  [
                                      "2026-03-15-promote-ops-unifier-incubator-when-ohmic-slack-exists",
