@@ -9,7 +9,7 @@
                     "task_status":  "working",
                     "orchestrator_active":  false,
                     "compact_count":  0,
-                    "updated_at":  "2026-03-19T21:30:28Z"
+                    "updated_at":  "2026-03-19T21:37:21Z"
                 },
     "input":  {
                   "pending":  true,
@@ -22,21 +22,21 @@
                   "handled_by":  ""
               },
     "state":  {
-                  "summary":  "Queue healthy. 12 ready tasks, 1 active claims.",
-                  "ready_count":  12,
+                  "summary":  "Queue healthy. 11 ready tasks, 1 active claims.",
+                  "ready_count":  11,
                   "active_claim_count":  1,
                   "board_health":  "healthy",
                   "top_priority":  [
-                                       "2026-03-19-extend-ble-control-lane-toward-audio-transport-parity",
                                        "2026-03-19-validate-ble-profile-select-and-join-on-live-amplab",
-                                       "2026-03-16-normalize-ohmic-live-link-ap-vs-lan-candidate-identities"
+                                       "2026-03-16-normalize-ohmic-live-link-ap-vs-lan-candidate-identities",
+                                       "2026-03-17-run-shared-network-command-surface-wave"
                                    ],
                   "queue_floor_met":  true,
                   "stale_state_detected":  false,
                   "recent_completions":  [
-                                             "2026-03-19-add-project-board-progress-history-lane",
-                                             "2026-03-19-add-project-filtered-board-watch-lane",
-                                             "2026-03-19-close-ble-control-state-vs-runtime-status-parity"
+                                             "2026-03-19-add-project-board-worker-summary-lane",
+                                             "2026-03-19-extend-ble-control-lane-toward-audio-transport-parity",
+                                             "2026-03-19-add-project-board-progress-history-lane"
                                          ],
                   "risks":  [
                                 "Blocked tasks present: 26"
@@ -47,14 +47,14 @@
                      "message":  "Active claim: stabilize-ble-fire-control-and-runtime-parity",
                      "current_action":  "executing stabilize-ble-fire-control-and-runtime-parity",
                      "recommended_next":  [
-                                              "2026-03-19-extend-ble-control-lane-toward-audio-transport-parity",
                                               "2026-03-19-validate-ble-profile-select-and-join-on-live-amplab",
-                                              "2026-03-16-normalize-ohmic-live-link-ap-vs-lan-candidate-identities"
+                                              "2026-03-16-normalize-ohmic-live-link-ap-vs-lan-candidate-identities",
+                                              "2026-03-17-run-shared-network-command-surface-wave"
                                           ],
                      "completed":  [
-                                       "2026-03-19-add-project-board-progress-history-lane",
-                                       "2026-03-19-add-project-filtered-board-watch-lane",
-                                       "2026-03-19-close-ble-control-state-vs-runtime-status-parity"
+                                       "2026-03-19-add-project-board-worker-summary-lane",
+                                       "2026-03-19-extend-ble-control-lane-toward-audio-transport-parity",
+                                       "2026-03-19-add-project-board-progress-history-lane"
                                    ],
                      "blocked":  [
                                      "2026-03-15-promote-ops-unifier-incubator-when-ohmic-slack-exists",

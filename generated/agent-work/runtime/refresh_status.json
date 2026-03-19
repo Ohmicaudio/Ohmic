@@ -1,10 +1,10 @@
 {
-    "updated_at":  "2026-03-19T21:30:29.0035826Z",
+    "updated_at":  "2026-03-19T21:37:22.0422991Z",
     "status":  "success",
     "mode":  "once",
     "project":  "ohmic-administrator",
-    "reason":  "request-move:2026-03-19-add-project-board-progress-history-lane:done",
-    "last_success_at":  "2026-03-19T21:30:29.0035826Z",
+    "reason":  "request-move:2026-03-19-add-project-board-worker-summary-lane:done",
+    "last_success_at":  "2026-03-19T21:37:22.0422991Z",
     "outputs":  [
                     "generated/agent-work/current-state.json",
                     "generated/agent-work/runtime/agent_state.json",

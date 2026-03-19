@@ -1,5 +1,5 @@
 {
-    "generated_at":  "2026-03-19T21:30:28Z",
+    "generated_at":  "2026-03-19T21:37:22Z",
     "source":  {
                    "kind":  "dashboard_card_mapper",
                    "path":  "B:\\ohmic\\generated\\agent-work\\runtime"
@@ -30,7 +30,7 @@
                                      },
                                      {
                                          "label":  "Updated",
-                                         "value":  "2026-03-19T21:30:28Z"
+                                         "value":  "2026-03-19T21:37:21Z"
                                      },
                                      {
                                          "label":  "Loop state",
@@ -46,7 +46,7 @@
                       "fields":  [
                                      {
                                          "label":  "Ready",
-                                         "value":  "12"
+                                         "value":  "11"
                                      },
                                      {
                                          "label":  "Active",
@@ -78,7 +78,7 @@
                                      },
                                      {
                                          "label":  "Next",
-                                         "value":  "2026-03-19-extend-ble-control-lane-toward-audio-transport-parity"
+                                         "value":  "2026-03-19-validate-ble-profile-select-and-join-on-live-amplab"
                                      },
                                      {
                                          "label":  "Claim",
