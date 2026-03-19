@@ -41,6 +41,35 @@ function Normalize-Path {
     }
 }
 
+function Expand-ClaimPaths {
+    param([string[]]$RawPaths)
+
+    $expanded = @()
+
+    foreach ($rawPath in $RawPaths) {
+        if ([string]::IsNullOrWhiteSpace($rawPath)) {
+            continue
+        }
+
+        $candidate = $rawPath.Trim()
+        if ($candidate -match ',') {
+            $segments = @($candidate -split '\s*,\s*' | Where-Object { -not [string]::IsNullOrWhiteSpace($_) })
+            $looksLikeSplitPathList =
+                $segments.Count -gt 1 -and
+                ($segments | Where-Object { $_ -match '^[a-zA-Z]:\\|^\\\\|^/' }).Count -eq $segments.Count
+
+            if ($looksLikeSplitPathList) {
+                $expanded += $segments
+                continue
+            }
+        }
+
+        $expanded += $candidate
+    }
+
+    return @($expanded | ForEach-Object { $_.Trim() } | Where-Object { $_ })
+}
+
 function Read-Claim {
     param([string]$FilePath)
 
@@ -77,7 +106,9 @@ function Read-Claim {
         if ($line -match '^started:\s*(.+)$') { $claim.Started = $matches[1].Trim(); continue }
         if ($line -match '^expires:\s*(.+)$') { $claim.Expires = $matches[1].Trim(); continue }
         if ($line -match '^completed:\s*(.+)$') { $claim.Completed = $matches[1].Trim(); continue }
-        if ($inFilesSection -and $line -match '^- (.+)$') { $claim.Paths += $matches[1].Trim() }
+        if ($inFilesSection -and $line -match '^- (.+)$') {
+            $claim.Paths += Expand-ClaimPaths @($matches[1].Trim())
+        }
     }
 
     if (-not $claim.ClaimId) {
@@ -166,6 +197,7 @@ function Rewrite-ClaimStatus {
 
 switch ($Command) {
     'status' {
+        $Paths = Expand-ClaimPaths $Paths
         if ($Paths.Count -gt 0) {
             $conflicts = Find-Conflicts -TargetPaths $Paths
             if (-not $conflicts) {
@@ -206,6 +238,7 @@ switch ($Command) {
     }
 
     'claim' {
+        $Paths = Expand-ClaimPaths $Paths
         if (-not $Task) {
             throw 'Task is required for claim.'
         }
