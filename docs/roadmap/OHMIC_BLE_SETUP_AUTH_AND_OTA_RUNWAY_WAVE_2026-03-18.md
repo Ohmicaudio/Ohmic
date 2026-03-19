@@ -39,3 +39,6 @@ The next correct runway is:
 - `2026-03-18-extract-shared-amplab-ble-contract-and-transport-foundation.md`
 - `2026-03-18-define-ble-bootstrap-and-recovery-network-handoff.md`
 - `2026-03-18-stage-ota-capability-over-shared-trust-and-command-contract.md`
+- `2026-03-19-close-ble-control-state-vs-runtime-status-parity.md`
+- `2026-03-19-validate-ble-profile-select-and-join-on-live-amplab.md`
+- `2026-03-19-extend-ble-control-lane-toward-audio-transport-parity.md`
