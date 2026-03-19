@@ -1,16 +1,16 @@
 {
-    "generated_at":  "2026-03-19T20:56:09Z",
-    "source_latest_write_time":  "2026-03-19T20:55:54.8481110Z",
+    "generated_at":  "2026-03-19T21:21:04Z",
+    "source_latest_write_time":  "2026-03-19T21:20:47.0215365Z",
     "project":  "ohmic",
     "staleness":  {
                       "status":  "fresh",
                       "reason":  null
                   },
     "counts":  {
-                   "ready":  10,
-                   "active_claims":  0,
+                   "ready":  12,
+                   "active_claims":  1,
                    "blocked":  26,
-                   "done":  797
+                   "done":  799
                },
     "board_health":  "healthy",
     "queue_floor_met":  true,
@@ -23,12 +23,12 @@
                   "text":  "check queue freshness"
               },
     "response":  {
-                     "status":  "needs_input",
-                     "message":  "Pending input: check queue freshness"
+                     "status":  "working",
+                     "message":  "Active claim: stabilize-ble-fire-control-and-runtime-parity"
                  },
     "top_priority":  [
-                         "2026-03-16-normalize-ohmic-live-link-ap-vs-lan-candidate-identities",
-                         "2026-03-17-run-shared-network-command-surface-wave",
-                         "2026-03-18-define-ble-bootstrap-and-recovery-network-handoff"
+                         "2026-03-19-extend-ble-control-lane-toward-audio-transport-parity",
+                         "2026-03-19-validate-ble-profile-select-and-join-on-live-amplab",
+                         "2026-03-16-normalize-ohmic-live-link-ap-vs-lan-candidate-identities"
                      ]
 }

@@ -1,5 +1,5 @@
 {
-    "generated_at":  "2026-03-19T20:56:09Z",
+    "generated_at":  "2026-03-19T21:21:04Z",
     "source":  {
                    "kind":  "repo_summary",
                    "path":  "B:\\ohmic\\agent-system\\jobs\\active"
@@ -8,8 +8,24 @@
                       "status":  "fresh",
                       "reason":  null
                   },
-    "count":  0,
+    "count":  1,
     "items":  [
-
+                  {
+                      "claim_id":  "20260319T211500Z-ble-fire-control-lane",
+                      "task":  "stabilize-ble-fire-control-and-runtime-parity",
+                      "owner":  "codex",
+                      "project":  "ohmic-audio-labs",
+                      "status":  "active",
+                      "started":  "2026-03-19T21:15:00Z",
+                      "expires":  "2026-03-20T03:15:00Z",
+                      "files":  [
+                                    "B:\\ohmic\\repos\\ohmic-audio-labs\\components\\Mobile\\AmpLabBleTestSuite.tsx",
+                                    "B:\\ohmic\\repos\\ohmic-audio-labs\\services\\hardware\\amplab",
+                                    "B:\\ohmic\\repos\\ohmic-audio-labs\\test\\services",
+                                    "B:\\ohmic\\repos\\amplab-firmware\\src\\main.cpp",
+                                    "B:\\ohmic\\docs\\roadmap\\OHMIC_BLE_SETUP_AUTH_AND_OTA_RUNWAY_WAVE_2026-03-18.md"
+                                ],
+                      "file_path":  "B:\\ohmic\\agent-system\\jobs\\active\\20260319T211500Z-ble-fire-control-lane.md"
+                  }
               ]
 }
