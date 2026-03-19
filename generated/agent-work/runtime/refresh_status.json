@@ -1,10 +1,10 @@
 {
-    "updated_at":  "2026-03-19T21:42:25.3316467Z",
+    "updated_at":  "2026-03-19T21:46:29.4461414Z",
     "status":  "success",
     "mode":  "once",
     "project":  "ohmic-administrator",
-    "reason":  "request-move:2026-03-19-add-project-board-worker-freshness-alerts:done",
-    "last_success_at":  "2026-03-19T21:42:25.3316467Z",
+    "reason":  "request-move:2026-03-19-surface-project-board-attention-in-desk-snapshot:done",
+    "last_success_at":  "2026-03-19T21:46:29.4461414Z",
     "outputs":  [
                     "generated/agent-work/current-state.json",
                     "generated/agent-work/runtime/agent_state.json",
