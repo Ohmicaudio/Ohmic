@@ -1,7 +1,7 @@
 scope: project
 authority: working
 project: ohmic-audio-labs
-status: ready
+status: done
 requested: 2026-03-19
 requester: user
 origin: live-fire-ble-lane
@@ -31,17 +31,15 @@ supersedes:
 - `repos/amplab-firmware/src/main.cpp`
 - `docs/roadmap/*BLE*`
 
-## Constraints
+## Result
 
-- keep the now-stable BLE connect/profile/join/scan path intact
-- validate against the actual Fire and actual AmpLab board
-
-## Notes
-
-- BLE control and DSP command parity already landed in code.
-- This request is the live validation packet for that command family.
+- live Fire validation confirms:
+  - volume changes round-trip over BLE
+  - mute changes round-trip over BLE
+  - stream actions remain explicitly unsupported on the live runtime
+- recorded in:
+  - `docs/roadmap/OHMIC_LIVE_FIRE_BLE_CONTROL_AND_DSP_VALIDATION_RESULT_2026-03-19.md`
 
 ## Ready When
 
-- Fire live validation shows BLE control and/or DSP actions working, or the
-  precise remaining blocker is documented
+- complete

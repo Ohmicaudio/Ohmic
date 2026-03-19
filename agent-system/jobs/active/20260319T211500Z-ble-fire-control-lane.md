@@ -2,7 +2,7 @@ claim_id: 20260319T211500Z-ble-fire-control-lane
 status: active
 owner: codex
 project: ohmic-audio-labs
-task: validate-live-ble-control-and-dsp-actions-on-fire
+task: close-live-ble-stream-source-gap-on-amplab
 started: 2026-03-19T21:15:00Z
 expires: 2026-03-20T03:15:00Z
 
@@ -17,5 +17,5 @@ expires: 2026-03-20T03:15:00Z
 # Notes
 
 - BLE scan, connect, setup status, setup commands, control-state feedback, and DSP transport parity are now live.
-- Fire/mobile BLE card now validates saved profile truth, joined-state truth, and Wi-Fi scan settle on the live Fire surface.
-- Current active packet is the next live control/DSP validation pass over the same BLE lane.
+- Fire/mobile BLE card now validates saved profile truth, joined-state truth, Wi-Fi scan settle, and live volume/mute control truth on the Fire surface.
+- Current active packet is the remaining live stream-source/runtime gap over the same BLE lane.
