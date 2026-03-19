@@ -1,10 +1,10 @@
 {
-    "updated_at":  "2026-03-19T09:49:07.0360935Z",
+    "updated_at":  "2026-03-19T09:57:50.5032168Z",
     "status":  "success",
     "mode":  "once",
     "project":  "ohmic-administrator",
-    "reason":  "claim-complete:20260319T093707Z-1d23d6ca",
-    "last_success_at":  "2026-03-19T09:49:07.0360935Z",
+    "reason":  "request-move:2026-03-19-add-manual-intake-duplicate-review-signal:done",
+    "last_success_at":  "2026-03-19T09:57:50.5032168Z",
     "outputs":  [
                     "generated/agent-work/current-state.json",
                     "generated/agent-work/runtime/agent_state.json",

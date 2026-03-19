@@ -1,5 +1,5 @@
 {
-    "generated_at":  "2026-03-19T09:49:06Z",
+    "generated_at":  "2026-03-19T09:57:50Z",
     "source":  {
                    "kind":  "repo_summary",
                    "path":  "B:\\ohmic\\agent-system\\requests\\ready"
@@ -8,7 +8,7 @@
                       "status":  "fresh",
                       "reason":  null
                   },
-    "count":  11,
+    "count":  10,
     "items":  [
                   {
                       "task_id":  "2026-03-16-define-variance-family-parent-child-link-boundary",
@@ -119,17 +119,6 @@
                       "owner":  "",
                       "claim_id":  "",
                       "file_path":  "B:\\ohmic\\agent-system\\requests\\ready\\2026-03-18-stage-ota-capability-over-shared-trust-and-command-contract.md"
-                  },
-                  {
-                      "task_id":  "2026-03-19-add-manual-intake-duplicate-review-signal",
-                      "title":  "add-manual-intake-duplicate-review-signal",
-                      "priority":  "soon",
-                      "project":  "ohmic-administrator",
-                      "status":  "ready",
-                      "date":  "",
-                      "owner":  "",
-                      "claim_id":  "",
-                      "file_path":  "B:\\ohmic\\agent-system\\requests\\ready\\2026-03-19-add-manual-intake-duplicate-review-signal.md"
                   }
               ]
 }

@@ -1,7 +1,7 @@
-scope: project
+﻿scope: project
 authority: working
 project: ohmic-administrator
-status: ready
+status: done
 requested: 2026-03-19
 requester: codex
 origin: agent
@@ -48,3 +48,4 @@ supersedes:
 - `B:\ohmic\repos\ohmic-administrator\services\connectors\manual-intake`
 - `B:\ohmic\repos\ohmic-administrator\apps\admin-web\src\panels`
 - `B:\ohmic\repos\ohmic-administrator\apps\admin-web\src\store`
+
