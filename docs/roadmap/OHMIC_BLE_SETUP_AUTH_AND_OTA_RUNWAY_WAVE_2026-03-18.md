@@ -43,4 +43,5 @@ The next correct runway is:
 - `2026-03-19-validate-ble-profile-select-and-join-on-live-amplab.md`
 - completed: `2026-03-19-extend-ble-control-lane-toward-audio-transport-parity.md`
 - completed: `2026-03-19-close-live-ble-stream-source-gap-on-amplab.md`
-- `2026-03-19-prototype-live-ble-audio-telemetry-transport-on-amplab.md`
+- completed: `2026-03-19-prototype-live-ble-audio-telemetry-transport-on-amplab.md`
+- `2026-03-19-prototype-live-ble-measurement-frame-transport-on-amplab.md`
