@@ -81,4 +81,8 @@ expires: 2026-03-20T03:15:00Z
   - `media.source.select` is owned by the shared source-policy core
   - `runtime.media_source.upstream` can now report concrete remote sources like `phone.bt`, `sd.local`, and `usb.local`
   - the headless AmpLab runtime now relays that selection toward the remote hub over WebSocket for the Wi-Fi-first path
+- The session hub now carries that source truth too:
+  - `wsHub` records session-level media source state from `media.source.select` and `sys.status.core`
+  - new peers receive the current `mediaSource` in `welcome`
+  - session peers receive `media_source_update` when the selected remote source changes
 - OTA remains staged behind the same trust/authority floor, but it is not ahead of the Wi-Fi-first audio transport lane.
