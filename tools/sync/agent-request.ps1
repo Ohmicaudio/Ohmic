@@ -27,6 +27,7 @@ param(
     [string]$Supersedes = '',
     [string]$NotesText = '',
     [string]$RequestedOutcomeText = '',
+    [string]$ReadyWhenText = '',
     [string]$ScopePathsText = ''
 )
 
@@ -219,7 +220,21 @@ switch ($Command) {
             ''
             '## Ready When'
             ''
-            '- state what must be true before this should move to `ready/`'
+        )
+
+        if ([string]::IsNullOrWhiteSpace($ReadyWhenText)) {
+            $lines += '- state what must be true before this should move to `ready/`'
+        }
+        else {
+            foreach ($readyWhenLine in ($ReadyWhenText -split "`r?`n")) {
+                $trimmed = $readyWhenLine.Trim()
+                if (-not [string]::IsNullOrWhiteSpace($trimmed)) {
+                    $lines += "- $trimmed"
+                }
+            }
+        }
+
+        $lines += @(
             ''
             '## Suggested Claim Scope'
             ''
