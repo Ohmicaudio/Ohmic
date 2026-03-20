@@ -10,9 +10,12 @@ expires: 2026-03-20T03:15:00Z
 
 - B:\ohmic\repos\ohmic-audio-labs\components\Mobile\AmpLabBleTestSuite.tsx
 - B:\ohmic\repos\ohmic-audio-labs\services\hardware\amplab
+- B:\ohmic\repos\ohmic-audio-labs\services\hardware\audioTransport.ts
+- B:\ohmic\repos\ohmic-audio-labs\services\hardware\sourceArbitration.ts
+- B:\ohmic\repos\ohmic-audio-labs\services\ohmicLiveLink
+- B:\ohmic\repos\ohmic-audio-labs\services\backend\src\wsHub.ts
 - B:\ohmic\repos\ohmic-audio-labs\test\services
 - B:\ohmic\repos\ohmic-audio-labs\services\hardware\dsp\firmwareContract.ts
-- B:\ohmic\repos\ohmic-audio-labs\services\hardware\remote
 - B:\ohmic\repos\ohmic-audio-labs\components\Hardware
 - B:\ohmic\repos\amplab-firmware\src\main.cpp
 - B:\ohmic\repos\amplab-firmware\src\dsp\dsp_state.cpp
@@ -55,4 +58,7 @@ expires: 2026-03-20T03:15:00Z
 - The shared source-arbitration model is now explicit in app code:
   - `services/hardware/sourceArbitration.ts` drives source options, default transport labels, and friendly media-source presentation
   - the hardware workspace and Fire BLE card now read from that same shared model instead of duplicating raw labels
+- The Wi-Fi-first audio lane now has one explicit shared contract seam too:
+  - `services/hardware/audioTransport.ts` defines the shared remote-audio source catalog and media-source presentation contract
+  - that contract is the handoff point between remote-hub media ownership, DSP consumer expectations, and web/Fire status presentation
 - OTA remains staged behind the same trust/authority floor, but it is not ahead of the Wi-Fi-first audio transport lane.

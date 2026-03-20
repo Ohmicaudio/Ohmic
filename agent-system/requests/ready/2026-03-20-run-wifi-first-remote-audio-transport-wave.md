@@ -29,7 +29,10 @@ supersedes:
 
 ## Scope
 
-- `repos/ohmic-audio-labs/services/hardware/remote/*`
+- `repos/ohmic-audio-labs/services/hardware/audioTransport.ts`
+- `repos/ohmic-audio-labs/services/hardware/sourceArbitration.ts`
+- `repos/ohmic-audio-labs/services/ohmicLiveLink/*`
+- `repos/ohmic-audio-labs/services/backend/src/wsHub.ts`
 - `repos/ohmic-audio-labs/services/hardware/amplab/*`
 - `repos/ohmic-audio-labs/components/Hardware/*`
 - `repos/amplab-firmware/src/main.cpp`

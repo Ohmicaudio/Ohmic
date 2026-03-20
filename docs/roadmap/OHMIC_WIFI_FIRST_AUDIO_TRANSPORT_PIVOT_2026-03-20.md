@@ -25,6 +25,13 @@ work.
   - rescue
   - last-resort fallback audio only when needed
 
+## Current Bench Assumption
+
+- the DSP prototype already exposes its digital audio lane to the ESP for test
+  and bring-up work
+- treat that lane as bench validation for the DSP-first audio path, not as a
+  reason to move media ownership away from the remote hub
+
 ## AmpLab Audio Output Position
 
 - AmpLab should not be treated as a primary ecosystem media-source product lane.
@@ -58,6 +65,8 @@ work.
   Wi-Fi publishing
 - define the shared Wi-Fi HiFi audio transport contract
 - define the node playback/subscription path
+- keep the remote-hub media-source contract explicit in app code so web and
+  Fire surfaces stay aligned while firmware grows into the same model
 - keep generic source/transport presentation in shared hardware surfaces rather
   than letting it drift back into AmpLab-owned UI
 - keep source-option libraries, transport labels, and media-source presentation
