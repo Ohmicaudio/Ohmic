@@ -28,3 +28,4 @@ expires: 2026-03-20T03:15:00Z
 - A narrow remote-source bridge now exists in code: the BLE headless build enables the remote DSP/WebSocket client, caches canonical `measure.fft.frame`, and exposes it to the BLE stream layer and Fire card.
 - Live board validation is now complete: the headless AmpLab can retarget its remote WebSocket client at runtime, attach to a live upstream FFT producer, and cache canonical `measure.fft.frame` metadata in `api/status/core.runtime.remote_fft`.
 - Current active packet is the remaining Fire-side proof: validate the BLE card can request and render that bridged `measure.fft.frame` stream end to end on the live device.
+- Current blocker is narrow and operational rather than transport-level: adb can relaunch the Fire app and verify the updated BLE card bundle, but the Android WebView is not honoring injected scan/connect taps, so the remaining proof needs either manual touch input or a stronger WebView automation lane.
