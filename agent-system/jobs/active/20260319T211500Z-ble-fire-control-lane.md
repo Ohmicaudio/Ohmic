@@ -114,4 +114,9 @@ expires: 2026-03-20T03:15:00Z
   - shared core source-policy code now maps remote source IDs to expected audio subscriber topics
   - the live runtime now relays `dsp.stream.subscribe` over the existing websocket client whenever the selected remote source changes
   - this keeps source selection and subscriber intent on one shared runtime path instead of separate UI-only and transport-only lanes
+- The DSP-target runtime now owns subscriber intent too:
+  - shared core `ohmic_core_stream_runtime.*` persists subscriber topic/status for non-BLE runtime targets
+  - shared DSP transport no longer rejects `dsp.stream.subscribe` as unsupported
+  - the DSP workspace now has an explicit `Apply Expected Topic` action that pushes the expected subscriber topic to the live DSP node
+  - the `esp32s3_dsp_headless` environment now builds and flashes cleanly on that shared-core path
 - OTA remains staged behind the same trust/authority floor, but it is not ahead of the Wi-Fi-first audio transport lane.
