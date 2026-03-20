@@ -45,6 +45,9 @@ now backed by live firmware-owned state on the headless AmpLab runtime.
   remaining trapped in the AmpLab board entrypoint
 - the runtime transport layer now dispatches source-policy commands through
   shared core code too, reducing `main.cpp` special-casing further
+- the BLE command path now routes those same source-policy and join-policy
+  topics through the shared core dispatcher too, keeping transport behavior
+  aligned across BLE and websocket/serial
 
 ## Verification
 

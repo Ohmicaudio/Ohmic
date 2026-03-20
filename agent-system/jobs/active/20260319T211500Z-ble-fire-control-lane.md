@@ -75,4 +75,6 @@ expires: 2026-03-20T03:15:00Z
   - `main.cpp` is back to being the board integration surface that calls into shared policy logic
 - The matching runtime transport dispatch is moving with it:
   - source-policy websocket/serial handling now routes through shared core dispatch instead of a `main.cpp` custom request block
+- The BLE command path now matches that extraction too:
+  - source-policy and join-policy BLE topics route through the same shared core dispatcher instead of duplicated ladders in both BLE callback implementations
 - OTA remains staged behind the same trust/authority floor, but it is not ahead of the Wi-Fi-first audio transport lane.
