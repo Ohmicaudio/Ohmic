@@ -104,4 +104,10 @@ expires: 2026-03-20T03:15:00Z
     - core `runtime.media_source` via the shared route card
     - core `stream.state`, `stream.reason`, and `stream.subscribe_topic`
   - this gives the Wi-Fi-first audio lane an explicit subscriber/runtime view instead of only source-selection state
+- The shared audio contract now defines expected DSP subscriber topics per remote source:
+  - `audio.remote.phone.bt`
+  - `audio.remote.sd`
+  - `audio.remote.usb`
+  - `audio.remote.main`
+  - `DspDeckSummary` now shows that expected topic alongside the actual runtime subscriber state
 - OTA remains staged behind the same trust/authority floor, but it is not ahead of the Wi-Fi-first audio transport lane.
