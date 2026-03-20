@@ -26,6 +26,7 @@ param(
     [string]$ReviewStatus = 'current',
     [string]$Supersedes = '',
     [string]$NotesText = '',
+    [string]$RequestedOutcomeText = '',
     [string]$ScopePathsText = ''
 )
 
@@ -170,8 +171,6 @@ switch ($Command) {
             ''
             '## Requested Outcome'
             ''
-            '- define the desired end state'
-            ''
             '## Scope'
             ''
             '- define the expected files, folders, or surfaces'
@@ -194,6 +193,26 @@ switch ($Command) {
                     $lines += "- $trimmed"
                 }
             }
+        }
+
+        $requestedOutcomeLines = @()
+        if ([string]::IsNullOrWhiteSpace($RequestedOutcomeText)) {
+            $requestedOutcomeLines += '- define the desired end state'
+        }
+        else {
+            foreach ($outcomeLine in ($RequestedOutcomeText -split "`r?`n")) {
+                $trimmed = $outcomeLine.Trim()
+                if (-not [string]::IsNullOrWhiteSpace($trimmed)) {
+                    $requestedOutcomeLines += "- $trimmed"
+                }
+            }
+        }
+
+        $requestedOutcomeIndex = [Array]::IndexOf($lines, '## Scope')
+        if ($requestedOutcomeIndex -gt 0) {
+            $beforeScope = @($lines[0..($requestedOutcomeIndex - 1)])
+            $afterScope = @($lines[$requestedOutcomeIndex..($lines.Length - 1)])
+            $lines = @($beforeScope + $requestedOutcomeLines + @('') + $afterScope)
         }
 
         $lines += @(
