@@ -52,4 +52,7 @@ expires: 2026-03-20T03:15:00Z
 - The generic source/transport presentation is no longer just living inside the AmpLab shell:
   - the hardware surface now uses a shared `MediaSourceStatusCard`
   - the remaining `AmpLab*` transport mentions are state/adapters and live-device plumbing, not generic routing ownership
+- The shared source-arbitration model is now explicit in app code:
+  - `services/hardware/sourceArbitration.ts` drives source options, default transport labels, and friendly media-source presentation
+  - the hardware workspace and Fire BLE card now read from that same shared model instead of duplicating raw labels
 - OTA remains staged behind the same trust/authority floor, but it is not ahead of the Wi-Fi-first audio transport lane.

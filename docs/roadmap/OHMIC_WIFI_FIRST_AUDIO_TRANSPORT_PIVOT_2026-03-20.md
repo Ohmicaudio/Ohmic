@@ -60,4 +60,7 @@ work.
 - define the node playback/subscription path
 - keep generic source/transport presentation in shared hardware surfaces rather
   than letting it drift back into AmpLab-owned UI
+- keep source-option libraries, transport labels, and media-source presentation
+  on one shared app model so the web hardware workspace and Fire BLE surface
+  cannot drift apart
 - keep OTA staged after the same trust/authority and media-control floor
