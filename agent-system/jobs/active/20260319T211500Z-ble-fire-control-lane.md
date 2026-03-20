@@ -70,4 +70,7 @@ expires: 2026-03-20T03:15:00Z
 - The companion join-policy controls are now part of that same runtime-owned seam:
   - `network.router.set`, `network.auto_join.set`, `network.helper_scan.set`, `network.discovery.scan`, `network.join.request`, and `network.join.reset` now apply on the headless AmpLab runtime too
   - `sys.status.core.provisioning` now carries the join-request timing and helper-scan fields that the hardware control surface was already prepared to display
+- The policy runtime is no longer stranded in the board file:
+  - shared `leadership` / `provisioning` policy helpers now live in `src/core/ohmic_core_source_policy.*`
+  - `main.cpp` is back to being the board integration surface that calls into shared policy logic
 - OTA remains staged behind the same trust/authority floor, but it is not ahead of the Wi-Fi-first audio transport lane.

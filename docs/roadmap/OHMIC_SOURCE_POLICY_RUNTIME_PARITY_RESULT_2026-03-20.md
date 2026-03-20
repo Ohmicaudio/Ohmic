@@ -41,6 +41,8 @@ now backed by live firmware-owned state on the headless AmpLab runtime.
   Wi-Fi-first audio work continues
 - the next audio lane can build on actual route ownership and policy state
   instead of placeholder presentation only
+- the proven policy logic is now extracted into shared core files instead of
+  remaining trapped in the AmpLab board entrypoint
 
 ## Verification
 
