@@ -243,3 +243,10 @@ expires: 2026-03-20T03:15:00Z
     disabling security auth on the shared BLE runtime path
   - `esp32s3_dsp_headless` rebuilt cleanly after that change
   - the updated DSP BLE headless firmware was reflashed live to `COM27`
+- The deeper DSP parity mismatch is now called out explicitly:
+  - the working remote and AmpLab live lanes are still on the legacy BLE stack
+  - `esp32s3_dsp_headless` had been using the shared NimBLE branch in
+    `main.cpp`, so it was not actually a same-stack comparison
+  - `esp32s3_dsp_headless` is now aligned to `-DOHMIC_USE_LEGACY_BLE=1`
+  - the legacy-BLE-aligned DSP headless firmware rebuilt cleanly and was
+    reflashed live to `COM27`
