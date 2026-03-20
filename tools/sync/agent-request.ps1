@@ -28,6 +28,7 @@ param(
     [string]$NotesText = '',
     [string]$RequestedOutcomeText = '',
     [string]$ReadyWhenText = '',
+    [string]$ScopeSectionText = '',
     [string]$ScopePathsText = ''
 )
 
@@ -174,8 +175,6 @@ switch ($Command) {
             ''
             '## Scope'
             ''
-            '- define the expected files, folders, or surfaces'
-            ''
             '## Constraints'
             ''
             '- add important limits or preferences'
@@ -214,6 +213,26 @@ switch ($Command) {
             $beforeScope = @($lines[0..($requestedOutcomeIndex - 1)])
             $afterScope = @($lines[$requestedOutcomeIndex..($lines.Length - 1)])
             $lines = @($beforeScope + $requestedOutcomeLines + @('') + $afterScope)
+        }
+
+        $scopeLines = @()
+        if ([string]::IsNullOrWhiteSpace($ScopeSectionText)) {
+            $scopeLines += '- define the expected files, folders, or surfaces'
+        }
+        else {
+            foreach ($scopeLine in ($ScopeSectionText -split "`r?`n")) {
+                $trimmed = $scopeLine.Trim()
+                if (-not [string]::IsNullOrWhiteSpace($trimmed)) {
+                    $scopeLines += "- $trimmed"
+                }
+            }
+        }
+
+        $scopeSectionIndex = [Array]::IndexOf($lines, '## Constraints')
+        if ($scopeSectionIndex -gt 0) {
+            $beforeConstraints = @($lines[0..($scopeSectionIndex - 1)])
+            $afterConstraints = @($lines[$scopeSectionIndex..($lines.Length - 1)])
+            $lines = @($beforeConstraints + $scopeLines + @('') + $afterConstraints)
         }
 
         $lines += @(

@@ -1,16 +1,16 @@
 {
-    "generated_at":  "2026-03-20T06:48:07Z",
-    "source_latest_write_time":  "2026-03-20T06:47:52.0929598Z",
+    "generated_at":  "2026-03-20T08:01:53Z",
+    "source_latest_write_time":  "2026-03-20T08:01:38.8897239Z",
     "project":  "ohmic",
     "staleness":  {
                       "status":  "fresh",
                       "reason":  null
                   },
     "counts":  {
-                   "ready":  11,
+                   "ready":  12,
                    "active_claims":  1,
                    "blocked":  26,
-                   "done":  833
+                   "done":  845
                },
     "board_health":  "healthy",
     "queue_floor_met":  true,
@@ -24,11 +24,11 @@
               },
     "response":  {
                      "status":  "working",
-                     "message":  "Active claim: wire-real-amplab-measurement-source-for-ble-transport"
+                     "message":  "Active claim: run-wifi-first-remote-audio-transport-wave"
                  },
     "top_priority":  [
-                         "2026-03-19-wire-real-amplab-measurement-source-for-ble-transport",
-                         "2026-03-16-normalize-ohmic-live-link-ap-vs-lan-candidate-identities",
-                         "2026-03-17-run-shared-network-command-surface-wave"
+                         "2026-03-20-run-wifi-first-remote-audio-transport-wave",
+                         "2026-03-20-wire-live-dsp-measure-frame-source-for-ble-transport",
+                         "2026-03-16-normalize-ohmic-live-link-ap-vs-lan-candidate-identities"
                      ]
 }

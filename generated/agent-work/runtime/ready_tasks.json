@@ -1,5 +1,5 @@
 {
-    "generated_at":  "2026-03-20T06:48:07Z",
+    "generated_at":  "2026-03-20T08:01:53Z",
     "source":  {
                    "kind":  "repo_summary",
                    "path":  "B:\\ohmic\\agent-system\\requests\\ready"
@@ -8,7 +8,7 @@
                       "status":  "fresh",
                       "reason":  null
                   },
-    "count":  11,
+    "count":  12,
     "items":  [
                   {
                       "task_id":  "2026-03-16-define-variance-family-parent-child-link-boundary",
@@ -121,15 +121,26 @@
                       "file_path":  "B:\\ohmic\\agent-system\\requests\\ready\\2026-03-18-stage-ota-capability-over-shared-trust-and-command-contract.md"
                   },
                   {
-                      "task_id":  "2026-03-19-wire-real-amplab-measurement-source-for-ble-transport",
-                      "title":  "wire-real-amplab-measurement-source-for-ble-transport",
+                      "task_id":  "2026-03-20-run-wifi-first-remote-audio-transport-wave",
+                      "title":  "run-wifi-first-remote-audio-transport-wave",
+                      "priority":  "high",
+                      "project":  "ohmic-audio-labs",
+                      "status":  "ready",
+                      "date":  "",
+                      "owner":  "",
+                      "claim_id":  "",
+                      "file_path":  "B:\\ohmic\\agent-system\\requests\\ready\\2026-03-20-run-wifi-first-remote-audio-transport-wave.md"
+                  },
+                  {
+                      "task_id":  "2026-03-20-wire-live-dsp-measure-frame-source-for-ble-transport",
+                      "title":  "wire-live-dsp-measure-frame-source-for-ble-transport",
                       "priority":  "high",
                       "project":  "amplab-firmware",
                       "status":  "ready",
                       "date":  "",
                       "owner":  "",
                       "claim_id":  "",
-                      "file_path":  "B:\\ohmic\\agent-system\\requests\\ready\\2026-03-19-wire-real-amplab-measurement-source-for-ble-transport.md"
+                      "file_path":  "B:\\ohmic\\agent-system\\requests\\ready\\2026-03-20-wire-live-dsp-measure-frame-source-for-ble-transport.md"
                   }
               ]
 }
