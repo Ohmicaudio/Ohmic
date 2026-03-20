@@ -208,3 +208,18 @@ expires: 2026-03-20T03:15:00Z
   - its runtime identity is being aligned toward `remote` instead of generic
     `controller` naming so the shared device contract points the right way
   - a real remote BLE onboarding/bootstrap packet still needs to be carved out
+- Remote BLE bootstrap is now materially advanced too:
+  - `cyd-remote` now advertises a shared Ohmic-link BLE service with
+    `OHMIC-REMOTE-*` naming and `remote-*` device IDs
+  - the remote BLE bootstrap currently answers:
+    - `sys.capabilities`
+    - `sys.status.core`
+    - `sys.network.status`
+  - the remote auto-publishes capabilities and core status after a BLE connect
+  - the `cyd24r` build succeeded with the new BLE bootstrap lane
+  - the remote firmware flashed successfully to `COM16`
+- The next live validation seam is now simpler and narrower:
+  - confirm the Fire generic Ohmic-link scanner can see both DSP and remote
+    peers without AmpLab-biased wording or ordering hacks
+  - validate generic scan / connect / status refresh against the live remote
+    BLE bootstrap
