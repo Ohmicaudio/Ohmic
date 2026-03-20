@@ -85,4 +85,7 @@ expires: 2026-03-20T03:15:00Z
   - `wsHub` records session-level media source state from `media.source.select` and `sys.status.core`
   - new peers receive the current `mediaSource` in `welcome`
   - session peers receive `media_source_update` when the selected remote source changes
+- The client session model now consumes that hub state:
+  - `CloudSync` stores the session `mediaSource` from `welcome` and `media_source_update`
+  - `HardwareTab` now surfaces the shared remote source label from that session model
 - OTA remains staged behind the same trust/authority floor, but it is not ahead of the Wi-Fi-first audio transport lane.
