@@ -43,6 +43,8 @@ now backed by live firmware-owned state on the headless AmpLab runtime.
   instead of placeholder presentation only
 - the proven policy logic is now extracted into shared core files instead of
   remaining trapped in the AmpLab board entrypoint
+- the runtime transport layer now dispatches source-policy commands through
+  shared core code too, reducing `main.cpp` special-casing further
 
 ## Verification
 

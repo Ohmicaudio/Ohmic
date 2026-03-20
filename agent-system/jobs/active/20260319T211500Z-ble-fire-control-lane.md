@@ -73,4 +73,6 @@ expires: 2026-03-20T03:15:00Z
 - The policy runtime is no longer stranded in the board file:
   - shared `leadership` / `provisioning` policy helpers now live in `src/core/ohmic_core_source_policy.*`
   - `main.cpp` is back to being the board integration surface that calls into shared policy logic
+- The matching runtime transport dispatch is moving with it:
+  - source-policy websocket/serial handling now routes through shared core dispatch instead of a `main.cpp` custom request block
 - OTA remains staged behind the same trust/authority floor, but it is not ahead of the Wi-Fi-first audio transport lane.
