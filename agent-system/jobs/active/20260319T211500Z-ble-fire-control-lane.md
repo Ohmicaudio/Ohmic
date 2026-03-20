@@ -88,4 +88,9 @@ expires: 2026-03-20T03:15:00Z
 - The client session model now consumes that hub state:
   - `CloudSync` stores the session `mediaSource` from `welcome` and `media_source_update`
   - `HardwareTab` now surfaces the shared remote source label from that session model
+- The remote-source loop is now explicit instead of optimistic-only:
+  - `wsHub` marks `media.source.select` as a pending session source request
+  - `sys.status.core.runtime.media_source` now remains the authoritative confirmed source reflection
+  - the shared client session model carries `producer`, `consumer`, and `confirmed`
+  - `HardwareTab` shows pending vs confirmed source state plus remote-hub to DSP route ownership
 - OTA remains staged behind the same trust/authority floor, but it is not ahead of the Wi-Fi-first audio transport lane.
