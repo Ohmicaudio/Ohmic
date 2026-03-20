@@ -13,6 +13,7 @@ work.
 ## Product Direction
 
 - Wi-Fi is the primary audio transport
+- the DSP unit is the primary consumer of the digital audio stream
 - the remote unit is the source hub for:
   - phone Bluetooth ingest
   - SD card playback
@@ -43,6 +44,9 @@ work.
 
 - the live Fire + AmpLab BLE path is now real for scan, connect, setup,
   control, telemetry, and measurement validation
+- the DSP unit already occupies the real digital-consumer role in the hardware
+  plan, so AmpLab should not accumulate transport ownership that belongs to the
+  remote-plus-DSP path
 - the user clarified that the remote DSP/ESP hardware is not meant to become
   the main media transport backbone
 - one digital audio path into the DSP module does not justify centering the

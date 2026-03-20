@@ -40,6 +40,7 @@ expires: 2026-03-20T03:15:00Z
 - BLE is now stable enough to stop pretending it should be the primary media lane.
 - Next execution priority is the real product path:
   - Wi-Fi is the primary audio transport
+  - the DSP unit is the primary consumer of the digital audio stream
   - the remote unit is the source hub for phone Bluetooth, SD, and USB
   - BLE stays responsible for setup, trust, control, rescue, and last-resort fallback
 - The shared hardware routing copy is now being aligned to that architecture:
