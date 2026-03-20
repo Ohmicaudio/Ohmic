@@ -29,6 +29,7 @@ param(
     [string]$RequestedOutcomeText = '',
     [string]$ReadyWhenText = '',
     [string]$ScopeSectionText = '',
+    [string]$ConstraintsText = '',
     [string]$ScopePathsText = ''
 )
 
@@ -177,8 +178,6 @@ switch ($Command) {
             ''
             '## Constraints'
             ''
-            '- add important limits or preferences'
-            ''
             '## Notes'
             ''
         )
@@ -233,6 +232,26 @@ switch ($Command) {
             $beforeConstraints = @($lines[0..($scopeSectionIndex - 1)])
             $afterConstraints = @($lines[$scopeSectionIndex..($lines.Length - 1)])
             $lines = @($beforeConstraints + $scopeLines + @('') + $afterConstraints)
+        }
+
+        $constraintLines = @()
+        if ([string]::IsNullOrWhiteSpace($ConstraintsText)) {
+            $constraintLines += '- add important limits or preferences'
+        }
+        else {
+            foreach ($constraintLine in ($ConstraintsText -split "`r?`n")) {
+                $trimmed = $constraintLine.Trim()
+                if (-not [string]::IsNullOrWhiteSpace($trimmed)) {
+                    $constraintLines += "- $trimmed"
+                }
+            }
+        }
+
+        $notesSectionIndex = [Array]::IndexOf($lines, '## Notes')
+        if ($notesSectionIndex -gt 0) {
+            $beforeNotes = @($lines[0..($notesSectionIndex - 1)])
+            $afterNotes = @($lines[$notesSectionIndex..($lines.Length - 1)])
+            $lines = @($beforeNotes + $constraintLines + @('') + $afterNotes)
         }
 
         $lines += @(
