@@ -223,3 +223,10 @@ expires: 2026-03-20T03:15:00Z
     peers without AmpLab-biased wording or ordering hacks
   - validate generic scan / connect / status refresh against the live remote
     BLE bootstrap
+- Fire-side copy and fallback identity are now closer to that generic lane too:
+  - the full Fire BLE workspace now says `Ohmic Link Device Test Suite`
+    instead of `AmpLab Device Test Suite`
+  - the full scan action now says `Scan Link`
+  - temporary inferred firmware IDs from raw BLE identifiers now use neutral
+    `link-*` prefixes until a live capabilities/status payload reports the
+    real runtime `device_id`
