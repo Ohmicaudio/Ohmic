@@ -152,3 +152,10 @@ expires: 2026-03-20T03:15:00Z
 - The DSP auto-align rule is now also extracted into shared app transport logic
   and covered by tests, so the route decision is no longer hidden only inside the
   workspace component
+- The shared hub media-source state is tighter now too:
+  - `sys.status.core` no longer marks remote playback as `streaming` just because
+    any active topic exists
+  - remote playback is only promoted from core status when the active lane is an
+    `audio.program.remote` topic that matches the selected remote publish topic
+  - a measurement or telemetry active lane can no longer falsely overwrite the
+    selected remote publish topic in shared session state
