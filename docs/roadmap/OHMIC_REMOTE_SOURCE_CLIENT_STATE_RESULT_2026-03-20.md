@@ -14,9 +14,13 @@ and the Hardware tab surfaces that source label directly from `CloudSync`.
 - `CloudSync` now stores session-level `mediaSource` from:
   - `welcome`
   - `media_source_update`
+- `CloudSync` now exposes `selectRemoteMediaSource(...)` so the shared client
+  session model can request remote source changes over the same transport seam
 - `getSyncMeta()` now exposes that shared session media source
 - `HardwareTab` now shows the current remote source label and transport from the
   shared session model
+- `HardwareTab` now exposes a shared remote-source selector instead of keeping
+  that choice buried in backend-only or device-local state
 - Android app was synced and `installDebug` succeeded after this UI/state pass
 
 ## Why This Matters
