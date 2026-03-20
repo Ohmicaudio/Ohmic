@@ -110,4 +110,8 @@ expires: 2026-03-20T03:15:00Z
   - `audio.remote.usb`
   - `audio.remote.main`
   - `DspDeckSummary` now shows that expected topic alongside the actual runtime subscriber state
+- The runtime subscriber relay is now moving toward that contract too:
+  - shared core source-policy code now maps remote source IDs to expected audio subscriber topics
+  - the live runtime now relays `dsp.stream.subscribe` over the existing websocket client whenever the selected remote source changes
+  - this keeps source selection and subscriber intent on one shared runtime path instead of separate UI-only and transport-only lanes
 - OTA remains staged behind the same trust/authority floor, but it is not ahead of the Wi-Fi-first audio transport lane.
