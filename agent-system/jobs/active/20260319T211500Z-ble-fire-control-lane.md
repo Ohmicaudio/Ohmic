@@ -48,4 +48,7 @@ expires: 2026-03-20T03:15:00Z
 - The shared status contract is now being aligned too:
   - `sys.status.core.runtime.media_source` is the next explicit source-arbitration seam
   - Fire BLE parsing/render now accepts that object alongside `measurement_source` and `remote_fft`
+- The generic source/transport presentation is no longer just living inside the AmpLab shell:
+  - the hardware surface now uses a shared `MediaSourceStatusCard`
+  - the remaining `AmpLab*` transport mentions are state/adapters and live-device plumbing, not generic routing ownership
 - OTA remains staged behind the same trust/authority floor, but it is not ahead of the Wi-Fi-first audio transport lane.

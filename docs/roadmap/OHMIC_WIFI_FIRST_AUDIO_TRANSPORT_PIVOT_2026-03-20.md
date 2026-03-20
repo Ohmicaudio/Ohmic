@@ -54,4 +54,6 @@ work.
   Wi-Fi publishing
 - define the shared Wi-Fi HiFi audio transport contract
 - define the node playback/subscription path
+- keep generic source/transport presentation in shared hardware surfaces rather
+  than letting it drift back into AmpLab-owned UI
 - keep OTA staged after the same trust/authority and media-control floor
