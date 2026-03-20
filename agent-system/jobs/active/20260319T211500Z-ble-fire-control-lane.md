@@ -97,4 +97,11 @@ expires: 2026-03-20T03:15:00Z
   - a shared `RemoteSourceSessionCard` now owns the selector and ownership presentation
   - `DspDeckSummary` now shows the same remote-source state and selector as the hardware tab
   - the DSP consumer view no longer depends on a remote-only UI pocket to understand current source ownership
+- The DSP-facing app contract now reads the core runtime seam directly:
+  - `services/hardware/dsp/firmwareContract.ts` now accepts `sys.status.core`
+  - `DspDeckSummary` now polls that core status alongside graph/network state
+  - the DSP workspace now shows:
+    - core `runtime.media_source` via the shared route card
+    - core `stream.state`, `stream.reason`, and `stream.subscribe_topic`
+  - this gives the Wi-Fi-first audio lane an explicit subscriber/runtime view instead of only source-selection state
 - OTA remains staged behind the same trust/authority floor, but it is not ahead of the Wi-Fi-first audio transport lane.
