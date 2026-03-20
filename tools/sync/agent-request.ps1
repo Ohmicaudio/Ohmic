@@ -25,7 +25,8 @@ param(
     [ValidateSet('current', 'needs_review', 'superseded')]
     [string]$ReviewStatus = 'current',
     [string]$Supersedes = '',
-    [string]$NotesText = ''
+    [string]$NotesText = '',
+    [string]$ScopePathsText = ''
 )
 
 $requestsRoot = 'B:\ohmic\agent-system\requests'
@@ -203,8 +204,19 @@ switch ($Command) {
             ''
             '## Suggested Claim Scope'
             ''
-            '- define which files, folders, or surfaces should be claimed once work begins'
         )
+
+        if ([string]::IsNullOrWhiteSpace($ScopePathsText)) {
+            $lines += '- define which files, folders, or surfaces should be claimed once work begins'
+        }
+        else {
+            foreach ($scopeLine in ($ScopePathsText -split "`r?`n")) {
+                $trimmed = $scopeLine.Trim()
+                if (-not [string]::IsNullOrWhiteSpace($trimmed)) {
+                    $lines += "- $trimmed"
+                }
+            }
+        }
 
         Set-Content -Path $filePath -Value $lines -Encoding UTF8
         Refresh-WorkSnapshot -TriggerReason ('request-create:{0}' -f $Status)
