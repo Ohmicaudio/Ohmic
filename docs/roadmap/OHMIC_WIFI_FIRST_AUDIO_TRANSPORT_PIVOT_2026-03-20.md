@@ -67,6 +67,9 @@ work.
 - define the node playback/subscription path
 - keep the remote-hub media-source contract explicit in app code so web and
   Fire surfaces stay aligned while firmware grows into the same model
+- extend runtime status so remote-hub producer, DSP consumer, and Wi-Fi / HiFi
+  route-class truth are first-class fields instead of inference from one
+  `remote.stream` placeholder
 - keep generic source/transport presentation in shared hardware surfaces rather
   than letting it drift back into AmpLab-owned UI
 - keep source-option libraries, transport labels, and media-source presentation

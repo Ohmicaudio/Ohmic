@@ -61,4 +61,7 @@ expires: 2026-03-20T03:15:00Z
 - The Wi-Fi-first audio lane now has one explicit shared contract seam too:
   - `services/hardware/audioTransport.ts` defines the shared remote-audio source catalog and media-source presentation contract
   - that contract is the handoff point between remote-hub media ownership, DSP consumer expectations, and web/Fire status presentation
+- The runtime status contract is now being tightened to match:
+  - `runtime.media_source` is carrying explicit producer / consumer / route-class semantics instead of only a generic upstream string
+  - remote-hub Wi-Fi / HiFi primary routing and local bench fallback can now be represented by one normalized status shape
 - OTA remains staged behind the same trust/authority floor, but it is not ahead of the Wi-Fi-first audio transport lane.
