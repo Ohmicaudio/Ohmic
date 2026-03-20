@@ -183,3 +183,9 @@ expires: 2026-03-20T03:15:00Z
     implying every target is specifically `AmpLab`
   - the onboarding wrapper in `MobileLab` now scrolls independently on Android,
     so the compact card can no longer strand the target list off-screen
+- The next BLE follow-on is now explicit:
+  - shared scan heuristics must recognize DSP / remote / hub class targets as
+    generic `Ohmic link` devices instead of only `AmpLab`-biased names
+  - routing preferences still need a user-facing settings seam so the product
+    can express preferred remote-BT, direct-BT, direct-Wi-Fi, and
+    remote-assisted paths without burying those choices in ad hoc controls
