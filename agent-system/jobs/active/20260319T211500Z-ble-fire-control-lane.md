@@ -124,3 +124,8 @@ expires: 2026-03-20T03:15:00Z
   - DSP remote-client event handling promotes stream state from `subscribed` to `streaming` when matching upstream events arrive
   - DSP workspace now shows those runtime-truth fields instead of only the requested subscriber topic
 - OTA remains staged behind the same trust/authority floor, but it is not ahead of the Wi-Fi-first audio transport lane.
+- The remote-source acknowledgement seam is now tighter too:
+  - `wsHub` carries `publishTopic`, `publishState`, and `activeTopic` alongside the selected session media source
+  - `media.source.select` now resolves to a concrete expected publish topic immediately
+  - `dsp.stream.subscribe` and `sys.status.core.stream.*` now fold back into the same shared session route state
+  - the shared remote-route card now shows selected source, ownership, publish topic/state, and active topic on one surface
