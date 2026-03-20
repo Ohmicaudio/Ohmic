@@ -1,7 +1,7 @@
 scope: project
 authority: working
 project: ohmic-audio-labs
-status: ready
+status: done
 requested: 2026-03-19
 requester: user
 origin: live-fire-ble-lane
@@ -45,9 +45,9 @@ supersedes:
   - runtime target can be changed without reboot
   - remote WebSocket client attaches to a live upstream producer
   - `api/status/core.runtime.remote_fft` reports cached frame metadata
-- the remaining gap is Fire-side end-to-end visualization / validation
+- Fire-side end-to-end visualization / validation is complete
 
 ## Ready When
 
-- Fire BLE card receives and renders `measure.fft.frame` from the live AmpLab
-- or the exact Fire-side UI / transport blocker is isolated with logs
+- Fire BLE card receives `measure.fft.frame` from the live AmpLab and the
+  stream is proven active on both the Fire UI and firmware status

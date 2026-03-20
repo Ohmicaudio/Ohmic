@@ -1,8 +1,8 @@
 claim_id: 20260319T211500Z-ble-fire-control-lane
 status: active
 owner: codex
-project: ohmic-audio-labs
-task: validate-live-fire-ble-measure-frame-on-amplab
+project: amplab-firmware
+task: wire-real-amplab-measurement-source-for-ble-transport
 started: 2026-03-19T21:15:00Z
 expires: 2026-03-20T03:15:00Z
 
@@ -27,5 +27,8 @@ expires: 2026-03-20T03:15:00Z
 - The local ADC path is still absent on headless AmpLab, and `measurement_adc` stays disabled.
 - A narrow remote-source bridge now exists in code: the BLE headless build enables the remote DSP/WebSocket client, caches canonical `measure.fft.frame`, and exposes it to the BLE stream layer and Fire card.
 - Live board validation is now complete: the headless AmpLab can retarget its remote WebSocket client at runtime, attach to a live upstream FFT producer, and cache canonical `measure.fft.frame` metadata in `api/status/core.runtime.remote_fft`.
-- Current active packet is the remaining Fire-side proof: validate the BLE card can request and render that bridged `measure.fft.frame` stream end to end on the live device.
-- Current blocker is narrow and operational rather than transport-level: adb can relaunch the Fire app and verify the updated BLE card bundle, but the Android WebView is not honoring injected scan/connect taps, so the remaining proof needs either manual touch input or a stronger WebView automation lane.
+- Fire-side proof is now complete on the live device:
+  - WebView DevTools automation clicked `SCAN AMP`, selected `OHMIC-AMP-75DC3C`, clicked `CONNECT SELECTED`, and clicked `MEASURE FRAME`
+  - the Fire BLE log shows repeated `RX measure.fft.frame`
+  - live board status reports `stream.state=streaming`, `stream.reason=ble remote fft stream active`, and `stream.subscribe_topic=measure.fft.frame`
+- Current active packet returns to the still-open honest gap: wire a real local AmpLab measurement source instead of depending on the remote FFT bridge.

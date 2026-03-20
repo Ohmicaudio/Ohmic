@@ -1,7 +1,7 @@
 scope: project
 authority: working
 project: amplab-firmware
-status: ready
+status: done
 requested: 2026-03-19
 requester: user
 origin: live-fire-ble-lane
@@ -47,9 +47,9 @@ supersedes:
   - latest remote FFT frame is cached in firmware
   - BLE stream routing supports `measure.fft.frame`
   - Fire card can request and parse canonical FFT frames
-- remaining work is live validation against a real upstream producer
+- live validation against a real upstream producer is complete
 
 ## Ready When
 
-- a real `measure.fft.frame` arrives over BLE on the Fire from the remote source
-- or the exact upstream configuration blocker is isolated
+- the remote FFT bridge is validated live against a real upstream producer and
+  the Fire BLE lane can subscribe to it
