@@ -15,6 +15,12 @@ now backed by live firmware-owned state on the headless AmpLab runtime.
 - `leader.prefer_mobile_first.set` now applies on firmware
 - `leader.priority.set` now applies on firmware
 - `leader.source_policy.set` now applies on firmware
+- `network.router.set` now applies on firmware
+- `network.auto_join.set` now applies on firmware
+- `network.helper_scan.set` now applies on firmware
+- `network.discovery.scan` now applies on firmware
+- `network.join.request` now applies on firmware
+- `network.join.reset` now applies on firmware
 - `sys.status.core` now reports:
   - `leadership`
   - `provisioning`
@@ -25,6 +31,7 @@ now backed by live firmware-owned state on the headless AmpLab runtime.
   - assigned source / assigned priority
   - join-state summary
   - router / target AP summary
+  - join-request timing and helper-scan flags
 
 ## Why This Matters
 

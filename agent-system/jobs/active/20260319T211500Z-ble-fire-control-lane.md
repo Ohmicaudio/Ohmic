@@ -67,4 +67,7 @@ expires: 2026-03-20T03:15:00Z
 - The shared source-arbitration controls are now backed by real firmware-owned state:
   - `leader.auto_master.set`, `leader.prefer_mobile_first.set`, `leader.priority.set`, and `leader.source_policy.set` now apply on the headless AmpLab runtime
   - `sys.status.core` now carries matching `leadership` and `provisioning` objects so the web workspace and Fire BLE path can read real source-policy state instead of UI defaults
+- The companion join-policy controls are now part of that same runtime-owned seam:
+  - `network.router.set`, `network.auto_join.set`, `network.helper_scan.set`, `network.discovery.scan`, `network.join.request`, and `network.join.reset` now apply on the headless AmpLab runtime too
+  - `sys.status.core.provisioning` now carries the join-request timing and helper-scan fields that the hardware control surface was already prepared to display
 - OTA remains staged behind the same trust/authority floor, but it is not ahead of the Wi-Fi-first audio transport lane.
