@@ -42,4 +42,7 @@ expires: 2026-03-20T03:15:00Z
   - Wi-Fi is the primary audio transport
   - the remote unit is the source hub for phone Bluetooth, SD, and USB
   - BLE stays responsible for setup, trust, control, rescue, and last-resort fallback
+- The shared hardware routing copy is now being aligned to that architecture:
+  - AmpLab and StreetHub surfaces describe the remote hub as `Remote Hub (Wi-Fi / HiFi)`
+  - bench USB sources remain available but are explicitly framed as bench-node fallback paths
 - OTA remains staged behind the same trust/authority floor, but it is not ahead of the Wi-Fi-first audio transport lane.
