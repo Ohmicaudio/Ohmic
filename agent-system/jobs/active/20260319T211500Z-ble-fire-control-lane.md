@@ -119,4 +119,8 @@ expires: 2026-03-20T03:15:00Z
   - shared DSP transport no longer rejects `dsp.stream.subscribe` as unsupported
   - the DSP workspace now has an explicit `Apply Expected Topic` action that pushes the expected subscriber topic to the live DSP node
   - the `esp32s3_dsp_headless` environment now builds and flashes cleanly on that shared-core path
+- The DSP-target runtime now tracks observed upstream stream activity too:
+  - shared core stream runtime records `active_topic`, `last_event_ms`, and `event_count`
+  - DSP remote-client event handling promotes stream state from `subscribed` to `streaming` when matching upstream events arrive
+  - DSP workspace now shows those runtime-truth fields instead of only the requested subscriber topic
 - OTA remains staged behind the same trust/authority floor, but it is not ahead of the Wi-Fi-first audio transport lane.
