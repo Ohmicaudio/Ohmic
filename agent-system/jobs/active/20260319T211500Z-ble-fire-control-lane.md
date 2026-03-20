@@ -1,8 +1,8 @@
 claim_id: 20260319T211500Z-ble-fire-control-lane
 status: active
 owner: codex
-project: amplab-firmware
-task: wire-live-dsp-measure-frame-source-for-ble-transport
+project: ohmic-audio-labs
+task: run-wifi-first-remote-audio-transport-wave
 started: 2026-03-19T21:15:00Z
 expires: 2026-03-20T03:15:00Z
 
@@ -12,6 +12,8 @@ expires: 2026-03-20T03:15:00Z
 - B:\ohmic\repos\ohmic-audio-labs\services\hardware\amplab
 - B:\ohmic\repos\ohmic-audio-labs\test\services
 - B:\ohmic\repos\ohmic-audio-labs\services\hardware\dsp\firmwareContract.ts
+- B:\ohmic\repos\ohmic-audio-labs\services\hardware\remote
+- B:\ohmic\repos\ohmic-audio-labs\components\Hardware
 - B:\ohmic\repos\amplab-firmware\src\main.cpp
 - B:\ohmic\repos\amplab-firmware\src\dsp\dsp_state.cpp
 - B:\ohmic\repos\amplab-firmware\src\dsp\dsp_state.hpp
@@ -35,4 +37,9 @@ expires: 2026-03-20T03:15:00Z
   - `setupAnalogADC()` now configures the documented basic-node ADC pins
   - `api/status/core.runtime.measurement_source` now reports live `adc.basic` values and sample counters
   - `amplab.telemetry` now carries live `dc_v` and `sig_in_vrms` from that source
-- Current active packet moves to the next still-open honest gap: replace the remote-only/local-none `measure.fft.frame` lane with a real local DSP-side source or isolate the exact hardware dependency.
+- BLE is now stable enough to stop pretending it should be the primary media lane.
+- Next execution priority is the real product path:
+  - Wi-Fi is the primary audio transport
+  - the remote unit is the source hub for phone Bluetooth, SD, and USB
+  - BLE stays responsible for setup, trust, control, rescue, and last-resort fallback
+- OTA remains staged behind the same trust/authority floor, but it is not ahead of the Wi-Fi-first audio transport lane.

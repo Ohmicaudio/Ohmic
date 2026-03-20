@@ -24,6 +24,17 @@ The next correct runway is:
 - define Wi-Fi/bootstrap handoff over BLE and recovery paths
 - stage OTA as a capability over that trusted shared command model
 
+## Current Priority Shift
+
+- BLE is now stable enough for scan, connect, setup, control, telemetry, and
+  remote FFT validation on the live Fire + AmpLab path
+- the next main execution lane is no longer "more BLE as media transport"
+- current product priority is:
+  - Wi-Fi-first audio transport
+  - remote-unit source arbitration for phone Bluetooth, SD, and USB
+  - BLE as setup/control/fallback
+  - OTA after the shared trust/authority and media-control floor
+
 ## Rules
 
 - command-first and surface-agnostic
@@ -47,3 +58,4 @@ The next correct runway is:
 - `2026-03-19-prototype-live-ble-measurement-frame-transport-on-amplab.md`
 - `2026-03-19-wire-real-amplab-measurement-source-for-ble-transport.md`
 - `2026-03-19-validate-live-remote-fft-frame-bridge-on-amplab.md`
+- `2026-03-20-run-wifi-first-remote-audio-transport-wave.md`
