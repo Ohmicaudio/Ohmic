@@ -189,3 +189,16 @@ expires: 2026-03-20T03:15:00Z
   - routing preferences still need a user-facing settings seam so the product
     can express preferred remote-BT, direct-BT, direct-Wi-Fi, and
     remote-assisted paths without burying those choices in ad hoc controls
+- Firmware-side parity gap is now explicit too:
+  - shared BLE identity helpers in `amplab-firmware` were still collapsing all
+    non-DSP nodes into Amp-style device IDs and advertising names
+  - the current `esp32s3_dsp_headless` build had BLE compiled out entirely,
+    which explains why the DSP could not appear in the Fire scan path
+  - the next validation seam is enabling DSP-headless BLE on the shared core
+    path and confirming it advertises as a distinct Ohmic-link peer
+- DSP BLE parity is now materially advanced:
+  - shared identity helpers now derive BLE name / device-id prefixes from
+    `node_kind` instead of only `has_dsp_1701`
+  - `esp32s3_dsp_headless` now builds with BLE enabled and NimBLE restored
+  - the BLE-enabled DSP headless firmware build succeeded and was flashed live
+    to `COM27`
