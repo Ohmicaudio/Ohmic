@@ -64,4 +64,7 @@ expires: 2026-03-20T03:15:00Z
 - The runtime status contract is now being tightened to match:
   - `runtime.media_source` is carrying explicit producer / consumer / route-class semantics instead of only a generic upstream string
   - remote-hub Wi-Fi / HiFi primary routing and local bench fallback can now be represented by one normalized status shape
+- The shared source-arbitration controls are now backed by real firmware-owned state:
+  - `leader.auto_master.set`, `leader.prefer_mobile_first.set`, `leader.priority.set`, and `leader.source_policy.set` now apply on the headless AmpLab runtime
+  - `sys.status.core` now carries matching `leadership` and `provisioning` objects so the web workspace and Fire BLE path can read real source-policy state instead of UI defaults
 - OTA remains staged behind the same trust/authority floor, but it is not ahead of the Wi-Fi-first audio transport lane.

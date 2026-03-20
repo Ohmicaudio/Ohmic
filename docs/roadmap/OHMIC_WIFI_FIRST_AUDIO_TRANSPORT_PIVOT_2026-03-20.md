@@ -75,4 +75,9 @@ work.
 - keep source-option libraries, transport labels, and media-source presentation
   on one shared app model so the web hardware workspace and Fire BLE surface
   cannot drift apart
+- keep source-policy ownership in firmware runtime state too:
+  - `leader.*` controls must round-trip through real `sys.status.core`
+    `leadership` and `provisioning` objects
+  - web and Fire should read live source-policy state instead of baking their
+    own default leadership assumptions
 - keep OTA staged after the same trust/authority and media-control floor
