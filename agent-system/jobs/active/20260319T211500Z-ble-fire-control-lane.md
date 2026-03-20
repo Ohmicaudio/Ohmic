@@ -237,3 +237,9 @@ expires: 2026-03-20T03:15:00Z
     `Remote -> DSP -> Hub -> Amp -> Link`
   - both the compact likely-target rail and the full nearby-device list now
     show those role labels directly on the buttons
+- DSP-side BLE advertising is now tightened too:
+  - shared NimBLE init in `amplab-firmware/src/main.cpp` now matches the
+    known-good minimal BLE lane more closely by setting public-address mode and
+    disabling security auth on the shared BLE runtime path
+  - `esp32s3_dsp_headless` rebuilt cleanly after that change
+  - the updated DSP BLE headless firmware was reflashed live to `COM27`
