@@ -176,3 +176,10 @@ expires: 2026-03-20T03:15:00Z
   - `USB Media`
   - `Refresh Route`
   - each action follows with a core-status refresh so the route can update on-card
+- The compact Fire BLE onboarding card is now also usable again on-device when
+  multiple likely targets are present:
+  - compact mode shows `Likely Link Targets` at the top of the card
+  - onboarding copy now uses the more generic `Ohmic Link` wording instead of
+    implying every target is specifically `AmpLab`
+  - the onboarding wrapper in `MobileLab` now scrolls independently on Android,
+    so the compact card can no longer strand the target list off-screen
