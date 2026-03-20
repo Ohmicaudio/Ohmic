@@ -14,6 +14,8 @@ and the DSP runtime is not yet aligned.
   - derives the expected subscriber topic
   - detects when the DSP subscriber lane is not yet aligned
   - auto-sends `dsp.stream.subscribe` once the route is active enough to act on
+- the auto-align decision now lives in shared app transport logic instead of only
+  inside the DSP workspace component, so the rule is testable and reusable
 - the auto-apply path refreshes `sys.status.core` immediately after the subscribe
   request so the workspace reflects the new DSP runtime truth without a manual step
 - the manual `Apply Expected Topic` action remains available as a fallback, but

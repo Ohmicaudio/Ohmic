@@ -149,3 +149,6 @@ expires: 2026-03-20T03:15:00Z
     now auto-applies the expected `dsp.stream.subscribe` topic once
   - it then refreshes `sys.status.core` immediately so the DSP route view reflects
     the new subscriber truth without an extra operator click
+- The DSP auto-align rule is now also extracted into shared app transport logic
+  and covered by tests, so the route decision is no longer hidden only inside the
+  workspace component
