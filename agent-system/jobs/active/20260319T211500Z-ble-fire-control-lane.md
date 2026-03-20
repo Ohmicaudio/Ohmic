@@ -133,3 +133,7 @@ expires: 2026-03-20T03:15:00Z
   - shared stream runtime now classifies subscriber and active topics
   - `sys.status.core.stream` now reports `subscribe_class` and `active_class`
   - DSP workspace can distinguish remote program audio lanes from measurement/telemetry lanes instead of only showing raw topic strings
+- The hub-side playback truth is tighter now too:
+  - matching `audio.remote.*` signal traffic now promotes the shared session media source from `requested/subscribed` to `streaming`
+  - session media source state is no longer dependent only on command intent and DSP runtime replies
+  - backend coverage now proves that a selected remote source becomes active when matching remote audio traffic is observed
