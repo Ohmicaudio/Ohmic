@@ -77,4 +77,8 @@ expires: 2026-03-20T03:15:00Z
   - source-policy websocket/serial handling now routes through shared core dispatch instead of a `main.cpp` custom request block
 - The BLE command path now matches that extraction too:
   - source-policy and join-policy BLE topics route through the same shared core dispatcher instead of duplicated ladders in both BLE callback implementations
+- The runtime audio lane now has a real remote-source selection seam:
+  - `media.source.select` is owned by the shared source-policy core
+  - `runtime.media_source.upstream` can now report concrete remote sources like `phone.bt`, `sd.local`, and `usb.local`
+  - the headless AmpLab runtime now relays that selection toward the remote hub over WebSocket for the Wi-Fi-first path
 - OTA remains staged behind the same trust/authority floor, but it is not ahead of the Wi-Fi-first audio transport lane.
