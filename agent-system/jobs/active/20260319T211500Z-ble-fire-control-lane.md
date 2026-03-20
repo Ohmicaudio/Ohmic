@@ -137,3 +137,9 @@ expires: 2026-03-20T03:15:00Z
   - matching `audio.remote.*` signal traffic now promotes the shared session media source from `requested/subscribed` to `streaming`
   - session media source state is no longer dependent only on command intent and DSP runtime replies
   - backend coverage now proves that a selected remote source becomes active when matching remote audio traffic is observed
+- The DSP workspace now has a shared playback-alignment summary too:
+  - expected publish topic
+  - session route publish topic/state
+  - DSP subscriber topic/class
+  - DSP active topic/class
+  - one derived alignment status: `aligned`, `subscribed`, `requested`, `mismatch`, or `idle`
