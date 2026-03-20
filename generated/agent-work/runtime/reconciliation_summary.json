@@ -1,6 +1,6 @@
 {
-    "generated_at":  "2026-03-19T22:58:09Z",
-    "source_latest_write_time":  "2026-03-19T22:57:46.2622089Z",
+    "generated_at":  "2026-03-20T06:48:07Z",
+    "source_latest_write_time":  "2026-03-20T06:47:52.0929598Z",
     "project":  "ohmic",
     "staleness":  {
                       "status":  "fresh",
@@ -10,7 +10,7 @@
                    "ready":  11,
                    "active_claims":  1,
                    "blocked":  26,
-                   "done":  815
+                   "done":  833
                },
     "board_health":  "healthy",
     "queue_floor_met":  true,
@@ -24,10 +24,10 @@
               },
     "response":  {
                      "status":  "working",
-                     "message":  "Active claim: close-live-ble-stream-source-gap-on-amplab"
+                     "message":  "Active claim: wire-real-amplab-measurement-source-for-ble-transport"
                  },
     "top_priority":  [
-                         "2026-03-19-close-live-ble-stream-source-gap-on-amplab",
+                         "2026-03-19-wire-real-amplab-measurement-source-for-ble-transport",
                          "2026-03-16-normalize-ohmic-live-link-ap-vs-lan-candidate-identities",
                          "2026-03-17-run-shared-network-command-surface-wave"
                      ]

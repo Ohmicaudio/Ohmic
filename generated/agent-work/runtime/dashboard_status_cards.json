@@ -1,5 +1,5 @@
 {
-    "generated_at":  "2026-03-19T22:58:10Z",
+    "generated_at":  "2026-03-20T06:48:07Z",
     "source":  {
                    "kind":  "dashboard_card_mapper",
                    "path":  "B:\\ohmic\\generated\\agent-work\\runtime"
@@ -30,7 +30,7 @@
                                      },
                                      {
                                          "label":  "Updated",
-                                         "value":  "2026-03-19T22:58:09Z"
+                                         "value":  "2026-03-20T06:48:07Z"
                                      },
                                      {
                                          "label":  "Loop state",
@@ -74,15 +74,15 @@
                                      },
                                      {
                                          "label":  "Current action",
-                                         "value":  "Active claim: close-live-ble-stream-source-gap-on-amplab"
+                                         "value":  "Active claim: wire-real-amplab-measurement-source-for-ble-transport"
                                      },
                                      {
                                          "label":  "Next",
-                                         "value":  "2026-03-19-close-live-ble-stream-source-gap-on-amplab"
+                                         "value":  "2026-03-19-wire-real-amplab-measurement-source-for-ble-transport"
                                      },
                                      {
                                          "label":  "Claim",
-                                         "value":  "close-live-ble-stream-source-gap-on-amplab"
+                                         "value":  "wire-real-amplab-measurement-source-for-ble-transport"
                                      }
                                  ]
                   },

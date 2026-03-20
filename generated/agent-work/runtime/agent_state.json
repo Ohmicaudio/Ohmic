@@ -5,11 +5,11 @@
                     "mode":  "perform",
                     "active_repo":  "B:\\ohmic",
                     "agent_id":  "codex",
-                    "task_id":  "close-live-ble-stream-source-gap-on-amplab",
+                    "task_id":  "wire-real-amplab-measurement-source-for-ble-transport",
                     "task_status":  "working",
                     "orchestrator_active":  false,
                     "compact_count":  0,
-                    "updated_at":  "2026-03-19T22:58:09Z"
+                    "updated_at":  "2026-03-20T06:48:07Z"
                 },
     "input":  {
                   "pending":  true,
@@ -27,16 +27,16 @@
                   "active_claim_count":  1,
                   "board_health":  "healthy",
                   "top_priority":  [
-                                       "2026-03-19-close-live-ble-stream-source-gap-on-amplab",
+                                       "2026-03-19-wire-real-amplab-measurement-source-for-ble-transport",
                                        "2026-03-16-normalize-ohmic-live-link-ap-vs-lan-candidate-identities",
                                        "2026-03-17-run-shared-network-command-surface-wave"
                                    ],
                   "queue_floor_met":  true,
                   "stale_state_detected":  false,
                   "recent_completions":  [
-                                             "2026-03-19-add-board-attention-inspect-action",
-                                             "2026-03-19-prioritize-board-attention-owners-in-worker-summary",
-                                             "2026-03-19-add-board-recommendation-quick-actions"
+                                             "2026-03-20-harden-board-progress-sorting-against-invalid-completions",
+                                             "2026-03-19-validate-live-remote-fft-frame-bridge-on-amplab",
+                                             "2026-03-19-validate-live-fire-ble-measure-frame-on-amplab"
                                          ],
                   "risks":  [
                                 "Blocked tasks present: 26"
@@ -44,17 +44,17 @@
               },
     "response":  {
                      "status":  "working",
-                     "message":  "Active claim: close-live-ble-stream-source-gap-on-amplab",
-                     "current_action":  "executing close-live-ble-stream-source-gap-on-amplab",
+                     "message":  "Active claim: wire-real-amplab-measurement-source-for-ble-transport",
+                     "current_action":  "executing wire-real-amplab-measurement-source-for-ble-transport",
                      "recommended_next":  [
-                                              "2026-03-19-close-live-ble-stream-source-gap-on-amplab",
+                                              "2026-03-19-wire-real-amplab-measurement-source-for-ble-transport",
                                               "2026-03-16-normalize-ohmic-live-link-ap-vs-lan-candidate-identities",
                                               "2026-03-17-run-shared-network-command-surface-wave"
                                           ],
                      "completed":  [
-                                       "2026-03-19-add-board-attention-inspect-action",
-                                       "2026-03-19-prioritize-board-attention-owners-in-worker-summary",
-                                       "2026-03-19-add-board-recommendation-quick-actions"
+                                       "2026-03-20-harden-board-progress-sorting-against-invalid-completions",
+                                       "2026-03-19-validate-live-remote-fft-frame-bridge-on-amplab",
+                                       "2026-03-19-validate-live-fire-ble-measure-frame-on-amplab"
                                    ],
                      "blocked":  [
                                      "2026-03-15-promote-ops-unifier-incubator-when-ohmic-slack-exists",

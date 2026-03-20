@@ -1,5 +1,5 @@
 {
-    "generated_at":  "2026-03-19T22:58:09Z",
+    "generated_at":  "2026-03-20T06:48:07Z",
     "source":  {
                    "kind":  "repo_summary",
                    "path":  "B:\\ohmic\\agent-system\\requests\\ready"
@@ -121,15 +121,15 @@
                       "file_path":  "B:\\ohmic\\agent-system\\requests\\ready\\2026-03-18-stage-ota-capability-over-shared-trust-and-command-contract.md"
                   },
                   {
-                      "task_id":  "2026-03-19-close-live-ble-stream-source-gap-on-amplab",
-                      "title":  "close-live-ble-stream-source-gap-on-amplab",
+                      "task_id":  "2026-03-19-wire-real-amplab-measurement-source-for-ble-transport",
+                      "title":  "wire-real-amplab-measurement-source-for-ble-transport",
                       "priority":  "high",
-                      "project":  "ohmic-audio-labs",
+                      "project":  "amplab-firmware",
                       "status":  "ready",
                       "date":  "",
                       "owner":  "",
                       "claim_id":  "",
-                      "file_path":  "B:\\ohmic\\agent-system\\requests\\ready\\2026-03-19-close-live-ble-stream-source-gap-on-amplab.md"
+                      "file_path":  "B:\\ohmic\\agent-system\\requests\\ready\\2026-03-19-wire-real-amplab-measurement-source-for-ble-transport.md"
                   }
               ]
 }
