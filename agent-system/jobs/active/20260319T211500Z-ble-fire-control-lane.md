@@ -93,4 +93,8 @@ expires: 2026-03-20T03:15:00Z
   - `sys.status.core.runtime.media_source` now remains the authoritative confirmed source reflection
   - the shared client session model carries `producer`, `consumer`, and `confirmed`
   - `HardwareTab` shows pending vs confirmed source state plus remote-hub to DSP route ownership
+- The DSP-facing workspace now consumes that same shared session route:
+  - a shared `RemoteSourceSessionCard` now owns the selector and ownership presentation
+  - `DspDeckSummary` now shows the same remote-source state and selector as the hardware tab
+  - the DSP consumer view no longer depends on a remote-only UI pocket to understand current source ownership
 - OTA remains staged behind the same trust/authority floor, but it is not ahead of the Wi-Fi-first audio transport lane.
