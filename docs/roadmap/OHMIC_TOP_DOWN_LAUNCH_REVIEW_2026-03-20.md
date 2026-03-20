@@ -7,6 +7,7 @@ Date: 2026-03-20
 Top-down launch readiness review across:
 
 - `ohmic-administrator`
+- `ohmic-audio-labs` web/backend/android
 - `amplab-firmware`
 - `cyd-remote`
 - umbrella board, doc, and startup surfaces
@@ -24,6 +25,20 @@ Top-down launch readiness review across:
   - business-ops screen is split correctly
   - board recommendation, follow-up seeding, and claim flow are materially
     tighter than earlier in the week
+
+### Ohmic Audio Labs
+
+- active product repo: `B:\ohmic\repos\ohmic-audio-labs`
+- remote: `Ohmicaudio/ohmic-audio-labs`
+- current branch: `device-identity-schema-convergence`
+- status: clean
+- launch posture:
+  - this is still the main web/backend/android runtime repo
+  - startup docs exist and are stronger than Administrator was before this
+    review
+  - the repo shape is still broad and busy for launch-day operator clarity
+  - there is visible doc clutter in both repo root and `docs/`, which makes
+    "where do I edit?" and "where is the truth?" harder than they should be
 
 ### AmpLab Firmware
 
@@ -43,7 +58,7 @@ Top-down launch readiness review across:
 - current branch: `remote-shared-runtime-core`
 - status: clean
 - launch posture:
-  - startup and bring-up docs are stronger than administrator
+  - startup and bring-up docs are stronger than Administrator
   - remote is still clearly in active integration rather than launch-final mode
 
 ## Findings
@@ -91,7 +106,33 @@ Action in this review:
   - `B:\ohmic\repos\ohmic-administrator\AGENTS.md`
   - `B:\ohmic\repos\ohmic-administrator\README.md`
 
-### 4. Firmware launch posture is ahead in documentation discipline but not yet unified
+### 4. ohmic-audio-labs has better startup docs than Administrator did, but weaker launch clarity
+
+Severity: high
+
+`ohmic-audio-labs` already has:
+
+- project overlay
+- repo-local `AGENTS.md`
+- quick-start and validation commands
+
+But it also has:
+
+- many repo-root docs and planning artifacts
+- broad mixed ownership across web, backend, android, firmware remnants, and
+  static-content transition surfaces
+- a non-launch branch posture: `device-identity-schema-convergence`
+
+That makes it the biggest "where is the real thing, and where should I edit?"
+risk in the current launch picture.
+
+Action in this review:
+
+- added explicit document-location guidance to:
+  - `B:\ohmic\repos\ohmic-audio-labs\AGENTS.md`
+  - `B:\ohmic\repos\ohmic-audio-labs\README.md`
+
+### 5. Firmware launch posture is ahead in documentation discipline but not yet unified
 
 Severity: medium
 
@@ -101,9 +142,9 @@ Administrator did, but they are still sitting on active integration branches:
 - `amplab-live-status-carry-forward`
 - `remote-shared-runtime-core`
 
-That is workable during build-out, but it is not yet “launch-simple.”
+That is workable during build-out, but it is not yet "launch-simple."
 
-### 5. Board filtering is better, but launch steering is still mostly administrator-centric
+### 6. Board filtering is better, but launch steering is still mostly administrator-centric
 
 Severity: medium
 
@@ -121,13 +162,14 @@ Make the startup/document/discoverability path boring and reliable.
 - every active repo should have:
   - project overlay
   - repo-local `AGENTS.md`
-  - clear “where docs go” guidance
+  - clear "where docs go" guidance
 
 ### Priority 2
 
-Choose the launch branch posture for firmware and remote.
+Choose the launch branch posture for web/backend/android and firmware/remote.
 
 - decide what needs to merge or stabilize from:
+  - `device-identity-schema-convergence`
   - `amplab-live-status-carry-forward`
   - `remote-shared-runtime-core`
 
@@ -142,6 +184,11 @@ Minimum clean story:
   - queue
   - approvals
   - runtime truth
+- Ohmic Audio Labs:
+  - web entry
+  - backend entry
+  - Android wrapper/smoke path
+  - where product docs live versus where launch/system docs live
 - Business Ops:
   - draft / reply / publish work
 - Firmware / Remote:
@@ -159,6 +206,7 @@ should not have to mentally filter unrelated project packets by hand.
 1. Add the same explicit document-location section to firmware/remote repo-local
    startup docs where needed.
 2. Do a branch-to-launch review for:
+   - `ohmic-audio-labs`
    - `amplab-firmware`
    - `cyd-remote`
 3. Decide the minimum launch checklist per repo:
