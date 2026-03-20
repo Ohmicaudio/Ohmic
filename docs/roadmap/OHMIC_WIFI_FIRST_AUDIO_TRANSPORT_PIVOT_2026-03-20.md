@@ -24,6 +24,21 @@ work.
   - rescue
   - last-resort fallback audio only when needed
 
+## AmpLab Audio Output Position
+
+- AmpLab should not be treated as a primary ecosystem media-source product lane.
+- Its main value is still setup, control, measurement, and bench/reference work.
+- A simple `2 Vrms` analog output is acceptable only if AmpLab remains a
+  utility or single-amp local-output path.
+- If AmpLab-generated test tones or local audio are expected to match the real
+  DSP playback/reference level model, AmpLab should move toward the same DAC and
+  analog output-stage class used on the DSP family.
+- The point is level and calibration parity, not “AmpLab as the main audio
+  streamer.”
+- Current hardware assumption remains that the existing I2S-style digital audio
+  lane can already carry stereo, so this does not automatically imply a second
+  digital audio data wire.
+
 ## Why This Shift Is Correct
 
 - the live Fire + AmpLab BLE path is now real for scan, connect, setup,
