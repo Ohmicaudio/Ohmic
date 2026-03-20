@@ -230,3 +230,10 @@ expires: 2026-03-20T03:15:00Z
   - temporary inferred firmware IDs from raw BLE identifiers now use neutral
     `link-*` prefixes until a live capabilities/status payload reports the
     real runtime `device_id`
+- Fire scan ranking is now more useful for the next live validation pass:
+  - shared BLE scan helpers now infer coarse peer roles from scan names and
+    service UUIDs: `Remote`, `DSP`, `Amp`, `Hub`, `Link`
+  - candidate lists now sort likely peers first, then prioritize
+    `Remote -> DSP -> Hub -> Amp -> Link`
+  - both the compact likely-target rail and the full nearby-device list now
+    show those role labels directly on the buttons
