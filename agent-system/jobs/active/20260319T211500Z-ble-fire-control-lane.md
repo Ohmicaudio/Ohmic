@@ -202,3 +202,9 @@ expires: 2026-03-20T03:15:00Z
   - `esp32s3_dsp_headless` now builds with BLE enabled and NimBLE restored
   - the BLE-enabled DSP headless firmware build succeeded and was flashed live
     to `COM27`
+- Remote-side reality is narrower right now:
+  - `cyd-remote` still does not have a BLE transport/bootstrap lane to turn on
+    the way the DSP build now does
+  - its runtime identity is being aligned toward `remote` instead of generic
+    `controller` naming so the shared device contract points the right way
+  - a real remote BLE onboarding/bootstrap packet still needs to be carved out
