@@ -166,3 +166,6 @@ expires: 2026-03-20T03:15:00Z
   - `activeClass`
   - the route card now shows those fields so live audio runs have a cleaner
     operator-facing truth surface
+- The DSP workspace now also polls backend `/api/ws/trace` and shows the hub's
+  own route view beside the browser/session route view and the DSP runtime view,
+  giving the first live audio run a cleaner three-way truth surface
