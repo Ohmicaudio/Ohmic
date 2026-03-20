@@ -143,3 +143,9 @@ expires: 2026-03-20T03:15:00Z
   - DSP subscriber topic/class
   - DSP active topic/class
   - one derived alignment status: `aligned`, `subscribed`, `requested`, `mismatch`, or `idle`
+- The DSP workspace no longer depends on a manual subscriber-apply step after
+  remote source selection:
+  - when a shared remote source route is active enough to act on, the workspace
+    now auto-applies the expected `dsp.stream.subscribe` topic once
+  - it then refreshes `sys.status.core` immediately so the DSP route view reflects
+    the new subscriber truth without an extra operator click
