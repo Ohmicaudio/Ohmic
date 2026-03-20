@@ -1,8 +1,8 @@
 claim_id: 20260319T211500Z-ble-fire-control-lane
 status: active
 owner: codex
-project: amplab-firmware
-task: validate-live-remote-fft-frame-bridge-on-amplab
+project: ohmic-audio-labs
+task: validate-live-fire-ble-measure-frame-on-amplab
 started: 2026-03-19T21:15:00Z
 expires: 2026-03-20T03:15:00Z
 
@@ -26,4 +26,5 @@ expires: 2026-03-20T03:15:00Z
 - Live BLE telemetry transport is now validated on the Fire card with explicit `amplab.telemetry` topic flow and stop/start behavior.
 - The local ADC path is still absent on headless AmpLab, and `measurement_adc` stays disabled.
 - A narrow remote-source bridge now exists in code: the BLE headless build enables the remote DSP/WebSocket client, caches canonical `measure.fft.frame`, and exposes it to the BLE stream layer and Fire card.
-- Current active packet is live validation of that remote FFT bridge against a real upstream producer.
+- Live board validation is now complete: the headless AmpLab can retarget its remote WebSocket client at runtime, attach to a live upstream FFT producer, and cache canonical `measure.fft.frame` metadata in `api/status/core.runtime.remote_fft`.
+- Current active packet is the remaining Fire-side proof: validate the BLE card can request and render that bridged `measure.fft.frame` stream end to end on the live device.
