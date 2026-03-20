@@ -169,3 +169,10 @@ expires: 2026-03-20T03:15:00Z
 - The DSP workspace now also polls backend `/api/ws/trace` and shows the hub's
   own route view beside the browser/session route view and the DSP runtime view,
   giving the first live audio run a cleaner three-way truth surface
+- The compact Fire BLE onboarding card now exposes practical remote-audio source
+  controls near the top:
+  - `Phone BT`
+  - `SD Card`
+  - `USB Media`
+  - `Refresh Route`
+  - each action follows with a core-status refresh so the route can update on-card
