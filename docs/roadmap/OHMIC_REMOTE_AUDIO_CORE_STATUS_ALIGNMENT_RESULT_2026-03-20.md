@@ -20,6 +20,13 @@ contains a non-empty active topic.
   - and `subscribe_topic` matches the expected remote publish topic
 - the hub no longer lets an unrelated `stream.active_topic` overwrite the
   selected remote publish topic
+- the shared media-source session state now also carries the raw lane evidence:
+  - `subscribeTopic`
+  - `subscribeClass`
+  - `activeTopic`
+  - `activeClass`
+- that evidence now reaches the shared route card too, so live runs can show
+  which subscriber lane and active lane the hub is actually seeing
 - backend coverage now proves:
   - matching remote audio core status becomes `streaming`
   - a measurement active lane does not falsely become `streaming`

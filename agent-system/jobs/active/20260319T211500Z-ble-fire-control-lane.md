@@ -159,3 +159,10 @@ expires: 2026-03-20T03:15:00Z
     `audio.program.remote` topic that matches the selected remote publish topic
   - a measurement or telemetry active lane can no longer falsely overwrite the
     selected remote publish topic in shared session state
+- That shared media-source object now also carries raw lane evidence:
+  - `subscribeTopic`
+  - `subscribeClass`
+  - `activeTopic`
+  - `activeClass`
+  - the route card now shows those fields so live audio runs have a cleaner
+    operator-facing truth surface
