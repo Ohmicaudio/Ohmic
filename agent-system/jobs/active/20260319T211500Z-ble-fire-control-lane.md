@@ -129,3 +129,7 @@ expires: 2026-03-20T03:15:00Z
   - `media.source.select` now resolves to a concrete expected publish topic immediately
   - `dsp.stream.subscribe` and `sys.status.core.stream.*` now fold back into the same shared session route state
   - the shared remote-route card now shows selected source, ownership, publish topic/state, and active topic on one surface
+- DSP playback/runtime truth is now getting a stronger shared-core shape too:
+  - shared stream runtime now classifies subscriber and active topics
+  - `sys.status.core.stream` now reports `subscribe_class` and `active_class`
+  - DSP workspace can distinguish remote program audio lanes from measurement/telemetry lanes instead of only showing raw topic strings
