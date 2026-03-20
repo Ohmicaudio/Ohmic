@@ -46,3 +46,4 @@ The next correct runway is:
 - completed: `2026-03-19-prototype-live-ble-audio-telemetry-transport-on-amplab.md`
 - `2026-03-19-prototype-live-ble-measurement-frame-transport-on-amplab.md`
 - `2026-03-19-wire-real-amplab-measurement-source-for-ble-transport.md`
+- `2026-03-19-validate-live-remote-fft-frame-bridge-on-amplab.md`
