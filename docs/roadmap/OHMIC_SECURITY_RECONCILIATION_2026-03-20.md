@@ -60,9 +60,32 @@ Validation:
 - `npm run backend:type-check`
 - `npm run build`
 
+### SEC-2026-03-20-03: browser sync no longer reads a shared key from Vite env
+
+The browser client no longer reads `VITE_SYNC_SHARED_KEY` or sends `x-ohmic-key` directly.
+
+Current code path:
+
+- `B:\ohmic\repos\ohmic-audio-labs\services\CloudSync.ts:1370`
+- `B:\ohmic\repos\ohmic-audio-labs\services\CloudSync.ts:1375`
+
+Backend note updated at:
+
+- `B:\ohmic\repos\ohmic-audio-labs\services\backend\README.md:207`
+
+Impact:
+
+- removes a browser-bundled shared secret path
+- keeps sync auth on bearer sessions or backend-side trusted callers
+
+Validation:
+
+- `npm run type-check`
+- `npm run build`
+
 ## Confirmed Still Real
 
-### SEC-2026-03-20-03: firmware AP password is hardcoded
+### SEC-2026-03-20-04: firmware AP password is hardcoded
 
 Still present:
 
@@ -105,21 +128,9 @@ Important nuance:
 - it is not absent
 - the risk is that the secure path is not the default path
 
-### SEC-2026-03-20-05: sync shared key can still be exposed to the browser bundle
-
-Still present:
-
-- `B:\ohmic\repos\ohmic-audio-labs\services\CloudSync.ts:98`
-
-Current assessment:
-
-- medium severity
-- only relevant when operators actually set `VITE_SYNC_SHARED_KEY`
-- should be removed from browser-facing env usage in a future sync-auth hardening pass
-
 ## Audit Claims That Were Stale or Overstated
 
-### SEC-2026-03-20-06: “administrator extraction not started”
+### SEC-2026-03-20-05: “administrator extraction not started”
 
 Stale.
 
@@ -127,7 +138,7 @@ The extracted product repo is live and active at:
 
 - `B:\ohmic\repos\ohmic-administrator`
 
-### SEC-2026-03-20-07: “GitHub migration blocked”
+### SEC-2026-03-20-06: “GitHub migration blocked”
 
 Stale as a general claim.
 
@@ -137,7 +148,7 @@ Current work was pushed today to:
 - `B:\ohmic\repos\ohmic-audio-labs`
 - `B:\ohmic`
 
-### SEC-2026-03-20-08: “/api/devices only requires authenticated tier” needed more context
+### SEC-2026-03-20-07: “/api/devices only requires authenticated tier” needed more context
 
 Partially true, but incomplete as stated.
 
@@ -163,7 +174,7 @@ Current assessment:
 
 ## Lower-Priority Current Security Debt
 
-### SEC-2026-03-20-09: design sandbox still renders raw pasted HTML
+### SEC-2026-03-20-08: design sandbox still renders raw pasted HTML
 
 Still present:
 
@@ -192,5 +203,4 @@ Audio Labs:
 
 1. Flip firmware auth defaults to secure-by-default with explicit dev override.
 2. Replace hardcoded firmware AP password with generated or environment-provided bootstrap secret.
-3. Remove browser-bundled sync shared key support and force backend-only sync auth.
-4. Review whether device list/read routes should remain `authenticated` or move to tighter launch posture.
+3. Review whether device list/read routes should remain `authenticated` or move to tighter launch posture.
